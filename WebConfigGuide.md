@@ -1,6 +1,6 @@
 # DataAILite web.config Configuration Guide
 
-This guide walks you through configuring the `web.config` file for your DataAI installation. The file is located in the root of your DataAI web application directory.
+This guide walks you through configuring the `web.config` file for your DataAILite installation. The file is located in the root of your DataAI web application directory.
 
 ## Before You Begin
 
