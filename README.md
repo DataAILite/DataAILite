@@ -1,24 +1,22 @@
-# DataAI
+# DataAILite
 
-DataAI is an AI-powered data analysis and reporting platform designed for flexible integration with multiple databases and advanced visualization capabilities.
+DataAILite is an open-source AI-powered project management and data analysis system built with ASP.NET and VB.NET.
 
 ---
 
 ## 🚀 Features
 
 - AI-driven data analysis
-- Dynamic report generation
-- Multi-database support (MySQL, Oracle, InterSystems IRIS, others)
-- Web-based interface (ASP.NET)
+- In-memory processing (no persistent storage after logout)
+- Interactive dashboards and reports
+- Google Maps / Earth integration
 - OpenAI-powered insights
-- Google Maps integration (optional)
-- User registration and management
 
 ---
 
 ## ⚖️ License
 
-DataAI is licensed under the **GNU General Public License v3.0 (GPL v3)**.
+DataAILite is licensed under the **GNU General Public License v3.0 (GPL v3)**.
 
 You are free to:
 - Use the software
@@ -37,118 +35,84 @@ Full license: https://www.gnu.org/licenses/gpl-3.0.html
 
 ### Option 1 – Installer (Recommended)
 
-1. Download `InstallDataAI.zip` from DataAI.link
+1. Download `InstallDataAILite.zip` from DataAI.link
 2. Extract the archive
-3. Right-click `InstallDataAI.exe`
+3. Right-click `InstallDataAILite.exe`
 4. Select **Run as Administrator**
 5. Follow the installer instructions
 
+---
+
 ### Option 2 – Manual Installation
 
-1. Download `DataAI.zip` from:
-   http://DataAI.link
+1. Download `DataAILite.zip` from DataAI.link
 
 2. Extract to:
 
-C:\inetpub\wwwroot\DataAI\
+wwwroot\DataAILite\
 
 3. Open IIS Manager
-
-4. Convert the `DataAI` folder into an Application
+4. Convert the folder into an Application
+5. Set Application Pool Identity to Anonymous Authentication
+6. Update web.config with your settings
 
 ---
 
 ## ⚙️ Configuration
 
-Update `web.config` with the following:
+### Web Settings
 
-### 🗄️ 1. Operational Database (for report definitions)
+Update in web.config:
 
-- Server
-- Database / Namespace
-- User ID
-- Password
-- Port (if required)
-
-> MySQL is recommended for the operational database
-
----
-
-### 📊 2. Data Database (your actual data)
-
-- Server
-- Database / Namespace
-- User ID
-- Password
-- Port (if required)
-
----
-
-### 🧩 3. System Database (Oracle / InterSystems IRIS only)
-
-- System database password
-
----
-
-### 📧 4. Email (SMTP)
-
-- Email address
-- Email password
-
----
-
-### 🌐 5. Application Settings
-
-- Application URL  
-  https://[your-domain]/DataAI/
-
+- Application URL: https://[your-domain]/DataAILite/
 - Website title
-- Support email
 - Upload folder path
-- Google Maps API Key (optional)
+- Google Maps API Key
 
 ---
 
-### 🤖 6. OpenAI Configuration
+### 🤖 OpenAI Settings
 
-- OpenAI API Key
-- OpenAI Organization Code
+Configure:
+
+- API Key
+- Organization ID
+- Base URL
 - Model: gpt-4o / gpt-4o-mini / o3 / o3-mini
 - Max Tokens:
-  - 128000 → gpt-4o / gpt-4o-mini  
-  - 200000 → o3 / o3-mini  
+  - 128000 → gpt-4o / gpt-4o-mini
+  - 200000 → o3 / o3-mini
 
 ---
 
-## ▶️ Running the Application
+## 🌐 Running the Application
 
-https://[your-domain]/DataAI/Default.aspx
+Open in browser:
 
----
-
-## 👤 Getting Started
-
-1. Register a user account
-2. Log in
-3. Start using DataAI
+https://[your-domain]/DataAILite/Default.aspx
 
 ---
 
-## ⚠️ Database Licensing Notice
+## 🔧 IIS Configuration
 
-If you are using:
+Ensure:
+- Application created in IIS
+- Correct Application Pool
+- Anonymous Authentication enabled
 
-- Oracle Database
-- InterSystems IRIS (or other InterSystems products)
+---
 
-You MUST have a valid license from the respective vendor.
+## ⚠️ Important Notes
 
-DataAI does NOT provide database licenses and does NOT include Oracle or InterSystems software.
+- Runs entirely in memory
+- No data stored after logout
+- Session-based processing
 
-It is the user’s responsibility to:
-- Obtain proper licenses
-- Comply with vendor terms
-- Ensure legal usage of those database systems
+---
+
+## 📚 Documentation
+
+http://DataAI.link
 
 ---
 
@@ -161,3 +125,9 @@ https://oureports.net/OUReports/ContactUs.aspx
 ## 🔒 Disclaimer
 
 This software is provided "AS IS", without warranty of any kind.
+
+---
+
+## 🤝 Contributing
+
+By contributing, you agree your contributions are licensed under GPL v3.

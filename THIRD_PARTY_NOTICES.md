@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-This project, DataAI, uses third-party libraries distributed via NuGet.
+This project, DataAILite, uses third-party libraries distributed via NuGet.
 
 All listed dependencies are believed to be compatible with the GNU General Public License v3.0 (GPL v3).
 

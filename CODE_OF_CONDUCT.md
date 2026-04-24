@@ -2,7 +2,7 @@
 
 ## Our Commitment
 
-We are committed to making participation in the DataAI project a respectful, inclusive, and harassment-free experience for everyone.
+We are committed to making participation in the DataAILite project a respectful, inclusive, and harassment-free experience for everyone.
 
 We welcome contributors of all backgrounds and experience levels.
 
