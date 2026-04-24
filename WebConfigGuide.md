@@ -18,7 +18,7 @@ Open the file in any text editor (Notepad, VS Code, Notepad++). All values you n
 
 The `<connectionStrings>` section defines three connections. Uncomment the block that matches your database engine and fill in your server details.
 
-**MySqlConnection** — DataAI's operational database (stores reports, users, settings).
+**MySqlConnection** — DataAILite's operational database (stores reports, users, settings).
 **UserSqlConnection** — Your data database (the data you want to analyze).
 **CSVconnection** — Used for CSV file import operations (usually points to the same database as UserSqlConnection).
 
@@ -66,6 +66,8 @@ The `<connectionStrings>` section defines three connections. Uncomment the block
 
 ### Oracle
 
+Oracle also requires a fourth `SystemSqlConnection` line.
+
 ```xml
 <add name="SystemSqlConnection"
      connectionString="Data Source=YOUR_DATA_SOURCE; User ID=SYS; Password=YOUR_SYS_PASSWORD; DBA Privilege=SYSDBA"
@@ -80,8 +82,11 @@ The `<connectionStrings>` section defines three connections. Uncomment the block
      connectionString="Data Source=YOUR_DATA_SOURCE; User ID=YOUR_USER; Password=YOUR_PASSWORD;"
      providerName="Oracle.ManagedData.Client" />
 ```
+**License required:** Oracle Database requires a valid commercial license from Oracle Corporation. DataAI does not provide or distribute Oracle software. Visit https://www.oracle.com for licensing information.
 
 ### InterSystems IRIS
+
+Default port is 1972 or 51773. IRIS also requires a `SystemSqlConnection` line.
 
 ```xml
 <add name="SystemSqlConnection"
@@ -98,9 +103,13 @@ The `<connectionStrings>` section defines three connections. Uncomment the block
      providerName="InterSystems.Data.IRISClient" />
 ```
 
+**License required:** InterSystems IRIS requires a valid commercial license from InterSystems Corporation. DataAI does not provide or distribute InterSystems software. Visit https://www.intersystems.com for licensing information.
+
 ### InterSystems Caché
 
 Use the same format as IRIS above, but change the provider to `InterSystems.Data.CacheClient`.
+
+**License required:** InterSystems Caché requires a valid commercial license from InterSystems Corporation.
 
 ### SQLite (default / standalone)
 
