@@ -1,6 +1,6 @@
 # DataAILite
 
-DataAILite is an open-source AI-powered project management and data analysis system built with ASP.NET and VB.NET.
+DataAILite is an open-source in-memory AI-powered data reporting and analysis system built with ASP.NET and VB.NET.
 
 ---
 
