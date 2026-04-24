@@ -1,0 +1,22 @@
+# Build folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Cache / temp
+*.cache
+*.tmp
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Optional: local config (if contains secrets)
+web.config

@@ -1,0 +1,40 @@
+CreateDbAndNamespace ;
+CreateDatabase(dbname,dbpath)
+	set currentNS = $namespace
+
+    zn "%SYS"
+
+    write "Create DB ...",!
+   
+    set dbProperties("Directory") = dbpath    //"/InterSystems/IRIS/mgr/testDB"
+    set status=##Class(Config.Databases).Create(dbName,.dbProperties)
+    
+    write:'status $system.Status.DisplayError(status)
+    write "DB """_dbName_""" was created!",!!
+    
+    zn currentNS
+    q
+CreateNamespace(dbname,nsName)
+	set currentNS = $namespace
+
+    zn "%SYS"
+
+    write "Create DB ...",!
+   
+    //DB for globals
+    set nsProperties("Globals") = dbName
+    //DB for routines
+    set nsProperties("Routines") = dbName
+    If (##class(%SYS.Namespace).Exists(nsName))
+    {
+	    write "Namespace """_nsName_""" already existed!",!! 
+    }
+    Else
+    {
+	    set status=##Class(Config.Namespaces).Create(nsName,.nsProperties)
+	    write:'status $system.Status.DisplayError(status)
+    	write "Namespace """_nsName_""" was created!",!!
+    }
+    
+    zn currentNS
+    q 

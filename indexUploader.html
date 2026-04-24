@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>DataAIlite Tableau Sender</title>
+    <script src="tableau.extensions.1.latest.js"></script>
+    <script type="text/javascript">  
+        tableau.extensions.initializeAsync().then(() => {
+  document.getElementById("uploadForm").addEventListener("submit", handleSubmit);
+});
+
+function dataTableToCSV(dataTable) {
+  const cols = dataTable.columns.map(c => `"${c.fieldName}"`).join(",");
+  const rows = dataTable.data.map(r =>
+    r.map(cell => `"${cell.formattedValue}"`).join(",")
+  );
+  return [cols, ...rows].join("\n");
+}
+
+function dataTableToJSON(dataTable) {
+  const headers = dataTable.columns.map(c => c.fieldName);
+  const rows = dataTable.data.map(r => {
+    let obj = {};
+    headers.forEach((h, i) => {
+      obj[h] = r[i].formattedValue;
+    });
+    return obj;
+  });
+  return JSON.stringify(rows);
+}
+
+function sendDataInChunks(dataObj, endpointUrl, maxChunkSize = 4 * 1024 * 1024) {
+  const jsonData = JSON.stringify(dataObj);
+  const totalSize = jsonData.length;
+  let start = 0, chunkIndex = 0;
+  const sessionId = crypto.randomUUID();
+
+  function sendNextChunk() {
+    if (start >= totalSize) {
+      console.log("✅ All chunks sent");
+      window.open("https://DataAILite.com/process?session=" + sessionId, "_blank");
+      return;
+    }
+
+    const end = Math.min(start + maxChunkSize, totalSize);
+    const chunk = jsonData.slice(start, end);
+
+    fetch(endpointUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sessionId: sessionId,
+        chunkIndex: chunkIndex,
+        data: chunk,
+        isLast: end >= totalSize
+      })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error("Chunk upload failed");
+      start = end;
+      chunkIndex++;
+      sendNextChunk();
+    })
+    .catch(err => console.error("❌ Error sending chunk:", err));
+  }
+
+  sendNextChunk();
+}
+
+function handleSubmit(e) {
+  e.preventDefault();
+
+  const formData = {
+    txtOpenAIkey: document.getElementById("txtOpenAIkey").value,
+    txtOpenAIorgcode: document.getElementById("txtOpenAIorgcode").value,
+    txtOpenAIurl: document.getElementById("txtOpenAIurl").value,
+    txtOpenAImodel: document.getElementById("txtOpenAImodel").value,
+    txtOpenAImaxtokens: document.getElementById("txtOpenAImaxtokens").value,
+    txtEmail: document.getElementById("txtEmail").value,
+    fileType: document.getElementById("fileType").value
+  };
+
+  const worksheet = tableau.extensions.dashboardContent.dashboard.worksheets[0];
+  worksheet.getSummaryDataAsync().then(dataTable => {
+    let fileData;
+
+    if (formData.fileType === "CSV") {
+      fileData = dataTableToCSV(dataTable);
+    } else {
+      fileData = dataTableToJSON(dataTable);
+    }
+
+    const payload = { ...formData, data: fileData };
+    sendDataInChunks(payload, "https://DataAILite.com/api/upload");
+  });
+}
+    </script>
+</head>
+<body>
+    <h3>Send Data to DataAIlite.com</h3>
+
+    <label>OpenAI API Key:</label><br>
+    <input type="text" id="txtOpenAIkey" placeholder="sk-..."><br><br>
+
+    <label>OpenAI Organization Code:</label><br>
+    <input type="text" id="txtOpenAIorgcode" placeholder="org-..."><br><br>
+
+    <label>OpenAI API Base URL:</label><br>
+    <input type="text" id="txtOpenAIurl" placeholder="https://api.openai.com/v1"><br><br>
+
+    <label>OpenAI Model Name:</label><br>
+    <input type="text" id="txtOpenAImodel" placeholder="gpt-4o-mini"><br><br>
+
+    <label>OpenAI Max Tokens:</label><br>
+    <input type="number" id="txtOpenAImaxtokens" placeholder="128000"><br><br>
+
+    <label>Email:</label><br>
+    <input type="email" id="txtEmail" placeholder="you@example.com"><br><br>
+
+    <label>Worksheet Name (optional):</label><br>
+    <input type="text" id="worksheet" placeholder="Leave blank for first sheet"><br><br>
+
+    <label>Format:</label><br>
+    <select id="format">
+        <option value="json">JSON</option>
+        <option value="csv">CSV</option>
+    </select><br><br>
+
+    <button id="sendBtn">Send & Open Site</button>
+    <p id="status">Waiting...</p>
+</body>
+</html>
