@@ -1,0 +1,145 @@
+.dlgbody
+{
+	background-color: #e6eefa ;
+	border-width: 1px;
+	border-style: solid;
+	border-color: darkGray;
+	padding: 3px;
+    width:550px;
+}
+.dlgheader
+{
+    background-color: #660000;
+	border-color: White;
+	border-width: 1px;
+	color:  white;
+    font-family:Tahoma;
+    font-size :14px;
+	font-weight: bold;
+	width: 100%;
+	height: 20px;
+    text-align:center;
+}
+
+.dlgboxbutton 
+{
+  width: 80px;
+  height: 25px;
+  font-size: 12px;
+  border-radius: 5px;
+  border-style :solid;
+  border-color: #4e4747 ;
+  color: black;
+  border-width: 1px;
+  background-image: linear-gradient(to bottom, rgba(158, 188, 250,0),rgba(158, 188, 250,1));
+  padding: 3px;
+  margin:5px;
+  z-index: 9999; 
+}
+
+div.relative-middle {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+.ColumnOrderDlg 
+{
+    width: 215px;
+    height: 400px;
+    background-color: #e6eefa;
+    font-family: Tahoma;
+    font-size: 12px;
+    z-index: 2147483650;
+    border: 1px solid #222222;
+}
+.IPFilterDlg 
+{
+    width: 575px;
+    height:375px;
+    background-color: #e6eefa;
+    font-family: Tahoma;
+    font-size: 12px;
+    z-index: 2147483650;
+    border: 1px solid #222222;
+}
+
+.smallimagebutton {
+  width:22px;
+  height:21px;
+  padding:0px;
+  margin:1px;
+  background-position:center center;
+  border-radius: 5px;
+  border-style :solid;
+  border-color: #4e4747 ;
+  border-width: 1px;
+  z-index: 9999; 
+}
+.divButtons
+{
+    text-align:center;
+	width: 100%;
+}
+.dlgbackground
+{
+background-color: rgba(36, 36, 35, 0.50);
+}
+.addbackground {
+    /*background-color: rgba(158, 188, 250,0.8);*/
+    background-color: rgba(189, 206, 255,0.8);
+
+}
+#divInput {
+    font-family: Arial; 
+    font-size: 14px; 
+    width: 100%;
+}
+.inline {
+        display: inline-block;
+    }
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.close {
+    color: white;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    padding-right:5px;
+}
+.close:hover,
+.close:focus {
+    color: blue;
+    text-decoration: none;
+    cursor: pointer;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: lightgoldenrodyellow;
+  color: black;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

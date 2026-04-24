@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>DataAILite setting</title>
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+    <center>
+        <h1>Connect to DataAILite</h1>
+
+        <h3 style="font-family:Tahoma;font-size:14px; font-weight: bold; color: #990033;">Your setting will be used only to analyze your data in memory and no setting nor data will be kept after Log Off is clicked.</h3>
+    </center>
+    
+    <!-- target="_blank" opens the receiver in a new tab while keeping POST -->
+    <form id="uploadForm" action="https://oureports.net/DataAIsqlite/DataAIaddons.aspx" method="post">
+        <table border="0" cellpadding="1" cellspacing="0" width="100%">
+            <tr>
+                <td align="center" valign="top">
+
+                    <br /><br />
+                    <table>
+                        <tr style="border-color:#ffffff" align="left">
+                            <td align="right" class="auto-style2">
+                                &nbsp;&nbsp;
+                                <label style="font-family:Tahoma;font-size:14px; font-weight: bold; color: #990033;">*Email/Logon/User ID:</label>
+                                
+                            </td>
+                            <td align="left" class="auto-style1">
+                                <input type="email" id="txtEmail" name="txtEmail" placeholder="you@example.com" required>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </td>
+                        </tr>
+                    </table>
+                    <br /><br /><br />
+                </td>
+            </tr>
+            <tr>
+                <td align="center" valign="top">
+                    <Label ID="Label1" style="font-family:Tahoma;font-size:14px; font-weight: bold; color: #990033;">Enter your OpenAI account setting for using the AI functionality (optional):</Label>
+                    <br />
+                    &nbsp;<a href="https://platform.openai.com/">sign for new OpenAI account if needed</a>
+                </td>
+            </tr>
+
+            <tr>
+                <td align="center" style="height: 144px">
+                    <!--<br />-->
+                    <table id="Registr" border="0" cellpadding="0" cellspacing="0" class="auto-style5">
+
+
+                        <tr id="trOpenAI" valign="top" visible="true" bgcolor="#e5e5e5" align="center">
+                            <td align="center">
+
+                                <table>
+                                    <tr>
+                                        <td align="right" class="auto-style2">
+                                            &nbsp;&nbsp;<label style="font-family:Tahoma;font-size:12px; font-weight: bold; color: #990033;">OpenAI API Key:</label>
+                                        </td>
+
+                                        <td align="left" class="auto-style1">
+                                            <input type="text" id="txtOpenAIkey" name="txtOpenAIkey" placeholder="sk-...">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" class="auto-style2">
+                                            &nbsp;&nbsp;<label style="font-family:Tahoma;font-size:12px; font-weight: bold; color: #990033;">OpenAI Organization Code:</label>
+                                        </td>
+
+                                        <td align="left" class="auto-style1">
+                                            <input type="text" id="txtOpenAIorgcode" name="txtOpenAIorgcode" placeholder="org-...">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" class="auto-style2">
+                                            &nbsp;&nbsp;<label style="font-family:Tahoma;font-size:12px; font-weight: bold; color: #990033;">OpenAI API Base URL:</label>
+                                        </td>
+
+                                        <td align="left" class="auto-style1">
+                                            <input type="text" id="txtOpenAIurl" name="txtOpenAIurl" placeholder="https://api.openai...">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" class="auto-style2">
+                                            &nbsp;&nbsp;<label style="font-family:Tahoma;font-size:12px; font-weight: bold; color: #990033;">OpenAI Model Name:</label>
+                                        </td>
+
+                                        <td align="left" class="auto-style1">
+                                            <input type="text" id="txtOpenAImodel" name="txtOpenAImodel" placeholder="gpt-4o-mi...">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" class="auto-style2">
+                                            &nbsp;&nbsp;<label style="font-family:Tahoma;font-size:12px; font-weight: bold; color: #990033;">OpenAI Max Tokens:</label>
+                                        </td>
+
+                                        <td align="left" class="auto-style1">
+                                            <input type="number" id="txtOpenAImaxtokens" name="txtOpenAImaxtokens" placeholder="12800...">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <br /><br />
+                    <button id="sendBtn" type="submit" style="font-family: Tahoma; font-size: 14px; font-weight: bold; color: #990033; background-color:aquamarine; border-color:aquamarine ">Connect to DataAILite</button>
+
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <td align="center" valign="top">
+                    <br /><br /><br /><br /><br /><br />
+                    &nbsp;<a href="https://oureports.net/OURfront/index.html">Documentation and full version at DataAI.link</a>
+                    <br /><br /><br />
+                    &nbsp;<a href="https://platform.openai.com/">sign for new OpenAI account if needed</a>
+
+
+                    <br /><br />
+                </td>
+            </tr>
+
+        </table>
+
+    </form>
+</body>
+</html>

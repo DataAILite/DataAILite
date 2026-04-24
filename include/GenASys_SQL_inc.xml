@@ -1,0 +1,14 @@
+///Macros for use in SQL
+#;
+
+/// Return true if the %sqlCode is an error, and false otherwise
+/// %sqlCode - SqlCode
+#define ISERRSQLCODE(%sqlCode)          (%sqlCode '= 0)
+
+#define	ThrowOnSQLError(%sqlCode)		If ($$$ISERRSQLCODE(%sqlCode)) { Set %sqlcontext.SQLCode = %sqlCode }
+
+#define ThrowOnSQLErrorWithMessage(%sqlCode, %message)	If ($$$ISERRSQLCODE(%sqlCode)) { 	##continue
+															Set tSC = $$$ERROR($$$GeneralError, %message)	##continue
+															Set ex = ##class(%Exception.StatusException).CreateFromStatus(tSC)	##continue
+															Set %sqlcontext.Error = ##class(%SYSTEM.Error).%New(tSC, %sqlCode, ex.DisplayString())	##continue
+														}

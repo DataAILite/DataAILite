@@ -1,0 +1,821 @@
+<%@ Page Language="VB" AutoEventWireup="false" CodeFile="index1.aspx.vb" Inherits="Index1" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataAI home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K4GE50T22P"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag("js", new Date());
+        gtag("config", "G-K4GE50T22P");
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #FAFAF8;
+            --bg-secondary: #F0EFEB;
+            --bg-card: #FFFFFF;
+            --accent: #1B6B4A;
+            --accent-light: #E8F5EE;
+            --accent-hover: #145236;
+            --text-primary: #1A1A1A;
+            --text-secondary: #5A5A5A;
+            --text-muted: #8A8A8A;
+            --border: #E2E0DB;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dark-theme {
+            --bg-primary: #0F0F0F;
+            --bg-secondary: #1A1A1A;
+            --bg-card: #1E1E1E;
+            --accent: #3DD68C;
+            --accent-light: #162B20;
+            --accent-hover: #5AEAA5;
+            --text-primary: #F0F0F0;
+            --text-secondary: #A0A0A0;
+            --text-muted: #666;
+            --border: #2A2A2A;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.3);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background-color var(--transition), color var(--transition);
+        }
+
+        /* ── Navbar ── */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--bg-primary);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: background var(--transition), border var(--transition);
+        }
+        .dark-theme .top-nav { background: rgba(15,15,15,0.92); }
+
+        .nav-inner {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.25rem 0;
+        }
+
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
+            font-size: 1.45rem;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            flex-shrink: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.15rem;
+            margin-left: 2.5rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a,
+        .nav-links .nav-dropdown > a {
+            text-decoration: none;
+            color: var(--accent);
+            font-size: 0.88rem;
+            font-weight: 700;
+            font-style: italic;
+            padding: 0.45rem 0.85rem;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .nav-links a:hover,
+        .nav-links .nav-dropdown > a:hover {
+            color: var(--accent-hover);
+            background: var(--accent-light);
+        }
+
+        .nav-dropdown { position: relative; }
+        .nav-dropdown .dd-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            min-width: 240px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 0.5rem;
+            z-index: 100;
+        }
+        .nav-dropdown:hover .dd-menu,
+        .nav-dropdown.open .dd-menu { display: block; }
+        .dd-menu a {
+            display: block;
+            padding: 0.55rem 0.85rem;
+            font-size: 0.84rem;
+            color: var(--text-secondary);
+            border-radius: var(--radius-sm);
+        }
+        .dd-menu a:hover {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            margin-left: auto;
+            flex-shrink: 0;
+            width: 42px; height: 24px;
+            background: var(--border);
+            border-radius: 999px;
+            position: relative;
+            cursor: pointer;
+            border: none;
+            transition: background var(--transition);
+        }
+        .theme-toggle::after {
+            content: '';
+            width: 18px; height: 18px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            position: absolute;
+            top: 3px; left: 3px;
+            transition: transform var(--transition);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .dark-theme .theme-toggle { background: var(--accent); }
+        .dark-theme .theme-toggle::after { transform: translateX(18px); }
+
+        .mobile-toggle { display: none !important; }
+
+        /* ── Hero ── */
+        .hero {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 3rem 2rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            font-weight: 700;
+            line-height: 1.12;
+            letter-spacing: -1.5px;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: 1.08rem;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            max-width: 520px;
+            margin-bottom: 1rem;
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+        .hero-graphic {
+            width: 100%;
+            max-width: 480px;
+            aspect-ratio: 4/3;
+            background: linear-gradient(145deg, var(--accent-light), var(--bg-secondary));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+        .hero-graphic img {
+            width: 88%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.08));
+        }
+        .hero-graphic::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(27,107,74,0.08), transparent 60%);
+        }
+
+        /* ── Solutions & Downloads Banner ── */
+        .solutions-banner {
+            max-width: 1320px;
+            margin: 0 auto 1.5rem;
+            padding: 0 2rem;
+        }
+        .solutions-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .solutions-inner {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .solutions-label {
+            font-weight: 700;
+            color: #D32F2F;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+        .solutions-columns {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: nowrap;
+        }
+        .sol-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .sol-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            color: var(--accent);
+            font-size: 0.84rem;
+            font-weight: 600;
+            padding: 0.4rem 0.9rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .sol-btn:hover {
+            background: var(--accent-light);
+            transform: translateY(-1px);
+        }
+        .sol-doc {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-decoration: none;
+            transition: color var(--transition);
+            white-space: nowrap;
+            text-align: center;
+        }
+        .sol-doc:hover { color: var(--accent); }
+        .sol-doc-row {
+            display: flex;
+            gap: 0.4rem;
+            justify-content: center;
+        }
+        .sol-doc-row a {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-decoration: none;
+            transition: color var(--transition);
+            white-space: nowrap;
+        }
+        .sol-doc-row a:hover { color: var(--accent); }
+
+        /* ── Action Cards ── */
+        .cards-section {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 2rem 2rem;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .action-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.8rem 1.5rem;
+            text-align: center;
+            text-decoration: none;
+            transition: all var(--transition);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform var(--transition);
+        }
+        .action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+        .action-card:hover::before { transform: scaleX(1); }
+
+        .card-icon {
+            width: 64px; height: 64px;
+            border-radius: 16px;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.6rem;
+        }
+        .action-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            color: var(--text-primary);
+        }
+        .action-card p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ── Video Section ── */
+        .video-section {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .video-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .video-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+        }
+        .video-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            aspect-ratio: 16/9;
+        }
+        .video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .yt-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.92rem;
+            text-decoration: none;
+            transition: gap var(--transition);
+        }
+        .yt-link:hover { gap: 0.8rem; }
+
+        /* ── Animations ── */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.7s ease forwards;
+        }
+        .fade-up-d1 { animation-delay: 0.1s; }
+        .fade-up-d2 { animation-delay: 0.2s; }
+        .fade-up-d3 { animation-delay: 0.3s; }
+        .fade-up-d4 { animation-delay: 0.4s; }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 992px) {
+            .nav-inner {
+                padding: 0.6rem 1.5rem;
+            }
+            .nav-links {
+                margin-left: 0;
+                flex-basis: 100%;
+                gap: 0.1rem;
+                padding-top: 0.4rem;
+            }
+            .nav-dropdown .dd-menu {
+                left: 0;
+                min-width: 220px;
+            }
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 3rem 1.5rem 2rem;
+                gap: 2rem;
+            }
+            .hero-visual { order: -1; }
+            .hero-graphic { max-width: 340px; }
+            .cards-grid {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+                margin: 0 auto;
+            }
+            .solutions-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .nav-inner { padding: 0.5rem 0.75rem; }
+            .nav-links a,
+            .nav-links .nav-dropdown > a {
+                font-size: 0.78rem;
+                padding: 0.35rem 0.55rem;
+            }
+            .hero { padding: 2rem 1rem; }
+            .hero h1 { font-size: 2rem; }
+            .solutions-inner { padding: 1.2rem; }
+            .video-section, .cards-section { padding-left: 1rem; padding-right: 1rem; }
+
+            /* Solutions boxes: full screen width */
+            .solutions-banner {
+                padding: 0;
+            }
+            .solutions-inner {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            /* Free Working Solutions: 3 on top, 2 on bottom */
+            .solutions-columns {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .solutions-columns .sol-col {
+                flex: 0 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ NAVBAR ═══ -->
+    <header class="top-nav">
+        <div class="nav-inner">
+            <a class="nav-brand" href="#">DataAI</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Switch to dark mode"></button>
+
+            <%--<span id="siteseal"><script async type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=SYhDKXg2IT7QXHzPEW7z7tmavANkr8vMDCiRmZvbKczmKBJ5Wj8eKl1EX00B"></script></span>--%>
+
+            <ul class="nav-links" id="navLinks">
+                <li class="nav-dropdown">
+                    <a href="#">About&ensp;&#9662;</a>
+                    <div class="dd-menu">
+                        <a href="https://oureports.net/OUReports/DataAIOverview.html" target="_blank">DataAI Overview</a>
+                        <%--<a href="comparison.aspx" target="_blank">Comparison</a>--%>
+                        <a href="AboutUs.aspx" target="_blank">About Us</a>
+                    </div>
+                </li>
+                <li><a href="https://oureports.net/OUReports/Partners.pdf" target="_blank">Partners</a></li>
+                <li class="nav-dropdown">
+                    <a href="#">Products&ensp;&#9662;</a>
+                    <div class="dd-menu">
+                        <a href="https://oureports.net/OUReports/TestingSiteAIProposal.pdf" target="_blank">Testing Site</a>
+                        <a href="Index3.aspx">Services</a>
+                        <a href="IndexSoftware.aspx">Software</a>
+                        <a href="https://oureports.net/HelpDesk/Default.aspx">Project Manager - Free</a>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="#">Customers&ensp;&#9662;</a>
+                    <div class="dd-menu">
+                        <a href="Registration.aspx">Individual</a>
+                        <a href="UnitRegistration.aspx?org=company">Company</a>
+                        <%--<a href="OUReportsAgents.aspx">Sales Agent</a>--%>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="#">Use Cases&ensp;&#9662;</a>
+                    <div class="dd-menu">
+                        <a href="https://oureports.net/OUReports/default.aspx?srd=30&dash=yes&lgn=d720202024346P906" target="_blank">Covid 2020 Dashboard</a>
+                        <a href="https://oureports.net/OUReports/DashboardHelp.pdf" target="_blank">Health Care</a>
+                        <a href="https://oureports.net/OUReports/UseCasePublic.aspx" target="_blank">Public Data</a>
+                        <a href="https://oureports.net/OUReports/ExploreData.pdf" target="_blank">Explore Data</a>
+                        <a href="https://oureports.net/OUReports/MapDefinitionDocumentation.pdf" target="_blank">Google Earth &amp; Map Generator</a>
+                        <a href="https://oureports.net/OUReports/Tornadoes.pdf" target="_blank">Google Earth: Tornadoes</a>
+                        <a href="https://oureports.net/OUReports/ExploreDataAndDataAnalytics.pdf" target="_blank">Explore Data &amp; Analytics</a>
+                        <a href="https://oureports.net/OUReports/MatrixBalancingYouthTobaccoUsage.pdf" target="_blank">Matrix Balancing - Youth Tobacco</a>
+                        <a href="https://oureports.net/OUReports/WorldHappinessScoresIn2019.pdf" target="_blank">World Happiness Scores 2019</a>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="#">Docs&ensp;&#9662;</a>
+                    <div class="dd-menu">
+                        <a href="https://oureports.net/OUReports/DataAIHelp.aspx" target="_blank">DataAI Help</a>
+                        <a href="https://oureports.net/OUReports/OnlineUserReporting.pdf" target="_blank">General Documentation</a>
+                        <a href="https://oureports.net/OUReports/AIandDataAI.pdf" target="_blank">AI and DataAI (analytical &amp; artificial intelligence)</a>
+                        <a href="https://oureports.net/OUReports/DataImport.pdf" target="_blank">Data Import</a>
+                        <a href="https://oureports.net/OUReports/AdvancedReportDesigner.pdf#page=4" target="_blank">Advanced Report Designer</a>
+                        <a href="https://oureports.net/OUReports/GoogleChartsAndDashboards.pdf" target="_blank">Charts and Dashboards</a>
+                        <a href="https://oureports.net/OUReports/MatrixBalancing.pdf" target="_blank">Matrix Balancing</a>
+                        <a href="https://oureports.net/OUReports/MatrixBalancingSamples.pdf" target="_blank">More Matrix Balancing Samples</a>
+                        <a href="https://oureports.net/OUReports/MapDefinitionDocumentation.pdf" target="_blank">Google Maps &amp; Earth Reports</a>
+                    </div>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="#">Videos&ensp;&#9662;</a>
+                    <div class="dd-menu">
+                        <a href="https://oureports.net/OUReports/Videos/videoAIandDataAI.mp4" target="_blank">DataAI and AI for Data Analytics</a>
+                        <a href="https://oureports.net/OUReports/Videos/videoDataAI.mp4" target="_blank">More DataAI and AI for Data Analytics</a>
+                        <a href="https://oureports.net/OUReports/Videos/DataImport.mp4" target="_blank">Data Import, Analytics, Instant Reporting</a>
+                        <a href="https://oureports.net/OUReports/Videos/zoom_2.mp4" target="_blank">Charts, Maps, and Dashboards</a>
+                        <a href="https://oureports.net/OUReports/Videos/QuickStart.mp4" target="_blank">Quick Start (only email needed)</a>
+                        <a href="https://oureports.net/OUReports/Videos/UserRegistrationVideo.mp4" target="_blank">Individual Registration, user database</a>
+                        <a href="https://oureports.net/OUReports/Videos/RegOurDb.mp4" target="_blank">Individual Registration, use our database</a>
+                        <a href="https://oureports.net/OUReports/Videos/UnitRegistrationVideo.mp4" target="_blank">Company Registration</a>
+                        <a href="https://oureports.net/OUReports/Videos/AdvancedReportDesigner Tabular.mp4" target="_blank">Advanced Report Designer - Tabular</a>
+                        <a href="https://oureports.net/OUReports/Videos/AdvancedReportDesigner-HeaderFooter.mp4" target="_blank">Advanced Report Designer - Header Footer</a>
+                        <a href="https://oureports.net/OUReports/Videos/AdvancedReportDesigner-FreeForm.mp4" target="_blank">Advanced Report Designer - Free Form</a>
+                        <a href="https://oureports.net/OUReports/Videos/InputFromAccess.mp4" target="_blank">Input from Access</a>
+                        <a href="https://oureports.net/OUReports/Videos/MatrixBalance.mp4" target="_blank">Matrix Balancing</a>
+                        <a href="https://oureports.net/OUReports/Videos/MatrixBalance1a1b.mp4" target="_blank">Matrix Balancing Scenarios 1a, 1b</a>
+                        <a href="https://oureports.net/OUReports/Videos/MatrixBalance2a3a.mp4" target="_blank">Matrix Balancing Scenarios 2a, 3a</a>
+                        <a href="https://oureports.net/OUReports/Videos/MatrixBalance2b2c.mp4" target="_blank">Matrix Balancing Scenarios 2b, 2c</a>
+                        <a href="https://oureports.net/OUReports/Videos/MatrixBalance3b3c.mp4" target="_blank">Matrix Balancing Scenarios 3b, 3c</a>
+                        <a href="https://oureports.net/OUReports/Videos/MatrixBalance4a4b4c.mp4" target="_blank">Matrix Balancing Scenarios 4a, 4b, 4c</a>
+                    </div>
+                </li>
+                <li><a href="https://oureports.net/OUReports/DataAITraining.pdf" target="_blank">Self Training</a></li>
+                <li><a href="ContactUs.aspx">Contact Us</a></li>
+                <li><a href="https://oureports.net/OUReports/DataAIHelp.aspx" target="_blank">Guide</a></li>
+                <li><a href="Default.aspx">Sign In</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- ═══ FREE SOLUTIONS & DOWNLOADS BANNER ═══ -->
+    <section class="solutions-banner fade-up" style="margin-top: 1.5rem;">
+        <div class="solutions-row">
+            <!-- Left: Free Working Solutions -->
+            <div class="solutions-inner">
+                <div class="solutions-label">Free Working Solutions</div>
+                <div class="solutions-columns">
+                    <div class="sol-col">
+                        <a href="index1.aspx?demo=Sandbox" class="sol-btn" title="Play with small Cinema database">Sandbox</a>
+                        <a href="https://oureports.net/OUReports/ExploreData.pdf" target="_blank" class="sol-doc">How to play</a>
+                    </div>
+                    <div class="sol-col">
+                        <a href="index1.aspx?demo=Analytics" class="sol-btn" title="Play with database to import and analyze public data">Analytics, Charts, Maps</a>
+                        <div class="sol-doc-row">
+                            <a href="UseCasePublic.aspx" target="_blank" class="sol-doc">Analytics</a>
+                            <a href="https://oureports.net/OUReports/GoogleChartsAndDashboards.pdf" target="_blank" class="sol-doc">Charts</a>
+                            <a href="https://oureports.net/OUReports/MapDefinitionDocumentation.pdf" target="_blank" class="sol-doc">Maps</a>
+                        </div>
+                    </div>
+                    <div class="sol-col">
+                        <a href="https://oureports.net/TaskList/Default.aspx?pass=test&logon=tasklist&unit=TASKLIST" class="sol-btn" title="Play with Project Manager TaskList AI">TaskList</a>
+                        <a href="https://oureports.net/TaskList/TaskList.pdf" target="_blank" class="sol-doc">TaskList docs</a>
+                    </div>
+                    <div class="sol-col">
+                        <a href="https://oureports.net/DataAIaddons/DataAIaddons.aspx" class="sol-btn" title="Work with your data for free, all in memory">DataAI Lite</a>
+                        <a href="https://oureports.net/OUReports/DataAILite.pdf" target="_blank" class="sol-doc" title="How to work just in memory with DataAILite">DataAILite docs</a>
+                    </div>
+                    <div class="sol-col">
+                        <a href="http://DataAILite.com" class="sol-btn" title="All work is done in memory using your OpenAI credentials">DataAILite.com</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Right: Download Software -->
+            <div class="solutions-inner">
+                <div class="solutions-label" style="text-align:center;">Download Software</div>
+                <div class="solutions-columns" style="justify-content:center;">
+                    <div class="sol-col">
+                        <a href="DownloadDataAI.aspx" class="sol-btn" title="Download DataAI full version (~90 MB). Windows 10/11 or Windows Server with IIS required.">DataAI</a>
+                        <a href="https://oureports.net/OUReports/AIandDataAI.pdf" target="_blank" class="sol-doc">How to use DataAI</a>
+                    </div>
+                    <div class="sol-col">
+                        <a href="DownloadDataAI.aspx?DataAILitedown=yes" class="sol-btn" title="Download DataAILite.zip (~90 MB). Work just in memory with your own OpenAI credentials.">DataAI Lite</a>
+                        <a href="https://oureports.net/OUReports/ReadMeInstallDataAILite.pdf" target="_blank" class="sol-doc">Install DataAI Lite</a>
+                    </div>
+                    <div class="sol-col">
+                        <a href="DownloadDataAI.aspx?tasklistdown=yes" class="sol-btn" title="Download TaskListAI.zip (~20 MB). AI-powered project manager.">TaskList AI</a>
+                        <a href="https://oureports.net/HelpDesk/Default.aspx" target="_blank" class="sol-doc">Online AI project manager</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero">
+        <div class="fade-up">
+            <h1><em><asp:Label ID="LabelPageTtl" runat="server" Text="Online User Reporting"></asp:Label></em></h1>
+            <p>
+                AI Recommends:
+                Use DataAI.link for convenient and in-depth data analysis. It allows
+                you to access detailed and comprehensive analytics anywhere, which is
+                crucial for making informed decisions based on extensive datasets.
+                The platform will help in tracking trends and patterns across
+                different industries and regions, as well as in performing complex
+                analytical tasks with ease.
+            </p>
+        </div>
+        <div class="hero-visual fade-up fade-up-d2">
+            <div class="hero-graphic">
+                <img src="graph.png" alt="DataAI analytics graph" />
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ ACTION CARDS ═══ -->
+    <section class="cards-section">
+        <div class="cards-grid">
+            <a href="QuickStart.aspx" class="action-card fade-up fade-up-d1">
+                <div class="card-icon">
+                    <svg width="28" height="28" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </div>
+                <h3>Quick Start</h3>
+                <p>Get up and running in minutes. Only an email address is needed to begin exploring DataAI.</p>
+            </a>
+            <a href="index3.aspx" class="action-card fade-up fade-up-d2">
+                <div class="card-icon">
+                    <svg width="28" height="28" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                </div>
+                <h3>Registration</h3>
+                <p>Create your account to access the full suite of analytics, charts, maps, and AI-powered tools.</p>
+            </a>
+            <a href="Default.aspx" class="action-card fade-up fade-up-d3">
+                <div class="card-icon">
+                    <svg width="28" height="28" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+                </div>
+                <h3>Sign In</h3>
+                <p>Already have an account? Sign in to your DataAI dashboard and continue your work.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- ═══ VIDEO + ASP.NET form ═══ -->
+    <form runat="server">
+
+    <%-- Server controls preserved (hidden) so code-behind compiles --%>
+    <div style="display:none">
+        <asp:Button ID="ButtonPlayCinema" runat="server" Text="Sandbox" />
+        <asp:Button ID="ButtonPlayMaps" runat="server" Text="Analytics, Charts, and Maps" />
+        <asp:Button ID="ButtonProjectManager" runat="server" Text="Project Manager" />
+        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="https://oureports.net/OUReports/ExploreData.pdf" Target="_blank">How to play in Sandbox</asp:HyperLink>
+        <asp:HyperLink ID="HyperLink5" runat="server" NavigateUrl="UseCasePublic.aspx" Target="_blank">Analytics</asp:HyperLink>
+        <asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="https://oureports.net/OUReports/GoogleChartsAndDashboards.pdf" Target="_blank">Charts</asp:HyperLink>
+        <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="https://oureports.net/OUReports/MapDefinitionDocumentation.pdf" Target="_blank">Maps</asp:HyperLink>
+        <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="https://oureports.net/HelpDesk/TaskList.pdf" Target="_blank">TaskListAI</asp:HyperLink>
+    </div>
+
+    <section class="video-section fade-up">
+        <h2>See DataAI in Action</h2>
+        <p class="video-subtitle">Watch how DataAI transforms data into actionable insights</p>
+        <div class="video-wrapper">
+            <iframe
+                src="https://www.youtube.com/embed/vmIf56F-WRQ"
+                title="OUReports Video Demonstration"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <a href="https://www.youtube.com/@oureports3989" target="_blank" class="yt-link">
+            Visit our YouTube channel for more videos
+        </a>
+    </section>
+
+    <%-- Commented-out sections preserved for future use --%>
+    <%-- Screenshots section
+    <div class="row" style="background-color: var(--bg-primary)">
+        <div class="pic col-4" style="background-color: var(--bg-primary)">
+            <div class="row m-4">
+                <img src="Registration.png" alt="" style="border: solid var(--border); width: 425px; height: 300px" />
+            </div>
+            <div class="row m-4">
+                <img src="CovidDash.png" alt="" style="border: solid var(--border); width: 425px; height: 300px" />
+            </div>
+        </div>
+    </div>
+    --%>
+
+    <%-- Comparison Table
+    <div style="color: var(--text-primary)">
+        <asp:Label ID="Label5" runat="server" BackColor="White" Font-Bold="True" Font-Italic="True" Font-Names="Tahoma" Font-Size="14px" ForeColor="#999999" Height="35px" Text="Comparison of OUReports features: "></asp:Label>
+        <asp:GridView ID="GridView1" runat="server" AllowSorting="False" BackColor="WhiteSmoke" Font-Names="Arial" Font-Size="X-Small" AllowPaging="True" PageSize="30" BorderWidth="0">
+            <AlternatingRowStyle BackColor="WhiteSmoke" />
+            <RowStyle BackColor="White" />
+        </asp:GridView>
+    </div>
+    --%>
+
+    </form>
+
+    <!-- ═══ SCRIPTS ═══ -->
+    <script>
+        // Theme toggle
+        var themeBtn = document.getElementById('themeToggle');
+        themeBtn.addEventListener('click', function () {
+            document.body.classList.toggle('dark-theme');
+            var isDark = document.body.classList.contains('dark-theme');
+            var newTitle = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+            themeBtn.setAttribute('title', newTitle);
+            themeBtn.setAttribute('aria-label', newTitle);
+            var tip = bootstrap.Tooltip.getInstance(themeBtn);
+            if (tip) tip.setContent({ '.tooltip-inner': newTitle });
+        });
+
+        // Touch-friendly dropdown toggles (for mobile/tablet)
+        document.querySelectorAll('.nav-dropdown > a').forEach(function(toggle) {
+            toggle.addEventListener('click', function(e) {
+                if ('ontouchstart' in window || window.innerWidth <= 992) {
+                    e.preventDefault();
+                    var parent = toggle.closest('.nav-dropdown');
+                    var wasOpen = parent.classList.contains('open');
+                    document.querySelectorAll('.nav-dropdown.open').forEach(function(dd) {
+                        dd.classList.remove('open');
+                    });
+                    if (!wasOpen) parent.classList.add('open');
+                }
+            });
+        });
+        // Close dropdowns when tapping outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.nav-dropdown')) {
+                document.querySelectorAll('.nav-dropdown.open').forEach(function(dd) {
+                    dd.classList.remove('open');
+                });
+            }
+        });
+
+        // Scroll-triggered fade-in
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-up').forEach(function(el) {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // Initialize Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (el) { return new bootstrap.Tooltip(el); });
+    </script>
+</body>
+</html>
