@@ -238,17 +238,64 @@ Depending on the report type and configured output workflow, DataAILite results 
 
 Exports allow users to keep the analytical output they need before ending the session. The application should not retain analytical data after logoff.
 
-## ASP.NET Features That Can Be Programmed
+## Existing ASP.NET Features
 
-Good extensions for DataAILite include:
+Several analysis and reporting features are already present in the project.
 
-- An imported-data report loader that returns imported data into session memory.
-- A database SQL query loader that returns query results into session memory.
-- A dedicated "Analyze Imported Data" page.
-- A dedicated "Analyze Database Data" page.
+`SQLquery.aspx` already provides a report SQL query designer with:
+
+- SQL data field selection.
+- Join definition.
+- Filter definition.
+- Sorting.
+- Report parameters.
+- Query saving.
+- Query-based report updates.
+- Links into report data, charts, analytics, exports, and matrix balancing.
+
+`RDLformat.aspx` already provides report formatting and output features with:
+
+- Column order and expressions.
+- Friendly names and formatting functions.
+- Groups and totals.
+- Combined column values.
+- Advanced report designer navigation.
+- Map definition navigation.
+- Data export to Excel, CSV, delimited file, and XML.
+- Report export to Excel, Word, and PDF.
+- Generic report display.
+- Report charts.
+- Overall statistics.
+- Group statistics.
+- Field correlation.
+- Matrix balancing.
+
+`Analytics.aspx` already provides report analytics features with:
+
+- Report data retrieval for analytics.
+- Automatic analytics recalculation.
+- Category/group field selection.
+- Value field selection.
+- Count and count-distinct calculations.
+- Sum, maximum, minimum, average, standard deviation, and value calculations for numeric fields.
+- Generated group analytics records.
+- Correlation display for selected fields.
+- Matrix graph links.
+- Bar, pie, and line graph links.
+- Detail reports with category totals and statistics.
+- Statistics dashboard links.
+- Google chart links.
+- Advanced analytics and matrix-balancing navigation.
+- AI interpretation link for analytical output.
+
+## ASP.NET Features That Can Still Be Programmed
+
+Good remaining extensions for DataAILite include:
+
+- A dedicated "Analyze Imported Data" page focused on session-only imported datasets.
+- A dedicated "Analyze Database SQL Results" page focused on Mix mode query results.
 - A data profiling panel for the current session result.
 - A data quality report page.
-- A grouped summary builder with dropdowns for category and value fields.
 - A cross-tab builder with row, column, and value selectors.
 - A time summary builder for date fields.
 - A top/bottom ranking report.
@@ -259,9 +306,7 @@ Good extensions for DataAILite include:
 - A correlation threshold filter.
 - A chart recommendation helper based on selected fields.
 - A map readiness checker for latitude/longitude data.
-- A matrix result viewer and exporter.
-- One-click "Explain with AI" buttons for each analysis result.
-- Export for generated analysis tables and reports.
+- Additional one-click "Explain with AI" buttons for any new analysis result pages.
 
 ## Best Fit
 
