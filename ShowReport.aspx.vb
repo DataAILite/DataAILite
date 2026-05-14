@@ -1,5 +1,6 @@
-Imports System
+﻿Imports System
 Imports System.Configuration
+Imports System.Collections.Generic
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.IO
@@ -528,6 +529,132 @@ Partial Class ShowReport
             '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             'Filter dv3
             Dim srch As String = SearchStatement()
+            If Not Request("dqfilter") Is Nothing AndAlso Request("dqfilter").ToString.Trim() <> "" Then
+                Dim dqFilters As Dictionary(Of String, String) = TryCast(Session("DataQualityFilters"), Dictionary(Of String, String))
+                Dim dqid As String = Request("dqfilter").ToString.Trim()
+                If dqFilters IsNot Nothing AndAlso dqFilters.ContainsKey(dqid) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & dqFilters(dqid) & ")"
+                    Else
+                        srch = dqFilters(dqid)
+                    End If
+                    Session("srch") = srch
+                    Session("DataQualityFilter") = srch
+                    LabelAddWhere.Text = "Data Quality filter"
+                End If
+            End If
+            If Not Request("rankingfilter") Is Nothing AndAlso Request("rankingfilter").ToString.Trim() <> "" Then
+                Dim rankingFilters As Dictionary(Of String, String) = TryCast(Session("RankingFilters"), Dictionary(Of String, String))
+                Dim rankingId As String = Request("rankingfilter").ToString.Trim()
+                If rankingFilters IsNot Nothing AndAlso rankingFilters.ContainsKey(rankingId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & rankingFilters(rankingId) & ")"
+                    Else
+                        srch = rankingFilters(rankingId)
+                    End If
+                    Session("srch") = srch
+                    Session("RankingFilter") = srch
+                    LabelAddWhere.Text = "Ranking filter"
+                End If
+            End If
+            If Not Request("regressionfilter") Is Nothing AndAlso Request("regressionfilter").ToString.Trim() <> "" Then
+                Dim regressionFilters As Dictionary(Of String, String) = TryCast(Session("RegressionFilters"), Dictionary(Of String, String))
+                Dim regressionId As String = Request("regressionfilter").ToString.Trim()
+                If regressionFilters IsNot Nothing AndAlso regressionFilters.ContainsKey(regressionId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & regressionFilters(regressionId) & ")"
+                    Else
+                        srch = regressionFilters(regressionId)
+                    End If
+                    Session("srch") = srch
+                    Session("RegressionFilter") = srch
+                    LabelAddWhere.Text = "Regression filter"
+                End If
+            End If
+            If Not Request("marketfilter") Is Nothing AndAlso Request("marketfilter").ToString.Trim() <> "" Then
+                Dim marketFilters As Dictionary(Of String, String) = TryCast(Session("MarketFilters"), Dictionary(Of String, String))
+                Dim marketId As String = Request("marketfilter").ToString.Trim()
+                If marketFilters IsNot Nothing AndAlso marketFilters.ContainsKey(marketId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & marketFilters(marketId) & ")"
+                    Else
+                        srch = marketFilters(marketId)
+                    End If
+                    Session("srch") = srch
+                    Session("MarketFilter") = srch
+                    LabelAddWhere.Text = "Market model filter"
+                End If
+            End If
+            If Not Request("tbsfilter") Is Nothing AndAlso Request("tbsfilter").ToString.Trim() <> "" Then
+                Dim summaryFilters As Dictionary(Of String, String) = TryCast(Session("TimeBasedSummaryFilters"), Dictionary(Of String, String))
+                Dim summaryId As String = Request("tbsfilter").ToString.Trim()
+                If summaryFilters IsNot Nothing AndAlso summaryFilters.ContainsKey(summaryId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & summaryFilters(summaryId) & ")"
+                    Else
+                        srch = summaryFilters(summaryId)
+                    End If
+                    Session("srch") = srch
+                    Session("TimeBasedSummaryFilter") = srch
+                    LabelAddWhere.Text = "Time Based Summary filter"
+                End If
+            End If
+            If Not Request("tsfilter") Is Nothing AndAlso Request("tsfilter").ToString.Trim() <> "" Then
+                Dim timeSeriesFilters As Dictionary(Of String, String) = TryCast(Session("TimeSeriesFilters"), Dictionary(Of String, String))
+                Dim timeSeriesId As String = Request("tsfilter").ToString.Trim()
+                If timeSeriesFilters IsNot Nothing AndAlso timeSeriesFilters.ContainsKey(timeSeriesId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & timeSeriesFilters(timeSeriesId) & ")"
+                    Else
+                        srch = timeSeriesFilters(timeSeriesId)
+                    End If
+                    Session("srch") = srch
+                    Session("TimeSeriesFilter") = srch
+                    LabelAddWhere.Text = "Time Series filter"
+                End If
+            End If
+            If Not Request("outlierfilter") Is Nothing AndAlso Request("outlierfilter").ToString.Trim() <> "" Then
+                Dim outlierFilters As Dictionary(Of String, String) = TryCast(Session("OutlierFlaggingFilters"), Dictionary(Of String, String))
+                Dim outlierId As String = Request("outlierfilter").ToString.Trim()
+                If outlierFilters IsNot Nothing AndAlso outlierFilters.ContainsKey(outlierId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & outlierFilters(outlierId) & ")"
+                    Else
+                        srch = outlierFilters(outlierId)
+                    End If
+                    Session("srch") = srch
+                    Session("OutlierFlaggingFilter") = srch
+                    LabelAddWhere.Text = "Outlier filter"
+                End If
+            End If
+            If Not Request("comparisonfilter") Is Nothing AndAlso Request("comparisonfilter").ToString.Trim() <> "" Then
+                Dim comparisonFilters As Dictionary(Of String, String) = TryCast(Session("ComparisonReportsFilters"), Dictionary(Of String, String))
+                Dim comparisonId As String = Request("comparisonfilter").ToString.Trim()
+                If comparisonFilters IsNot Nothing AndAlso comparisonFilters.ContainsKey(comparisonId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & comparisonFilters(comparisonId) & ")"
+                    Else
+                        srch = comparisonFilters(comparisonId)
+                    End If
+                    Session("srch") = srch
+                    Session("ComparisonReportsFilter") = srch
+                    LabelAddWhere.Text = "Comparison Reports filter"
+                End If
+            End If
+            If Not Request("mrfilter") Is Nothing AndAlso Request("mrfilter").ToString.Trim() <> "" Then
+                Dim mapReadinessFilters As Dictionary(Of String, String) = TryCast(Session("MapReadinesFilters"), Dictionary(Of String, String))
+                Dim mapReadinessId As String = Request("mrfilter").ToString.Trim()
+                If mapReadinessFilters IsNot Nothing AndAlso mapReadinessFilters.ContainsKey(mapReadinessId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & mapReadinessFilters(mapReadinessId) & ")"
+                    Else
+                        srch = mapReadinessFilters(mapReadinessId)
+                    End If
+                    Session("srch") = srch
+                    Session("MapReadinesFilter") = srch
+                    LabelAddWhere.Text = "Map Readiness filter"
+                End If
+            End If
             If srch.Trim <> "" Then
                 dv3.RowFilter = srch
                 Dim dtt As New DataTable
@@ -608,7 +735,7 @@ Partial Class ShowReport
             If Not Request("srd") Is Nothing Then
                 Dim srd As String = Request("srd").ToString
                 Session("srd") = srd
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Explore_Report_Data"
+                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Explore%20Report%20Data"
                 If srd = 0 Then
                     Session("filter") = ""
                 ElseIf srd = "1" Then   'Excel
@@ -701,7 +828,7 @@ Partial Class ShowReport
                     Response.Redirect("ChartGoogleOne.aspx?Report=" & Session("REPORTID") & "&x1=&x2=&y1=&fn=")
                 ElseIf srd = "8" Then 'See Statistics on Site
                     ButtonShowStats_Click("", EventArgs.Empty)
-                    HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Overall_Statistics"
+                    HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Overall%20Statistics"
                 ElseIf srd = "9" Then 'Export Statistics to Excel
                     'Session("Stats") = 1
                     dv3 = Session("dv3")

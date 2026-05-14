@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="MapGoogle.aspx.vb" Inherits="MapGoogle" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="MapGoogle.aspx.vb" Inherits="MapGoogle" %>
 
 <!DOCTYPE html>
 

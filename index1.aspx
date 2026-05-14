@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="index1.aspx.vb" Inherits="Index1" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="index1.aspx.vb" Inherits="Index1" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -632,6 +632,7 @@
                     </div>
                     <div class="sol-col">
                         <a href="http://DataAILite.com" class="sol-btn" title="All work is done in memory using your OpenAI credentials">DataAILite.com</a>
+                        <a href="https://oureports.net/OUReports/DataAILiteAnalysisCapabilities.pdf" target="_blank" class="sol-doc" title="DataAILite Analysis Capabilities">DataAILite capabilities</a>
                     </div>
                 </div>
             </div>
@@ -641,7 +642,8 @@
                 <div class="solutions-columns" style="justify-content:center;">
                     <div class="sol-col">
                         <a href="DownloadDataAI.aspx" class="sol-btn" title="Download DataAI full version (~90 MB). Windows 10/11 or Windows Server with IIS required.">DataAI</a>
-                        <a href="https://oureports.net/OUReports/AIandDataAI.pdf" target="_blank" class="sol-doc">How to use DataAI</a>
+                        <%--<a href="https://oureports.net/OUReports/AIandDataAI.pdf" target="_blank" class="sol-doc">How to use DataAI</a>--%>
+                        <a href="https://oureports.net/OUReports/DataAIAnalysisCapabilities.pdf" target="_blank" class="sol-doc" title="DataAI Analysis Capabilities">DataAI capabilities</a>
                     </div>
                     <div class="sol-col">
                         <a href="DownloadDataAI.aspx?DataAILitedown=yes" class="sol-btn" title="Download DataAILite.zip (~90 MB). Work just in memory with your own OpenAI credentials.">DataAI Lite</a>

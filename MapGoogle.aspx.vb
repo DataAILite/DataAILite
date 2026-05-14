@@ -1,4 +1,4 @@
-Partial Class MapGoogle
+﻿Partial Class MapGoogle
     Inherits System.Web.UI.Page
     Public kmlfile As String
     Private Sub MapGoogle_Init(sender As Object, e As EventArgs) Handles Me.Init

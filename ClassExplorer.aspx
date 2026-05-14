@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ClassExplorer.aspx.vb" Inherits="ClassExplorer" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ClassExplorer.aspx.vb" Inherits="ClassExplorer" %>
 
 <!DOCTYPE html>
 
@@ -92,8 +92,7 @@
             <asp:TreeNode Text="&lt;b&gt;Demo&lt;/b&gt;"  Value="~/Default.aspx?logon=demo&pass=demo" Expanded="True" >                 
             </asp:TreeNode>
            
-            <asp:TreeNode Text="&lt;b&gt;Documentation&lt;/b&gt;"  Value="DataAIHelp.aspx?hilt=Class_Table_Explorer" Expanded="True" >                 
-            </asp:TreeNode>
+            <asp:TreeNode Text="&lt;b&gt;Documentation&lt;/b&gt;"  Value="DataAIHelp.aspx?hilt=Class%20Table%20Explorer" Expanded="True" ></asp:TreeNode>
 
          <%--   <asp:TreeNode Text="&lt;b&gt;Report a problem&lt;/b&gt;"  Value="ListOfReports.aspx?repprbl=yes" Expanded="True" >                 
             </asp:TreeNode>
@@ -129,7 +128,7 @@
          <asp:LinkButton ID="btnCorrectFields" runat="server" Text="correct field types" CssClass="NodeStyle" Font-Names="Arial"></asp:LinkButton>
         
         &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
-          <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Class_Table_Explorer" Target="_blank" CssClass="NodeStyle" Font-Names="Arial" Font-Size="12px">Help</asp:HyperLink>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Class%20Table%20Explorer" Target="_blank" CssClass="NodeStyle" Font-Names="Arial" Font-Size="12px">Help</asp:HyperLink>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
        &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
        <asp:Label ID="Label1" runat="server" Text="Export delimiter:" Font-Italic="True" ForeColor="Black" Font-Size="Small" Visible="False"></asp:Label>&nbsp;&nbsp;
         <asp:TextBox ID="TextBoxDelimeter" runat="server" Width="16px" AutoPostBack="True" Visible="False"></asp:TextBox>

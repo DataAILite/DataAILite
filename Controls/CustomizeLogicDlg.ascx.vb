@@ -1,4 +1,4 @@
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 Partial Class Controls_CustomizeLogicDlg
     Inherits System.Web.UI.UserControl
 #Region "enums"

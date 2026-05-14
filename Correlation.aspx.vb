@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
@@ -7,7 +7,7 @@ Partial Class Correlation
     Inherits System.Web.UI.Page
     Private Sub Correlation_Init(sender As Object, e As EventArgs) Handles Me.Init
         lblHeader.Text = Session("REPTITLE") & " - Correlations"
-        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Fields_Correlation"
+        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Correlation"
         repid = Session("REPORTID")
         Session("nv") = 8
         Session("writetext") = ""

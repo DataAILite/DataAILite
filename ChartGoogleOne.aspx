@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ChartGoogleOne.aspx.vb" Inherits="ChartGoogleOne" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ChartGoogleOne.aspx.vb" Inherits="ChartGoogleOne" %>
 
 <%@ Register TagPrefix="uc1" TagName="DropDownColumns" src="~/Controls/uc1.ascx" %>
 

@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="QuickStart.aspx.vb" Inherits="QuickStart" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="QuickStart.aspx.vb" Inherits="QuickStart" %>
 
 <!DOCTYPE html>
 <html lang="en">

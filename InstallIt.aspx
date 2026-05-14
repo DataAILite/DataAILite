@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="InstallIt.aspx.vb" Inherits="InstallIt" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="InstallIt.aspx.vb" Inherits="InstallIt" %>
 <%@ Register TagPrefix="uc1" TagName="DropDownColumns" Src="Controls/uc1.ascx" %>
 <!DOCTYPE html>
 

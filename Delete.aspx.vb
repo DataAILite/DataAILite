@@ -1,4 +1,4 @@
-
+﻿
 Partial Class Delete
     Inherits System.Web.UI.Page
     Private Sub Delete_Init(sender As Object, e As EventArgs) Handles Me.Init

@@ -1,4 +1,4 @@
-Partial Class Controls_Msgbox
+﻿Partial Class Controls_Msgbox
     Inherits System.Web.UI.UserControl
     Private Messages As New List(Of Message)
 

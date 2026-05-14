@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ReportDesigner.aspx.vb" Inherits="ReportDesigner" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ReportDesigner.aspx.vb" Inherits="ReportDesigner" %>
 
 <script type="text/javascript" src="Controls/Javascripts/ReportView.js"></script>
 <script type="text/javascript" src="Controls/Javascripts/ReportViewMenu.js" ></script>
@@ -69,19 +69,36 @@
                             <asp:TreeNode Text="Show Report"  Value="ShowReport.aspx?srd=3" Expanded="True" >
                                  <asp:TreeNode Text="Show Generic Report"  Value="ReportViews.aspx?gen=yes" > </asp:TreeNode>
                                   <asp:TreeNode Text="Show Report Charts"  Value="ShowReport.aspx?srd=17" > </asp:TreeNode>
+                                            <asp:TreeNode Text="Chart Recommendations" Value="ChartRecommendationHelpers.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Map Report" Value="MapReport.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Map Readiness" Value="MapReadines.aspx"></asp:TreeNode>
+
                                  <asp:TreeNode Text="Export Report to Excel"  Value="reptoExcel" NavigateUrl="ShowReport.aspx?srd=4" > </asp:TreeNode>
                                  <asp:TreeNode Text="Export Report to Word"    Value="reptoWord" NavigateUrl="ShowReport.aspx?srd=5" > </asp:TreeNode>
                                  <asp:TreeNode Text="Export Report to PDF"  Value="reptoPDF" NavigateUrl="ShowReport.aspx?srd=6" > </asp:TreeNode>
-                                 <asp:TreeNode Text="See Crystal Report"    Value="ShowReport.aspx?srd=7"> </asp:TreeNode>
+                                 <asp:TreeNode Text="Export Packages" Value="ExportPackages.aspx"></asp:TreeNode>
                             </asp:TreeNode>
 
-                            <asp:TreeNode Text="Show Analytics"  Value="ShowReport.aspx?srd=11" Expanded="True" >
+                            <asp:TreeNode Text="Analytics Dashboard" Value="DataAdmin.aspx" NavigateUrl="DataAdmin.aspx" Expanded="True" >
+                                <asp:TreeNode Text="Detail Analytics" Value="Analytics.aspx" NavigateUrl="Analytics.aspx"></asp:TreeNode>
                                 <asp:TreeNode Text="See Data Overall Statistics"  Value="ShowReport.aspx?srd=8" > </asp:TreeNode>
                                 <asp:TreeNode Text="Export Overall Statistics to Excel"  Value="reptoExcel" NavigateUrl="ShowReport.aspx?srd=9" > </asp:TreeNode>
                                 <asp:TreeNode Text="See Groups Statistics"  Value="ReportViews.aspx?grpstats=yes" > </asp:TreeNode>
                                 <asp:TreeNode Text="See Fields Correlation"  Value="ShowReport.aspx?srd=12" > </asp:TreeNode>
+                                            <asp:TreeNode Text="Correlation Threshold" Value="CorrelationThreshold.aspx"></asp:TreeNode>
                                 <asp:TreeNode Text="Matrix Balancing"  Value="ShowReport.aspx?srd=13" > </asp:TreeNode>
-                            </asp:TreeNode>
+                                <asp:TreeNode Text="Pivot / Cross Tab"  Value="Pivot.aspx" > </asp:TreeNode>
+                                <asp:TreeNode Text="Variance Analysis"  Value="Variance.aspx" > </asp:TreeNode>
+                                <asp:TreeNode Text="Comparison Reports"  Value="ComparisonReports.aspx" > </asp:TreeNode>
+                                <asp:TreeNode Text="Data Profiling"  Value="Profiling.aspx" > </asp:TreeNode>
+                                <asp:TreeNode Text="Data Quality"  Value="DataQuality.aspx" > </asp:TreeNode>
+                                <asp:TreeNode Text="Ranking Analysis"  Value="Ranking.aspx" > </asp:TreeNode>
+                                            <asp:TreeNode Text="Regression Analysis" Value="Regression.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Time Based Summaries" Value="TimeBasedSummaries.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Time Series" Value="TimeSeries.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Outlier Flagging" Value="OutlierFlagging.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Audit Summaries" Value="AuditSummaries.aspx"></asp:TreeNode>
+                </asp:TreeNode>
                         </Nodes>
                        <RootNodeStyle HorizontalPadding="2px" Font-Bold="True" />
                        <NodeStyle CssClass="NodeStyle" />
@@ -940,3 +957,5 @@
     </form>
 </body>
 </html>
+
+

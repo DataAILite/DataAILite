@@ -1,4 +1,4 @@
-var errorMessage = "";
+﻿var errorMessage = "";
 
 // ************************************ Enums *********************************
 var enumItemType = {

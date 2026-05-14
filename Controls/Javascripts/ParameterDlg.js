@@ -1,4 +1,4 @@
-function fixReservedWords(ctlId, field) {
+﻿function fixReservedWords(ctlId, field) {
 
     var isCache = document.getElementById(ctlId + "hdnIsCacheDB").value;
     var isOracle = document.getElementById(ctlId + "hdnIsOracleDB").value;

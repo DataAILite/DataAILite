@@ -1,0 +1,345 @@
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="Regression.aspx.vb" Inherits="Regression" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Regression Analysis</title>
+    <style type="text/css">
+        .NodeStyle {
+            color: #0066FF;
+            font-size: 12px;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .NodeStyle:hover {
+            text-decoration: underline;
+            color: darkblue;
+        }
+        .aiLinkButton {
+            display: inline-block;
+            width: 90px;
+            height: 25px;
+            line-height: 17px;
+            padding: 3px;
+            margin: 5px;
+            border-style: solid;
+            border-color: #4e4747;
+            border-width: 1px;
+            border-radius: 5px;
+            background-image: linear-gradient(to bottom, rgba(211, 211, 211,0),rgba(211, 211, 250,3));
+            color: #0066FF;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            box-sizing: border-box;
+            vertical-align: middle;
+        }
+        .aiLinkButton:hover {
+            color: #004DCC;
+            text-decoration: none;
+        }
+        .ticketbutton {
+            width: 90px;
+            height: 25px;
+            font-size: 12px;
+            border-radius: 5px;
+            border-style: solid;
+            border-color: #4e4747;
+            color: black;
+            border-width: 1px;
+            background-image: linear-gradient(to bottom, rgba(211, 211, 211,0),rgba(211, 211, 250,3));
+            padding: 3px;
+            margin: 5px;
+            z-index: 9999;
+        }
+        .modal {
+            position: fixed;
+            z-index: 2147483647;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            background-color: #f8f8d3;
+            opacity: 0.8;
+        }
+        .center {
+            z-index: 2147483647;
+            margin: 300px auto;
+            padding-left: 25px;
+            padding-top: 10px;
+            width: 130px;
+            background-color: #f8f8d3;
+            border-radius: 10px;
+        }
+        .center img {
+            height: 100px;
+            width: 100px;
+        }
+        .regressiongrid {
+            font-family: Arial;
+            font-size: 12px;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        .regressiongrid th {
+            background-color: #663300;
+            color: white;
+            border: 1px solid white;
+            padding: 4px;
+            white-space: nowrap;
+        }
+        .regressiongrid td {
+            border: 1px solid #d0d0d0;
+            padding: 4px;
+            white-space: nowrap;
+        }
+        .controlpanel {
+            background-color: #e5e5e5;
+            border: medium double #FFFFFF;
+            color: black;
+            font-family: Arial;
+            font-size: small;
+            width: auto;
+            min-width: 760px;
+            max-width: 980px;
+            margin-left: 0;
+            margin-right: auto;
+        }
+            .analysisSubtitle {
+            display: block;
+            font-family: Arial;
+            font-size: small;
+            color: #333333;
+            padding-top: 4px;
+            padding-bottom: 8px;
+        }
+        .analysisExplanation {
+            font-family: Arial;
+            font-size: small;
+            color: #333333;
+            background-color: #f5fbf4;
+            border: 1px solid #d8ead4;
+            padding: 8px;
+            margin-top: 8px;
+            max-width: 1180px;
+        }
+        .analysisExplanation span {
+            display: block;
+            padding-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
+        <asp:UpdatePanel ID="udpRegression" runat="server">
+            <ContentTemplate>
+                <table>
+                    <tr>
+                        <td colspan="3" style="font-size: x-large; font-weight: bold; background-color: #e5e5e5; vertical-align: middle; text-align: left; height: 40px;">
+                            <asp:Label ID="LabelPageTtl" runat="server" Text="Online User Reporting"></asp:Label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: x-small; background-color: #e5e5e5; vertical-align: top; text-align: left; width: 15%;">
+                            <div id="tree" style="font-size: x-small;">
+                                <asp:TreeView ID="TreeView1" runat="server" Width="100%" NodeIndent="10" Font-Names="Times New Roman" EnableTheming="True" ImageSet="BulletedList">
+                                    <Nodes>
+                                        <asp:TreeNode Text="&lt;b&gt;Log Off&lt;/b&gt;" Value="Default.aspx" Expanded="True"></asp:TreeNode>
+                                        <asp:TreeNode Text="&lt;b&gt;List of Reports&lt;/b&gt;" Value="ListOfReports.aspx" Expanded="True"></asp:TreeNode>
+                                        <asp:TreeNode Text="&lt;b&gt;Report Definition&lt;/b&gt;" Value="ReportEdit.aspx?tne=2" Expanded="True"></asp:TreeNode>
+                                        <asp:TreeNode Text="&lt;b&gt;Report Data Query&lt;/b&gt;" Value="SQLquery.aspx?tnq=0" Expanded="True"></asp:TreeNode>
+                                        <asp:TreeNode Text="&lt;b&gt;Report Format Definition&lt;/b&gt;" Value="RDLformat.aspx?tnf=0" Expanded="True"></asp:TreeNode>
+                                        <asp:TreeNode Text="Explore Report Data" Value="ShowReport.aspx?srd=0" Expanded="True">
+                                            <asp:TreeNode Text="Export Data to Excel" Value="datatoExcel" NavigateUrl="ShowReport.aspx?srd=1"></asp:TreeNode>
+                                            <asp:TreeNode Text="Export Data to CSV" Value="datatoCSV" NavigateUrl="ShowReport.aspx?srd=2"></asp:TreeNode>
+                                            <asp:TreeNode Text="Export Data to Delimited File" Value="ShowReport" NavigateUrl="ShowReport.aspx?srd=10"></asp:TreeNode>
+                                            <asp:TreeNode Text="Export Data to XML" Value="datatoXML" NavigateUrl="ShowReport.aspx?srd=14"></asp:TreeNode>
+                                        </asp:TreeNode>
+                                        <asp:TreeNode Text="Show Report" Value="ShowReport.aspx?srd=3" Expanded="True">
+                                            <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
+                                            <asp:TreeNode Text="Show Report Charts" Value="ShowReport.aspx?srd=17"></asp:TreeNode>
+                                            <asp:TreeNode Text="Chart Recommendations" Value="ChartRecommendationHelpers.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Map Report" Value="MapReport.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Map Readiness" Value="MapReadines.aspx"></asp:TreeNode>
+
+                                            <asp:TreeNode Text="Export Report to Excel" Value="reptoExcel" NavigateUrl="ShowReport.aspx?srd=4"></asp:TreeNode>
+                                            <asp:TreeNode Text="Export Report to Word" Value="reptoWord" NavigateUrl="ShowReport.aspx?srd=5"></asp:TreeNode>
+                                            <asp:TreeNode Text="Export Report to PDF" Value="reptoPDF" NavigateUrl="ShowReport.aspx?srd=6"></asp:TreeNode>
+                                            <asp:TreeNode Text="Export Packages" Value="ExportPackages.aspx"></asp:TreeNode>
+                                        </asp:TreeNode>
+                                        <asp:TreeNode Text="Analytics Dashboard" Value="DataAdmin.aspx" NavigateUrl="DataAdmin.aspx" Expanded="True">
+                                            <asp:TreeNode Text="Detail Analytics" Value="Analytics.aspx" NavigateUrl="Analytics.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="See Data Overall Statistics" Value="ShowReport.aspx?srd=8"></asp:TreeNode>
+                                            <asp:TreeNode Text="Export Overall Statistics to Excel" Value="reptoExcel" NavigateUrl="ShowReport.aspx?srd=9"></asp:TreeNode>
+                                            <asp:TreeNode Text="See Groups Statistics" Value="ReportViews.aspx?grpstats=yes"></asp:TreeNode>
+                                            <asp:TreeNode Text="See Fields Correlation" Value="ShowReport.aspx?srd=12"></asp:TreeNode>
+                                            <asp:TreeNode Text="Correlation Threshold" Value="CorrelationThreshold.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Matrix Balancing" Value="ShowReport.aspx?srd=13"></asp:TreeNode>
+                                            <asp:TreeNode Text="Pivot / Cross Tab" Value="Pivot.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Variance Analysis" Value="Variance.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Comparison Reports" Value="ComparisonReports.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Data Profiling" Value="Profiling.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Data Quality" Value="DataQuality.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Ranking Analysis" Value="Ranking.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Regression Analysis" Value="Regression.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Time Based Summaries" Value="TimeBasedSummaries.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Time Series" Value="TimeSeries.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Outlier Flagging" Value="OutlierFlagging.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Audit Summaries" Value="AuditSummaries.aspx"></asp:TreeNode>
+                                        </asp:TreeNode>
+                                        <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="False">
+                                            <asp:TreeNode Text="Market Demand" Value="MarketDemand.aspx" NavigateUrl="MarketDemand.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Market Pricing" Value="MarketPricing.aspx" NavigateUrl="MarketPricing.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Market Elasticity" Value="MarketElasticity.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Market Basket" Value="MarketBasket.aspx" NavigateUrl="MarketBasket.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Market Segments" Value="MarketSegments.aspx" NavigateUrl="MarketSegments.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Market Churn" Value="MarketChurn.aspx" NavigateUrl="MarketChurn.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Market Risk" Value="MarketRisk.aspx" NavigateUrl="MarketRisk.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Market Inventory" Value="MarketInventory.aspx" NavigateUrl="MarketInventory.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Market Profit" Value="MarketProfit.aspx" NavigateUrl="MarketProfit.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Market Scenario" Value="MarketScenario.aspx" NavigateUrl="MarketScenario.aspx"></asp:TreeNode>
+                                        </asp:TreeNode>
+                                    </Nodes>
+                                    <RootNodeStyle HorizontalPadding="2px" Font-Bold="True" Font-Underline="False" />
+                                    <NodeStyle CssClass="NodeStyle" />
+                                    <ParentNodeStyle Font-Bold="True" />
+                                </asp:TreeView>
+                            </div>
+                        </td>
+                        <td style="width: 5px;"></td>
+                        <td id="main" style="width: 85%; text-align: left; vertical-align: top;">
+                            <div style="text-align: left; width: 100%;">
+                                <asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial">Analytics</asp:HyperLink>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <asp:HyperLink ID="HyperLinkVariance" runat="server" NavigateUrl="~/Variance.aspx" CssClass="NodeStyle" Font-Names="Arial">Variance Analysis</asp:HyperLink>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <asp:HyperLink ID="HyperLinkComparison" runat="server" NavigateUrl="~/ComparisonReports.aspx" CssClass="NodeStyle" Font-Names="Arial">Comparison Reports</asp:HyperLink>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <asp:HyperLink ID="HyperLinkReport" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" CssClass="NodeStyle" Font-Names="Arial">Report and Charts</asp:HyperLink>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Regression%20Analysis" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
+                                <br /><br />
+
+                                <div style="text-align: center;">
+                                    <asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial" ToolTip="Build regression equations and predictions from selected report fields.">Regression Analysis</asp:Label>
+            <asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Analyze how one numeric column changes when another value changes, including linear, polynomial, exponential, power, and logistic probability options."></asp:Label>
+                                </div>
+                                <br /><br />
+
+                                <table class="controlpanel" cellpadding="4" cellspacing="0">
+                                    <tr>
+                                        <td align="left" style="font-weight: bold;" title="Choose the numeric field used as the independent X value.">Value that changes (X):</td>
+                                        <td align="left">
+                                            <asp:DropDownList ID="DropDownXField" runat="server" AutoPostBack="True" ToolTip="Select the numeric field that changes and is used on the X axis."></asp:DropDownList>
+                                        </td>
+                                        <td align="left" style="font-weight: bold;" title="Choose the numeric field that will be explained or predicted.">Column to predict (Y):</td>
+                                        <td align="left">
+                                            <asp:DropDownList ID="DropDownYField" runat="server" AutoPostBack="True" ToolTip="Select the numeric field to predict as Y."></asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" style="font-weight: bold;" title="Optionally split the regression by a category or group.">Group field:</td>
+                                        <td align="left">
+                                            <asp:DropDownList ID="DropDownGroupField" runat="server" ToolTip="Optional category field used to calculate separate regression results by group."></asp:DropDownList>
+                                        </td>
+                                        <td align="left" style="font-weight: bold;" title="Choose the regression equation shape used for the calculation.">Equation type:</td>
+                                        <td align="left">
+                                            <asp:DropDownList ID="DropDownEquationType" runat="server" ToolTip="Select Best Fit or a specific equation type such as Linear, Quadratic, Exponential, Power, or Logistic Probability.">
+                                                <asp:ListItem Value="BestFit">Best Fit</asp:ListItem>
+                                                <asp:ListItem Value="Linear">Linear</asp:ListItem>
+                                                <asp:ListItem Value="Quadratic">Quadratic</asp:ListItem>
+                                                <asp:ListItem Value="Cubic">Cubic</asp:ListItem>
+                                                <asp:ListItem Value="Exponential">Exponential</asp:ListItem>
+                                                <asp:ListItem Value="Logarithmic">Logarithmic</asp:ListItem>
+                                                <asp:ListItem Value="Power">Power</asp:ListItem>
+                                                <asp:ListItem Value="Logistic">Logistic Probability</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left"></td>
+                                        <td align="left"></td>
+                                        <td align="left" style="font-weight: bold;" title="Enter an X value to calculate the predicted Y from the regression equation.">Predict Y when X is:</td>
+                                        <td align="left">
+                                            <asp:TextBox ID="txtPredictX" runat="server" Width="120px" ToolTip="Optional X value used to calculate a predicted Y result."></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" colspan="4" style="font-weight: bold;">
+                                            <span title="Filter the regression result grid by text.">Search:</span>
+                                            <asp:TextBox ID="txtSearch" runat="server" Width="260px" ToolTip="Type text to filter the regression results shown in the grid."></asp:TextBox>
+                                            <asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" ToolTip="Calculate regression results using the selected fields and equation type." />
+                                            <asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" ToolTip="Clear selections and restore the regression page to its default state." />
+                                            &nbsp;&nbsp;
+                                            <asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" ToolTip="Export the current regression results to a CSV file." />
+                                            <asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" ToolTip="Export the current regression results to an Excel file." />
+                                            &nbsp;&nbsp;
+                                            <asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkRegressionAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret the regression equation, strength, prediction, and trends from the current results.">AI</asp:LinkButton>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label>
+                                <br />
+                                <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label>
+                                <br /><br />
+
+                                <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div><div style="overflow: auto; max-width: 100%;">
+                                    <asp:GridView ID="GridViewRegression" runat="server" CssClass="regressiongrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView>
+                                </div>
+<div class="analysisExplanation">
+    <asp:Label ID="LabelModelExplanation" runat="server"></asp:Label>
+    <asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label>
+    <asp:Label ID="LabelOutputExplanation" runat="server"></asp:Label>
+</div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </ContentTemplate>
+            <Triggers>
+                <asp:PostBackTrigger ControlID="ButtonExportCSV" />
+                <asp:PostBackTrigger ControlID="ButtonExportExcel" />
+                <asp:PostBackTrigger ControlID="lnkRegressionAI" />
+            </Triggers>
+        </asp:UpdatePanel>
+        <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="udpRegression">
+            <ProgressTemplate>
+                <div class="modal">
+                    <div class="center">
+                        <asp:Image ID="imgProgress" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/Controls/Images/WaitImage2.gif" />
+                        Please Wait...
+                    </div>
+                </div>
+            </ProgressTemplate>
+        </asp:UpdateProgress>
+        <div id="ManualWaitingPanel" class="modal" style="display:none;">
+            <div class="center">
+                <img src="Controls/Images/WaitImage2.gif" alt="Please Wait" />
+                Please Wait...
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        function showWaitingPanel() {
+            var waitingPanel = document.getElementById('ManualWaitingPanel');
+            if (waitingPanel) {
+                waitingPanel.style.display = 'block';
+            }
+            return true;
+        }
+
+        window.addEventListener('pageshow', function () {
+            var waitingPanel = document.getElementById('ManualWaitingPanel');
+            if (waitingPanel) {
+                waitingPanel.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
+

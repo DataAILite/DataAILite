@@ -1,4 +1,4 @@
-function showSpinner() {
+﻿function showSpinner() {
 
     setTimeout(function () { document.getElementById("spinner").style.display = ""; document.images["imgSpinner"].src = "Controls/Images/WaitImage2.gif"; }, 200);
 }

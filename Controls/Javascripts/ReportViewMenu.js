@@ -1,4 +1,4 @@
-var menuobj = document.getElementById("pnlMenu");
+﻿var menuobj = document.getElementById("pnlMenu");
 var menudrop = document.getElementById("divDropMenu");
 var CurrentField = null;
 var currentSection = "divDrop";

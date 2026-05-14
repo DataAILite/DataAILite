@@ -1,4 +1,4 @@
-Imports System.Data
+﻿Imports System.Data
 Imports System.Drawing
 Imports System.Math
 Imports AjaxControlToolkit.HtmlEditor.ToolbarButtons
@@ -16,7 +16,7 @@ Partial Class AdvancedAnalytics
         btnGetCoeffsMatrixColumns3c.OnClientClick = "showSpinner();"
 
         lblHeader.Text = Session("REPTITLE") & " - Advanced Analytics - Matrix Balancing"
-        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Matrix_Balancing"
+        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Matrix%20Balancing"
         repid = Session("REPORTID")
         Session("MatrixChart") = ""
 

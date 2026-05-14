@@ -1,4 +1,4 @@
-function showTextFields(ctlPrefix, showAll) {
+﻿function showTextFields(ctlPrefix, showAll) {
     document.getElementById(ctlPrefix + "trText").style.display = "";
     document.getElementById(ctlPrefix + "trCalendar").style.display = "none";
     if (showAll) {

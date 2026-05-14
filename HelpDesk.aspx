@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="HelpDesk.aspx.vb" Inherits="HelpDesk" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="HelpDesk.aspx.vb" Inherits="HelpDesk" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 

@@ -28,6 +28,12 @@ Partial Class DataAI
             Session("srchval") = Request("TextBoxSearch").ToString
             TextBoxSearch.Text = Session("srchval")
         End If
+        If Session("OriginalDataTable") Is Nothing AndAlso Session("dataTable") Is Nothing Then
+            Session("OriginalDataTable") = Session("dv3").Table
+            Session("dataTable") = Session("dv3").Table
+        ElseIf Session("OriginalDataTable") Is Nothing AndAlso Session("dataTable") IsNot Nothing Then
+            Session("OriginalDataTable") = Session("dataTable")
+        End If
 
         dataTable = Session("dataTable")
         Dim i As Integer
@@ -159,7 +165,12 @@ Partial Class DataAI
         dtt = MakeDTColumnsNamesCLScompliant(dtt, Session("UserConnProvider"), er)
         If Session("SELECTEDFlds").ToString.Trim <> "" AndAlso Session("SELECTEDFlds").ToString.Trim <> "ALL" Then
             Dim flds() As String = Split(Session("SELECTEDFlds").Replace(",,", ","), ",")
-            dtt = dtt.DefaultView.ToTable(True, flds)
+            Try
+                dtt = dtt.DefaultView.ToTable(True, flds)
+            Catch ex As Exception
+                Session("SELECTEDFlds") = ""
+            End Try
+
         End If
         If dtt.Rows Is Nothing OrElse dtt.Rows.Count = 0 Then
             LabelRowCount.Text = "Records returned: " & 0.ToString

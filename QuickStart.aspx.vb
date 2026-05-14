@@ -1,4 +1,4 @@
-Imports System.Data
+﻿Imports System.Data
 Partial Class QuickStart
     Inherits System.Web.UI.Page
     Private Sub QuickStart_Init(sender As Object, e As EventArgs) Handles Me.Init

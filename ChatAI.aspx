@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ChatAI.aspx.vb" Inherits="ChatAI" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ChatAI.aspx.vb" Inherits="ChatAI" %>
 
 <script type="text/javascript" src="Controls/Javascripts/OUR.js"></script>
 <!DOCTYPE html>

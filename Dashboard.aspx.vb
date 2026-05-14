@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
@@ -47,6 +47,10 @@ Partial Class Dashboard
     Public repttls(11) As String
     Public repids(11) As String
     Dim wherestms(11) As String
+    Private Const DashboardPageSize As Integer = 12
+    Private dashboardPageNumber As Integer = 1
+    Private dashboardPageCount As Integer = 1
+    Private dashboardTotalCharts As Integer = 0
     Private Sub Dashboard_Init(sender As Object, e As EventArgs) Handles Me.Init
        If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = ""  Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
@@ -131,11 +135,11 @@ Partial Class Dashboard
             End If
         Dim ddb As DataView = Nothing
         If Request("dash") Is Nothing OrElse Request("dash").ToString.Trim <> "yes" Then
-            ddb = mRecords("SELECT * FROM ourdashboards WHERE UserId='" & Session("logon") & "' AND Dashboard='" & Request("Dashboard") & "'", ret)
+            ddb = mRecords("SELECT * FROM ourdashboards WHERE UserId='" & Session("logon") & "' AND Dashboard='" & Request("Dashboard") & "' ORDER BY Indx", ret)
             dashboardname = Request("Dashboard")
             Session("dash") = ""
         ElseIf Not Request("dash") Is Nothing AndAlso Request("dash").ToString.Trim = "yes" Then
-            ddb = mRecords("SELECT * FROM ourdashboards WHERE Prop6='" & Session("logon") & "' AND Dashboard='" & Request("dashboard") & "'", ret)
+            ddb = mRecords("SELECT * FROM ourdashboards WHERE Prop6='" & Session("logon") & "' AND Dashboard='" & Request("dashboard") & "' ORDER BY Indx", ret)
             dashboardname = Request("dashboard")
             Session("dash") = Request("dash")
         End If
@@ -144,17 +148,29 @@ Partial Class Dashboard
             Exit Sub
         End If
 
+        dashboardTotalCharts = ddb.Table.Rows.Count
+        dashboardPageNumber = RequestedDashboardPage()
+        dashboardPageCount = CInt(Math.Ceiling(dashboardTotalCharts / CDbl(DashboardPageSize)))
+        If dashboardPageCount < 1 Then dashboardPageCount = 1
+        If dashboardPageNumber > dashboardPageCount Then dashboardPageNumber = dashboardPageCount
+        If dashboardPageNumber < 1 Then dashboardPageNumber = 1
+        ddb = DashboardPageView(ddb, dashboardPageNumber)
+
         LabelWhere.Text = dashboardname
         Session("UserDash") = dashboardname
+        SetDashboardPagingControls()
 
         If IsPostBack = False Then
 
             Session("nrec") = ddb.Table.Rows.Count
+            Session("DashboardPageNumber") = dashboardPageNumber
+            Session("DashboardPageCount") = dashboardPageCount
+            Session("DashboardTotalCharts") = dashboardTotalCharts
             nrec = ddb.Table.Rows.Count
 
             Dim i As Integer
-            If ddb.Table.Rows.Count < 12 Then
-                For i = ddb.Table.Rows.Count To 11
+            If ddb.Table.Rows.Count < DashboardPageSize Then
+                For i = ddb.Table.Rows.Count To DashboardPageSize - 1
                     'hide div and btnlinks 
                     'Dim divname As String = "chart_div_" + i.ToString
                     Dim cntrl As HtmlControl = Page.FindControl("chart_div_" + i.ToString)
@@ -430,6 +446,10 @@ Partial Class Dashboard
         Else  'IsPostBack
             'get from Session
             nrec = Session("nrec")
+            If Session("DashboardPageNumber") IsNot Nothing Then dashboardPageNumber = CInt(Session("DashboardPageNumber"))
+            If Session("DashboardPageCount") IsNot Nothing Then dashboardPageCount = CInt(Session("DashboardPageCount"))
+            If Session("DashboardTotalCharts") IsNot Nothing Then dashboardTotalCharts = CInt(Session("DashboardTotalCharts"))
+            SetDashboardPagingControls()
             y1s = Session("y1s")
             y2s = Session("y2s")
             mx = Session("mx")
@@ -452,6 +472,69 @@ Partial Class Dashboard
         End If
 
 
+    End Sub
+
+    Private Function RequestedDashboardPage() As Integer
+        Dim requestedPage As Integer = 1
+        If Request("page") IsNot Nothing AndAlso Integer.TryParse(Request("page").ToString(), requestedPage) Then
+            Return Math.Max(1, requestedPage)
+        End If
+        If Session("DashboardPageNumber") IsNot Nothing AndAlso Integer.TryParse(Session("DashboardPageNumber").ToString(), requestedPage) Then
+            Return Math.Max(1, requestedPage)
+        End If
+        Return 1
+    End Function
+
+    Private Function DashboardPageView(allRows As DataView, pageNumber As Integer) As DataView
+        If allRows Is Nothing OrElse allRows.Table Is Nothing Then Return allRows
+
+        Dim pageTable As DataTable = allRows.Table.Clone()
+        Dim startIndex As Integer = (pageNumber - 1) * DashboardPageSize
+        Dim endIndex As Integer = Math.Min(startIndex + DashboardPageSize, allRows.Table.Rows.Count)
+        For rowIndex As Integer = startIndex To endIndex - 1
+            pageTable.ImportRow(allRows.Table.Rows(rowIndex))
+        Next
+        Return pageTable.DefaultView
+    End Function
+
+    Private Sub SetDashboardPagingControls()
+        TextBoxPageNumber.Text = dashboardPageNumber.ToString()
+        LabelPageCount.Text = " of " & dashboardPageCount.ToString() & " (" & dashboardTotalCharts.ToString() & " charts)"
+        LinkButtonPrevious.Enabled = dashboardPageNumber > 1
+        LinkButtonPrevious.Visible = dashboardPageCount > 1 AndAlso dashboardPageNumber > 1
+        LinkButtonNext.Enabled = dashboardPageNumber < dashboardPageCount
+        LinkButtonNext.Visible = dashboardPageCount > 1 AndAlso dashboardPageNumber < dashboardPageCount
+        LabelPageNumberCaption.Visible = dashboardPageCount > 1
+        TextBoxPageNumber.Visible = dashboardPageCount > 1
+        LabelPageCount.Visible = dashboardPageCount > 1
+    End Sub
+
+    Private Function DashboardPageUrl(pageNumber As Integer) As String
+        Dim url As String = "Dashboard.aspx?user=" & Server.UrlEncode(Session("logon").ToString()) & "&dashboard=" & Server.UrlEncode(dashboardname) & "&page=" & pageNumber.ToString()
+        If Session("dash") IsNot Nothing AndAlso Session("dash").ToString().Trim() = "yes" Then url &= "&dash=yes"
+        Return url
+    End Function
+
+    Private Sub LinkButtonPrevious_Click(sender As Object, e As EventArgs) Handles LinkButtonPrevious.Click
+        Response.Redirect(DashboardPageUrl(Math.Max(1, dashboardPageNumber - 1)))
+    End Sub
+
+    Private Sub LinkButtonNext_Click(sender As Object, e As EventArgs) Handles LinkButtonNext.Click
+        Response.Redirect(DashboardPageUrl(Math.Min(dashboardPageCount, dashboardPageNumber + 1)))
+    End Sub
+
+    Private Sub TextBoxPageNumber_TextChanged(sender As Object, e As EventArgs) Handles TextBoxPageNumber.TextChanged
+        GoToRequestedDashboardPage()
+    End Sub
+
+    Private Sub GoToRequestedDashboardPage()
+        Dim requestedPage As Integer = dashboardPageNumber
+        Dim postedPageText As String = TextBoxPageNumber.Text.Trim()
+        If Request.Form(TextBoxPageNumber.UniqueID) IsNot Nothing Then postedPageText = Request.Form(TextBoxPageNumber.UniqueID).Trim()
+        If Not Integer.TryParse(postedPageText, requestedPage) Then requestedPage = dashboardPageNumber
+        If requestedPage < 1 Then requestedPage = 1
+        If requestedPage > dashboardPageCount Then requestedPage = dashboardPageCount
+        Response.Redirect(DashboardPageUrl(requestedPage))
     End Sub
 
     Private Sub LinkButtonBack_Click(sender As Object, e As EventArgs) Handles LinkButtonBack.Click

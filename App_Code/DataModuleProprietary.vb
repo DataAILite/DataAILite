@@ -1,4 +1,4 @@
-Imports System.Data
+﻿Imports System.Data
 Imports Oracle.ManagedDataAccess.Client
 Public Module DataModuleProprietary
 

@@ -1,4 +1,4 @@
-function operatorChanged(ctlId) {
+﻿function operatorChanged(ctlId) {
     var rb = document.getElementById(prefix + ctlId);
     var node = TreeView1.SelectedNode;
     var logop,cond;

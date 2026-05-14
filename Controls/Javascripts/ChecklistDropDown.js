@@ -1,4 +1,4 @@
-		var arrayOfCheckBoxes;
+﻿		var arrayOfCheckBoxes;
 		var arrayOfCheckBoxLabels;
 		var rows;
 		var lastPressedKey = null;

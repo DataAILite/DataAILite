@@ -1,4 +1,4 @@
-var imgHasFocus = false;
+﻿var imgHasFocus = false;
 
 function OnDropDownTablesChange(e) {
     var list = document.getElementById("DropDownTables");

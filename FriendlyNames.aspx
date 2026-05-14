@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="FriendlyNames.aspx.vb" Inherits="FriendlyNames" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="FriendlyNames.aspx.vb" Inherits="FriendlyNames" %>
 
 <!DOCTYPE html>
 

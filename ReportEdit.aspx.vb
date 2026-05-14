@@ -1,4 +1,4 @@
-Imports System.Configuration
+﻿Imports System.Configuration
 Imports System.Web.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
@@ -969,7 +969,7 @@ Partial Class ReportEdit
         End If
         Select Case Session("TabN")
             Case "2"
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report_Info"
+                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report%20Info"
             Case "3"
                 HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Parameters"
             Case "4"
@@ -1848,7 +1848,7 @@ Partial Class ReportEdit
             lblView.Text = MenuMain.Items(Session("TabN")).Text
             Select Case Session("TabN")
                 Case "2"
-                    HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report_Info"
+                    HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report%20Info"
                 Case "3"
                     HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Parameters"
                 Case "4"

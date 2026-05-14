@@ -1,4 +1,4 @@
-Imports System.Configuration
+﻿Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.IO
@@ -1351,9 +1351,9 @@ Partial Class SQLquery
         LabelSQLsort.Text = LabelSQL.Text
         Select Case Session("TabNQ")
             Case "0"
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report_Data_Definition"
+                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report%20Data%20Definition"
             Case "1"
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Join_Tables"
+                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Join%20Tables"
             Case "2"
                 HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Filters"
             Case "3"
@@ -1478,9 +1478,9 @@ Partial Class SQLquery
                 lblView.Text = Menu1.Items(Session("TabNQ")).Text
                 Select Case Session("TabNQ")
                     Case "0"
-                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report_Data_Definition"
+                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report%20Data%20Definition"
                     Case "1"
-                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Join_Tables"
+                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Join%20Tables"
                     Case "2"
                         HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Filters"
                     Case "3"

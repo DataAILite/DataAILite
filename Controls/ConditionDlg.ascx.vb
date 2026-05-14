@@ -1,4 +1,4 @@
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 Partial Class Controls_ConditionDlg
     Inherits System.Web.UI.UserControl
 

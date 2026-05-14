@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ChartGoogle.aspx.vb" Inherits="ChartGoogle" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ChartGoogle.aspx.vb" Inherits="ChartGoogle" %>
 
 <!DOCTYPE html>
 

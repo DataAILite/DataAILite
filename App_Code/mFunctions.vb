@@ -1,4 +1,4 @@
-Imports System.Configuration
+﻿Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.IO
@@ -3310,7 +3310,7 @@ Public Module mFunctions
         Dim ret As Boolean = False
         Dim sqlq As String = "Select Dashboard From ourdashboards Where UserId='" & UserID & "' AND Dashboard='" & DashboardName & "'"
         Dim dt As DataTable = mRecords(sqlq).Table
-        If dt IsNot Nothing AndAlso dt.Rows.Count < 12 Then ret = True
+        If dt IsNot Nothing AndAlso dt.Rows.Count < 1000 Then ret = True
         Return ret
     End Function
     Public Function GetDashBoards(UserID As String) As ListItemCollection

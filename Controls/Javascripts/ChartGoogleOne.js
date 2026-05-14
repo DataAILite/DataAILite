@@ -1,4 +1,4 @@
-function ListItem() {
+﻿function ListItem() {
     this.listItem = {
         text: "",
         value: "",

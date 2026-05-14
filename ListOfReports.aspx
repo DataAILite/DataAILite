@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ListOfReports.aspx.vb" Inherits="ListOfReports" %>Param3type
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ListOfReports.aspx.vb" Inherits="ListOfReports" %>
 
 <script type="text/javascript" src="Controls/Javascripts/OUR.js"></script>
 
@@ -161,8 +161,8 @@
         <%--&nbsp;&nbsp;&nbsp;
         <asp:LinkButton ID="btnListOfJoins" runat="server" Text="Joins" CssClass="NodeStyle" Visible="False" Enabled="False" Font-Names="Arial"></asp:LinkButton>
        --%>
-        &nbsp;&nbsp;&nbsp;
-        <asp:HyperLink ID="HyperLinkListOfDashboards" runat="server" NavigateUrl="~/ListOfDashboards.aspx" CssClass="NodeStyle" Font-Names="Arial" Target="_blank">Dashboards</asp:HyperLink>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:HyperLink ID="HyperLinkListOfDashboards" runat="server" NavigateUrl="~/ListOfDashboards.aspx" CssClass="NodeStyle" Font-Names="Arial" Target="_blank">Chart Dashboards</asp:HyperLink>
           
         &nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLinkScheduledReports" runat="server" NavigateUrl="~/ScheduledReports.aspx" CssClass="NodeStyle" Font-Names="Arial">Scheduled Reports</asp:HyperLink>
@@ -177,7 +177,7 @@
        <asp:LinkButton ID="btnFriendlyNames" runat="server" Text="Friendly Names" CssClass="NodeStyle" Font-Names="Arial" ></asp:LinkButton>
                <%-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; 
-        <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=List_of_Reports" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>&nbsp;&nbsp;
+        <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=List%20of%20Reports" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>&nbsp;&nbsp;
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:LinkButton ID="LinkButtonHelpDesk" runat="server" CssClass="NodeStyle" Font-Names="Arial">Report a problem</asp:LinkButton> 
          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -304,10 +304,10 @@
         </tr>
         <tr>
             <td align="center" width="80%" >
-        <table runat="server" id="list"  border=0 style="font-size: 12px; font-family: Arial">
+        <table runat="server" id="list"  border="0" style="font-size: 12px; font-family: Arial">
                 <tr>
                     <td class="auto-style3"  style="font-weight:bold"></td>
-                    <td class="auto-style3" style="font-weight:bold">Show Report:</td>
+                    <td class="auto-style3" style="font-weight:bold">Analytics Dashboard</td>
                     <td class="auto-style2" style="font-weight:bold"></td>
                     <td class="auto-style1" style="font-weight:bold"></td>
                     <td class="auto-style1" style="font-weight:bold"></td>

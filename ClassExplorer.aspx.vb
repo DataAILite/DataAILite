@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
@@ -200,7 +200,7 @@ Partial Class ClassExplorer
                 ButtonDownloadFile.Visible = False
                 ButtonDownloadFile.Enabled = False
             End If
-            HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Class_Table_Explorer"
+            HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Class%20Table%20Explorer"
             If Not IsPostBack AndAlso Not Request("cld") Is Nothing AndAlso Request("cld").ToString.Trim <> "" AndAlso Request("pid") Is Nothing Then
                 dv3 = Nothing
                 Session("dv3") = Nothing

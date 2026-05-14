@@ -1,4 +1,4 @@
-Imports System.Configuration
+﻿Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.IO
@@ -769,11 +769,11 @@ Partial Class RDLformat
         LabelAlert1.Text = Session("ret")
         Select Case Session("TabNF")
             Case "0"
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Columns_Expressions"
+                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Columns%20and%20Expressions"
             Case "1"
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Groups_and_Totals"
+                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Groups%20and%20Totals"
             Case "2"
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Combine_Column_Values"
+                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Combine%20Column%20Values"
         End Select
 
     End Sub
@@ -1008,16 +1008,16 @@ Partial Class RDLformat
                 lblView.Text = Menu1.Items(Session("TabNF")).Text
                 Select Case Session("TabNF")
                     Case "0"
-                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Columns_Expressions"
+                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Columns%20and%20Expressions"
                     Case "1"
-                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Groups_and_Totals"
+                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Groups%20and%20Totals"
                     Case "2"
-                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Combine_Column_Values"
+                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Combine%20Column%20Values"
                     Case "3"
-                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Advanced_Report_Designer"
+                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Advanced%20Report%20Designer"
                         Response.Redirect("~/ReportDesigner.aspx")
                     Case "4"
-                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Map_Definition"
+                        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Map%20Definition"
                         Response.Redirect("~/MapReport.aspx")
                 End Select
             Else

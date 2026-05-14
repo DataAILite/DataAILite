@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
@@ -112,7 +112,7 @@ Partial Class ReportViews
                 Session("srd") = Request("srd").ToString.Trim
             End If
         End If
-        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=View_Report"
+            HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report%20Views"
         'If Session("UserConnProvider") = "InterSystems.Data.IRISClient" Then
         '    HyperLinkHelp.NavigateUrl = "OnlineUserReporting.pdf#page=75"
         'ElseIf Session("UserConnProvider") = "InterSystems.Data.CacheClient" Then
@@ -1071,7 +1071,7 @@ Partial Class ReportViews
                 gr = SeeReport()
                 Session("See") = "Report"
                 Session("GraphType") = ""
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=View_Report"
+            HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report%20Views"
             ElseIf Not IsPostBack AndAlso Request("det") = "yes" Then
                 lblReportFunction.Text = "Detail Report:"
                 lblDesignerCreated.Visible = False
@@ -1132,7 +1132,7 @@ Partial Class ReportViews
                 Session("See") = "Graph"
                 LinkButtonDownRDL.Visible = False
                 LinkButtonDownRDL.Enabled = False
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Show_Report_Graphs"
+                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Show%20Report%20Charts"
                 If Session("srd") = 11 OrElse Session("RunSched") = "yes" Then  'from analytics or from run scheduled reports
                     If Not IsPostBack AndAlso Request("grtype") = "bar" Then
                         gr = SeeGraph("bar")  'bar
