@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAIHelp.aspx.vb" Inherits="DataAIHelp" %>
+<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAIHelp.aspx.vb" Inherits="DataAIHelp" %>
 
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -89,30 +89,30 @@
         .search-wrap .s-icon { position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%); font-size: 0.78rem; color: var(--text-muted); pointer-events: none; }
 
         /* ── Content ── */
-        .content { width: 80%; margin: 0 auto; padding: 0.6rem 0.75rem 1.5rem; }
+        .content { width: 96%; margin: 0 auto; padding: 0.6rem 0.75rem 1.5rem; }
 
         /* ── 2-column layout for section blocks ── */
-        .blocks-grid { display: grid; grid-template-columns: 1fr; gap: 0.72rem; }
+        .blocks-grid { display: grid; grid-template-columns: repeat(7, minmax(165px, 1fr)); gap: 0.72rem; align-items: stretch; }
 
         /* ── Section Block ── */
-        .sec-card { display: grid; grid-template-columns: 165px 1fr; background: rgba(255, 255, 255, 0.92); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition); overflow: hidden; }
+        .sec-card { display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.92); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition); overflow: hidden; min-width: 0; height: 100%; }
         .dark-theme .sec-card { background: rgba(23, 32, 42, 0.94); }
         .sec-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); border-color: rgba(21, 94, 117, 0.32); }
-        .sec-hdr { padding: 0.62rem 0.85rem; border-right: 1px solid var(--border); background: linear-gradient(180deg, var(--accent-light), var(--accent-soft)); display: flex; align-items: center; }
-        .sec-title { font-family: 'Playfair Display', serif; font-size: 0.92rem; font-weight: 800; color: var(--accent); line-height: 1.22; }
+        .sec-hdr { padding: 0.72rem 0.75rem; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, var(--accent-light), var(--accent-soft)); display: flex; align-items: center; justify-content: center; min-height: 54px; text-align: center; }
+        .sec-title { font-family: 'Playfair Display', serif; font-size: 0.96rem; font-weight: 800; color: var(--accent); line-height: 1.18; }
 
         /* ── TOC Grid inside blocks ── */
-        .toc-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        .toc-grid.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .toc-grid.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        .toc-grid.c4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-        .toc-grid.c5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-        .toc-grid.c6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-        .toc-grid.c7 { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+        .toc-grid,
+        .toc-grid.c2,
+        .toc-grid.c3,
+        .toc-grid.c4,
+        .toc-grid.c5,
+        .toc-grid.c6,
+        .toc-grid.c7 { display: block; }
 
-        .toc-cell { padding: 0.52rem 0.58rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); min-width: 0; }
-        .toc-grid > .toc-cell { border-right: 1px solid var(--border); border-bottom: none; }
-        .toc-grid > .toc-cell:last-child { border-right: none; }
+        .toc-cell { padding: 0.55rem 0.62rem; border-right: none; border-bottom: 1px solid var(--border); min-width: 0; }
+        .toc-grid > .toc-cell { border-right: none; border-bottom: 1px solid var(--border); }
+        .toc-grid > .toc-cell:last-child { border-bottom: none; }
 
         .cell-title { font-size: 0.76rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.32rem; display: flex; align-items: center; gap: 0.35rem; }
         .cell-title .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(21, 94, 117, 0.10); }
@@ -127,7 +127,7 @@
         .toc-link.sub:hover { padding-left: 1.4rem; color: #0066CC; }
 
         /* ── Full-width block (spans both columns) ── */
-        .full-width { grid-column: 1 / -1; }
+        .full-width { grid-column: auto; }
 
         /* ── Footer ── */
         .site-footer { text-align: center; padding: 0.95rem 1rem; color: var(--text-muted); font-size: 0.72rem; border-top: 1px solid var(--border); margin-top: 0.4rem; background: rgba(255, 255, 255, 0.35); }
@@ -162,17 +162,15 @@
         }
 
         @media (max-width: 900px) {
-            .blocks-grid { grid-template-columns: 1fr; }
+            .blocks-grid { grid-template-columns: repeat(2, minmax(190px, 1fr)); }
             .content { width: 96%; }
-            .sec-card { grid-template-columns: 1fr; }
-            .sec-hdr { border-right: none; border-bottom: 1px solid var(--border); }
-            .toc-grid, .toc-grid.c2, .toc-grid.c3, .toc-grid.c4, .toc-grid.c5, .toc-grid.c6, .toc-grid.c7 { grid-template-columns: repeat(2, 1fr); }
-            .toc-grid > .toc-cell { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-            .toc-grid > .toc-cell:nth-child(2n) { border-right: none; }
+        }
+        @media (max-width: 1200px) and (min-width: 901px) {
+            .blocks-grid { grid-template-columns: repeat(3, minmax(190px, 1fr)); }
         }
         @media (max-width: 600px) {
             .content { width: 100%; padding-left: 0.5rem; padding-right: 0.5rem; }
-            .toc-grid, .toc-grid.c2, .toc-grid.c3, .toc-grid.c4, .toc-grid.c5, .toc-grid.c6, .toc-grid.c7 { grid-template-columns: 1fr; }
+            .blocks-grid { grid-template-columns: 1fr; }
             .toc-cell { border-right: none !important; }
             .top-bar, .hero { padding-left: 1rem; padding-right: 1rem; }
         }
@@ -201,8 +199,8 @@
         <%--<a class="nav-btn" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=7">&#128274; Sign In</a>--%>
         <a class="nav-btn" href="https://oureports.net/OUReports/AdvancedReportDesigner.pdf#page=4">&#128295; Advanced Report Designer</a>
         <a class="nav-btn" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=68">&#128202; Analytics</a>
-        <a class="nav-btn" href="AnalyticsNew.pdf">&#128202; More Analytics</a>
-        <a class="nav-btn" href="Market.pdf">&#128200; Market Models</a>
+        <a class="nav-btn" href="https://oureports.net/oureports/AnalyticsNew.pdf">&#128202; More Analytics</a>
+        <a class="nav-btn" href="https://oureports.net/oureports/Market.pdf">&#128200; Market Models</a>
         <a class="nav-btn" href="https://oureports.net/oureports/GoogleChartsAndDashboards.pdf">&#128200; Google Charts &amp; Dashboards</a>
         <a class="nav-btn" href="https://oureports.net/oureports/DataImport.pdf">&#128229; Data Import</a>
         <a class="nav-btn" href="https://oureports.net/oureports/AIandDataAI.pdf">&#129302; AI &amp; DataAI</a>
@@ -227,11 +225,11 @@
             <div class="toc-grid c5">
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:var(--accent)"></span> Analytics</div>
-                    <a class="toc-link feat" href="AnalyticsNew.pdf#page=2">Analytics Dashboard</a>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=2">Analytics Dashboard</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=68">Detail Analytics</a>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=3">Pivot / Cross Tab</a>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=4">Variance Analysis</a>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=5">Comparison Reports</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=3">Pivot / Cross Tab</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=4">Variance Analysis</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=5">Comparison Reports</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#D97706"></span> Statistics</div>
@@ -241,23 +239,24 @@
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#2563EB"></span> Data Review</div>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=6">Data Profiling</a>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=7">Data Quality</a>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=8">Ranking Analysis</a>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=16">Audit Summaries</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=6">Data Profiling</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=7">Data Quality</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=8">Ranking Analysis</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=16">Audit Summaries</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#7C3AED"></span> Models</div>
-                    <a class="toc-link feat" href="AnalyticsNew.pdf#page=9">Regression Analysis</a>
-                    <a class="toc-link feat" href="AnalyticsNew.pdf#page=10">Trends</a>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=11">Time Based Summaries</a>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=12">Time Series</a>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=9">Regression Analysis</a>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=10">Trends</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=11">Time Based Summaries</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=12">Time Series</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#D97706"></span> Specialized Views</div>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=13">Outlier Flagging</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=13">Outlier Flagging</a>
                     <a class="toc-link feat" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=73">Fields Correlation</a>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=14">Correlation Threshold</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=14">Correlation Threshold</a>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/AIandDataAI.pdf">AI and DataAI</a>
                 </div>
             </div>
         </div>
@@ -268,38 +267,49 @@
             <div class="toc-grid c4">
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:var(--accent)"></span> Market Overview</div>
-                    <a class="toc-link feat" href="Market.pdf#page=2">Market Dashboard</a>
-                    <a class="toc-link" href="Market.pdf#page=3">Market Demand</a>
-                    <a class="toc-link" href="Market.pdf#page=4">Market Pricing</a>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/Market.pdf#page=2">Market Dashboard</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=3">Market Demand</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=4">Market Pricing</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#2563EB"></span> Market Behavior</div>
-                    <a class="toc-link" href="Market.pdf#page=5">Market Elasticity</a>
-                    <a class="toc-link" href="Market.pdf#page=6">Market Basket</a>
-                    <a class="toc-link" href="Market.pdf#page=7">Market Segments</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=5">Market Elasticity</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=6">Market Basket</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=7">Market Segments</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#7C3AED"></span> Risk and Operations</div>
-                    <a class="toc-link" href="Market.pdf#page=8">Market Churn</a>
-                    <a class="toc-link" href="Market.pdf#page=9">Market Risk</a>
-                    <a class="toc-link" href="Market.pdf#page=10">Market Inventory</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=8">Market Churn</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=9">Market Risk</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=10">Market Inventory</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#D97706"></span> Value Models</div>
-                    <a class="toc-link" href="Market.pdf#page=11">Market Profit</a>
-                    <a class="toc-link" href="Market.pdf#page=12">Market Scenario</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=11">Market Profit</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=12">Market Scenario</a>
                 </div>
             </div>
         </div>
 
         <!-- EXPLORE REPORT DATA -->
         <div class="sec-card">
-            <div class="sec-hdr"><span class="sec-title">Explore Report Data</span></div>
+            <div class="sec-hdr"><span class="sec-title">Report Data</span></div>
             <div class="toc-grid c7">
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:var(--accent)"></span> Data Exploration</div>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=44">Selecting Parameters</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=58">Select Parameters in Data Explorer</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=45">Field Search</a>
+                    <a class="toc-link" href="https://oureports.net/OUReports/MatrixBalancing.pdf">Matrix Balancing</a>
+                    <a class="toc-link" href="https://oureports.net/OUReports/MatrixBalancingWithAIOverview.pdf">Matrix Balancing Overview</a>
+                </div>
+                <div class="toc-cell" data-topic>
+                    <div class="cell-title"><span class="dot" style="background:#D97706"></span> Parameters</div>
+                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=18">Add/Edit Parameter</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=17">Related/not related</a>
+                </div>
+                <div class="toc-cell" data-topic>
+                    <div class="cell-title"><span class="dot" style="background:#D97706"></span> Import</div>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/DataImport.pdf">Data Import</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#2563EB"></span> Export Data</div>
@@ -315,23 +325,6 @@
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=76">Parent Link</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=77">Sample</a>
                 </div>
-                <div class="toc-cell" data-topic>
-                    <div class="cell-title"><span class="dot" style="background:#D97706"></span> Import and AI</div>
-                    <a class="toc-link feat" href="https://oureports.net/oureports/DataImport.pdf">Data Import</a>
-                    <a class="toc-link feat" href="https://oureports.net/oureports/AIandDataAI.pdf">AI and DataAI</a>
-                    <a class="toc-link" href="https://oureports.net/OUReports/MatrixBalancing.pdf">Matrix Balancing</a>
-                </div>
-                <div class="toc-cell" data-topic>
-                    <div class="cell-title"><span class="dot" style="background:#D97706"></span> Chart</div>
-                    <a class="toc-link feat" href="https://oureports.net/oureports/GoogleChartsAndDashboards.pdf">Google Charts</a>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=15">Chart Recommendations</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/GoogleChartsAndDashboards.pdf">Chart Dashboards</a>
-                </div>
-                <div class="toc-cell" data-topic>
-                    <div class="cell-title"><span class="dot" style="background:var(--red)"></span> Map</div>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=42">Map Report</a>
-                    <a class="toc-link" href="AnalyticsNew.pdf#page=17">Map Readiness</a>
-                </div>
             </div>
         </div>
 
@@ -340,19 +333,29 @@
             <div class="sec-hdr"><span class="sec-title">Report Views</span></div>
             <div class="toc-grid">
                 <div class="toc-cell" data-topic>
-                    <div class="cell-title"><span class="dot" style="background:var(--accent)"></span> Parameters</div>
+                    <div class="cell-title"><span class="dot" style="background:var(--accent)"></span> Report</div>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=56">Show Report</a>
                     <a class="toc-link feat" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=57">Generic Report</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=58">Select Parameters</a>
-                    <a class="toc-link sub" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=58">Not Related Parameters</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=17">Related Parameters</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=44">Select Parameters in Report</a>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=62">Matrix Report</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=68">DrillDown Groups</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#2563EB"></span> Report Graphs</div>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=60">Bar Report</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=60">PIE Report</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=61">Line Report</a>
-                    <a class="toc-link feat" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=62">Matrix Report</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=68">DrillDown Groups</a>
+                </div>
+                <div class="toc-cell" data-topic>
+                    <div class="cell-title"><span class="dot" style="background:#D97706"></span> Chart</div>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/GoogleChartsAndDashboards.pdf">Google Charts</a>
+                    <a class="toc-link" href="https://oureports.net/OUReports/AnalyticsNew.pdf#page=15">Chart Recommendations</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/GoogleChartsAndDashboards.pdf">Chart Dashboards</a>
+                </div>
+                <div class="toc-cell" data-topic>
+                    <div class="cell-title"><span class="dot" style="background:var(--red)"></span> Map</div>
+                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=42">Map Report</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=17">Map Readiness</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#7C3AED"></span> Export Report</div>
@@ -367,7 +370,7 @@
 
         <!-- ── REPORT FORMAT DEFINITION ── -->
         <div class="sec-card">
-            <div class="sec-hdr"><span class="sec-title">Report Format Definition</span></div>
+            <div class="sec-hdr"><span class="sec-title">Report Format</span></div>
             <div class="toc-grid c4">
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:var(--accent)"></span> <a href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=32">Columns &amp; Expressions</a></div>
@@ -404,7 +407,7 @@
 
         <!-- ── REPORT DATA DEFINITION ── -->
         <div class="sec-card">
-            <div class="sec-hdr"><span class="sec-title">Report Data Definition</span></div>
+            <div class="sec-hdr"><span class="sec-title">Report Query</span></div>
             <div class="toc-grid c5">
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:var(--accent)"></span> <a href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=24">Data Fields</a></div>
@@ -423,15 +426,12 @@
                     <div class="cell-title"><span class="dot" style="background:#2563EB"></span> Join Actions</div>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=27">Reverse Join</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=27">Change Order</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=27">Delete Join</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=27">Edit Join</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=27">Update Join</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#7C3AED"></span> <a href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=28">Filters</a></div>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=28">Add Condition</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=29">Edit Condition</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=29">Delete Condition</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=29">Customizing Logic</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=29">Updating Filters</a>
                 </div>
@@ -439,9 +439,7 @@
                     <div class="cell-title"><span class="dot" style="background:#D97706"></span> <a href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=30">Sorting</a></div>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=30">Add Sort</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=31">Change Sort Order</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=31">Delete Sort</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=31">Edit Sort</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=31">Update Sort</a>
                 </div>
             </div>
         </div>
@@ -465,7 +463,6 @@
                     <div class="cell-title"><span class="dot" style="background:var(--red)"></span> Report Actions</div>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=11">Deleting Report</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=12">Editing Report</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=13">Advanced User</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#7C3AED"></span> <a href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=13">Report Info</a></div>
@@ -483,18 +480,8 @@
                     <a class="toc-link sub" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=15">Report Files</a>
                 </div>
                 <div class="toc-cell" data-topic>
-                    <div class="cell-title"><span class="dot" style="background:#D97706"></span> <a href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=17">Parameters</a></div>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=17">Normal User</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=17">Related Parameters</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=18">Add Parameter</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=20">Edit Parameter</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=21">Delete Parameter</a>
-                </div>
-                <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#2563EB"></span> <a href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=22">Users</a></div>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=22">Add User</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=23">Edit User</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=23">Delete User</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=22">Add/Edit User</a>
                 </div>
             </div>
         </div>
@@ -507,7 +494,7 @@
 <div class="site-footer">
     DataAI &mdash; AI-driven analytics, dashboards &amp; reporting &ensp;|&ensp;
     <a href="http://DataAI.link">DataAI.link</a> &ensp;|&ensp;
-    <a href="https://oureports.net/oureports/DataAILite.pdf">DataAILite</a>
+    <a href="http://DataAILite.com">DataAILite</a>
 </div>
 
 <!-- ═══ SCRIPTS ═══ -->
