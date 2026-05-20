@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAIHelp.aspx.vb" Inherits="DataAIHelp" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAIHelp.aspx.vb" Inherits="DataAIHelp" %>
 
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -115,6 +115,7 @@
         .toc-grid > .toc-cell:last-child { border-bottom: none; }
 
         .cell-title { font-size: 0.76rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.32rem; display: flex; align-items: center; gap: 0.35rem; }
+        .cell-title.continue-title { margin: -0.55rem -0.62rem 0.42rem -0.62rem; padding: 0.55rem 0.62rem; background: linear-gradient(180deg, var(--accent-light), var(--accent-soft)); color: var(--accent); justify-content: center; border-bottom: 1px solid var(--border); }
         .cell-title .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(21, 94, 117, 0.10); }
         .cell-title a { color: var(--text-primary); font-weight: 700; }
         .cell-title a:hover { color: #0066CC; }
@@ -287,6 +288,15 @@
                     <div class="cell-title"><span class="dot" style="background:#D97706"></span> Value Models</div>
                     <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=11">Market Profit</a>
                     <a class="toc-link" href="https://oureports.net/oureports/Market.pdf#page=12">Market Scenario</a>
+                </div>
+                <div class="toc-cell" data-topic>
+                    <div class="cell-title continue-title"><span class="dot" style="background:var(--accent)"></span> Analytics Continue</div>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=18">Cohort Analysis</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=19">Funnel Analysis</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=20">ABC Pareto Analysis</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=21">Data Drift Analysis</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=22">KPI Builder</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=23">Data Dictionary</a>
                 </div>
             </div>
         </div>

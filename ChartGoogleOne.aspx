@@ -351,6 +351,8 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <asp:LinkButton  ID="lnkDownloadARR" runat="server" Font-Size="Small">download chart data</asp:LinkButton>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <asp:HyperLink ID="HyperLinkOpenTrends" runat="server" NavigateUrl="~/OpenTrends.aspx" CssClass="NodeStyle" Font-Names="Arial" Font-Size="12px" ToolTip="Open trend equations and Trends links from the current chart data.">Open Trends</asp:HyperLink>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   
         <asp:HyperLink ID="HyperLinkDataAI" runat="server" NavigateUrl="~/DataAI.aspx?pg=charts" CssClass="NodeStyle" Font-Names="Arial" Font-Size="12px" Visible="True" ToolTip="DataAI analytics" Font-Bold="False">DataAI</asp:HyperLink>
     <%--&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;--%>
