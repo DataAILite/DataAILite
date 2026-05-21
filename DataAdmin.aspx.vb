@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Collections.Generic
 Imports System.Data
 Imports System.Globalization
@@ -898,17 +898,19 @@ Partial Class DataAdmin
         dt.Columns.Add("Category/Group 1", GetType(String))
         dt.Columns.Add("Category/Group 2", GetType(String))
         dt.Columns.Add("Matrix/Pivot", GetType(String))
-        dt.Columns.Add("Bar Chart", GetType(String))
-        dt.Columns.Add("...", GetType(String))
+        dt.Columns.Add("Ranking", GetType(String))
+        dt.Columns.Add("Importance", GetType(String))
+        dt.Columns.Add("Interpretation", GetType(String))
         dt.Columns.Add("Dashboard", GetType(String))
 
         For i As Integer = 0 To source.Rows.Count - 1
             Dim row As DataRow = dt.NewRow()
             row("Category/Group 1") = SourceFieldText(source.Rows(i), "Tbl1Fld1", 0)
             row("Category/Group 2") = SourceFieldText(source.Rows(i), "Tbl2Fld2", 1)
-            row("Matrix/Pivot") = "matrix"
-            row("Bar Chart") = "bar"
-            row("...") = "..."
+            row("Matrix/Pivot") = "matrix/pivot"
+            row("Ranking") = "ranking"
+            row("Importance") = "importance"
+            row("Interpretation") = "interpretation"
             row("Dashboard") = "stats dashboard"
             dt.Rows.Add(row)
         Next

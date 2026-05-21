@@ -16,7 +16,7 @@ Partial Class AdvancedAnalytics
         btnGetCoeffsMatrixColumns3c.OnClientClick = "showSpinner();"
 
         lblHeader.Text = Session("REPTITLE") & " - Advanced Analytics - Matrix Balancing"
-        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Matrix_Balancing"
+        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Matrix%20Balancing"
         repid = Session("REPORTID")
         Session("MatrixChart") = ""
 
@@ -432,6 +432,9 @@ Partial Class AdvancedAnalytics
                     DropDownListScenarios.SelectedValue = "3c"
                 End If
                 DropDownListScenarios_SelectedIndexChanged(sender, e)
+                If Request("run") IsNot Nothing AndAlso Request("run").ToString.Trim.ToLower = "balance" AndAlso DropDownListScenarios.SelectedValue = "2a" Then
+                    btnBalanceFlds2a_Click(sender, e)
+                End If
             End If
         Catch ex As Exception
             ret = ex.Message

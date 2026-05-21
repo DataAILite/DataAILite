@@ -25,6 +25,22 @@ Partial Class Analytics
 
         Response.Redirect(link)
     End Sub
+
+    Private Function AnalysisPageUrl(pageName As String, cat1 As String, cat2 As String) As String
+        Dim url As String = pageName & "?Report=" & Server.UrlEncode(Session("REPORTID").ToString()) &
+            "&cat1=" & Server.UrlEncode(cat1) &
+            "&cat2=" & Server.UrlEncode(cat2) &
+            "&y1=" & Server.UrlEncode(DropDownList3.Text) &
+            "&fn=" & Server.UrlEncode(DropDownList4.Text) &
+            "&frm=Analytics"
+
+        If DropDownList5.Text.Trim() <> "" Then
+            url &= "&y2=" & Server.UrlEncode(DropDownList5.Text) &
+                "&fn2=" & Server.UrlEncode(DropDownList6.Text)
+        End If
+
+        Return url
+    End Function
     Private Sub Analytics_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
@@ -34,6 +50,8 @@ Partial Class Analytics
         Dim i As Integer = 0
         Dim j As Integer = 0
         Dim ctlLnk As LinkButton = Nothing
+        Dim ctlHyper As HyperLink = Nothing
+        Dim ctlLabel As Label = Nothing
         Dim qsql As String = "SELECT ReportId,Type FROM OURFiles WHERE ReportId='" & Session("REPORTID") & "' AND Type='RPT'"
         If Session("Crystal") <> "ok" OrElse Not HasRecords(qsql) Then
             Dim treenodecr As WebControls.TreeNode
@@ -293,7 +311,7 @@ Partial Class Analytics
                 'list.Rows(i + 1).Cells(2).InnerHtml = " "
             Else
                 ctlLnk = New LinkButton
-                ctlLnk.Text = "matrix"
+                ctlLnk.Text = "matrix/pivot"
                 ctlLnk.ID = "matrix^" & urlc
                 ctlLnk.ToolTip = "Show Matrix Graph for the field1 and aggrigate function selected above"
                 AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
@@ -301,37 +319,32 @@ Partial Class Analytics
                 list.Rows(i + 1).Cells(2).Controls.Add(ctlLnk)
             End If
 
-            urlc = "ReportViews.aspx?graph=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString & "&grtype=bar&srd=11"
+            urlc = AnalysisPageUrl("Ranking.aspx", cat1, cat2)
             ctlLnk = New LinkButton
-            ctlLnk.Text = "bar"
-            ctlLnk.ID = "bar^" & urlc
-            ctlLnk.ToolTip = "Show Bar Graph for the field1 and aggrigate function selected above"
+            ctlLnk.Text = "ranking"
+            ctlLnk.ID = "ranking^" & urlc
+            ctlLnk.ToolTip = "Open Ranking Analysis for the selected categories and argument field."
             AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
             list.Rows(i + 1).Cells(3).InnerText = String.Empty
             list.Rows(i + 1).Cells(3).Controls.Add(ctlLnk)
 
-            urlc = "ReportViews.aspx?graph=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString & "&grtype=pie&srd=11"
+            urlc = AnalysisPageUrl("ABCPareto.aspx", cat1, cat2)
             ctlLnk = New LinkButton
-            ctlLnk.Text = "pie"
-            ctlLnk.ID = "pie^" & urlc
-            ctlLnk.ToolTip = "Show Pie Graph for the field1 and aggrigate function selected above"
+            ctlLnk.Text = "importance"
+            ctlLnk.ID = "importance^" & urlc
+            ctlLnk.ToolTip = "Open ABC Pareto Importance analysis for the selected categories and argument field."
             AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
             list.Rows(i + 1).Cells(4).InnerText = String.Empty
             list.Rows(i + 1).Cells(4).Controls.Add(ctlLnk)
 
-            If cat1 = cat2 Then
-                list.Rows(i + 1).Cells(5).InnerText = " "
-                'list.Rows(i + 1).Cells(5).InnerHtml = " "
-            Else
-                urlc = "ReportViews.aspx?graph=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString & "&grtype=line&srd=11"
-                ctlLnk = New LinkButton
-                ctlLnk.Text = "line"
-                ctlLnk.ID = "line^" & urlc
-                ctlLnk.ToolTip = "Show Line Graph for the field1 and aggrigate function selected above"
-                AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
-                list.Rows(i + 1).Cells(5).InnerText = String.Empty
-                list.Rows(i + 1).Cells(5).Controls.Add(ctlLnk)
-            End If
+            urlc = AnalysisPageUrl("MarketDemand.aspx", cat1, cat2)
+            ctlLnk = New LinkButton
+            ctlLnk.Text = "interpretation"
+            ctlLnk.ID = "interpretation^" & urlc
+            ctlLnk.ToolTip = "Open Market Demand interpretation for the selected categories and argument field."
+            AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
+            list.Rows(i + 1).Cells(5).InnerText = String.Empty
+            list.Rows(i + 1).Cells(5).Controls.Add(ctlLnk)
 
             'If cat1 = cat2 Then
             '    list.Rows(i + 1).Cells(6).InnerText = " "
@@ -377,14 +390,25 @@ Partial Class Analytics
             list.Rows(i + 1).Cells(8).Controls.Add(ctlLnk)
 
             'advanced analytics
-            urlc = "AdvancedAnalytics.aspx?Report=" & Session("REPORTID") & "&x1=" & cat1.ToString & "&x2=" & cat2.ToString & "&y1=" & DropDownList3.Text & "&fn=" & DropDownList4.Text & "&itt=" & DropDownList5.Text & "&fnitt=" & DropDownList6.Text
-            ctlLnk = New LinkButton
-            ctlLnk.Text = "advanced"
-            ctlLnk.ID = "advanced^" & urlc
-            ctlLnk.ToolTip = "Advanced Analitics for the fields and aggregation functions selected above"
-            AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
-            list.Rows(i + 1).Cells(9).InnerText = String.Empty
-            list.Rows(i + 1).Cells(9).Controls.Add(ctlLnk)
+            If DropDownList5.Text.Trim = "" Then
+                ctlLabel = New Label
+                ctlLabel.ID = "advanced_disabled_" & i.ToString
+                ctlLabel.Text = "advanced"
+                ctlLabel.ForeColor = System.Drawing.Color.Gray
+                ctlLabel.ToolTip = "Select Field2 first to use Advanced Analytics scenario 2a."
+                list.Rows(i + 1).Cells(9).InnerText = String.Empty
+                list.Rows(i + 1).Cells(9).Controls.Add(ctlLabel)
+            Else
+                urlc = "AdvancedAnalytics.aspx?Report=" & Session("REPORTID") & "&x1=" & cat1.ToString & "&x2=" & cat2.ToString & "&y1=" & DropDownList3.Text & "&fn=" & DropDownList4.Text & "&itt=" & DropDownList5.Text & "&fnitt=" & DropDownList6.Text & "&sel=2a&frm=Analytics&run=balance"
+                ctlHyper = New HyperLink
+                ctlHyper.ID = "advanced_" & i.ToString
+                ctlHyper.Text = "advanced"
+                ctlHyper.NavigateUrl = urlc
+                ctlHyper.CssClass = "NodeStyle"
+                ctlHyper.ToolTip = "Open Advanced Analytics scenario 2a for the selected fields and aggregation functions."
+                list.Rows(i + 1).Cells(9).InnerText = String.Empty
+                list.Rows(i + 1).Cells(9).Controls.Add(ctlHyper)
+            End If
         Next
 
         'Category/Group dropdowns
@@ -806,7 +830,7 @@ Partial Class Analytics
                     listshort.Rows(0).Cells(1).InnerText = " "
                 Else
                     ctlLnk = New LinkButton
-                    ctlLnk.Text = "matrix"
+                    ctlLnk.Text = "matrix/pivot"
                     ctlLnk.ID = "smatrix^" & urlc
                     ctlLnk.ToolTip = "Show Matrix Graph for the field1 and aggrigate function selected above"
                     AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
@@ -814,36 +838,32 @@ Partial Class Analytics
                     listshort.Rows(0).Cells(1).Controls.Add(ctlLnk)
                 End If
 
-                urlc = "ReportViews.aspx?graph=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString & "&grtype=bar&srd=11"
+                urlc = AnalysisPageUrl("Ranking.aspx", cat1, cat2)
                 ctlLnk = New LinkButton
-                ctlLnk.Text = "bar"
-                ctlLnk.ID = "sbar^" & urlc
-                ctlLnk.ToolTip = "Show Bar Graph for the field1 and aggrigate function selected above"
+                ctlLnk.Text = "ranking"
+                ctlLnk.ID = "sranking^" & urlc
+                ctlLnk.ToolTip = "Open Ranking Analysis for the selected categories and argument field."
                 AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
                 listshort.Rows(0).Cells(2).InnerText = String.Empty
                 listshort.Rows(0).Cells(2).Controls.Add(ctlLnk)
 
-                urlc = "ReportViews.aspx?graph=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString & "&grtype=pie&srd=11"
+                urlc = AnalysisPageUrl("ABCPareto.aspx", cat1, cat2)
                 ctlLnk = New LinkButton
-                ctlLnk.Text = "pie"
-                ctlLnk.ID = "spie^" & urlc
-                ctlLnk.ToolTip = "Show Pie Graph for the field1 and aggrigate function selected above"
+                ctlLnk.Text = "importance"
+                ctlLnk.ID = "simportance^" & urlc
+                ctlLnk.ToolTip = "Open ABC Pareto Importance analysis for the selected categories and argument field."
                 AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
                 listshort.Rows(0).Cells(3).InnerText = String.Empty
                 listshort.Rows(0).Cells(3).Controls.Add(ctlLnk)
 
-                If cat1 = cat2 Then
-                    listshort.Rows(0).Cells(4).InnerText = " "
-                Else
-                    urlc = "ReportViews.aspx?graph=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString & "&grtype=line&srd=11"
-                    ctlLnk = New LinkButton
-                    ctlLnk.Text = "line"
-                    ctlLnk.ID = "sline^" & urlc
-                    ctlLnk.ToolTip = "Show Line Graph for the field1 and aggrigate function selected above"
-                    AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
-                    listshort.Rows(0).Cells(4).InnerText = String.Empty
-                    listshort.Rows(0).Cells(4).Controls.Add(ctlLnk)
-                End If
+                urlc = AnalysisPageUrl("MarketDemand.aspx", cat1, cat2)
+                ctlLnk = New LinkButton
+                ctlLnk.Text = "interpretation"
+                ctlLnk.ID = "sinterpretation^" & urlc
+                ctlLnk.ToolTip = "Open Market Demand interpretation for the selected categories and argument field."
+                AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
+                listshort.Rows(0).Cells(4).InnerText = String.Empty
+                listshort.Rows(0).Cells(4).Controls.Add(ctlLnk)
 
                 urlc = "ReportViews.aspx?det=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString
                 ctlLnk = New LinkButton
@@ -906,7 +926,7 @@ Partial Class Analytics
                     listshort.Rows(0).Cells(1).InnerText = " "
                 Else
                     ctlLnk = New LinkButton
-                    ctlLnk.Text = "matrix"
+                    ctlLnk.Text = "matrix/pivot"
                     ctlLnk.ID = "smatrix^" & urlc
                     ctlLnk.ToolTip = "Show Matrix Graph for the field1 and aggrigate function selected above"
                     AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
@@ -914,36 +934,32 @@ Partial Class Analytics
                     listshort.Rows(0).Cells(1).Controls.Add(ctlLnk)
                 End If
 
-                urlc = "ReportViews.aspx?graph=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString & "&grtype=bar&srd=11"
+                urlc = AnalysisPageUrl("Ranking.aspx", cat1, cat2)
                 ctlLnk = New LinkButton
-                ctlLnk.Text = "bar"
-                ctlLnk.ID = "sbar^" & urlc
-                ctlLnk.ToolTip = "Show Bar Graph for the field1 and aggrigate function selected above"
+                ctlLnk.Text = "ranking"
+                ctlLnk.ID = "sranking^" & urlc
+                ctlLnk.ToolTip = "Open Ranking Analysis for the selected categories and argument field."
                 AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
                 listshort.Rows(0).Cells(2).InnerText = String.Empty
                 listshort.Rows(0).Cells(2).Controls.Add(ctlLnk)
 
-                urlc = "ReportViews.aspx?graph=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString & "&grtype=pie&srd=11"
+                urlc = AnalysisPageUrl("ABCPareto.aspx", cat1, cat2)
                 ctlLnk = New LinkButton
-                ctlLnk.Text = "pie"
-                ctlLnk.ID = "spie^" & urlc
-                ctlLnk.ToolTip = "Show Pie Graph for the field1 and aggrigate function selected above"
+                ctlLnk.Text = "importance"
+                ctlLnk.ID = "simportance^" & urlc
+                ctlLnk.ToolTip = "Open ABC Pareto Importance analysis for the selected categories and argument field."
                 AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
                 listshort.Rows(0).Cells(3).InnerText = String.Empty
                 listshort.Rows(0).Cells(3).Controls.Add(ctlLnk)
 
-                If cat1 = cat2 Then
-                    listshort.Rows(0).Cells(4).InnerText = " "
-                Else
-                    urlc = "ReportViews.aspx?graph=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString & "&grtype=line&srd=11"
-                    ctlLnk = New LinkButton
-                    ctlLnk.Text = "line"
-                    ctlLnk.ID = "sline^" & urlc
-                    ctlLnk.ToolTip = "Show Line Graph for the field1 and aggrigate function selected above"
-                    AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
-                    listshort.Rows(0).Cells(4).InnerText = String.Empty
-                    listshort.Rows(0).Cells(4).Controls.Add(ctlLnk)
-                End If
+                urlc = AnalysisPageUrl("MarketDemand.aspx", cat1, cat2)
+                ctlLnk = New LinkButton
+                ctlLnk.Text = "interpretation"
+                ctlLnk.ID = "sinterpretation^" & urlc
+                ctlLnk.ToolTip = "Open Market Demand interpretation for the selected categories and argument field."
+                AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
+                listshort.Rows(0).Cells(4).InnerText = String.Empty
+                listshort.Rows(0).Cells(4).Controls.Add(ctlLnk)
 
                 urlc = "ReportViews.aspx?det=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString
                 ctlLnk = New LinkButton

@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Collections.Generic
 Imports System.Data
 Imports System.Globalization
@@ -123,9 +123,24 @@ Partial Class ABCPareto
             
         Next
         If DropDownValueField.Items.Count = 0 Then DropDownValueField.Items.Add(New ListItem("(records)", ""))
-        
-        
-        
+        ApplyRequestSelections()
+    End Sub
+
+    Private Sub ApplyRequestSelections()
+        SelectDropDownValue(DropDownPrimaryField, Request("cat1"))
+        SelectDropDownValue(DropDownValueField, Request("y1"))
+        SelectDropDownValue(DropDownAggregate, Request("fn"))
+    End Sub
+
+    Private Sub SelectDropDownValue(dropDown As DropDownList, valueText As String)
+        If dropDown Is Nothing OrElse valueText Is Nothing OrElse valueText.Trim() = "" Then Exit Sub
+        Dim requestedValue As String = valueText.Trim()
+        If String.Equals(requestedValue, "Avg", StringComparison.OrdinalIgnoreCase) Then requestedValue = "Average"
+        Dim item As ListItem = dropDown.Items.FindByValue(requestedValue)
+        If item Is Nothing Then item = dropDown.Items.FindByText(requestedValue)
+        If item Is Nothing Then Exit Sub
+        dropDown.ClearSelection()
+        item.Selected = True
     End Sub
 
     Private Sub BuildAndBindAnalysis()

@@ -157,27 +157,15 @@ Partial Class OpenTrends
 
         Dim chartType As String = SessionText("ChartType")
         If chartType = "" Then chartType = "Chart"
-        If Not TrendAllowed(chartType) Then
-            LabelError.Text = "Open Trends is not available for " & chartType & ". Use Line, Area, Stepped Area, Scatter, Column, Bar, or Combo charts."
+
+        Dim trendEligibility As OpenTrendsEligibility = OpenTrendsSupport.Evaluate(chartType, SessionText("arr"))
+        If Not trendEligibility.CanProduce Then
+            LabelError.Text = trendEligibility.Reason
             BindTrendGrid(CreateOpenTrendsTable())
             Exit Sub
         End If
 
-        Dim arrText As String = SessionText("arr")
-        If arrText = "" Then
-            LabelError.Text = "No chart data was found. Open or refresh a chart first."
-            BindTrendGrid(CreateOpenTrendsTable())
-            Exit Sub
-        End If
-
-        Dim rows As List(Of List(Of String)) = ParseGoogleArray(arrText)
-        If rows.Count < 2 Then
-            LabelError.Text = "Chart data does not contain enough rows for trend analysis."
-            BindTrendGrid(CreateOpenTrendsTable())
-            Exit Sub
-        End If
-
-        Dim output As DataTable = BuildTrendTable(rows, chartType)
+        Dim output As DataTable = BuildTrendTable(trendEligibility.Rows, chartType)
         If output.Rows.Count = 0 AndAlso LabelError.Text.Trim() = "" Then
             LabelError.Text = "No numeric chart series were found for trend analysis."
         End If
@@ -193,7 +181,7 @@ Partial Class OpenTrends
 
         Dim seriesColumns As New List(Of Integer)()
         For i As Integer = 1 To header.Count - 1
-            If Not IsRoleColumn(header(i)) Then seriesColumns.Add(i)
+            If Not OpenTrendsSupport.IsRoleColumn(header(i)) Then seriesColumns.Add(i)
         Next
 
         If seriesColumns.Count = 0 Then Return output
@@ -207,7 +195,7 @@ Partial Class OpenTrends
         End If
 
         Dim predictionX As Double = defaultX
-        If txtPredictX.Text.Trim() <> "" AndAlso Not TryGetDouble(txtPredictX.Text.Trim(), predictionX) Then
+        If txtPredictX.Text.Trim() <> "" AndAlso Not OpenTrendsSupport.TryGetDouble(txtPredictX.Text.Trim(), predictionX) Then
             LabelError.Text = "Predict Y when X is must be numeric."
             Return output
         End If
@@ -218,7 +206,7 @@ Partial Class OpenTrends
                 If r - 1 >= xValues.Count Then Continue For
                 If seriesIndex >= rows(r).Count Then Continue For
                 Dim yValue As Double
-                If TryGetDouble(rows(r)(seriesIndex), yValue) Then
+                If OpenTrendsSupport.TryGetDouble(rows(r)(seriesIndex), yValue) Then
                     bucket.AddPoint(xValues(r - 1), yValue)
                 End If
             Next

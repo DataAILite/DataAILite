@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="Analytics.aspx.vb" Inherits="Analytics" %>
+<%@ Page Language="VB" AutoEventWireup="false" CodeFile="Analytics.aspx.vb" Inherits="Analytics" %>
 
 <!DOCTYPE html>
 
@@ -374,9 +374,9 @@
                     <td class="auto-style3"  style="font-weight:bold">Category/Group 1</td>
                     <td class="auto-style3"  style="font-weight:bold">Category/Group 2</td>
                     <td class="auto-style1" style="font-weight:bold">Matrix/Pivot</td>
-                    <td class="auto-style1" style="font-weight:bold">Bar Chart</td>                    
-                    <td class="auto-style1" style="font-weight:bold">Pie Chart</td>
-                    <td class="auto-style1" style="font-weight:bold">Line Chart</td>                    
+                    <td class="auto-style1" style="font-weight:bold">Ranking</td>                    
+                    <td class="auto-style1" style="font-weight:bold">Importance</td>
+                    <td class="auto-style1" style="font-weight:bold">Interpretation</td>                    
                     <td class="auto-style1" style="font-weight:bold">Data records</td>
                     <td class="auto-style1" style="font-weight:bold">Dashboard</td>
                     <td class="auto-style1" style="font-weight:bold">Charts</td>

@@ -1911,7 +1911,33 @@ Partial Class ChartGoogleOne
 
         Catch ex As Exception
             ret = ex.Message
+        Finally
+            UpdateOpenTrendsVisibility()
         End Try
+    End Sub
+
+    Private Sub UpdateOpenTrendsVisibility()
+        Dim currentChartType As String = charttype
+        If currentChartType Is Nothing OrElse currentChartType.Trim() = "" Then
+            If DropDownChartType IsNot Nothing AndAlso DropDownChartType.SelectedItem IsNot Nothing Then
+                currentChartType = DropDownChartType.SelectedItem.Text
+            ElseIf Session("ChartType") IsNot Nothing Then
+                currentChartType = Session("ChartType").ToString()
+            End If
+        End If
+
+        Dim arrText As String = ""
+        If Session("arr") IsNot Nothing Then arrText = Session("arr").ToString()
+
+        Dim trendEligibility As OpenTrendsEligibility = OpenTrendsSupport.Evaluate(currentChartType, arrText)
+        HyperLinkOpenTrends.Visible = trendEligibility.CanProduce
+        HyperLinkOpenTrends.Enabled = trendEligibility.CanProduce
+        HyperLinkOpenTrends.NavigateUrl = "~/OpenTrends.aspx"
+        If trendEligibility.CanProduce Then
+            HyperLinkOpenTrends.ToolTip = "Open trend equations and Trends links from the current chart data."
+        Else
+            HyperLinkOpenTrends.ToolTip = trendEligibility.Reason
+        End If
     End Sub
 
     Private Sub LinkButtonBack_Click(sender As Object, e As EventArgs) Handles LinkButtonBack.Click
