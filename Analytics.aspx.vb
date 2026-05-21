@@ -399,13 +399,23 @@ Partial Class Analytics
                 list.Rows(i + 1).Cells(9).InnerText = String.Empty
                 list.Rows(i + 1).Cells(9).Controls.Add(ctlLabel)
             Else
-                urlc = "AdvancedAnalytics.aspx?Report=" & Session("REPORTID") & "&x1=" & cat1.ToString & "&x2=" & cat2.ToString & "&y1=" & DropDownList3.Text & "&fn=" & DropDownList4.Text & "&itt=" & DropDownList5.Text & "&fnitt=" & DropDownList6.Text & "&sel=2a&frm=Analytics&run=balance"
+                Dim field2Aggregate As String = DropDownList6.SelectedValue.ToString.Trim
+                If field2Aggregate = "" Then
+                    If Session("Aggregate2") IsNot Nothing AndAlso Session("Aggregate2").ToString.Trim <> "" Then
+                        field2Aggregate = Session("Aggregate2").ToString.Trim
+                    ElseIf Session("AggregateF2") IsNot Nothing AndAlso Session("AggregateF2").ToString.Trim <> "" Then
+                        field2Aggregate = Session("AggregateF2").ToString.Trim
+                    Else
+                        field2Aggregate = DropDownList6.Text.Trim
+                    End If
+                End If
+                urlc = "AdvancedAnalytics.aspx?Report=" & Server.UrlEncode(Session("REPORTID").ToString) & "&x1=" & Server.UrlEncode(cat1.ToString) & "&x2=" & Server.UrlEncode(cat2.ToString) & "&y1=" & Server.UrlEncode(DropDownList3.Text) & "&fn=" & Server.UrlEncode(DropDownList4.Text) & "&itt=" & Server.UrlEncode(DropDownList5.Text) & "&fnitt=" & Server.UrlEncode(field2Aggregate) & "&sel=2a&frm=Analytics&run=balance"
                 ctlHyper = New HyperLink
                 ctlHyper.ID = "advanced_" & i.ToString
                 ctlHyper.Text = "advanced"
                 ctlHyper.NavigateUrl = urlc
                 ctlHyper.CssClass = "NodeStyle"
-                ctlHyper.ToolTip = "Open Advanced Analytics scenario 2a for the selected fields and aggregation functions."
+                ctlHyper.ToolTip = "Open Advanced Analytics scenario 2a for the selected fields and aggregation functions. Field2 aggregation: " & field2Aggregate
                 list.Rows(i + 1).Cells(9).InnerText = String.Empty
                 list.Rows(i + 1).Cells(9).Controls.Add(ctlHyper)
             End If
@@ -753,11 +763,10 @@ Partial Class Analytics
 
         Session("AxisY2") = DropDownList5.SelectedValue.Trim
         If Not Session("Aggregate2") Is Nothing AndAlso Session("Aggregate2").ToString.Trim <> "" Then
-            Try
-                DropDownList6.SelectedValue = Session("Aggregate2")
-            Catch ex As Exception
-
-            End Try
+            Dim field2Aggregate As String = Session("Aggregate2").ToString.Trim
+            If DropDownList6.Items.FindByValue(field2Aggregate) IsNot Nothing Then
+                DropDownList6.SelectedValue = field2Aggregate
+            End If
         End If
         Session("nv2") = DropDownList6.Items.Count
 
@@ -784,7 +793,7 @@ Partial Class Analytics
         'End If
         Try
             If DropDownList6.Text.Trim <> "" Then
-                Session("Aggregate2") = DropDownList6.Text
+                Session("Aggregate2") = DropDownList6.SelectedValue
             End If
 
         Catch ex As Exception

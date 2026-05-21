@@ -304,7 +304,7 @@
                                         <asp:DropDownList ID="DropDownList5" runat="server" ToolTip="For Matrix balancing or for checking correlation between field1 and field2" AutoPostBack="True"></asp:DropDownList>  
                                         <br />
                                         &nbsp;&nbsp;<asp:Label ID="Label6" runat="server" Text="and the aggregation function "  ToolTip="aggregation function to aggrigate the values of argument field2"></asp:Label>
-                                        <asp:DropDownList ID="DropDownList6" runat="server"  ToolTip="Numeric or Text aggrigate functions"></asp:DropDownList>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <asp:DropDownList ID="DropDownList6" runat="server"  ToolTip="Numeric or Text aggrigate functions" AutoPostBack="True"></asp:DropDownList>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                        
                                         <br />&nbsp; 
                                         <asp:Label ID="Label14" runat="server" Text="=================================================" ForeColor="White"></asp:Label>

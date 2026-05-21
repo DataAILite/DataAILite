@@ -21,6 +21,18 @@ Partial Class AdvancedAnalytics
         Session("MatrixChart") = ""
 
     End Sub
+    Private Sub RestoreField2Aggregation()
+        Dim f2Aggregate As String = String.Empty
+        If Request("fnitt") IsNot Nothing AndAlso Request("fnitt").ToString.Trim <> "" Then
+            f2Aggregate = Request("fnitt").ToString.Trim
+            Session("AggregateF2") = f2Aggregate
+        ElseIf Session("AggregateF2") IsNot Nothing Then
+            f2Aggregate = Session("AggregateF2").ToString.Trim
+        End If
+        If f2Aggregate <> "" AndAlso DropDownList8.Items.FindByValue(f2Aggregate) IsNot Nothing Then
+            DropDownList8.SelectedValue = f2Aggregate
+        End If
+    End Sub
     Private Sub AdvancedAnalytics_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
@@ -433,6 +445,7 @@ Partial Class AdvancedAnalytics
                 End If
                 DropDownListScenarios_SelectedIndexChanged(sender, e)
                 If Request("run") IsNot Nothing AndAlso Request("run").ToString.Trim.ToLower = "balance" AndAlso DropDownListScenarios.SelectedValue = "2a" Then
+                    RestoreField2Aggregation()
                     btnBalanceFlds2a_Click(sender, e)
                 End If
             End If
@@ -563,13 +576,7 @@ Partial Class AdvancedAnalytics
             DropDownList8.Items.Add("Value")
         End If
         Session("AxisYF2") = DropDownList3.SelectedValue
-        If Not Session("AggregateF2") Is Nothing Then
-            Try
-                DropDownList8.SelectedValue = Session("AggregateF2")
-            Catch ex As Exception
-
-            End Try
-        End If
+        RestoreField2Aggregation()
         Session("nvf2") = DropDownList8.Items.Count
 
         'fill out DropDownList6 and DropDownList7 from dv3
@@ -1298,6 +1305,7 @@ Partial Class AdvancedAnalytics
         lnkCompareTargetBalancing.Enabled = True
         lnkComparePartlyBalToWholeBal.Visible = True
         lnkComparePartlyBalToWholeBal.Enabled = True
+        RestoreField2Aggregation()
 
         LabelError.Text = ""
         LabelResult.Text = "Waiting..."
