@@ -1,18 +1,18 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataDrift.aspx.vb" Inherits="DataDrift" %>
+<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataReadinessScanner.aspx.vb" Inherits="DataReadinessScanner" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Data Drift Analysis</title>
+    <title>Data Readiness Scanner</title>
     <style type="text/css">
         .NodeStyle { color:#0066FF; font-size:12px; font-weight:normal; text-decoration:none; }
         .NodeStyle:hover { text-decoration:underline; color:darkblue; }
         .ticketbutton { width:90px; height:25px; font-size:12px; border-radius:5px; border-style:solid; border-color:#4e4747; color:black; border-width:1px; background-image:linear-gradient(to bottom, rgba(211,211,211,0),rgba(211,211,250,3)); padding:3px; margin:5px; }
         .aiLinkButton { display:inline-block; width:90px; height:25px; line-height:17px; padding:3px; margin:5px; border-style:solid; border-color:#4e4747; border-width:1px; border-radius:5px; background-image:linear-gradient(to bottom, rgba(211,211,211,0),rgba(211,211,250,3)); color:#0066FF; font-size:12px; font-weight:bold; text-align:center; text-decoration:none; box-sizing:border-box; vertical-align:middle; }
         .aiLinkButton:hover { color:#004DCC; text-decoration:none; }
-        .analysisgrid { font-family:Arial; font-size:12px; border-collapse:collapse; background-color:white; }
+        .analysisgrid { font-family:Arial; font-size:12px; border-collapse:collapse; background-color:white; width:100%; }
         .analysisgrid th { background-color:#663300; color:white; border:1px solid white; padding:4px; white-space:nowrap; }
         .analysisgrid td { border:1px solid #d0d0d0; padding:4px; white-space:nowrap; }
-        .controlpanel { background-color:#e5e5e5; border:medium double #FFFFFF; color:black; font-family:Arial; font-size:small; width:auto; min-width:1120px; max-width:1280px; margin-left:0; margin-right:auto; }
+        .controlpanel { background-color:#e5e5e5; border:medium double #FFFFFF; color:black; font-family:Arial; font-size:small; width:auto; min-width:800px; max-width:1040px; margin-left:0; margin-right:auto; }
         .analysisSubtitle { display:block; font-family:Arial; font-size:small; color:#333333; padding-top:4px; padding-bottom:8px; }
         .analysisExplanation { font-family:Arial; font-size:small; color:#333333; background-color:#f5fbf4; border:1px solid #d8ead4; padding:8px; margin-top:8px; max-width:1180px; }
         .analysisExplanation span { display:block; padding-bottom:4px; }
@@ -24,7 +24,7 @@
 <body>
 <form id="form1" runat="server">
 <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
-<asp:UpdatePanel ID="udpDataDrift" runat="server">
+<asp:UpdatePanel ID="udpDataReadinessScanner" runat="server">
 <ContentTemplate>
 <table>
 <tr><td colspan="3" style="font-size:x-large; font-weight:bold; background-color:#e5e5e5; height:40px;"><asp:Label ID="LabelPageTtl" runat="server" Text="Online User Reporting"></asp:Label></td></tr>
@@ -149,7 +149,6 @@
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Readiness Scanner" Value="DataReadinessScanner.aspx"></asp:TreeNode>
 
                                         </asp:TreeNode>
@@ -193,26 +192,24 @@
 <td style="width:85%; text-align:left; vertical-align:top;">
 <asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial">Analytics</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkReport" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" CssClass="NodeStyle" Font-Names="Arial">Report and Charts</asp:HyperLink>
-&nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Data%20Drift" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>
+&nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Data%20Readiness" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
 <br /><br />
-<div style="text-align:center;"><asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Data Drift Analysis</asp:Label><asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Compare field distributions between two periods, groups, locations, or other selected segments."></asp:Label></div>
+<div style="text-align:center;"><asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Data Readiness Scanner</asp:Label><asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Scan the current report or imported dataset and recommend the analytics, market models, charts, maps, and quality checks that are most useful for its fields. The grid is sorted by readiness score assigned by the algorithm."></asp:Label></div>
 <br />
 <table class="controlpanel" cellpadding="4" cellspacing="0">
-<tr><td style="font-weight:bold;">Compare Field:</td><td><asp:DropDownList ID="DropDownPrimaryField" runat="server" Width="190px" ToolTip="Field whose distribution is compared between base and compare segments."></asp:DropDownList></td><td style="font-weight:bold;">Segment Field:</td><td><asp:DropDownList ID="DropDownSecondaryField" runat="server" Width="190px" AutoPostBack="True" ToolTip="Date, group, location, or category field that defines the two segments."></asp:DropDownList></td></tr>
-<tr><td style="font-weight:bold;">Base Value:</td><td><asp:DropDownList ID="DropDownBaseValue" runat="server" Width="190px"></asp:DropDownList></td><td style="font-weight:bold;">Compare Value:</td><td><asp:DropDownList ID="DropDownCompareValue" runat="server" Width="190px"></asp:DropDownList></td></tr>
-<tr><td style="font-weight:bold;">Search:</td><td colspan="3"><asp:TextBox ID="txtSearch" runat="server" Width="420px" ToolTip="Optional text used to filter rows shown in the analysis grid."></asp:TextBox><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" ToolTip="Build the analysis using the selected fields." /><asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" ToolTip="Clear search and rebuild the default analysis." /><asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" ToolTip="Export the analysis grid to CSV." /><asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" ToolTip="Export the analysis grid to Excel." /><asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkDataDriftAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret the analysis grid and method explanation.">AI</asp:LinkButton></td></tr>
+<tr><td style="font-weight:bold;">Search:</td><td><asp:TextBox ID="txtSearch" runat="server" Width="420px" ToolTip="Optional text used to filter rows shown in the readiness grid."></asp:TextBox><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" ToolTip="Scan the data and build recommended analytics." /><asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" ToolTip="Clear search and rebuild all recommendations." /><asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" ToolTip="Export the readiness grid to CSV." /><asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" ToolTip="Export the readiness grid to Excel." /><asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkDataReadinessAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret the readiness grid and method explanation.">AI</asp:LinkButton></td></tr>
 </table>
 <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
 <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br />
 <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div>
-<div style="overflow:auto; max-width:100%;"><asp:GridView ID="GridViewDataDrift" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView></div>
+<div style="overflow:auto; max-width:100%; width:100%;"><asp:GridView ID="GridViewDataReadinessScanner" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both" Width="100%"></asp:GridView></div>
 <div class="analysisExplanation"><asp:Label ID="LabelModelExplanation" runat="server"></asp:Label><asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label><asp:Label ID="LabelOutputExplanation" runat="server"></asp:Label></div>
 </td></tr></table>
 </ContentTemplate>
-<Triggers><asp:PostBackTrigger ControlID="ButtonExportCSV" /><asp:PostBackTrigger ControlID="ButtonExportExcel" /><asp:PostBackTrigger ControlID="lnkDataDriftAI" /></Triggers>
+<Triggers><asp:PostBackTrigger ControlID="ButtonExportCSV" /><asp:PostBackTrigger ControlID="ButtonExportExcel" /><asp:PostBackTrigger ControlID="lnkDataReadinessAI" /></Triggers>
 </asp:UpdatePanel>
-<asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="udpDataDrift"><ProgressTemplate><div class="modal"><div class="center"><asp:Image ID="imgProgress" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/Controls/Images/WaitImage2.gif" />Please Wait...</div></div></ProgressTemplate></asp:UpdateProgress>
+<asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="udpDataReadinessScanner"><ProgressTemplate><div class="modal"><div class="center"><asp:Image ID="imgProgress" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/Controls/Images/WaitImage2.gif" />Please Wait...</div></div></ProgressTemplate></asp:UpdateProgress>
 <div id="ManualWaitingPanel" class="modal" style="display:none;"><div class="center"><img src="Controls/Images/WaitImage2.gif" alt="Please Wait" />Please Wait...</div></div>
 </form>
 <script type="text/javascript">

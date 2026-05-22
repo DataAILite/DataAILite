@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAdmin.aspx.vb" Inherits="DataAdmin" %>
+<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAdmin.aspx.vb" Inherits="DataAdmin" %>
 
 <!DOCTYPE html>
 
@@ -359,6 +359,7 @@
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Data Readiness Scanner" Value="DataReadinessScanner.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
                                         <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="False">
 
@@ -412,11 +413,21 @@
                                     <div class="tileGrid">
                                         <a id="tileAnalytics" runat="server" class="analyticsTile" href="Analytics.aspx" title="Open Analytics">
                                             <span class="tileCaption">
-                                                <span class="tileTitle">Analytics</span>
+                                                <span class="tileTitle">Detail Analytics</span>
                                                 <span class="tileText">Grouped summaries, report analytics, charts, and selected field comparisons.</span>
                                             </span>
                                             <span class="tileBody">Use this as the main analytics page for selected report fields and groups.</span>
                                             <span class="previewBox"><asp:Literal ID="litPreviewAnalytics" runat="server"></asp:Literal></span>
+                                            <span class="openText">Open</span>
+                                        </a>
+
+                                        <a id="tileDataReadiness" runat="server" class="analyticsTile" href="DataReadinessScanner.aspx" title="Open Data Readiness Scanner">
+                                            <span class="tileCaption">
+                                                <span class="tileTitle">Data Readiness Scanner</span>
+                                                <span class="tileText">Recommended analytics sorted by readiness score assigned by the algorithm.</span>
+                                            </span>
+                                            <span class="tileBody">Scan the current report or imported dataset and see which analytics, market models, charts, maps, and quality checks fit best.</span>
+                                            <span class="previewBox"><asp:Literal ID="litPreviewDataReadiness" runat="server"></asp:Literal></span>
                                             <span class="openText">Open</span>
                                         </a>
 

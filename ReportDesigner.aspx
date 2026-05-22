@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ReportDesigner.aspx.vb" Inherits="ReportDesigner" %>
+<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ReportDesigner.aspx.vb" Inherits="ReportDesigner" %>
 
 <script type="text/javascript" src="Controls/Javascripts/ReportView.js"></script>
 <script type="text/javascript" src="Controls/Javascripts/ReportViewMenu.js" ></script>
@@ -97,6 +97,7 @@
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Data Readiness Scanner" Value="DataReadinessScanner.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
                                         <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="False">
 

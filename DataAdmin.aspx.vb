@@ -59,6 +59,7 @@ Partial Class DataAdmin
         Dim dv As DataView = CurrentDataView()
 
         litPreviewAnalytics.Text = BuildAnalyticsPreviewHtml(dv)
+        litPreviewDataReadiness.Text = BuildDataReadinessPreviewHtml(dv)
         litPreviewStatistics.Text = BuildStatisticsPreviewHtml(dv)
         litPreviewGroups.Text = BuildGroupsPreviewHtml(dv)
         litPreviewChartRecommendations.Text = BuildChartRecommendationsPreviewHtml(dv)
@@ -115,6 +116,7 @@ Partial Class DataAdmin
     Private Function DashboardTiles() As List(Of Control)
         Dim tiles As New List(Of Control)()
         tiles.Add(tileAnalytics)
+        tiles.Add(tileDataReadiness)
         tiles.Add(tileStatistics)
         tiles.Add(tileGroups)
         tiles.Add(tileChartRecommendations)
@@ -199,6 +201,21 @@ Partial Class DataAdmin
 
         If Not HasPreviewData(dv) Then Return EmptyPreview("No report data available.")
         Return BuildGroupsPreviewHtml(dv)
+    End Function
+
+    Private Function BuildDataReadinessPreviewHtml(dv As DataView) As String
+        If Not HasPreviewData(dv) Then Return EmptyPreview("No report data available.")
+        Dim textCols As List(Of DataColumn) = TextColumns(dv.Table)
+        Dim numericCols As List(Of DataColumn) = NumericColumns(dv.Table)
+        Dim dateCol As DataColumn = FirstDateColumn(dv.Table)
+        Dim rows As New List(Of String())()
+        rows.Add(New String() {"Detail Analytics", "High", "Category/value dropdown guidance"})
+        rows.Add(New String() {"Data Overall Statistics", "High", "Numeric and text summaries"})
+        If textCols.Count > 0 AndAlso numericCols.Count > 0 Then rows.Add(New String() {"Groups Statistics", "High", textCols(0).ColumnName & " + " & numericCols(0).ColumnName})
+        If numericCols.Count >= 2 Then rows.Add(New String() {"Fields Correlation", "High", numericCols(0).ColumnName & " + " & numericCols(1).ColumnName})
+        If dateCol IsNot Nothing AndAlso numericCols.Count > 0 Then rows.Add(New String() {"Time Based Summaries", "High", dateCol.ColumnName & " + " & numericCols(0).ColumnName})
+        If rows.Count < 5 Then rows.Add(New String() {"Data Quality", "Possible", "Missing and duplicate checks"})
+        Return RenderPreviewTable(New String() {"Analysis", "Readiness", "Suggested Fields"}, rows)
     End Function
 
     Private Function BuildStatisticsPreviewHtml(dv As DataView) As String

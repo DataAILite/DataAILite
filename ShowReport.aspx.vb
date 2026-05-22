@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Configuration
 Imports System.Collections.Generic
 Imports System.Data
@@ -723,6 +723,20 @@ Partial Class ShowReport
                     Session("srch") = srch
                     Session("DataDictionaryFilter") = srch
                     LabelAddWhere.Text = "Data Dictionary filter"
+                End If
+            End If
+            If Not Request("readinessfilter") Is Nothing AndAlso Request("readinessfilter").ToString.Trim() <> "" Then
+                Dim readinessFilters As Dictionary(Of String, String) = TryCast(Session("DataReadinessScannerFilters"), Dictionary(Of String, String))
+                Dim readinessId As String = Request("readinessfilter").ToString.Trim()
+                If readinessFilters IsNot Nothing AndAlso readinessFilters.ContainsKey(readinessId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & readinessFilters(readinessId) & ")"
+                    Else
+                        srch = readinessFilters(readinessId)
+                    End If
+                    Session("srch") = srch
+                    Session("DataReadinessScannerFilter") = srch
+                    LabelAddWhere.Text = "Data Readiness Scanner filter"
                 End If
             End If
             If Not Request("mrfilter") Is Nothing AndAlso Request("mrfilter").ToString.Trim() <> "" Then

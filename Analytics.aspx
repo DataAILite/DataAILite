@@ -159,6 +159,7 @@
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Data Readiness Scanner" Value="DataReadinessScanner.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
                                         <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="False">
                                             <asp:TreeNode Text="Market Demand" Value="MarketDemand.aspx" NavigateUrl="MarketDemand.aspx"></asp:TreeNode>
@@ -192,7 +193,7 @@
         <asp:HyperLink ID="HyperLinkAnalyticsDashboard" runat="server" NavigateUrl="~/DataAdmin.aspx" CssClass="NodeStyle" Font-Names="Arial">Analytics Dashboard</asp:HyperLink>
 
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/ShowReport.aspx?srd=12" CssClass="NodeStyle" Font-Names="Arial">Correlation</asp:HyperLink>
+        <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/DataReadinessScanner.aspx" CssClass="NodeStyle" Font-Names="Arial">Data Readiness</asp:HyperLink>
         
         &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="~/ShowReport.aspx?srd=8" CssClass="NodeStyle" Font-Names="Arial">Data and Statistics</asp:HyperLink>
