@@ -55,21 +55,24 @@
         .hero-lead { font-size: 0.95rem; line-height: 1.65; color: var(--text-secondary); max-width: 520px; margin: 0 auto; }
 
         /* ── Content ── */
-        .content { max-width: 720px; margin: 0 auto; padding: 1rem 2rem 3rem; }
+        .content { max-width: 1120px; margin: 0 auto; padding: 1rem 2rem 3rem; }
 
         /* ── Option Cards ── */
-        .option-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem 2.5rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm); transition: box-shadow var(--transition); position: relative; overflow: hidden; }
+        .option-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; gap: 1.25rem; margin-bottom: 1.25rem; }
+        .option-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem 2.5rem; box-shadow: var(--shadow-sm); transition: box-shadow var(--transition); position: relative; overflow: hidden; height: 100%; }
         .option-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); }
         .option-card:hover { box-shadow: var(--shadow-md); }
         .option-card h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--accent); margin-bottom: 0.6rem; }
         .option-card p { font-size: 0.92rem; line-height: 1.7; color: var(--text-secondary); margin-bottom: 0.75rem; }
         .option-card .note { font-size: 0.84rem; color: var(--red); font-weight: 600; line-height: 1.5; }
+        .memory-action { margin: 3.6rem 0 1.5rem; text-align: center; }
 
         /* ── Email form row ── */
         .email-row { display: flex; align-items: center; gap: 0.75rem; margin: 1rem 0 0.5rem; flex-wrap: wrap; }
         .email-row label { font-size: 0.9rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+        .required-mark { color: var(--red); margin-left: 0.15rem; }
         .email-row input[type="text"], .email-row input[type="email"] {
-            flex: 1; min-width: 220px; padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm);
+            flex: 1; min-width: 220px; padding: 0.6rem 1rem; border: 1px solid var(--red); border-radius: var(--radius-sm);
             font-family: 'DM Sans', sans-serif; font-size: 0.92rem; color: var(--text-primary);
             background: var(--bg-primary); transition: border-color var(--transition);
         }
@@ -135,7 +138,7 @@
         /* ── asp:TextBox override ── */
         input[name*="txtEmail"] {
             flex: 1; min-width: 220px; padding: 0.6rem 1rem !important; border: 1px solid var(--border) !important;
-            border-radius: var(--radius-sm) !important; font-family: 'DM Sans', sans-serif !important;
+            border: 1px solid var(--red) !important; border-radius: var(--radius-sm) !important; font-family: 'DM Sans', sans-serif !important;
             font-size: 0.92rem !important; color: var(--text-primary) !important; background: var(--bg-primary) !important;
             transition: border-color var(--transition) !important; width: 100% !important; max-width: 360px;
         }
@@ -147,6 +150,10 @@
             .hero { padding: 1.5rem 1.25rem 0.5rem; }
             .content { padding: 0.75rem 1.25rem 2rem; }
             .email-row { flex-direction: column; align-items: stretch; }
+        }
+        @media (max-width: 760px) {
+            .option-grid { grid-template-columns: 1fr; }
+            .memory-action { margin-top: 1.5rem; }
         }
     </style>
 </head>
@@ -178,19 +185,20 @@
 
 <div class="content">
 
+    <div class="option-grid">
     <!-- ── Option 1: Work in Memory ── -->
     <div class="option-card">
         <h2>Work in Memory</h2>
         <p>Upload your data in JSON, XML, CSV, or XLS format. It will be analyzed in memory and will not be kept when DataAI pages are closed.</p>
-        <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/DataAIaddons.aspx" CssClass="btn-link-styled">
-            Launch In-Memory Mode <span class="arrow">&#8594;</span>
-        </asp:HyperLink>
+        <div class="memory-action">
+            <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/DataAIaddons.aspx" CssClass="btn-accent">
+                Launch In-Memory Mode
+            </asp:HyperLink>
+        </div>
         <div style="margin-top:0.5rem;">
-            <asp:Label ID="Label2" runat="server" CssClass="note">Your data in JSON, XML, CSV, XLS format will be analyzed in memory and will not be kept when DataAI pages are closed.</asp:Label>
+            <asp:Label ID="Label2" runat="server" CssClass="note">Your data in JSON, XML, CSV, XLS format will be analyzed in memory and will not be kept when Log off and all DataAI pages are closed.</asp:Label>
         </div>
     </div>
-
-    <div class="or-divider"><span>or</span></div>
 
     <!-- ── Option 2: One-Click Registration ── -->
     <div class="option-card">
@@ -201,7 +209,7 @@
             <tr>
                 <td>
                     <div class="email-row">
-                        <label for="txtEmail">Email</label>
+                        <label for="txtEmail">Email<span class="required-mark">*</span></label>
                         <asp:TextBox runat="server" ID="txtEmail" type="text" ValidateRequestMode="Enabled" TextMode="Email" />
                     </div>
                 </td>
@@ -228,6 +236,7 @@
         <div style="text-align:center; margin-top:1.25rem;">
             <asp:Button ID="ButtonVideo" runat="server" Text="Quick Start Video" OnClientClick="target='_blank'" ToolTip="Video Demo" />
         </div>
+    </div>
     </div>
 
     <!-- ── Disclaimer ── -->

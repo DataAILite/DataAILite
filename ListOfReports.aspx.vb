@@ -599,13 +599,9 @@ Partial Class ListOfReports
         Dim j As Integer
 
         list.Rows(0).Cells(0).InnerHtml = ""
-        list.Rows(0).Cells(1).Align = "center"
-        list.Rows(0).Cells(2).InnerHtml = ""
-        list.Rows(0).Cells(3).InnerHtml = ""
-        list.Rows(0).Cells(4).InnerHtml = ""
-        list.Rows(0).Cells(5).InnerHtml = ""
-        list.Rows(0).Cells(6).InnerHtml = ""
-        list.Rows(0).Cells(7).InnerHtml = ""
+        For j = 1 To list.Rows(0).Cells.Count - 1
+            list.Rows(0).Cells(j).InnerHtml = ""
+        Next
         dv = Nothing
         Dim sqlst As String = String.Empty
         Dim srch As String = cleanText(txtSearch.Text)
@@ -766,8 +762,21 @@ Partial Class ListOfReports
                     list.Rows(i + 1).Cells(0).Controls.Add(ctl)
                     list.Rows(i + 1).Cells(0).Align = "center"
 
-
+                    list.Rows(0).Cells(0).InnerText = " AI "
                     list.Rows(0).Cells(0).Align = "center"
+
+                    ctl = New LinkButton
+                    ctl.Text = "data readiness"
+                    ctl.ID = "Readiness*" & rep
+                    ctl.ToolTip = "Data Readiness Scanner for " & repttl
+                    ctl.CssClass = "NodeStyle"
+                    ctl.Font.Size = 10
+                    AddHandler ctl.Click, AddressOf btnDataReadiness_Click
+                    list.Rows(0).Cells(1).InnerText = "Data Readiness"
+                    list.Rows(i + 1).Cells(1).InnerText = ""
+                    list.Rows(i + 1).Cells(1).Controls.Add(ctl)
+                    list.Rows(i + 1).Cells(1).Align = "center"
+                    list.Rows(0).Cells(1).Align = "center"
 
                     ctl = New LinkButton
                     ctl.Text = "analytics dashboard"
@@ -776,11 +785,24 @@ Partial Class ListOfReports
                     ctl.CssClass = "NodeStyle"
                     ctl.Font.Size = 10
                     AddHandler ctl.Click, AddressOf btnDataAdmin_Click
-                    list.Rows(0).Cells(1).InnerText = "Analytics Dashboard"
-                    list.Rows(i + 1).Cells(1).InnerText = ""
-                    list.Rows(i + 1).Cells(1).Controls.Add(ctl)
-                    list.Rows(i + 1).Cells(1).Align = "center"
-                    list.Rows(0).Cells(1).Align = "center"
+                    list.Rows(0).Cells(2).InnerText = "Analytics Dashboard"
+                    list.Rows(i + 1).Cells(2).InnerText = ""
+                    list.Rows(i + 1).Cells(2).Controls.Add(ctl)
+                    list.Rows(i + 1).Cells(2).Align = "center"
+                    list.Rows(0).Cells(2).Align = "center"
+
+                    ctl = New LinkButton
+                    ctl.Text = "market dashboard"
+                    ctl.ID = rep & "+" & repttl
+                    ctl.ToolTip = "Market Dashboard for " & repttl
+                    ctl.CssClass = "NodeStyle"
+                    ctl.Font.Size = 10
+                    AddHandler ctl.Click, AddressOf btnMarketDashboard_Click
+                    list.Rows(0).Cells(3).InnerText = "Market Dashboard"
+                    list.Rows(i + 1).Cells(3).InnerText = ""
+                    list.Rows(i + 1).Cells(3).Controls.Add(ctl)
+                    list.Rows(i + 1).Cells(3).Align = "center"
+                    list.Rows(0).Cells(3).Align = "center"
 
                     ctl = New LinkButton
                     ctl.Text = repttl
@@ -789,21 +811,21 @@ Partial Class ListOfReports
                     ctl.CssClass = "NodeStyle"
                     ctl.Font.Size = 10
                     AddHandler ctl.Click, AddressOf btnShow_Click
-                    list.Rows(i + 1).Cells(2).InnerText = ""
-                    list.Rows(i + 1).Cells(2).Controls.Add(ctl)
-                    list.Rows(i + 1).Cells(2).Align = "left"
-                    list.Rows(0).Cells(2).Align = "left"
+                    list.Rows(i + 1).Cells(4).InnerText = ""
+                    list.Rows(i + 1).Cells(4).Controls.Add(ctl)
+                    list.Rows(i + 1).Cells(4).Align = "left"
+                    list.Rows(0).Cells(4).Align = "left"
 
                     ctl = New LinkButton
-                    ctl.Text = "analytics"
+                    ctl.Text = "detail analytics"
                     ctl.ID = rep & "&" & repttl
                     ctl.ToolTip = "Analytics for " & repttl
                     ctl.CssClass = "NodeStyle"
                     ctl.Font.Size = 10
                     AddHandler ctl.Click, AddressOf btnAnalytics_Click
-                    list.Rows(0).Cells(9).InnerText = "Analytics"
-                    list.Rows(i + 1).Cells(9).InnerText = ""
-                    list.Rows(i + 1).Cells(9).Controls.Add(ctl)
+                    list.Rows(0).Cells(6).InnerText = "Detail Analytics"
+                    list.Rows(i + 1).Cells(6).InnerText = ""
+                    list.Rows(i + 1).Cells(6).Controls.Add(ctl)
 
 
                     ctl = New LinkButton
@@ -813,33 +835,23 @@ Partial Class ListOfReports
                     ctl.CssClass = "NodeStyle"
                     ctl.Font.Size = 10
                     AddHandler ctl.Click, AddressOf btnData_Click
-                    list.Rows(0).Cells(10).InnerText = "Data"
-                    list.Rows(i + 1).Cells(10).InnerText = ""
-                    list.Rows(i + 1).Cells(10).Controls.Add(ctl)
-
-
-                    ctl = New LinkButton
-                    ctl.Text = "market dasgboard"
-                    ctl.ID = rep & "+" & repttl
-                    ctl.ToolTip = "Market Dashboard for " & repttl
-                    ctl.CssClass = "NodeStyle"
-                    ctl.Font.Size = 10
-                    AddHandler ctl.Click, AddressOf btnMarketDashboard_Click
-                    list.Rows(0).Cells(11).InnerText = "Market Dashboard"
-                    list.Rows(i + 1).Cells(11).InnerText = ""
-                    list.Rows(i + 1).Cells(11).Controls.Add(ctl)
+                    list.Rows(0).Cells(5).InnerText = "Data"
+                    list.Rows(i + 1).Cells(5).InnerText = ""
+                    list.Rows(i + 1).Cells(5).Controls.Add(ctl)
 
 
                     If Session("admin") = "super" OrElse (Session("admin") <> "expired" AndAlso dv.Table.Rows(i)("AccessLevel") = "admin") Then
                         'admin for this report to edit, not expired
-                        list.Rows(0).Cells(0).InnerHtml = "Chat with AI"
-                        list.Rows(0).Cells(1).InnerHtml = "Analytics Dashboard"
-                        list.Rows(0).Cells(2).InnerHtml = " Show Report "
+                        list.Rows(0).Cells(0).InnerHtml = " AI "
+                        list.Rows(0).Cells(1).InnerHtml = "Data Readiness"
+                        list.Rows(0).Cells(2).InnerHtml = "Analytics Dashboard"
+                        list.Rows(0).Cells(3).InnerHtml = "Market Dashboard"
+                        list.Rows(0).Cells(4).InnerHtml = " Show Report "
                         If openforedit = True Then
                             ctl = New LinkButton
-                            list.Rows(0).Cells(3).InnerHtml = " Edit"
-                            list.Rows(0).Cells(4).InnerHtml = " Copy"
-                            list.Rows(0).Cells(5).InnerHtml = " Delete"
+                            list.Rows(0).Cells(8).InnerHtml = " Edit"
+                            list.Rows(0).Cells(9).InnerHtml = " Copy"
+                            list.Rows(0).Cells(10).InnerHtml = " Delete"
                             'list.Rows(i + 1).Cells(3).InnerHtml = "<a href='ReportEdit.aspx?repedit=yes&Report=" & rep & "'>edit</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href='Delete.aspx?repedit=del&Report=" & rep & "'>del</a>"
                             If openforcopy <> "standard" Then
                                 ctl.Text = "edit"
@@ -849,15 +861,15 @@ Partial Class ListOfReports
                                 ctl.Font.Size = 10
 
                                 AddHandler ctl.Click, AddressOf btnEdit_Click
-                                list.Rows(i + 1).Cells(3).InnerText = ""
-                                list.Rows(i + 1).Cells(3).Controls.Add(ctl)
+                                list.Rows(i + 1).Cells(8).InnerText = ""
+                                list.Rows(i + 1).Cells(8).Controls.Add(ctl)
                                 'list.Rows(i + 1).Cells(3).InnerHtml = "<a href='ReportEdit.aspx?repedit=yes&Report=" & rep & "'>edit</a>"
                             Else
-                                list.Rows(i + 1).Cells(3).InnerHtml = " locked "
+                                list.Rows(i + 1).Cells(8).InnerHtml = " locked "
                             End If
 
                             ctl = New LinkButton
-                            list.Rows(0).Cells(8).InnerHtml = " Maps"
+                            list.Rows(0).Cells(7).InnerHtml = " Maps"
                             If openforcopy <> "standard" Then
                                 ctl.Text = "map"
                                 ctl.ID = rep & "#" & repttl
@@ -866,10 +878,10 @@ Partial Class ListOfReports
                                 ctl.Font.Size = 10
 
                                 AddHandler ctl.Click, AddressOf btnMap_Click
-                                list.Rows(i + 1).Cells(8).InnerText = ""
-                                list.Rows(i + 1).Cells(8).Controls.Add(ctl)
+                                list.Rows(i + 1).Cells(7).InnerText = ""
+                                list.Rows(i + 1).Cells(7).Controls.Add(ctl)
                             Else
-                                list.Rows(i + 1).Cells(8).InnerHtml = " "
+                                list.Rows(i + 1).Cells(7).InnerHtml = " "
                             End If
 
                             ctl = New LinkButton
@@ -879,8 +891,8 @@ Partial Class ListOfReports
                             ctl.CssClass = "NodeStyle"
                             ctl.Font.Size = 10
                             AddHandler ctl.Click, AddressOf btnCopy_Click
-                            list.Rows(i + 1).Cells(4).InnerText = ""
-                            list.Rows(i + 1).Cells(4).Controls.Add(ctl)
+                            list.Rows(i + 1).Cells(9).InnerText = ""
+                            list.Rows(i + 1).Cells(9).Controls.Add(ctl)
                             If openforcopy <> "standard" Then
                                 ctl = New LinkButton
                                 ctl.Text = "delete"
@@ -889,34 +901,32 @@ Partial Class ListOfReports
                                 ctl.CssClass = "NodeStyle"
                                 ctl.Font.Size = 10
                                 AddHandler ctl.Click, AddressOf btnDelete_Click
-                                list.Rows(i + 1).Cells(5).InnerText = ""
-                                list.Rows(i + 1).Cells(5).Controls.Add(ctl)
+                                list.Rows(i + 1).Cells(10).InnerText = ""
+                                list.Rows(i + 1).Cells(10).Controls.Add(ctl)
                             Else
-                                list.Rows(i + 1).Cells(5).InnerHtml = " "
+                                list.Rows(i + 1).Cells(10).InnerHtml = " "
                             End If
                             'list.Rows(i + 1).Cells(4).InnerHtml = "<a href='ReportCopy.aspx?repcopy=copy&Report=" & rep & "&NewReport=" & newrepttl & "'>copy</a>"
                             'list.Rows(i + 1).Cells(5).InnerHtml = " "
                         Else
-                            list.Rows(i + 1).Cells(3).InnerHtml = "<a> </a> "
-                            list.Rows(i + 1).Cells(4).InnerHtml = "<a> </a> "
-                            list.Rows(i + 1).Cells(5).InnerHtml = " "
-                            list.Rows(i + 1).Cells(6).InnerHtml = " "
+                            list.Rows(i + 1).Cells(8).InnerHtml = "<a> </a> "
+                            list.Rows(i + 1).Cells(9).InnerHtml = "<a> </a> "
+                            list.Rows(i + 1).Cells(10).InnerHtml = " "
+                            list.Rows(i + 1).Cells(11).InnerHtml = " "
                         End If
                     Else
-                        list.Rows(i + 1).Cells(1).InnerHtml = "<a> </a> "
-                        list.Rows(i + 1).Cells(2).InnerHtml = "<a> </a> "
-                        list.Rows(i + 1).Cells(3).InnerHtml = "<a> </a> "
-                        list.Rows(i + 1).Cells(4).InnerHtml = "<a> </a> "
-                        list.Rows(i + 1).Cells(5).InnerHtml = " "
-                        list.Rows(i + 1).Cells(6).InnerHtml = " "
+                        list.Rows(i + 1).Cells(8).InnerHtml = "<a> </a> "
+                        list.Rows(i + 1).Cells(9).InnerHtml = "<a> </a> "
+                        list.Rows(i + 1).Cells(10).InnerHtml = " "
+                        list.Rows(i + 1).Cells(11).InnerHtml = " "
                     End If
                     If Session("admin") = "super" Then
                         'list.Rows(i + 1).Cells(2).InnerHtml = "<a href='ReportEdit.aspx?repedit=yes&Report=" & rep & "'>edit</a>"
                         '&nbsp;&nbsp;&nbsp; <a href='Delete.aspx?repedit=del&Report=" & rep & "'>del</a>"
-                        list.Rows(0).Cells(6).InnerHtml = " Database"
-                        list.Rows(i + 1).Cells(6).InnerHtml = repdb
+                        list.Rows(0).Cells(11).InnerHtml = " Database"
+                        list.Rows(i + 1).Cells(11).InnerHtml = repdb
                         'lock/unlock report
-                        list.Rows(0).Cells(7).InnerHtml = " Lock/Unlock"
+                        list.Rows(0).Cells(12).InnerHtml = " Lock/Unlock"
                         ctl = New LinkButton
                         ctl.ID = rep & "^" & repttl
                         If openforcopy <> "standard" Then
@@ -932,13 +942,13 @@ Partial Class ListOfReports
                             ctl.CssClass = "NodeStyle"
                             ctl.Font.Size = 10
                         End If
-                        list.Rows(i + 1).Cells(7).InnerText = ""
-                        list.Rows(i + 1).Cells(7).Controls.Add(ctl)
+                        list.Rows(i + 1).Cells(12).InnerText = ""
+                        list.Rows(i + 1).Cells(12).Controls.Add(ctl)
 
                     Else
-                        list.Rows(0).Cells(6).InnerHtml = " Expiration"
-                        list.Rows(i + 1).Cells(6).InnerHtml = opento
-                        list.Rows(i + 1).Cells(7).InnerText = ""
+                        list.Rows(0).Cells(11).InnerHtml = " Expiration"
+                        list.Rows(i + 1).Cells(11).InnerHtml = opento
+                        list.Rows(i + 1).Cells(12).InnerText = ""
                     End If
                     rep = ""
                 End If
@@ -1063,6 +1073,13 @@ Partial Class ListOfReports
         Dim Rpt As String = Piece(ctl.ID, "+", 1)
         Dim RptTtl As String = Piece(ctl.ID, "+", 2)
         Response.Redirect("MarketAdmin.aspx?Report=" & Rpt & "&frm=ListOfReports")
+    End Sub
+    Protected Sub btnDataReadiness_Click(sender As Object, e As System.EventArgs)
+        Dim ctl As LinkButton = CType(sender, LinkButton)
+        Dim Rpt As String = Piece(ctl.ID, "*", 2)
+        Session("REPORTID") = Rpt
+        Session("REPTITLE") = ctl.ToolTip.Replace("Data Readiness Scanner for ", "")
+        Response.Redirect("DataReadinessScanner.aspx?Report=" & Rpt, False)
     End Sub
     Protected Sub btnShow_Click(sender As Object, e As System.EventArgs)
         Dim ctl As LinkButton = CType(sender, LinkButton)

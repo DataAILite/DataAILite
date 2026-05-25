@@ -346,16 +346,13 @@ Partial Class Analytics
             list.Rows(i + 1).Cells(5).InnerText = String.Empty
             list.Rows(i + 1).Cells(5).Controls.Add(ctlLnk)
 
-            'If cat1 = cat2 Then
-            '    list.Rows(i + 1).Cells(6).InnerText = " "
-            '    'list.Rows(i + 1).Cells(6).InnerHtml = " "
-            'Else
+
             urlc = "ReportViews.aspx?det=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString
                 ctlLnk = New LinkButton
-                ctlLnk.Text = "detail report"
-                ctlLnk.ID = "detail^" & urlc
-                ctlLnk.ToolTip = "Show Detail Report by categories and overall totals and statistics for the field1 and aggrigate function selected above"
-                AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
+            ctlLnk.Text = "totals by groups"
+            ctlLnk.ID = "detail^" & urlc
+            ctlLnk.ToolTip = "Show Detail Report by categories/groups and overall totals and statistics for the field1 and aggrigate function selected above"
+            AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
                 list.Rows(i + 1).Cells(6).InnerText = String.Empty
                 list.Rows(i + 1).Cells(6).Controls.Add(ctlLnk)
             'End If

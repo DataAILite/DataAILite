@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAIHelp.aspx.vb" Inherits="DataAIHelp" %>
+<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAIHelp.aspx.vb" Inherits="DataAIHelp" %>
 
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -227,7 +227,7 @@
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:var(--accent)"></span> Analytics</div>
                     <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=2">Analytics Dashboard</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=68">Detail Analytics</a>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=68">Detail Analytics</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=3">Pivot / Cross Tab</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=4">Variance Analysis</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=5">Comparison Reports</a>
@@ -248,14 +248,14 @@
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#7C3AED"></span> Models</div>
                     <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=9">Regression Analysis</a>
-                    <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=10">Trends</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=10">Trends</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=11">Time Based Summaries</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=12">Time Series</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:#D97706"></span> Specialized Views</div>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=13">Outlier Flagging</a>
-                    <a class="toc-link feat" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=73">Fields Correlation</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=73">Fields Correlation</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=14">Correlation Threshold</a>
                     <a class="toc-link feat" href="https://oureports.net/oureports/AIandDataAI.pdf">AI and DataAI</a>
                 </div>
@@ -297,6 +297,7 @@
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=21">Data Drift Analysis</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=22">KPI Builder</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=23">Data Dictionary</a>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=24">Data Readiness</a>
                 </div>
             </div>
         </div>
