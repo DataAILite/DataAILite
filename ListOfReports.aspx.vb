@@ -597,10 +597,25 @@ Partial Class ListOfReports
         Dim opento As String = String.Empty
         Dim repnew As String = Request("newrep")
         Dim j As Integer
+        Dim guidedReportID As String = String.Empty
+        If Session("logon") IsNot Nothing Then
+            If Session("logon").ToString.Trim.Equals("demo", StringComparison.OrdinalIgnoreCase) Then
+                guidedReportID = "aShowByFilmByCategoryByTheater"
+            ElseIf Session("logon").ToString.Trim.Equals("csvdemo", StringComparison.OrdinalIgnoreCase) OrElse Session("logon").ToString.Trim.Equals("ibymysql", StringComparison.OrdinalIgnoreCase) Then
+                guidedReportID = "aSales"
+            End If
+        End If
+        lblReadinessInstructions.Visible = guidedReportID <> String.Empty
 
         list.Rows(0).Cells(0).InnerHtml = ""
         For j = 1 To list.Rows(0).Cells.Count - 1
             list.Rows(0).Cells(j).InnerHtml = ""
+        Next
+        list.Rows(0).Cells(4).Attributes("class") = "show-report-spacing"
+        list.Rows(0).Cells(2).Attributes("class") = "dashboard-column"
+        list.Rows(0).Cells(3).Attributes("class") = "dashboard-column"
+        For j = 7 To 10
+            list.Rows(0).Cells(j).Align = "center"
         Next
         dv = Nothing
         Dim sqlst As String = String.Empty
@@ -687,6 +702,12 @@ Partial Class ListOfReports
                     list.Rows(i + 1).Cells(j).InnerText = ""
                     list.Rows(i + 1).Cells(j).InnerHtml = ""
                 Next
+                list.Rows(i + 1).Cells(4).Attributes("class") = "show-report-spacing"
+                list.Rows(i + 1).Cells(2).Attributes("class") = "dashboard-column"
+                list.Rows(i + 1).Cells(3).Attributes("class") = "dashboard-column"
+                For j = 7 To 10
+                    list.Rows(i + 1).Cells(j).Align = "center"
+                Next
                 If i Mod 2 = 0 Then
                     list.Rows(i + 1).BgColor = "#EFFBFB"
                 Else
@@ -737,6 +758,9 @@ Partial Class ListOfReports
                     '    openforedit = True
                     'End If
                 End If
+                Dim isGuidedReport As Boolean = guidedReportID <> String.Empty AndAlso _
+                    (rep.Trim.Equals(guidedReportID, StringComparison.OrdinalIgnoreCase) OrElse _
+                     repttl.Trim.Equals(guidedReportID, StringComparison.OrdinalIgnoreCase))
                 Dim upRep As String = rep.ToUpper
                 If htReport(upRep) Is Nothing Then
                     htReport.Add(upRep, "1")
@@ -770,6 +794,9 @@ Partial Class ListOfReports
                     ctl.ID = "Readiness*" & rep
                     ctl.ToolTip = "Data Readiness Scanner for " & repttl
                     ctl.CssClass = "NodeStyle"
+                    If isGuidedReport Then
+                        ctl.CssClass = "NodeStyle guided-readiness-link"
+                    End If
                     ctl.Font.Size = 10
                     AddHandler ctl.Click, AddressOf btnDataReadiness_Click
                     list.Rows(0).Cells(1).InnerText = "Data Readiness"
@@ -839,6 +866,9 @@ Partial Class ListOfReports
                     list.Rows(i + 1).Cells(5).InnerText = ""
                     list.Rows(i + 1).Cells(5).Controls.Add(ctl)
 
+                    If isGuidedReport Then
+                        list.Rows(i + 1).Attributes("class") = "guided-report-row"
+                    End If
 
                     If Session("admin") = "super" OrElse (Session("admin") <> "expired" AndAlso dv.Table.Rows(i)("AccessLevel") = "admin") Then
                         'admin for this report to edit, not expired
@@ -870,6 +900,7 @@ Partial Class ListOfReports
 
                             ctl = New LinkButton
                             list.Rows(0).Cells(7).InnerHtml = " Maps"
+                            list.Rows(0).Cells(7).Align = "center"
                             If openforcopy <> "standard" Then
                                 ctl.Text = "map"
                                 ctl.ID = rep & "#" & repttl
@@ -880,6 +911,7 @@ Partial Class ListOfReports
                                 AddHandler ctl.Click, AddressOf btnMap_Click
                                 list.Rows(i + 1).Cells(7).InnerText = ""
                                 list.Rows(i + 1).Cells(7).Controls.Add(ctl)
+                                list.Rows(i + 1).Cells(7).Align = "center"
                             Else
                                 list.Rows(i + 1).Cells(7).InnerHtml = " "
                             End If
@@ -893,6 +925,7 @@ Partial Class ListOfReports
                             AddHandler ctl.Click, AddressOf btnCopy_Click
                             list.Rows(i + 1).Cells(9).InnerText = ""
                             list.Rows(i + 1).Cells(9).Controls.Add(ctl)
+                            list.Rows(i + 1).Cells(9).Align = "center"
                             If openforcopy <> "standard" Then
                                 ctl = New LinkButton
                                 ctl.Text = "delete"
@@ -903,6 +936,7 @@ Partial Class ListOfReports
                                 AddHandler ctl.Click, AddressOf btnDelete_Click
                                 list.Rows(i + 1).Cells(10).InnerText = ""
                                 list.Rows(i + 1).Cells(10).Controls.Add(ctl)
+                                list.Rows(i + 1).Cells(10).Align = "center"
                             Else
                                 list.Rows(i + 1).Cells(10).InnerHtml = " "
                             End If

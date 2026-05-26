@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Collections.Generic
 Imports System.Data
 Imports System.Globalization
@@ -338,6 +338,7 @@ Partial Class Funnel
         LabelModelExplanation.Text = "Model: Funnel model treats one field as an ordered process stage or status and measures how many records remain at each step. Inputs are stage field, optional value field, optional stage order, and search text."
         LabelAlgorithmExplanation.Text = "Algorithm: The page counts records and value by stage, applies the user-supplied order when provided, then calculates drop-off from the previous stage and conversion percent from the first stage."
         LabelOutputExplanation.Text = "Output: The grid shows step, stage, records, value, drop-off, conversion percent, and record links for each stage."
+        ReadinessFooterGuidance.SetFooter(Me, "Funnel Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 
     Private Function FieldText(valueObject As Object) As String

@@ -87,6 +87,7 @@
                                             <asp:TreeNode Text="Export Data to Delimited File" Value="ShowReport" NavigateUrl="ShowReport.aspx?srd=10"></asp:TreeNode>
                                             <asp:TreeNode Text="Export Data to XML" Value="datatoXML" NavigateUrl="ShowReport.aspx?srd=14"></asp:TreeNode>
                                         </asp:TreeNode>
+                                        <asp:TreeNode Text="&lt;b&gt;Data Readiness Scanner&lt;/b&gt;" Value="DataReadinessScanner.aspx" NavigateUrl="DataReadinessScanner.aspx" Expanded="True"></asp:TreeNode>
                                         <asp:TreeNode Text="Show Report" Value="ShowReport.aspx?srd=3" Expanded="True">
                                             <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
                                             <asp:TreeNode Text="Show Report Charts" Value="ShowReport.aspx?srd=17"></asp:TreeNode>
@@ -124,7 +125,6 @@
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Readiness Scanner" Value="DataReadinessScanner.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
                                         <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="True">
 
@@ -147,7 +147,7 @@
                         </td>
                         <td style="width:5px;"></td>
                         <td style="width:85%; text-align:left; vertical-align:top;">
-                            <asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Open the main Analytics page for this report.">Analytics</asp:HyperLink>
+<asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Open the main Analytics page for this report.">Detail Analytics</asp:HyperLink>
                             &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkDataAdmin" runat="server" NavigateUrl="~/DataAdmin.aspx" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Open the Analytics Dashboard.">Analytics Dashboard</asp:HyperLink>
                             &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkReport" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Open the report and chart views for this report.">Report and Charts</asp:HyperLink>
                             &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Market%20Dashboard" Target="_blank" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Open help for market pages.">Help</asp:HyperLink>

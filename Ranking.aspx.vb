@@ -690,5 +690,6 @@ Partial Class Ranking
         LabelModelExplanation.Text = "Model: Ranking and top/bottom/average analysis for categories or other dimensions. Inputs are the selected rank field, optional group field, value field, rank type, top count, and search text."
         LabelAlgorithmExplanation.Text = "Algorithm: Records are grouped by the rank field and optional group, the selected value field is aggregated, then rows are sorted for Top, Bottom, or Average ranking. Group value columns show the selected rank result inside each group when a group field is used."
         LabelOutputExplanation.Text = "Output: The grid shows the ranked dimension, optional group, rank type, calculated top/bottom/average value, group value when applicable, and record count. Record links open the rows used to calculate each ranked result."
+        ReadinessFooterGuidance.SetFooter(Me, "Ranking Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

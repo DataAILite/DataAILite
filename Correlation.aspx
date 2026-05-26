@@ -75,6 +75,8 @@
   margin:5px;
   z-index: 9999; 
 }
+        .analysisRecommendation { display:block; font-family:Arial; font-size:small; font-weight:bold; color:red; padding-top:4px; }
+        .analysisRecommendation a { font-weight:bold; }
         </style>
 </head>
 <body>
@@ -121,6 +123,7 @@
                                             <asp:TreeNode Text="Export Data to Delimited File" Value="ShowReport" NavigateUrl="ShowReport.aspx?srd=10"></asp:TreeNode>
                                             <asp:TreeNode Text="Export Data to XML" Value="datatoXML" NavigateUrl="ShowReport.aspx?srd=14"></asp:TreeNode>
                                         </asp:TreeNode>
+                                        <asp:TreeNode Text="&lt;b&gt;Data Readiness Scanner&lt;/b&gt;" Value="DataReadinessScanner.aspx" NavigateUrl="DataReadinessScanner.aspx" Expanded="True"></asp:TreeNode>
                                         <asp:TreeNode Text="Show Report" Value="ShowReport.aspx?srd=3" Expanded="True">
                                             <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
                                             <asp:TreeNode Text="Show Report Charts" Value="ShowReport.aspx?srd=17"></asp:TreeNode>
@@ -158,7 +161,6 @@
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Readiness Scanner" Value="DataReadinessScanner.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
                                         <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="False">
 
@@ -237,6 +239,7 @@
        <td align="center" valign="top">
          
          <asp:Label ID="lblHeader" runat="server"  Font-Size="22px" Font-Names="Arial" >Analytics:</asp:Label>
+         <span class="analysisRecommendation">Highly recommended: review stronger relationships in <a class="NodeStyle" href="CorrelationThreshold.aspx">Correlation Threshold</a>.</span>
 
        </td>
       </tr>

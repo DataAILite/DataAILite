@@ -69,6 +69,16 @@
   margin:5px;
   z-index: 9999; 
 }
+        .readinessRecommendation {
+            font-family: Arial;
+            font-size: small;
+            font-weight: bold;
+            color: red;
+            margin-left: 12px;
+        }
+        .readinessRecommendation a {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body bgcolor="WhiteSmoke">
@@ -114,6 +124,7 @@
                                             <asp:TreeNode Text="Export Data to Delimited File" Value="ShowReport" NavigateUrl="ShowReport.aspx?srd=10"></asp:TreeNode>
                                             <asp:TreeNode Text="Export Data to XML" Value="datatoXML" NavigateUrl="ShowReport.aspx?srd=14"></asp:TreeNode>
                                         </asp:TreeNode>
+                                        <asp:TreeNode Text="&lt;b&gt;Data Readiness Scanner&lt;/b&gt;" Value="DataReadinessScanner.aspx" NavigateUrl="DataReadinessScanner.aspx" Expanded="True"></asp:TreeNode>
                                         <asp:TreeNode Text="Show Report" Value="ShowReport.aspx?srd=3" Expanded="True">
                                             <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
                                             <asp:TreeNode Text="Show Report Charts" Value="ShowReport.aspx?srd=17"></asp:TreeNode>
@@ -151,9 +162,8 @@
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Readiness Scanner" Value="DataReadinessScanner.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
-                                        <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="False">
+                                        <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="True">
 
                                             <asp:TreeNode Text="Market Demand" Value="MarketDemand.aspx" NavigateUrl="MarketDemand.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Market Pricing" Value="MarketPricing.aspx" NavigateUrl="MarketPricing.aspx"></asp:TreeNode>
@@ -285,6 +295,7 @@
               </asp:DropDownList>&nbsp;
             <asp:TextBox ID="TextBoxSearch" runat="server" Width="100px"></asp:TextBox>
             <asp:Button ID="ButtonSearch" runat="server" CssClass="ticketbutton" Text="Search" ToolTip="Show data selected" AutoPostBack="true" Width="80px" /> 
+            <span class="readinessRecommendation">Highly recommended: review <a class="NodeStyle" href="DataReadinessScanner.aspx">Data Readiness Scanner</a> to see analyses and fields ranked by readiness score.</span>
             </td>
         </tr>
          <tr ID="trParameters" runat="server" style="border-color:#ffffff" >

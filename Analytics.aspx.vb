@@ -1,4 +1,5 @@
 Imports System
+Imports System.Collections.Generic
 Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
@@ -8,6 +9,7 @@ Partial Class Analytics
     Private ddtv As DataView
     Private Sub Analytics_Init(sender As Object, e As EventArgs) Handles Me.Init
         lblHeader.Text = Session("REPTITLE") & " - Analytics"
+        LabelAnalyticsWhyUseful.Text = "Why Useful: Overall field combinations and report exploration help identify suitable grouped analyses, reports, and charts."
         HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Analytics"
         repid = Session("REPORTID")
         If Session("dataGroups") Is Nothing Then
@@ -241,7 +243,7 @@ Partial Class Analytics
             'Tbl1Fld1,Tbl2Fld2
             'dtcor.RowFilter = "Tbl1Fld1=" & DropDownList3.Text.Trim & " AND Tbl2Fld2=" & DropDownList5.Text.Trim
             If Not dtcor Is Nothing AndAlso dtcor.Count > 0 AndAlso dtcor.Table.Rows.Count > 0 Then
-                Label7.Text = "Correlation:  " & dtcor.Table.Rows(0)("Param2").ToString
+                Label7.Text = "Correlation between " & DropDownList3.Text.Trim & " and " & DropDownList5.Text.Trim & ": " & dtcor.Table.Rows(0)("Param2").ToString
             End If
 
         End If
@@ -450,7 +452,52 @@ Partial Class Analytics
         End If
         DropDownList2_SelectedIndexChanged(sender, e)
         DropDownList7_SelectedIndexChanged(sender, e)
+        SetAnalyticsSuggestedFields(dv3.Table)
     End Sub
+
+    Private Sub SetAnalyticsSuggestedFields(source As DataTable)
+        If source Is Nothing Then
+            LabelAnalyticsSuggestedFields.Text = "Suggested Fields: no report data is available."
+            Exit Sub
+        End If
+
+        Dim categoryFields As New List(Of String)()
+        If ddtv IsNot Nothing AndAlso ddtv.Table IsNot Nothing Then
+            For Each row As DataRow In ddtv.Table.Rows
+                AddSuggestedField(categoryFields, row("Tbl1Fld1").ToString())
+                AddSuggestedField(categoryFields, row("Tbl2Fld2").ToString())
+            Next
+        End If
+
+        Dim valueFields As New List(Of String)()
+        For Each column As DataColumn In source.Columns
+            If ColumnTypeIsNumeric(column) AndAlso Not IsIndexLikeField(column.ColumnName) Then
+                AddSuggestedField(valueFields, column.ColumnName)
+            End If
+        Next
+
+        Dim categoryText As String = SuggestedText(categoryFields)
+        Dim valueText As String = SuggestedText(valueFields)
+        LabelAnalyticsSuggestedFields.Text = "Suggested Fields: Category/Group 1 and 2: " & categoryText &
+            "; Argument Y / value field: " & valueText &
+            "; optional Field2 for correlation, charts, and matrix balancing: " & valueText
+    End Sub
+
+    Private Sub AddSuggestedField(fields As List(Of String), fieldName As String)
+        Dim value As String = fieldName.Trim()
+        If value = "" OrElse IsIndexLikeField(value) OrElse fields.Contains(value) Then Exit Sub
+        If fields.Count < 8 Then fields.Add(value)
+    End Sub
+
+    Private Function SuggestedText(fields As List(Of String)) As String
+        If fields.Count = 0 Then Return "no strong matching fields detected"
+        Return String.Join(", ", fields.ToArray())
+    End Function
+
+    Private Function IsIndexLikeField(fieldName As String) As Boolean
+        Dim name As String = fieldName.Trim().ToLowerInvariant()
+        Return name = "indx" OrElse name = "ind" OrElse name = "inx" OrElse name = "index" OrElse name.StartsWith("indx") OrElse name.StartsWith("index")
+    End Function
     Private Sub TreeView1_SelectedNodeChanged(sender As Object, e As EventArgs) Handles TreeView1.SelectedNodeChanged
         Dim node As WebControls.TreeNode = TreeView1.SelectedNode
         Dim url As String = node.Value
@@ -823,7 +870,7 @@ Partial Class Analytics
                 list.Rows(i + 1).Cells(0).Focus()
                 Session("cat1") = DropDownList2.SelectedItem.Value
 
-                listshort.Rows(0).Cells(0).InnerText = "Reports:"
+                listshort.Rows(0).Cells(0).InnerHtml = "<span class=""analyticsRecommendedCaption"">Highly recommended according your selections:</span>"
 
                 Dim ctlLnk As LinkButton
                 Dim cat1, cat2, urlc, reps As String
@@ -873,7 +920,7 @@ Partial Class Analytics
 
                 urlc = "ReportViews.aspx?det=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString
                 ctlLnk = New LinkButton
-                ctlLnk.Text = "detail report"
+                ctlLnk.Text = "totals by groups"
                 ctlLnk.ID = "sdetail^" & urlc
                 ctlLnk.ToolTip = "Show Detail Report by categories and overall totals and statistics for the field1 and aggrigate function selected above"
                 AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
@@ -906,6 +953,8 @@ Partial Class Analytics
                 AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
                 listshort.Rows(0).Cells(7).InnerText = String.Empty
                 listshort.Rows(0).Cells(7).Controls.Add(ctlLnk)
+
+                SetShortMatrixBalancingLink(cat1, cat2)
 
             End If
         Next
@@ -919,7 +968,7 @@ Partial Class Analytics
                 list.Rows(i + 1).Cells(0).Focus()
                 Session("cat2") = DropDownList7.SelectedItem.Value
 
-                listshort.Rows(0).Cells(0).InnerText = "Reports:"
+                listshort.Rows(0).Cells(0).InnerHtml = "<span class=""analyticsRecommendedCaption"">Highly recommended according your selections:</span>"
 
                 Dim ctlLnk As LinkButton
                 Dim cat1, cat2, urlc, reps As String
@@ -969,7 +1018,7 @@ Partial Class Analytics
 
                 urlc = "ReportViews.aspx?det=yes&cat1=" & cat1.ToString & "&cat2=" & cat2.ToString
                 ctlLnk = New LinkButton
-                ctlLnk.Text = "detail report"
+                ctlLnk.Text = "totals by groups"
                 ctlLnk.ID = "sdetail^" & urlc
                 ctlLnk.ToolTip = "Show Detail Report by categories and overall totals and statistics for the field1 and aggrigate function selected above"
                 AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
@@ -1003,8 +1052,42 @@ Partial Class Analytics
                 listshort.Rows(0).Cells(7).InnerText = String.Empty
                 listshort.Rows(0).Cells(7).Controls.Add(ctlLnk)
 
+                SetShortMatrixBalancingLink(cat1, cat2)
+
             End If
         Next
+    End Sub
+
+    Private Sub SetShortMatrixBalancingLink(cat1 As String, cat2 As String)
+        listshort.Rows(0).Cells(8).Controls.Clear()
+        listshort.Rows(0).Cells(8).InnerText = String.Empty
+        If DropDownList5.Text.Trim = "" Then Exit Sub
+
+        Dim field2Aggregate As String = DropDownList6.SelectedValue.ToString.Trim
+        If field2Aggregate = "" Then
+            If Session("Aggregate2") IsNot Nothing AndAlso Session("Aggregate2").ToString.Trim <> "" Then
+                field2Aggregate = Session("Aggregate2").ToString.Trim
+            ElseIf Session("AggregateF2") IsNot Nothing AndAlso Session("AggregateF2").ToString.Trim <> "" Then
+                field2Aggregate = Session("AggregateF2").ToString.Trim
+            Else
+                field2Aggregate = DropDownList6.Text.Trim
+            End If
+        End If
+
+        Dim urlc As String = "AdvancedAnalytics.aspx?Report=" & Server.UrlEncode(Session("REPORTID").ToString) &
+            "&x1=" & Server.UrlEncode(cat1) &
+            "&x2=" & Server.UrlEncode(cat2) &
+            "&y1=" & Server.UrlEncode(DropDownList3.Text) &
+            "&fn=" & Server.UrlEncode(DropDownList4.Text) &
+            "&itt=" & Server.UrlEncode(DropDownList5.Text) &
+            "&fnitt=" & Server.UrlEncode(field2Aggregate) &
+            "&sel=2a&frm=Analytics&run=balance"
+        Dim ctlLnk As New LinkButton()
+        ctlLnk.Text = "matrix balancing"
+        ctlLnk.ID = "sbalance^" & urlc
+        ctlLnk.ToolTip = "Open Matrix Balancing for the selected fields and aggregation functions."
+        AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
+        listshort.Rows(0).Cells(8).Controls.Add(ctlLnk)
     End Sub
 End Class
 

@@ -114,6 +114,8 @@ Partial Class DataReadinessScanner
         Dim source As DataTable = LoadReportData()
         Dim output As DataTable = CreateOutputTable()
         If source Is Nothing Then
+            Session("DataReadinessScannerAllTable") = output
+            Session("DataReadinessScannerReportID") = If(Session("REPORTID") Is Nothing, "", Session("REPORTID").ToString())
             BindAnalysisGrid(output)
             Return
         End If
@@ -145,6 +147,7 @@ Partial Class DataReadinessScanner
         AddRecommendation(output, "Data Profiling", ScoreAny(source), "Detect type, blanks, distinct values, min, max, average, and standard deviation.", FieldGuidance("Profile all fields; numeric fields get min/max/average/stdev and text fields get blanks/distinct/examples", textFields, numericFields, dateFields), "Profiling.aspx", rowCount)
         AddRecommendation(output, "Data Quality", If(missingCount > 0 OrElse duplicateRows > 0, 95, 70), "Missing values: " & missingCount.ToString() & "; duplicate records: " & duplicateRows.ToString() & ".", FieldGuidance("Check date fields for invalid dates", dateFields) & "; " & FieldGuidance("check numeric fields for out-of-range values", numericFields) & "; " & FieldGuidance("check category/text fields for blanks, inconsistent categories, and suspicious text", textFields), "DataQuality.aspx", rowCount)
         AddRecommendation(output, "Ranking Analysis", If(categoryFields.Count > 0 AndAlso numericFields.Count > 0, 92, 45), "Category fields and numeric values can be ranked by top, bottom, or average.", FieldGuidance("Group dropdown", categoryFields) & "; " & FieldGuidance("Value field dropdown", numericFields) & "; Rank Type can use Top, Bottom, or Average", "Ranking.aspx", rowCount)
+        AddRecommendation(output, "Pivot / Cross Tab", If(categoryFields.Count >= 2 AndAlso (numericFields.Count > 0 OrElse textFields.Count > 0), 90, 35), "Two category fields can form row and column axes for a cross-tab summary.", FieldGuidance("Row and Column field dropdowns", categoryFields) & "; " & FieldGuidance("Value field dropdown", Prefer(numericFields, textFields)) & "; choose Count, Sum, Average, Minimum, Maximum, or Standard Deviation aggregation where applicable", "Pivot.aspx", rowCount)
         AddRecommendation(output, "ABC Pareto Analysis", If((categoryFields.Count > 0 OrElse productFields.Count > 0) AndAlso numericFields.Count > 0, 90, 35), "Find the few categories, products, or customers that explain most of the value.", FieldGuidance("Category field should be product/customer/category", Prefer(productFields, categoryFields)) & "; " & FieldGuidance("Value field should be sales, revenue, amount, quantity, profit, or another numeric measure", numericFields), "ABCPareto.aspx", rowCount)
         AddRecommendation(output, "KPI Builder", If(numericFields.Count > 0, 88, 30), "Numeric measures can become KPIs, totals, averages, rates, and thresholds.", FieldGuidance("KPI value fields", numericFields) & "; " & FieldGuidance("optional group/category fields", categoryFields) & "; " & FieldGuidance("optional date field for period KPIs", dateFields), "KPIBuilder.aspx", rowCount)
         AddRecommendation(output, "Regression Analysis", If(numericFields.Count >= 2, 86, 25), "Two or more numeric fields can be tested for prediction and fitted equations.", FieldGuidance("X Field should be the possible driver", numericFields) & "; " & FieldGuidance("Y Field should be the value to explain or predict", numericFields) & "; select equation type and Predict Y when X is for forecasting", "Regression.aspx", rowCount)
@@ -172,6 +175,9 @@ Partial Class DataReadinessScanner
         AddRecommendation(output, "Market Profit", If((revenueFields.Count > 0 OrElse priceFields.Count > 0) AndAlso numericFields.Count > 0, 78, 20), "Profit models need revenue, price, cost, margin, or other numeric drivers.", FieldGuidance("revenue/price/profit field", revenueFields, priceFields) & "; " & FieldGuidance("cost or numeric driver fields", numericFields) & "; optional category field finds profit drivers", "MarketProfit.aspx", rowCount)
         AddRecommendation(output, "Market Scenario", If(numericFields.Count > 0, 74, 20), "Scenario models use numeric assumptions to test possible business changes.", FieldGuidance("numeric assumption fields", numericFields) & "; " & FieldGuidance("category fields restrict or group the scenario", categoryFields) & "; assumption percent changes the scenario result", "MarketScenario.aspx", rowCount)
 
+        output.DefaultView.Sort = "Score DESC, Analysis ASC"
+        Session("DataReadinessScannerAllTable") = output.DefaultView.ToTable()
+        Session("DataReadinessScannerReportID") = If(Session("REPORTID") Is Nothing, "", Session("REPORTID").ToString())
         If txtSearch.Text.Trim() <> "" Then output = FilterOutput(output, txtSearch.Text.Trim())
         output.DefaultView.Sort = "Score DESC, Analysis ASC"
         BindAnalysisGrid(output.DefaultView.ToTable())
@@ -303,6 +309,9 @@ Partial Class DataReadinessScanner
         UpdateAnalysisPager(dt)
         SetAnalysisExplanationLabels()
         LabelInfo.Text = "Data Readiness Scanner (" & If(dt Is Nothing, 0, dt.Rows.Count).ToString() & " recommendations)"
+        PanelDashboardRecommendation.Visible = dt IsNot Nothing AndAlso dt.Rows.Count > 0
+        HyperLinkAnalyticsDashboardRecommendation.NavigateUrl = AddReportParameter("DataAdmin.aspx")
+        HyperLinkMarketDashboardRecommendation.NavigateUrl = AddReportParameter("MarketAdmin.aspx")
     End Sub
 
     Private Sub UpdateAnalysisPager(ByVal dt As DataTable)

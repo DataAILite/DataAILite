@@ -80,6 +80,35 @@
   margin:5px;
   z-index: 9999; 
 }
+        .guided-readiness-note {
+            display: block;
+            margin: 0 0 12px 0;
+            padding: 0 6px;
+            border: none;
+            background-color: #FFFE71;
+            color: #333333;
+            font-family: Arial;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .guided-report-row {
+            background-color: #FFFE71 !important;
+        }
+        .show-report-spacing {
+            padding-left: 24px;
+        }
+        .dashboard-column {
+            width: 78px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        .guided-readiness-link {
+            font-weight: bold !important;
+            animation: readinessBlink 1.3s step-end infinite;
+        }
+        @keyframes readinessBlink {
+            50% { opacity: 0.35; }
+        }
         </style>
 </head>
 <body>
@@ -267,7 +296,8 @@
        </td>
      <tr>
        <td align="left" valign="top">
-        
+
+         <asp:Label ID="lblReadinessInstructions" runat="server" CssClass="guided-readiness-note" Visible="False">Scroll down to the highlighted report or click &quot;Advanced User&quot; and import data -&gt; click &quot;data readiness&quot; to open Data Readiness Scanner -&gt; open Analytics or Market Dashboard -&gt; export results or ask AI.</asp:Label>
          <asp:Label ID="lblHeader" runat="server" Font-Bold="True" Font-Size="22px" Font-Names="Arial" >Reports:</asp:Label>
            
          <%--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>

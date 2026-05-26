@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Collections.Generic
 Imports System.Data
 Imports System.Globalization
@@ -335,6 +335,7 @@ Partial Class KPIBuilder
         LabelModelExplanation.Text = "Model: KPI model creates simple business metrics from selected numeric fields and groups them by a dimension. Inputs are dimension field, numerator field, denominator field, operation, and search text."
         LabelAlgorithmExplanation.Text = "Algorithm: The page sums numerator and denominator values for each dimension, then applies ratio, difference, sum, or product to create a KPI value."
         LabelOutputExplanation.Text = "Output: The grid shows dimension, records, numerator, denominator, operation, KPI value, and record links for each dimension."
+        ReadinessFooterGuidance.SetFooter(Me, "KPI Builder", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 
     Private Function FieldText(valueObject As Object) As String

@@ -16,6 +16,8 @@
         .analysisSubtitle { display:block; font-family:Arial; font-size:small; color:#333333; padding-top:4px; padding-bottom:8px; }
         .analysisExplanation { font-family:Arial; font-size:small; color:#333333; background-color:#f5fbf4; border:1px solid #d8ead4; padding:8px; margin-top:8px; max-width:1180px; }
         .analysisExplanation span { display:block; padding-bottom:4px; }
+        .analysisRecommendation { font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:12px; }
+        .analysisRecommendation a { font-weight:bold; }
         .modal { position:fixed; z-index:2147483647; height:100%; width:100%; top:0; background-color:#f8f8d3; opacity:0.8; }
         .center { z-index:2147483647; margin:300px auto; padding-left:25px; padding-top:10px; width:130px; background-color:#f8f8d3; border-radius:10px; }
         .center img { height:100px; width:100px; }
@@ -83,6 +85,7 @@
 
                                         </asp:TreeNode>
 
+                                        <asp:TreeNode Text="&lt;b&gt;Data Readiness Scanner&lt;/b&gt;" Value="DataReadinessScanner.aspx" NavigateUrl="DataReadinessScanner.aspx" Expanded="True"></asp:TreeNode>
                                         <asp:TreeNode Text="Show Report" Value="ShowReport.aspx?srd=3" Expanded="True">
 
                                             <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
@@ -150,7 +153,6 @@
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Readiness Scanner" Value="DataReadinessScanner.aspx"></asp:TreeNode>
 
                                         </asp:TreeNode>
 
@@ -191,7 +193,7 @@
                             </asp:TreeView></td>
 <td style="width:5px;"></td>
 <td style="width:85%; text-align:left; vertical-align:top;">
-<asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial">Analytics</asp:HyperLink>
+<asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial">Detail Analytics</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkReport" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" CssClass="NodeStyle" Font-Names="Arial">Report and Charts</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Data%20Dictionary" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
@@ -203,10 +205,10 @@
 <tr><td style="font-weight:bold;">Search:</td><td colspan="3"><asp:TextBox ID="txtSearch" runat="server" Width="420px" ToolTip="Optional text used to filter rows shown in the analysis grid."></asp:TextBox><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" ToolTip="Build the analysis using the selected fields." /><asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" ToolTip="Clear search and rebuild the default analysis." /><asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" ToolTip="Export the analysis grid to CSV." /><asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" ToolTip="Export the analysis grid to Excel." /><asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkDataDictionaryAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret the analysis grid and method explanation.">AI</asp:LinkButton></td></tr>
 </table>
 <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
-<asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br />
+<asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><span class="analysisRecommendation">Highly recommended: review the complete results in <a class="NodeStyle" href="Profiling.aspx">Data Profiling</a> and <a class="NodeStyle" href="DataReadinessScanner.aspx">Data Readiness Scanner</a>.</span><br /><br />
 <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div>
 <div style="overflow:auto; max-width:100%;"><asp:GridView ID="GridViewDataDictionary" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView></div>
-<div class="analysisExplanation"><asp:Label ID="LabelModelExplanation" runat="server"></asp:Label><asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label><asp:Label ID="LabelOutputExplanation" runat="server"></asp:Label></div>
+<div class="analysisExplanation"><asp:Label ID="LabelModelExplanation" runat="server"></asp:Label><asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label><asp:Label ID="LabelOutputExplanation" runat="server"></asp:Label><asp:Label ID="LabelReadinessWhyUseful" runat="server" Visible="False"></asp:Label><asp:Label ID="LabelReadinessSuggestedFields" runat="server" Visible="False"></asp:Label></div>
 </td></tr></table>
 </ContentTemplate>
 <Triggers><asp:PostBackTrigger ControlID="ButtonExportCSV" /><asp:PostBackTrigger ControlID="ButtonExportExcel" /><asp:PostBackTrigger ControlID="lnkDataDictionaryAI" /></Triggers>

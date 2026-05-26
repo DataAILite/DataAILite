@@ -355,6 +355,7 @@ Partial Class ABCPareto
         LabelModelExplanation.Text = "Model: ABC/Pareto model ranks dimensions by contribution to total value and assigns A, B, or C classes. Inputs are dimension field, value field, aggregate option, and search text."
         LabelAlgorithmExplanation.Text = "Algorithm: The page aggregates the selected value by dimension, sorts dimensions from largest to smallest contribution, calculates share and cumulative share, and assigns A through roughly 80%, B through roughly 95%, and C for the remaining tail."
         LabelOutputExplanation.Text = "Output: The grid shows dimension, records, value, share percent, cumulative percent, ABC class, and record links for each dimension."
+        ReadinessFooterGuidance.SetFooter(Me, "ABC Pareto Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 
     Private Function FieldText(valueObject As Object) As String

@@ -22,6 +22,8 @@
         .fieldControl { text-align:left; white-space:nowrap; width:210px; }
         .marketExplanation { margin-top:10px; width:auto; min-width:1080px; max-width:1260px; font-family:Arial; font-size:12px; color:#333333; line-height:17px; }
         .marketExplanation span { display:block; margin-bottom:4px; }
+        .marketRecommendation { font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:12px; }
+        .marketRecommendation a { font-weight:bold; }
     </style>
 </head>
 <body>
@@ -60,6 +62,7 @@
                                             <asp:TreeNode Text="Export Data to Delimited File" Value="ShowReport" NavigateUrl="ShowReport.aspx?srd=10"></asp:TreeNode>
                                             <asp:TreeNode Text="Export Data to XML" Value="datatoXML" NavigateUrl="ShowReport.aspx?srd=14"></asp:TreeNode>
                                         </asp:TreeNode>
+                                        <asp:TreeNode Text="&lt;b&gt;Data Readiness Scanner&lt;/b&gt;" Value="DataReadinessScanner.aspx" NavigateUrl="DataReadinessScanner.aspx" Expanded="True"></asp:TreeNode>
                                         <asp:TreeNode Text="Show Report" Value="ShowReport.aspx?srd=3" Expanded="True">
                                             <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
                                             <asp:TreeNode Text="Show Report Charts" Value="ShowReport.aspx?srd=17"></asp:TreeNode>
@@ -97,7 +100,6 @@
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Readiness Scanner" Value="DataReadinessScanner.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
                                         <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="True">
 
@@ -118,7 +120,7 @@
 </td>
 <td style="width:5px;"></td>
 <td style="width:85%; text-align:left; vertical-align:top;">
-<asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Open the main Analytics page for this report.">Analytics</asp:HyperLink>
+<asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Open the main Analytics page for this report.">Detail Analytics</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkReport" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Open the report and chart views for this report.">Report and Charts</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Market%20Segments" Target="_blank" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Open help for market pages.">Help</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Log off and clear the current session.">Log off</asp:HyperLink>
@@ -132,13 +134,15 @@
 <tr><td align="left" colspan="4" style="font-weight:bold;"><span title="Filter the market model result grid by text.">Search:</span> <asp:TextBox ID="txtSearch" runat="server" Width="260px" ToolTip="Type text to filter the market model results shown in the grid."></asp:TextBox><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" OnClick="ButtonBuild_Click" ToolTip="Build the market model using the selected fields and assumptions." /><asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" OnClick="ButtonReset_Click" ToolTip="Clear search and restore default market model assumptions." /><asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" OnClick="ButtonExportCSV_Click" ToolTip="Export the current market model results to CSV." /><asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" OnClick="ButtonExportExcel_Click" ToolTip="Export the current market model results to Excel." /><asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkMarketAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" OnClick="lnkMarketAI_Click" ToolTip="Ask AI to interpret the current market model results, opportunities, risks, and recommended actions.">AI</asp:LinkButton></td></tr>
 </table>
 <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
-<asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br />
+<asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><span class="marketRecommendation">Highly recommended: review the complete results in <a class="NodeStyle" href="MarketChurn.aspx">Market Churn</a> and <a class="NodeStyle" href="MarketProfit.aspx">Market Profit</a>.</span><br /><br />
 <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div>
 <div style="overflow:auto; max-width:100%;"><asp:GridView ID="GridViewMarket" runat="server" CssClass="marketgrid" AutoGenerateColumns="True" GridLines="Both" ToolTip="Market model results. Click record counts to open the corresponding records in Data Explorer."></asp:GridView></div>
 <div class="marketExplanation">
 <asp:Label ID="LabelModelExplanation" runat="server"></asp:Label>
 <asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label>
 <asp:Label ID="LabelOutputExplanation" runat="server"></asp:Label>
+<asp:Label ID="LabelReadinessWhyUseful" runat="server" Visible="False"></asp:Label>
+<asp:Label ID="LabelReadinessSuggestedFields" runat="server" Visible="False"></asp:Label>
 </div>
 </td>
 </tr>

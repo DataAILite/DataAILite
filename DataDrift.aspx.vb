@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Collections.Generic
 Imports System.Data
 Imports System.Globalization
@@ -375,6 +375,7 @@ Partial Class DataDrift
         LabelModelExplanation.Text = "Model: Data drift model compares how one field is distributed between two selected segments. Inputs are compare field, segment field, base value, compare value, and search text."
         LabelAlgorithmExplanation.Text = "Algorithm: The page counts each compare-field value in the base and compare segments, converts counts to segment share percentages, then calculates percentage-point drift."
         LabelOutputExplanation.Text = "Output: The grid shows field value, base records, compare records, base share, compare share, drift points, and links to the base and compare records."
+        ReadinessFooterGuidance.SetFooter(Me, "Data Drift Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 
     Private Function FieldText(valueObject As Object) As String

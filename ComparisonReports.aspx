@@ -106,6 +106,8 @@
             display: block;
             padding-bottom: 4px;
         }
+        .analysisRecommendation { font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:12px; }
+        .analysisRecommendation a { font-weight:bold; }
     </style>
 </head>
 <body>
@@ -149,6 +151,7 @@
                                             <asp:TreeNode Text="Export Data to Delimited File" Value="ShowReport" NavigateUrl="ShowReport.aspx?srd=10"></asp:TreeNode>
                                             <asp:TreeNode Text="Export Data to XML" Value="datatoXML" NavigateUrl="ShowReport.aspx?srd=14"></asp:TreeNode>
                                         </asp:TreeNode>
+                                        <asp:TreeNode Text="&lt;b&gt;Data Readiness Scanner&lt;/b&gt;" Value="DataReadinessScanner.aspx" NavigateUrl="DataReadinessScanner.aspx" Expanded="True"></asp:TreeNode>
                                         <asp:TreeNode Text="Show Report" Value="ShowReport.aspx?srd=3" Expanded="True">
                                             <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
                                             <asp:TreeNode Text="Show Report Charts" Value="ShowReport.aspx?srd=17"></asp:TreeNode>
@@ -186,7 +189,6 @@
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Readiness Scanner" Value="DataReadinessScanner.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
                                         <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="False">
 
@@ -211,7 +213,7 @@
                         <td style="width: 5px;"></td>
                         <td id="main" style="width: 85%; text-align: left; vertical-align: top;">
                             <div style="text-align: left; width: 100%;">
-                                <asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial">Analytics</asp:HyperLink>
+            <asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial">Detail Analytics</asp:HyperLink>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <asp:HyperLink ID="HyperLinkVariance" runat="server" NavigateUrl="~/Variance.aspx" CssClass="NodeStyle" Font-Names="Arial">Variance Analysis</asp:HyperLink>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -307,7 +309,7 @@
 
                                 <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label>
                                 <br />
-                                <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label>
+                                <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><span class="analysisRecommendation">Highly recommended: review the complete results in <a class="NodeStyle" href="Variance.aspx">Variance Analysis</a> and <a class="NodeStyle" href="DataDrift.aspx">Data Drift Analysis</a>.</span>
                                 <br /><br />
 
                                 <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div><div style="overflow: auto; max-width: 100%;">
@@ -317,6 +319,8 @@
     <asp:Label ID="LabelModelExplanation" runat="server"></asp:Label>
     <asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label>
     <asp:Label ID="LabelOutputExplanation" runat="server"></asp:Label>
+    <asp:Label ID="LabelReadinessWhyUseful" runat="server" Visible="False"></asp:Label>
+    <asp:Label ID="LabelReadinessSuggestedFields" runat="server" Visible="False"></asp:Label>
 </div>
                             </div>
                         </td>

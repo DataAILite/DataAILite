@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Collections.Generic
 Imports System.Data
 Imports System.Globalization
@@ -361,6 +361,7 @@ Partial Class Cohort
         LabelModelExplanation.Text = "Model: Cohort model groups entities by first observed activity period and follows their later activity periods. Inputs are entity field, date field, optional value field, period grain, and search text."
         LabelAlgorithmExplanation.Text = "Algorithm: The page finds the first period for each entity, groups later records by cohort period and activity period, counts active entities and records, summarizes value, and calculates retention percent against the original cohort size."
         LabelOutputExplanation.Text = "Output: The grid shows cohort period, activity period, period number, active entities, record count, value, retention percent, and links to the records that produced each row."
+        ReadinessFooterGuidance.SetFooter(Me, "Cohort Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 
     Private Function FieldText(valueObject As Object) As String

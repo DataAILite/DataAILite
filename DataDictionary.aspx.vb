@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Collections.Generic
 Imports System.Data
 Imports System.Globalization
@@ -352,6 +352,7 @@ Partial Class DataDictionary
         LabelModelExplanation.Text = "Model: Data dictionary model documents every selected field in the current report dataset. Inputs are field group, number of examples, and optional field-name search text."
         LabelAlgorithmExplanation.Text = "Algorithm: The page scans each field, detects numeric/date/text behavior, counts blanks and distinct values, captures examples, and calculates numeric summaries where applicable."
         LabelOutputExplanation.Text = "Output: The grid shows field name, detected type, records, blanks, distinct values, min, max, average, standard deviation, examples, recommended use, and record links to the source data."
+        ReadinessFooterGuidance.SetFooter(Me, "Data Dictionary", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 
     Private Function FieldText(valueObject As Object) As String

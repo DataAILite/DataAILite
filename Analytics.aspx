@@ -21,6 +21,13 @@
         .auto-style4 {
             margin-left: 0px;
         }
+        .analyticsRecommendedCaption {
+            display: inline-block;
+            font-size: 14px;
+            line-height: 12px;
+            white-space: nowrap;
+            color: red;
+        }
 .modal
 {
     position: fixed;
@@ -122,6 +129,7 @@
                                             <asp:TreeNode Text="Export Data to Delimited File" Value="ShowReport" NavigateUrl="ShowReport.aspx?srd=10"></asp:TreeNode>
                                             <asp:TreeNode Text="Export Data to XML" Value="datatoXML" NavigateUrl="ShowReport.aspx?srd=14"></asp:TreeNode>
                                         </asp:TreeNode>
+                                        <asp:TreeNode Text="&lt;b&gt;Data Readiness Scanner&lt;/b&gt;" Value="DataReadinessScanner.aspx" NavigateUrl="DataReadinessScanner.aspx" Expanded="True"></asp:TreeNode>
                                         <asp:TreeNode Text="Show Report" Value="ShowReport.aspx?srd=3" Expanded="True">
                                             <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
                                             <asp:TreeNode Text="Show Report Charts" Value="ShowReport.aspx?srd=17"></asp:TreeNode>
@@ -159,7 +167,6 @@
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Readiness Scanner" Value="DataReadinessScanner.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
                                         <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="False">
                                             <asp:TreeNode Text="Market Demand" Value="MarketDemand.aspx" NavigateUrl="MarketDemand.aspx"></asp:TreeNode>
@@ -254,6 +261,8 @@
        <td align="center" valign="top">
          
          <asp:Label ID="lblHeader" runat="server"  Font-Size="22px" Font-Names="Arial" >Analytics:</asp:Label>
+         <br />
+         <asp:Label ID="LabelAnalyticsWhyUseful" runat="server" Font-Names="Arial" Font-Size="Small" ForeColor="#333333"></asp:Label>
 
        </td>
       </tr>
@@ -262,13 +271,10 @@
             <td align="center">
              <table id="Table2" runat="server" bgcolor="#e5e5e5" rules="rows" width="100%" style="border:medium double #FFFFFF; font-size: small;
                                         color: black; font-family: Arial; background-color: #e5e5e5; vertical-align: top;">
-                                   <tr valign="top" runat ="server" colspan="3" border="3" style="color: black; font-family: Arial; border:medium double #FFFFFF; background-color: #e5e5e5;border-width: 2px;width:100%;" >
-   
-                                       <td align="right" colspan="3">
-     
-                                         &nbsp;&nbsp;<asp:Label ID="Label7" runat="server" Text=" Correlation: "  ToolTip="Correlation between field1(argument) and field2 if both are numeric" Font-Bold="True"></asp:Label>
-     
-                                       </td>
+                                  <tr valign="top" runat ="server" style="color: black; font-family: Arial; border:medium double #FFFFFF; background-color: #e5e5e5;border-width: 2px;width:100%;" >
+                                    <td align="left" colspan="3" style="border:medium double #FFFFFF; padding:6px;">
+                                        <asp:Label ID="LabelAnalyticsSuggestedFields" runat="server" Font-Bold="True" Font-Size="Small"></asp:Label>
+                                    </td>
                                   </tr>
                                   <tr valign="top" runat ="server"  border="3" style="color: black; font-family: Arial; border:medium double #FFFFFF; background-color: #e5e5e5;border-width: 2px;width:100%;" >
                                     <td align="left" style="border:medium double #FFFFFF;" width="1%">
@@ -276,7 +282,7 @@
                                        
                                     </td>
 
-                                    <td align="left" valign="top" style="border:medium double #FFFFFF; text-align: center;" width="74%">
+                                    <td align="left" valign="top" style="border:medium double #FFFFFF; text-align: center;" width="60%">
                                         
                                         &nbsp;<asp:Label ID="Label11" runat="server" Text="(!!! ATTENTION !!!)    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   SELECT: " ToolTip="Required (!) to calculate reports, statistics, analytics, and charts below." ForeColor="Red" Font-Bold="True" Font-Size="Medium"></asp:Label>
                                        <br /><br />
@@ -296,8 +302,10 @@
                                          <asp:DropDownList ID="DropDownList7" runat="server" ToolTip="Category/Group2" AutoPostBack="True"></asp:DropDownList>
                                     </td>
                                     
-                                    <td align="left" style="border:medium double #FFFFFF;" width="25%">
+                                    <td align="left" style="border:medium double #FFFFFF;" width="40%">
                                       
+                                        &nbsp;&nbsp;<asp:Label ID="Label7" runat="server" Text=" " ToolTip="Correlation between the selected argument and Field2 when both fields are numeric." Font-Bold="True"></asp:Label>
+                                        <br /><br />
                                        <%-- <br />--%>
                                         &nbsp;&nbsp;<asp:Label ID="Label8" runat="server" Text="Optional, used only for charts and matrix balancing if needed: " ToolTip="Optional - it needs only for checking correlation between fields and for matrix balancing."></asp:Label>
                                         <br /><%--<br />--%>
@@ -321,10 +329,10 @@
                                   </tr>
                                   <tr valign="top" runat ="server" colspan="3" border="3" style="color: black; font-family: Arial; border:medium double #FFFFFF; background-color: lightgreen;border-width: 2px;width:100%;" >
    
-                                     <td align="left" colspan="3">
+                                     <td align="center" colspan="3">
      
                                        <%--<asp:Label ID="Label15" runat="server" Text=" Reports: "  ToolTip="Click to see reports" Font-Bold="True"></asp:Label>--%>
-                                       <table runat="server" id="listshort"  border="0" style="font-size: 12px; font-family: Arial; height: 12px" >
+                                       <table runat="server" id="listshort"  border="0" align="center" cellspacing="12" style="font-size: 12px; font-family: Arial; height: 12px" >
                                                <tr  height="12px" width="80%" >
                                                    <%--<td class="auto-style3"  style="font-weight:bold">Reports:</td>                                                   
                                                    <td class="auto-style1" style="font-weight:bold"> </td>
@@ -334,14 +342,15 @@
                                                    <td class="auto-style1" style="font-weight:bold"> </td>
                                                    <td class="auto-style1" style="font-weight:bold"> </td>
                                                    <td class="auto-style1" style="font-weight:bold"> </td>--%>
-                                                    <td width="100px" style="font-weight:bold">Reports:</td>                                                   
-                                                    <td width="50px" style="font-weight:bold"> </td>
-                                                    <td width="30px" style="font-weight:bold"> </td>                    
-                                                    <td width="30px" style="font-weight:bold"> </td>
-                                                    <td width="30px" style="font-weight:bold"> </td>                    
+                                                    <td width="250px" style="font-weight:bold; white-space:nowrap;"><span class="analyticsRecommendedCaption">Highly recommended according your selections:</span></td>
+                                                    <td width="90px" style="font-weight:bold"> </td>
                                                     <td width="80px" style="font-weight:bold"> </td>
-                                                    <td width="100px" style="font-weight:bold"> </td>
-                                                    <td width="25px" style="font-weight:bold"> </td>
+                                                    <td width="85px" style="font-weight:bold"> </td>
+                                                    <td width="90px" style="font-weight:bold"> </td>
+                                                    <td width="95px" style="font-weight:bold"> </td>
+                                                    <td width="110px" style="font-weight:bold"> </td>
+                                                    <td width="75px" style="font-weight:bold"> </td>
+                                                    <td width="120px" style="font-weight:bold"> </td>
                                                    
                                                </tr>           
                                         </table> 

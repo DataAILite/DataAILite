@@ -82,14 +82,10 @@ Public MustInherit Class MarketAnalysisBase
         If Not IsPostBack Then
             SetLabel("LabelError", "")
             SetLabel("LabelInfo", "")
-            LoadMarketData(String.Equals(MarketModel, "Basket", StringComparison.OrdinalIgnoreCase))
+            LoadMarketData()
             FillFieldLists()
             ApplyModelControlVisibility()
-            If String.Equals(MarketModel, "Basket", StringComparison.OrdinalIgnoreCase) Then
-                SetLabel("LabelInfo", "Select basket fields and click Build to create the market-basket analysis.")
-            Else
-                BuildAndBindMarket()
-            End If
+            BuildAndBindMarket()
         ElseIf Session(MarketSessionKey("Table")) IsNot Nothing Then
             ApplyModelControlVisibility()
             BindMarket(CType(Session(MarketSessionKey("Table")), DataTable))
@@ -658,6 +654,10 @@ Public MustInherit Class MarketAnalysisBase
         SetLabel("LabelModelExplanation", "Model: " & explanations(0))
         SetLabel("LabelAlgorithmExplanation", "Algorithm: " & explanations(1))
         SetLabel("LabelOutputExplanation", "Output: " & explanations(2))
+        ReadinessFooterGuidance.SetFooter(Me, "Market " & MarketModel,
+            LabelControl("LabelReadinessWhyUseful"),
+            LabelControl("LabelReadinessSuggestedFields"),
+            SourceTable())
     End Sub
 
     Private Function MarketExplanations() As String()
