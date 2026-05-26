@@ -152,6 +152,7 @@
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
 
                                         </asp:TreeNode>
 
@@ -192,7 +193,8 @@
                             </asp:TreeView></td>
 <td style="width:5px;"></td>
 <td style="width:85%; text-align:left; vertical-align:top;">
-<asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial">Detail Analytics</asp:HyperLink>
+<asp:HyperLink ID="HyperLinkData" runat="server" NavigateUrl="~/ShowReport.aspx" CssClass="NodeStyle" Font-Names="Arial">Data</asp:HyperLink>
+&nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial">Detail Analytics</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkReport" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" CssClass="NodeStyle" Font-Names="Arial">Report and Charts</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Data%20Readiness" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
@@ -212,7 +214,7 @@
     <asp:Label ID="LabelDashboardRecommendationEnd" runat="server" Text="."></asp:Label>
 </asp:Panel><br /><br />
 <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div>
-<div style="overflow:auto; max-width:100%; width:100%;"><asp:GridView ID="GridViewDataReadinessScanner" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both" Width="100%"></asp:GridView></div>
+<div style="overflow:auto; max-width:100%; width:100%;"><asp:GridView ID="GridViewDataReadinessScanner" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both" Width="100%"><AlternatingRowStyle BackColor="#EFFBFB" /></asp:GridView></div>
 <div class="analysisExplanation"><asp:Label ID="LabelModelExplanation" runat="server"></asp:Label><asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label><asp:Label ID="LabelOutputExplanation" runat="server"></asp:Label></div>
 </td></tr></table>
 </ContentTemplate>

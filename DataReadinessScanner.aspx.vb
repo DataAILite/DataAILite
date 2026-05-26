@@ -191,6 +191,7 @@ Partial Class DataReadinessScanner
         dt.Columns.Add("Why Useful", GetType(String))
         dt.Columns.Add("Suggested Fields", GetType(String))
         dt.Columns.Add("Open", GetType(String))
+        dt.Columns.Add("What Next", GetType(String))
         dt.Columns.Add("Records", GetType(Integer))
         dt.Columns.Add("FilterId", GetType(String))
         Return dt
@@ -205,10 +206,88 @@ Partial Class DataReadinessScanner
         row("Why Useful") = whyUseful
         row("Suggested Fields") = If(suggestedFields.Trim() = "", "No strong matching fields detected", suggestedFields)
         row("Open") = pageUrl
+        row("What Next") = WhatNextLinks(analysis)
         row("Records") = records
         row("FilterId") = RegisterAnalysisFilter("1 = 1")
         output.Rows.Add(row)
     End Sub
+
+    Private Function WhatNextLinks(analysis As String) As String
+        Select Case analysis
+            Case "Detail Analytics"
+                Return "DataAdmin.aspx|Analytics Dashboard;ChartRecommendationHelpers.aspx|Chart Recommendations"
+            Case "Data Overall Statistics"
+                Return "Profiling.aspx|Data Profiling;DataQuality.aspx|Data Quality"
+            Case "Groups Statistics"
+                Return "Ranking.aspx|Ranking Analysis;Pivot.aspx|Pivot / Cross Tab"
+            Case "Fields Correlation"
+                Return "CorrelationThreshold.aspx|Correlation Threshold;Regression.aspx|Regression Analysis"
+            Case "Data Dictionary"
+                Return "Profiling.aspx|Data Profiling;DataReadinessScanner.aspx|Data Readiness Scanner"
+            Case "Data Profiling"
+                Return "DataQuality.aspx|Data Quality;DataDictionary.aspx|Data Dictionary"
+            Case "Data Quality"
+                Return "Profiling.aspx|Data Profiling;DataDictionary.aspx|Data Dictionary"
+            Case "Ranking Analysis"
+                Return "ABCPareto.aspx|ABC Pareto Analysis;MarketSegments.aspx|Market Segments"
+            Case "Pivot / Cross Tab"
+                Return "Variance.aspx|Variance Analysis;Ranking.aspx|Ranking Analysis"
+            Case "ABC Pareto Analysis"
+                Return "Ranking.aspx|Ranking Analysis;MarketProfit.aspx|Market Profit"
+            Case "KPI Builder"
+                Return "Variance.aspx|Variance Analysis;TimeBasedSummaries.aspx|Time Based Summaries"
+            Case "Regression Analysis"
+                Return "Trends.aspx|Trends;CorrelationThreshold.aspx|Correlation Threshold"
+            Case "Correlation Threshold"
+                Return "Regression.aspx|Regression Analysis;ChartRecommendationHelpers.aspx|Chart Recommendations"
+            Case "Variance Analysis"
+                Return "ComparisonReports.aspx|Comparison Reports;TimeBasedSummaries.aspx|Time Based Summaries"
+            Case "Comparison Reports"
+                Return "Variance.aspx|Variance Analysis;DataDrift.aspx|Data Drift Analysis"
+            Case "Time Based Summaries"
+                Return "TimeSeries.aspx|Time Series;DataDrift.aspx|Data Drift Analysis"
+            Case "Time Series"
+                Return "TimeBasedSummaries.aspx|Time Based Summaries;OutlierFlagging.aspx|Outlier Flagging"
+            Case "Data Drift Analysis"
+                Return "ComparisonReports.aspx|Comparison Reports;TimeSeries.aspx|Time Series"
+            Case "Cohort Analysis"
+                Return "MarketChurn.aspx|Market Churn;TimeSeries.aspx|Time Series"
+            Case "Funnel Analysis"
+                Return "MarketChurn.aspx|Market Churn;MarketSegments.aspx|Market Segments"
+            Case "Outlier Flagging"
+                Return "DataQuality.aspx|Data Quality;Regression.aspx|Regression Analysis"
+            Case "Chart Recommendations"
+                Return "DataAdmin.aspx|Analytics Dashboard;MarketAdmin.aspx|Market Dashboard"
+            Case "Map Readiness"
+                Return "MapReport.aspx|Map Report;DataQuality.aspx|Data Quality"
+            Case "Matrix Balancing"
+                Return "Variance.aspx|Variance Analysis;ComparisonReports.aspx|Comparison Reports"
+            Case "Audit Summaries"
+                Return "Analytics.aspx|Detail Analytics;DataDictionary.aspx|Data Dictionary"
+            Case "Market Demand"
+                Return "MarketInventory.aspx|Market Inventory;MarketScenario.aspx|Market Scenario"
+            Case "Market Pricing"
+                Return "MarketElasticity.aspx|Market Elasticity;MarketProfit.aspx|Market Profit"
+            Case "Market Elasticity"
+                Return "MarketPricing.aspx|Market Pricing;MarketScenario.aspx|Market Scenario"
+            Case "Market Basket"
+                Return "MarketSegments.aspx|Market Segments;MarketProfit.aspx|Market Profit"
+            Case "Market Segments"
+                Return "MarketChurn.aspx|Market Churn;MarketProfit.aspx|Market Profit"
+            Case "Market Churn"
+                Return "MarketSegments.aspx|Market Segments;MarketRisk.aspx|Market Risk"
+            Case "Market Risk"
+                Return "MarketChurn.aspx|Market Churn;MarketScenario.aspx|Market Scenario"
+            Case "Market Inventory"
+                Return "MarketDemand.aspx|Market Demand;MarketScenario.aspx|Market Scenario"
+            Case "Market Profit"
+                Return "MarketPricing.aspx|Market Pricing;MarketScenario.aspx|Market Scenario"
+            Case "Market Scenario"
+                Return "MarketDemand.aspx|Market Demand;MarketProfit.aspx|Market Profit"
+            Case Else
+                Return "DataAdmin.aspx|Analytics Dashboard;MarketAdmin.aspx|Market Dashboard"
+        End Select
+    End Function
 
     Private Function ReadinessName(score As Integer) As String
         If score >= 80 Then Return "High"
@@ -237,8 +316,10 @@ Partial Class DataReadinessScanner
         If dt Is Nothing OrElse e.Row.Cells.Count = 0 Then Exit Sub
         HideColumn(dt, e.Row, "FilterId")
         WrapColumn(dt, e.Row, "Suggested Fields")
+        WrapColumn(dt, e.Row, "What Next")
         If e.Row.RowType <> DataControlRowType.DataRow Then Exit Sub
         AddOpenLink(e.Row, dt)
+        AddWhatNextLinks(e.Row, dt)
         AddRecordLink(e.Row, dt, "Records", "FilterId", "readinessfilter")
     End Sub
 
@@ -262,6 +343,28 @@ Partial Class DataReadinessScanner
         If pageUrl.Contains("?") Then Return pageUrl & "&Report=" & Server.UrlEncode(Session("REPORTID").ToString())
         Return pageUrl & "?Report=" & Server.UrlEncode(Session("REPORTID").ToString())
     End Function
+
+    Private Sub AddWhatNextLinks(row As GridViewRow, dt As DataTable)
+        If Not dt.Columns.Contains("What Next") Then Exit Sub
+        Dim idx As Integer = dt.Columns.IndexOf("What Next")
+        If idx < 0 OrElse idx >= row.Cells.Count Then Exit Sub
+        Dim suggestedPages As String = row.Cells(idx).Text.Replace("&nbsp;", "").Trim()
+        If suggestedPages = "" Then Exit Sub
+        row.Cells(idx).Controls.Clear()
+        Dim firstLink As Boolean = True
+        For Each recommendation As String In suggestedPages.Split(";"c)
+            Dim parts() As String = recommendation.Split("|"c)
+            If parts.Length <> 2 OrElse parts(0).Trim() = "" OrElse parts(1).Trim() = "" Then Continue For
+            If Not firstLink Then row.Cells(idx).Controls.Add(New LiteralControl(" | "))
+            Dim link As New HyperLink()
+            link.Text = parts(1).Trim()
+            link.NavigateUrl = AddReportParameter(parts(0).Trim())
+            link.CssClass = "NodeStyle"
+            link.ToolTip = "Open a highly recommended follow-up page."
+            row.Cells(idx).Controls.Add(link)
+            firstLink = False
+        Next
+    End Sub
 
     Private Sub HideColumn(dt As DataTable, row As GridViewRow, columnName As String)
         If dt.Columns.Contains(columnName) Then
@@ -402,7 +505,7 @@ Partial Class DataReadinessScanner
         LabelAnalysisSubtitle.Text = "Scan the current report or imported dataset and recommend the analytics, market models, charts, maps, and quality checks that are most useful for its fields. The grid is sorted by readiness score assigned by the algorithm."
         LabelModelExplanation.Text = "Model: The readiness scanner treats the dataset as an unknown table and classifies fields as numeric measures, dates, categories, IDs, products, customers, orders, locations, prices, quantities, revenue, and status/outcome fields."
         LabelAlgorithmExplanation.Text = "Algorithm: The page inspects column names, data types, blank counts, duplicate records, distinct values, and field combinations. Each analysis receives a readiness score based on the minimum fields normally needed for that analysis."
-        LabelOutputExplanation.Text = "Output: The grid shows the recommended analysis, readiness level, score, reason, suggested fields, an open link to the page, and a records link back to Data Explorer."
+        LabelOutputExplanation.Text = "Output: The grid shows the recommended analysis, readiness level, score, reason, suggested fields, an open link to the page, highly recommended What Next follow-up pages, and a records link back to Data Explorer."
     End Sub
 
     Private Function DetectNumericFields(dt As DataTable) As List(Of String)
