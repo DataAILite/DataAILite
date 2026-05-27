@@ -415,6 +415,169 @@ Partial Class DataReadinessScanner
         PanelDashboardRecommendation.Visible = dt IsNot Nothing AndAlso dt.Rows.Count > 0
         HyperLinkAnalyticsDashboardRecommendation.NavigateUrl = AddReportParameter("DataAdmin.aspx")
         HyperLinkMarketDashboardRecommendation.NavigateUrl = AddReportParameter("MarketAdmin.aspx")
+        BindWorkflow(dt)
+    End Sub
+
+    Private Sub BindWorkflow(displayTable As DataTable)
+        PlaceHolderWorkflow.Controls.Clear()
+        PanelWorkflow.Visible = False
+        Dim workflowTable As DataTable = TryCast(Session("DataReadinessScannerAllTable"), DataTable)
+        If workflowTable Is Nothing Then workflowTable = displayTable
+        If workflowTable Is Nothing OrElse Not workflowTable.Columns.Contains("Readiness") OrElse Not workflowTable.Columns.Contains("Analysis") OrElse Not workflowTable.Columns.Contains("Open") OrElse Not workflowTable.Columns.Contains("What Next") Then Exit Sub
+
+        Dim highPages As New Dictionary(Of String, DataRow)(StringComparer.OrdinalIgnoreCase)
+        For Each row As DataRow In workflowTable.Rows
+            If String.Equals(FieldText(row("Readiness")).Trim(), "High", StringComparison.OrdinalIgnoreCase) Then
+                Dim analysisName As String = FieldText(row("Analysis")).Trim()
+                If analysisName <> "" AndAlso Not highPages.ContainsKey(analysisName) Then highPages.Add(analysisName, row)
+            End If
+        Next
+        If highPages.Count = 0 Then Exit Sub
+
+        Dim expanded As New Dictionary(Of String, Boolean)(StringComparer.OrdinalIgnoreCase)
+        Dim queued As New Dictionary(Of String, Boolean)(StringComparer.OrdinalIgnoreCase)
+        Dim pendingAlternatives As New List(Of String)()
+        If highPages.ContainsKey("Detail Analytics") Then
+            AddWorkflowChain(PlaceHolderWorkflow, "Detail Analytics", highPages, expanded, queued, pendingAlternatives)
+        End If
+
+        Do While expanded.Count < highPages.Count
+            Dim nextStart As String = ""
+            Dim isAlternativePath As Boolean = False
+            Do While pendingAlternatives.Count > 0 AndAlso nextStart = ""
+                Dim alternativeName As String = pendingAlternatives(0)
+                pendingAlternatives.RemoveAt(0)
+                If Not expanded.ContainsKey(alternativeName) Then
+                    nextStart = alternativeName
+                    isAlternativePath = True
+                End If
+            Loop
+            If nextStart = "" Then
+                For Each row As DataRow In workflowTable.Rows
+                    Dim analysisName As String = FieldText(row("Analysis")).Trim()
+                    If highPages.ContainsKey(analysisName) AndAlso Not expanded.ContainsKey(analysisName) Then
+                        nextStart = analysisName
+                        Exit For
+                    End If
+                Next
+            End If
+            If nextStart = "" Then Exit Do
+            PlaceHolderWorkflow.Controls.Add(New LiteralControl(If(isAlternativePath, "; alternative path: ", "; additional path: ")))
+            AddWorkflowChain(PlaceHolderWorkflow, nextStart, highPages, expanded, queued, pendingAlternatives)
+        Loop
+        PanelWorkflow.Visible = True
+    End Sub
+
+    Private Sub AddWorkflowChain(container As System.Web.UI.Control, startName As String, highPages As Dictionary(Of String, DataRow), expanded As Dictionary(Of String, Boolean), queued As Dictionary(Of String, Boolean), pendingAlternatives As List(Of String))
+        Dim analysisName As String = startName
+        Dim firstStep As Boolean = True
+        Do While analysisName <> "" AndAlso highPages.ContainsKey(analysisName) AndAlso Not expanded.ContainsKey(analysisName)
+            If Not firstStep Then container.Controls.Add(New LiteralControl(" -> "))
+            AddWorkflowLink(container, analysisName, FieldText(highPages(analysisName)("Open")).Trim(), WorkflowToolTip(analysisName, highPages))
+            expanded.Add(analysisName, True)
+
+            Dim allNextRecommendations As List(Of String) = WorkflowNextRecommendations(highPages(analysisName))
+            Dim nextPages As List(Of String) = HighNextPages(highPages(analysisName), highPages)
+            Dim mainNext As String = BestWorkflowContinuation(nextPages, highPages, expanded)
+            Dim secondaryRecommendations As New List(Of String)()
+            For Each recommendation As String In allNextRecommendations
+                Dim parts() As String = recommendation.Split("|"c)
+                If parts.Length <> 2 OrElse String.Equals(parts(1).Trim(), mainNext, StringComparison.OrdinalIgnoreCase) Then Continue For
+                secondaryRecommendations.Add(recommendation)
+            Next
+            If secondaryRecommendations.Count > 0 Then
+                Dim caption As String = If(mainNext = "", " (connects to: ", " (alternative: ")
+                container.Controls.Add(New LiteralControl(caption))
+                For i As Integer = 0 To secondaryRecommendations.Count - 1
+                    If i > 0 Then container.Controls.Add(New LiteralControl(" / "))
+                    Dim parts() As String = secondaryRecommendations(i).Split("|"c)
+                    Dim nextUrl As String = parts(0).Trim()
+                    Dim nextName As String = parts(1).Trim()
+                    AddWorkflowLink(container, nextName, nextUrl, WorkflowToolTip(nextName, highPages))
+                    If highPages.ContainsKey(nextName) AndAlso Not expanded.ContainsKey(nextName) AndAlso Not queued.ContainsKey(nextName) Then
+                        pendingAlternatives.Add(nextName)
+                        queued.Add(nextName, True)
+                    End If
+                Next
+                container.Controls.Add(New LiteralControl(")"))
+            End If
+            analysisName = mainNext
+            firstStep = False
+        Loop
+    End Sub
+
+    Private Function BestWorkflowContinuation(nextPages As List(Of String), highPages As Dictionary(Of String, DataRow), expanded As Dictionary(Of String, Boolean)) As String
+        Dim bestName As String = ""
+        Dim bestLength As Integer = 0
+        For Each nextName As String In nextPages
+            If expanded.ContainsKey(nextName) Then Continue For
+            Dim length As Integer = WorkflowContinuationLength(nextName, highPages, expanded, New Dictionary(Of String, Boolean)(StringComparer.OrdinalIgnoreCase))
+            If length > bestLength Then
+                bestLength = length
+                bestName = nextName
+            End If
+        Next
+        Return bestName
+    End Function
+
+    Private Function WorkflowContinuationLength(analysisName As String, highPages As Dictionary(Of String, DataRow), expanded As Dictionary(Of String, Boolean), pathVisited As Dictionary(Of String, Boolean)) As Integer
+        If Not highPages.ContainsKey(analysisName) OrElse expanded.ContainsKey(analysisName) OrElse pathVisited.ContainsKey(analysisName) Then Return 0
+        Dim visitedWithCurrent As New Dictionary(Of String, Boolean)(pathVisited, StringComparer.OrdinalIgnoreCase)
+        visitedWithCurrent.Add(analysisName, True)
+        Dim bestLength As Integer = 0
+        For Each nextName As String In HighNextPages(highPages(analysisName), highPages)
+            bestLength = Math.Max(bestLength, WorkflowContinuationLength(nextName, highPages, expanded, visitedWithCurrent))
+        Next
+        Return 1 + bestLength
+    End Function
+
+    Private Function HighNextPages(row As DataRow, highPages As Dictionary(Of String, DataRow)) As List(Of String)
+        Dim nextPages As New List(Of String)()
+        For Each recommendation As String In WorkflowNextRecommendations(row)
+            Dim parts() As String = recommendation.Split("|"c)
+            If parts.Length <> 2 Then Continue For
+            Dim nextName As String = parts(1).Trim()
+            If highPages.ContainsKey(nextName) AndAlso Not nextPages.Contains(nextName) Then nextPages.Add(nextName)
+        Next
+        Return nextPages
+    End Function
+
+    Private Function WorkflowNextRecommendations(row As DataRow) As List(Of String)
+        Dim recommendations As New List(Of String)()
+        For Each recommendation As String In FieldText(row("What Next")).Trim().Split(";"c)
+            Dim parts() As String = recommendation.Split("|"c)
+            If parts.Length <> 2 OrElse parts(0).Trim() = "" OrElse parts(1).Trim() = "" Then Continue For
+            Dim normalizedRecommendation As String = parts(0).Trim() & "|" & parts(1).Trim()
+            If Not recommendations.Contains(normalizedRecommendation) Then recommendations.Add(normalizedRecommendation)
+        Next
+        Return recommendations
+    End Function
+
+    Private Function WorkflowToolTip(analysisName As String, highPages As Dictionary(Of String, DataRow)) As String
+        If highPages.ContainsKey(analysisName) AndAlso highPages(analysisName).Table.Columns.Contains("Why Useful") Then
+            Dim whyUseful As String = FieldText(highPages(analysisName)("Why Useful")).Trim()
+            If whyUseful <> "" Then Return whyUseful
+        End If
+        Dim allRecommendations As DataTable = TryCast(Session("DataReadinessScannerAllTable"), DataTable)
+        If allRecommendations IsNot Nothing AndAlso allRecommendations.Columns.Contains("Analysis") AndAlso allRecommendations.Columns.Contains("Why Useful") Then
+            For Each row As DataRow In allRecommendations.Rows
+                If String.Equals(FieldText(row("Analysis")).Trim(), analysisName.Trim(), StringComparison.OrdinalIgnoreCase) Then
+                    Dim whyUseful As String = FieldText(row("Why Useful")).Trim()
+                    If whyUseful <> "" Then Return whyUseful
+                End If
+            Next
+        End If
+        Return "Open " & analysisName & "."
+    End Function
+
+    Private Sub AddWorkflowLink(container As System.Web.UI.Control, caption As String, pageUrl As String, toolTipText As String)
+        If caption.Trim() = "" OrElse pageUrl.Trim() = "" Then Exit Sub
+        Dim link As New HyperLink()
+        link.Text = caption
+        link.NavigateUrl = AddReportParameter(pageUrl)
+        link.CssClass = "NodeStyle"
+        link.ToolTip = toolTipText
+        container.Controls.Add(link)
     End Sub
 
     Private Sub UpdateAnalysisPager(ByVal dt As DataTable)
@@ -505,7 +668,7 @@ Partial Class DataReadinessScanner
         LabelAnalysisSubtitle.Text = "Scan the current report or imported dataset and recommend the analytics, market models, charts, maps, and quality checks that are most useful for its fields. The grid is sorted by readiness score assigned by the algorithm."
         LabelModelExplanation.Text = "Model: The readiness scanner treats the dataset as an unknown table and classifies fields as numeric measures, dates, categories, IDs, products, customers, orders, locations, prices, quantities, revenue, and status/outcome fields."
         LabelAlgorithmExplanation.Text = "Algorithm: The page inspects column names, data types, blank counts, duplicate records, distinct values, and field combinations. Each analysis receives a readiness score based on the minimum fields normally needed for that analysis."
-        LabelOutputExplanation.Text = "Output: The grid shows the recommended analysis, readiness level, score, reason, suggested fields, an open link to the page, highly recommended What Next follow-up pages, and a records link back to Data Explorer."
+        LabelOutputExplanation.Text = "Output: Work Flow is one connected line beginning with Detail Analytics, continuing through the longest High-readiness route and showing every What Next connection from each High-readiness page inline, including destinations with lower readiness scores. Additional paths are appended only when needed to include every High recommendation. The grid shows each recommended analysis, readiness level, score, reason, suggested fields, an open link to the page, highly recommended What Next follow-up pages, and a records link back to Data Explorer."
     End Sub
 
     Private Function DetectNumericFields(dt As DataTable) As List(Of String)

@@ -1159,7 +1159,7 @@ Partial Class DataImport
                 list.Rows(i + 1).Cells(0).Align = "left"
 
                 list.Rows(i + 1).Cells(1).InnerText = "    analytics   "
-                list.Rows(i + 1).Cells(1).InnerHtml = "&nbsp;&nbsp;<a href='ShowReport.aspx?didata=yes&srd=11&Report=" & rep & "' data-toggle=""tooltip"" title=""DataAI"" Target=""_blank"">analytics</a>&nbsp;&nbsp;"
+                list.Rows(i + 1).Cells(1).InnerHtml = "&nbsp;&nbsp;<a href='DataReadinessScanner.aspx?Report=" & rep & "' data-toggle=""tooltip"" title=""Data Readiness with Work Flow"" Target=""_blank"">analytics</a>&nbsp;&nbsp;"
                 list.Rows(i + 1).Cells(1).Align = "center"
 
                 list.Rows(i + 1).Cells(2).InnerText = rep
@@ -1167,7 +1167,7 @@ Partial Class DataImport
                 list.Rows(i + 1).Cells(2).Align = "center"
 
                 list.Rows(i + 1).Cells(3).InnerText = "  AI   "
-                list.Rows(i + 1).Cells(3).InnerHtml = "&nbsp;&nbsp;<a href='ShowReport.aspx?didata=yes&srd=15&Report=" & rep & "' data-toggle=""tooltip"" title=""DataAI"" Target=""_blank"">AI</a>&nbsp;&nbsp;"
+                list.Rows(i + 1).Cells(3).InnerHtml = "&nbsp;&nbsp;<a href='ShowReport.aspx?didata=yes&srd=15&Report=" & rep & "' data-toggle=""tooltip"" title=""AI"" Target=""_blank"">AI</a>&nbsp;&nbsp;"
                 list.Rows(i + 1).Cells(3).Align = "center"
 
                 If i Mod 2 = 0 Then

@@ -18,6 +18,8 @@
         .analysisExplanation span { display:block; padding-bottom:4px; }
         .dashboardRecommendation { display:inline; font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:12px; }
         .dashboardRecommendation a { font-weight:bold; }
+        .workflowSuggestion { display:block; font-family:Arial; font-size:small; font-weight:normal; color:#333333; padding:6px 0; }
+        .workflowSuggestion a { font-weight:normal; }
         .modal { position:fixed; z-index:2147483647; height:100%; width:100%; top:0; background-color:#f8f8d3; opacity:0.8; }
         .center { z-index:2147483647; margin:300px auto; padding-left:25px; padding-top:10px; width:130px; background-color:#f8f8d3; border-radius:10px; }
         .center img { height:100px; width:100px; }
@@ -205,6 +207,11 @@
 <tr><td style="font-weight:bold;">Search:</td><td><asp:TextBox ID="txtSearch" runat="server" Width="420px" ToolTip="Optional text used to filter rows shown in the readiness grid."></asp:TextBox><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" ToolTip="Scan the data and build recommended analytics." /><asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" ToolTip="Clear search and rebuild all recommendations." /><asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" ToolTip="Export the readiness grid to CSV." /><asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" ToolTip="Export the readiness grid to Excel." /><asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkDataReadinessAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret the readiness grid and method explanation.">AI</asp:LinkButton></td></tr>
 </table>
 <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
+<asp:Panel ID="PanelWorkflow" runat="server" CssClass="workflowSuggestion" Visible="False">
+    <asp:Label ID="LabelWorkflow" runat="server" Text="Suggested Work Flow: " ForeColor="Red"></asp:Label>
+    <asp:PlaceHolder ID="PlaceHolderWorkflow" runat="server"></asp:PlaceHolder>
+</asp:Panel>
+<br /><%--<br />--%>
 <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label>
 <asp:Panel ID="PanelDashboardRecommendation" runat="server" CssClass="dashboardRecommendation" Visible="False">
     <asp:Label ID="LabelDashboardRecommendation" runat="server" Text="Highly recommended: review the complete results in "></asp:Label>
@@ -212,7 +219,7 @@
     <asp:Label ID="LabelDashboardRecommendationMiddle" runat="server" Text=" and "></asp:Label>
     <asp:HyperLink ID="HyperLinkMarketDashboardRecommendation" runat="server" CssClass="NodeStyle">Market Dashboard</asp:HyperLink>
     <asp:Label ID="LabelDashboardRecommendationEnd" runat="server" Text="."></asp:Label>
-</asp:Panel><br /><br />
+</asp:Panel><br />
 <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div>
 <div style="overflow:auto; max-width:100%; width:100%;"><asp:GridView ID="GridViewDataReadinessScanner" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both" Width="100%"><AlternatingRowStyle BackColor="#EFFBFB" /></asp:GridView></div>
 <div class="analysisExplanation"><asp:Label ID="LabelModelExplanation" runat="server"></asp:Label><asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label><asp:Label ID="LabelOutputExplanation" runat="server"></asp:Label></div>
