@@ -92,6 +92,12 @@ Partial Class AuditSummaries
         txtFilter.Text = CurrentFilterText()
         txtThresholds.Text = CurrentThresholdText()
         txtAggregations.Text = CurrentAggregationText()
+        UpdateInputToolTips()
+    End Sub
+
+    Private Sub UpdateInputToolTips()
+        txtResultName.ToolTip = txtResultName.Text
+        txtReportFields.ToolTip = txtReportFields.Text
     End Sub
 
     Private Sub TreeView1_SelectedNodeChanged(sender As Object, e As EventArgs) Handles TreeView1.SelectedNodeChanged
@@ -138,6 +144,7 @@ Partial Class AuditSummaries
 
     Private Sub BuildAndBindAudit()
         LabelError.Text = ""
+        UpdateInputToolTips()
         Dim source As DataTable = GetSourceTable()
         Dim output As DataTable = CreateAuditTable()
 

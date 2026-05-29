@@ -286,13 +286,7 @@
                                         
                                         &nbsp;<asp:Label ID="Label11" runat="server" Text="(!!! ATTENTION !!!)    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   SELECT: " ToolTip="Required (!) to calculate reports, statistics, analytics, and charts below." ForeColor="Red" Font-Bold="True" Font-Size="Medium"></asp:Label>
                                        <br /><br />
-                                        &nbsp;<asp:Label ID="Label3" runat="server" Text="The argument: " ToolTip="Required (!) to calculate reports, statistics, analytics, and charts below (Axis Y in Charts)."  Font-Bold="True" Font-Size="Medium"></asp:Label>
-                                        <asp:DropDownList ID="DropDownList3" runat="server" ToolTip="Axis Y" AutoPostBack="True"></asp:DropDownList> 
                                         
-                                        <asp:Label ID="Label4" runat="server" Text="and the aggregation function "  ToolTip="Required! Function to aggregate the values of the argument field. For text field: Count and Count Distinct, for numeric field Sum, Max, Min, StDev, etc... as well. "   Font-Bold="True" Font-Size="Medium"></asp:Label>
-                                        <asp:DropDownList ID="DropDownList4" runat="server"  ToolTip="Numeric or Text aggregation function"></asp:DropDownList>
-                                        <br />
-                                        <br />
                                         
                                         &nbsp;<asp:Label ID="Label12" runat="server" Text="Category/Group 1: " ToolTip="Required (!) to calculate reports, statistics, analytics, and charts below (Axis X in Charts)."   Font-Bold="True" Font-Size="Medium"></asp:Label>
                                         <asp:DropDownList ID="DropDownList2" runat="server" ToolTip="Category/Group1" AutoPostBack="True"></asp:DropDownList> 
@@ -300,6 +294,14 @@
                                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                          &nbsp;<asp:Label ID="Label13" runat="server" Text="Category/Group 2: " ToolTip="Required (!) to calculate reports, statistics, analytics, and charts below (Axis X in Charts)."   Font-Bold="True" Font-Size="Medium"></asp:Label>
                                          <asp:DropDownList ID="DropDownList7" runat="server" ToolTip="Category/Group2" AutoPostBack="True"></asp:DropDownList>
+                                        <br />
+                                        <br />
+                                        &nbsp;<asp:Label ID="Label3" runat="server" Text="The argument value: " ToolTip="Required field1 (!) to calculate reports, statistics, analytics, and charts below (Axis Y in Charts)."  Font-Bold="True" Font-Size="Medium"></asp:Label>
+                                        <asp:DropDownList ID="DropDownList3" runat="server" ToolTip="Axis Y" AutoPostBack="True"></asp:DropDownList> 
+                                        
+                                        <asp:Label ID="Label4" runat="server" Text="and the aggregation function "  ToolTip="Required! Function to aggregate the values of the argument field. For text field: Count and Count Distinct, for numeric field Sum, Max, Min, StDev, etc... as well. "   Font-Bold="True" Font-Size="Medium"></asp:Label>
+                                        <asp:DropDownList ID="DropDownList4" runat="server"  ToolTip="Numeric or Text aggregation function"></asp:DropDownList>
+                                      
                                     </td>
                                     
                                     <td align="left" style="border:medium double #FFFFFF;" width="40%">

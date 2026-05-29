@@ -239,7 +239,7 @@
        <td align="center" valign="top">
          
          <asp:Label ID="lblHeader" runat="server"  Font-Size="22px" Font-Names="Arial" >Analytics:</asp:Label>
-         <span class="analysisRecommendation">Highly recommended: review stronger relationships in <a class="NodeStyle" href="CorrelationThreshold.aspx">Correlation Threshold</a>.</span>
+         <span class="analysisRecommendation">Work Flow suggested: review stronger relationships in <a class="NodeStyle" href="CorrelationThreshold.aspx">Correlation Threshold</a>.</span>
 
        </td>
       </tr>

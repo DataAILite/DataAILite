@@ -13,7 +13,8 @@
         .analysisgrid { font-family:Arial; font-size:12px; border-collapse:collapse; background-color:white; }
         .analysisgrid th { background-color:#663300; color:white; border:1px solid white; padding:4px; white-space:nowrap; }
         .analysisgrid td { border:1px solid #d0d0d0; padding:4px; white-space:nowrap; }
-        .controlpanel { background-color:#e5e5e5; border:medium double #FFFFFF; color:black; font-family:Arial; font-size:small; width:auto; min-width:760px; max-width:980px; margin-left:0; margin-right:auto; }
+        .controlpanel { background-color:#e5e5e5; border:medium double #FFFFFF; color:black; font-family:Arial; font-size:small; width:100%; max-width:1180px; margin-left:0; margin-right:auto; box-sizing:border-box; }
+        .controlpanel input[type="text"], .controlpanel textarea { width:100%; max-width:100%; box-sizing:border-box; }
             .analysisSubtitle {
             display: block;
             font-family: Arial;
@@ -36,7 +37,7 @@
             display: block;
             padding-bottom: 4px;
         }
-        .analysisRecommendation { font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:12px; }
+        .analysisRecommendation { display:block; text-align:center; font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:0; }
         .analysisRecommendation a { font-weight:bold; }
         .modal { position:fixed; z-index:2147483647; height:100%; width:100%; top:0; background-color:#f8f8d3; opacity:0.8; }
         .center { z-index:2147483647; margin:300px auto; padding-left:25px; padding-top:10px; width:130px; background-color:#f8f8d3; border-radius:10px; }
@@ -146,39 +147,39 @@
                             <br /><br />
                             <div style="text-align:center;"><asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Audit Summaries</asp:Label>
             <asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Show which report fields, filters, thresholds, and aggregation options produced each analytical result."></asp:Label></div>
-                            <br /><br />
-                            <table class="controlpanel" cellpadding="4" cellspacing="0">
+<span class="analysisRecommendation">Work Flow suggested: review the complete results in <a class="NodeStyle" href="Analytics.aspx">Detail Analytics</a> and <a class="NodeStyle" href="DataDictionary.aspx">Data Dictionary</a>.</span>
+<br />
+<table class="controlpanel" cellpadding="4" cellspacing="0">
                                 <tr>
                                     <td style="font-weight:bold;">Analysis page/type:</td>
                                     <td><asp:DropDownList ID="DropDownAnalysisType" runat="server"></asp:DropDownList></td>
                                     <td style="font-weight:bold;">Result name:</td>
-                                    <td><asp:TextBox ID="txtResultName" runat="server" Width="240px"></asp:TextBox></td>
+                                    <td><asp:TextBox ID="txtResultName" runat="server"></asp:TextBox></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Report fields:</td>
-                                    <td colspan="3"><asp:TextBox ID="txtReportFields" runat="server" Width="680px"></asp:TextBox></td>
+                                    <td colspan="3"><asp:TextBox ID="txtReportFields" runat="server"></asp:TextBox></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Filter/search:</td>
-                                    <td colspan="3"><asp:TextBox ID="txtFilter" runat="server" Width="680px"></asp:TextBox></td>
+                                    <td colspan="3"><asp:TextBox ID="txtFilter" runat="server"></asp:TextBox></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Thresholds:</td>
-                                    <td colspan="3"><asp:TextBox ID="txtThresholds" runat="server" Width="680px"></asp:TextBox></td>
+                                    <td colspan="3"><asp:TextBox ID="txtThresholds" runat="server"></asp:TextBox></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Aggregation options:</td>
-                                    <td colspan="3"><asp:TextBox ID="txtAggregations" runat="server" Width="680px"></asp:TextBox></td>
+                                    <td colspan="3"><asp:TextBox ID="txtAggregations" runat="server" Enabled="False"></asp:TextBox></td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Notes:</td>
-                                    <td colspan="3"><asp:TextBox ID="txtNotes" runat="server" TextMode="MultiLine" Rows="2" Width="680px"></asp:TextBox></td>
+                                    <td colspan="3"><asp:TextBox ID="txtNotes" runat="server" TextMode="MultiLine" Rows="2"></asp:TextBox></td>
                                 </tr>
                                 <tr><td colspan="4"><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" /><asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" />&nbsp;&nbsp;<asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" /><asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" /><asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkAuditAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret the audit summary, selected fields, filters, thresholds, and analytical settings.">AI</asp:LinkButton></td></tr>
                             </table>
                             <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
-                            <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><span class="analysisRecommendation">Highly recommended: review the complete results in <a class="NodeStyle" href="Analytics.aspx">Detail Analytics</a> and <a class="NodeStyle" href="DataDictionary.aspx">Data Dictionary</a>.</span><br /><br />
-                            <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div><div style="overflow:auto; max-width:100%;"><asp:GridView ID="GridViewAudit" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView></div>
+                            <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br /><div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div><div style="overflow:auto; max-width:100%;"><asp:GridView ID="GridViewAudit" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView></div>
 <div class="analysisExplanation">
     <asp:Label ID="LabelModelExplanation" runat="server"></asp:Label>
     <asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label>

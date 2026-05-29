@@ -323,7 +323,7 @@
                             <asp:LinkButton  ID="lnkExpandAll" runat="server" Font-Size="Small" Visible="True" ToolTip="Expand all details in report">Expand all</asp:LinkButton>  
 
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <span class="readinessRecommendation">Highly recommended: review <a class="NodeStyle" href="DataReadinessScanner.aspx">Data Readiness Scanner</a> to see analyses and fields ranked by readiness score.</span>
+                            <span class="readinessRecommendation">Work Flow suggested: review <a class="NodeStyle" href="DataReadinessScanner.aspx">Data Readiness Scanner</a> to see analyses and fields ranked by readiness score.</span>
 
                         </td>
                     </tr>

@@ -197,29 +197,26 @@
 <td style="width:85%; text-align:left; vertical-align:top;">
 <asp:HyperLink ID="HyperLinkData" runat="server" NavigateUrl="~/ShowReport.aspx" CssClass="NodeStyle" Font-Names="Arial">Data</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial">Detail Analytics</asp:HyperLink>
+&nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkAnalyticsDashboardTop" runat="server" NavigateUrl="~/DataAdmin.aspx" CssClass="NodeStyle" Font-Names="Arial">Analytics Dashboard</asp:HyperLink>
+&nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkMarketDashboardTop" runat="server" NavigateUrl="~/MarketAdmin.aspx" CssClass="NodeStyle" Font-Names="Arial">Market Dashboard</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkReport" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" CssClass="NodeStyle" Font-Names="Arial">Report and Charts</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Data%20Readiness" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
 <br /><br />
 <div style="text-align:center;"><asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Data Readiness Scanner</asp:Label><asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Scan the current report or imported dataset and recommend the analytics, market models, charts, maps, and quality checks that are most useful for its fields. The grid is sorted by readiness score assigned by the algorithm."></asp:Label></div>
 <br />
-<table class="controlpanel" cellpadding="4" cellspacing="0">
-<tr><td style="font-weight:bold;">Search:</td><td><asp:TextBox ID="txtSearch" runat="server" Width="420px" ToolTip="Optional text used to filter rows shown in the readiness grid."></asp:TextBox><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" ToolTip="Scan the data and build recommended analytics." /><asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" ToolTip="Clear search and rebuild all recommendations." /><asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" ToolTip="Export the readiness grid to CSV." /><asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" ToolTip="Export the readiness grid to Excel." /><asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkDataReadinessAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret the readiness grid and method explanation.">AI</asp:LinkButton></td></tr>
-</table>
-<asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
 <asp:Panel ID="PanelWorkflow" runat="server" CssClass="workflowSuggestion" Visible="False">
     <asp:Label ID="LabelWorkflow" runat="server" Text="Suggested Work Flow: " ForeColor="Red"></asp:Label>
     <asp:PlaceHolder ID="PlaceHolderWorkflow" runat="server"></asp:PlaceHolder>
 </asp:Panel>
+<br />
+<table class="controlpanel" cellpadding="4" cellspacing="0">
+<tr><td style="font-weight:bold;">Search:</td><td><asp:TextBox ID="txtSearch" runat="server" Width="420px" ToolTip="Optional text used to filter rows shown in the readiness grid."></asp:TextBox><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" ToolTip="Scan the data and build recommended analytics." /><asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" ToolTip="Clear search and rebuild all recommendations." /><asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" ToolTip="Export the readiness grid to CSV." /><asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" ToolTip="Export the readiness grid to Excel." /><asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkDataReadinessAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret the readiness grid and method explanation.">AI</asp:LinkButton></td></tr>
+</table>
+<asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
 <br /><%--<br />--%>
 <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label>
-<asp:Panel ID="PanelDashboardRecommendation" runat="server" CssClass="dashboardRecommendation" Visible="False">
-    <asp:Label ID="LabelDashboardRecommendation" runat="server" Text="Highly recommended: review the complete results in "></asp:Label>
-    <asp:HyperLink ID="HyperLinkAnalyticsDashboardRecommendation" runat="server" CssClass="NodeStyle">Analytics Dashboard</asp:HyperLink>
-    <asp:Label ID="LabelDashboardRecommendationMiddle" runat="server" Text=" and "></asp:Label>
-    <asp:HyperLink ID="HyperLinkMarketDashboardRecommendation" runat="server" CssClass="NodeStyle">Market Dashboard</asp:HyperLink>
-    <asp:Label ID="LabelDashboardRecommendationEnd" runat="server" Text="."></asp:Label>
-</asp:Panel><br />
+<br />
 <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div>
 <div style="overflow:auto; max-width:100%; width:100%;"><asp:GridView ID="GridViewDataReadinessScanner" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both" Width="100%"><AlternatingRowStyle BackColor="#EFFBFB" /></asp:GridView></div>
 <div class="analysisExplanation"><asp:Label ID="LabelModelExplanation" runat="server"></asp:Label><asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label><asp:Label ID="LabelOutputExplanation" runat="server"></asp:Label></div>

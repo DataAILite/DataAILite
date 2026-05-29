@@ -194,6 +194,12 @@ Partial Class Ranking
 
     Private Sub SetDefaultValueField(dt As DataTable)
         For i As Integer = 0 To dt.Columns.Count - 1
+            If ColumnTypeIsNumeric(dt.Columns(i)) AndAlso Not LooksLikeIdentifierField(dt.Columns(i).ColumnName) Then
+                DropDownValueField.SelectedValue = dt.Columns(i).ColumnName
+                Exit Sub
+            End If
+        Next
+        For i As Integer = 0 To dt.Columns.Count - 1
             If ColumnTypeIsNumeric(dt.Columns(i)) Then
                 DropDownValueField.SelectedValue = dt.Columns(i).ColumnName
                 Exit Sub
@@ -222,7 +228,9 @@ Partial Class Ranking
             DropDownAggregate.Items.Insert(0, "Sum")
         End If
 
-        If selectedAggregate.Trim() <> "" Then
+        If LooksLikeIdentifierField(DropDownValueField.SelectedValue) AndAlso DropDownAggregate.Items.FindByValue("Count") IsNot Nothing Then
+            DropDownAggregate.SelectedValue = "Count"
+        ElseIf selectedAggregate.Trim() <> "" Then
             Try
                 DropDownAggregate.SelectedValue = selectedAggregate
             Catch ex As Exception
@@ -232,6 +240,12 @@ Partial Class Ranking
             DropDownAggregate.SelectedValue = DropDownAggregate.Items(0).Value
         End If
     End Sub
+
+    Private Function LooksLikeIdentifierField(fieldName As String) As Boolean
+        If fieldName Is Nothing Then Return False
+        Dim normalized As String = fieldName.Trim().Replace("_", "").Replace(" ", "").Replace("-", "").ToUpperInvariant()
+        Return normalized = "ID" OrElse normalized = "IND" OrElse normalized = "INDX" OrElse normalized.EndsWith("ID")
+    End Function
 
     Private Sub TreeView1_SelectedNodeChanged(sender As Object, e As EventArgs) Handles TreeView1.SelectedNodeChanged
         Dim node As WebControls.TreeNode = TreeView1.SelectedNode

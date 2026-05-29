@@ -124,6 +124,7 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
                             <br /><br />
                             <div style="text-align:center;"><asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Map Readiness</asp:Label></div>
+                            <div style="text-align:center; font-family:Arial; font-size:small; padding-top:6px;">If proper longitude and latitude fields are found below, open <asp:HyperLink ID="HyperLinkMapDefinition" runat="server" NavigateUrl="~/MapReport.aspx" CssClass="NodeStyle" Font-Names="Arial">Map Definition</asp:HyperLink> to configure the map.</div>
                             <br /><br />
                             <div class="readinessBox"><asp:Literal ID="litMapSuitability" runat="server"></asp:Literal></div>
                             <table class="controlpanel" cellpadding="4" cellspacing="0">

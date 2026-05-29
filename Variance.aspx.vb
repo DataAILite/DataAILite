@@ -146,6 +146,12 @@ Partial Class Variance
 
     Private Sub SetDefaultValueField(dt As DataTable)
         For i As Integer = 0 To dt.Columns.Count - 1
+            If ColumnTypeIsNumeric(dt.Columns(i)) AndAlso Not LooksLikeIdentifierField(dt.Columns(i).ColumnName) Then
+                DropDownValueField.SelectedValue = dt.Columns(i).ColumnName
+                Exit Sub
+            End If
+        Next
+        For i As Integer = 0 To dt.Columns.Count - 1
             If ColumnTypeIsNumeric(dt.Columns(i)) Then
                 DropDownValueField.SelectedValue = dt.Columns(i).ColumnName
                 Exit Sub
@@ -173,7 +179,9 @@ Partial Class Variance
             DropDownAggregate.Items.Insert(0, "Sum")
         End If
 
-        If selectedAggregate.Trim() <> "" Then
+        If LooksLikeIdentifierField(DropDownValueField.SelectedValue) AndAlso DropDownAggregate.Items.FindByValue("Count") IsNot Nothing Then
+            DropDownAggregate.SelectedValue = "Count"
+        ElseIf selectedAggregate.Trim() <> "" Then
             Try
                 DropDownAggregate.SelectedValue = selectedAggregate
             Catch ex As Exception
@@ -183,6 +191,12 @@ Partial Class Variance
             DropDownAggregate.SelectedValue = DropDownAggregate.Items(0).Value
         End If
     End Sub
+
+    Private Function LooksLikeIdentifierField(fieldName As String) As Boolean
+        If fieldName Is Nothing Then Return False
+        Dim normalized As String = fieldName.Trim().Replace("_", "").Replace(" ", "").Replace("-", "").ToUpperInvariant()
+        Return normalized = "ID" OrElse normalized = "IND" OrElse normalized = "INDX" OrElse normalized.EndsWith("ID")
+    End Function
 
     Private Sub FillCompareValues()
         Dim dt As DataTable = GetSourceTable()
@@ -221,6 +235,15 @@ Partial Class Variance
             End Try
         ElseIf DropDownCompareValue.Items.Count = 1 Then
             DropDownCompareValue.SelectedIndex = 0
+        End If
+
+        If DropDownBaseValue.Items.Count > 1 AndAlso DropDownCompareValue.Items.Count > 1 AndAlso DropDownBaseValue.SelectedValue = DropDownCompareValue.SelectedValue Then
+            For i As Integer = 0 To DropDownCompareValue.Items.Count - 1
+                If DropDownCompareValue.Items(i).Value <> DropDownBaseValue.SelectedValue Then
+                    DropDownCompareValue.SelectedIndex = i
+                    Exit For
+                End If
+            Next
         End If
     End Sub
 
@@ -302,8 +325,11 @@ Partial Class Variance
             End If
 
             If DropDownBaseValue.SelectedValue = DropDownCompareValue.SelectedValue Then
-                LabelError.Text = "Base and compare values should be different."
-                Exit Sub
+                SelectDifferentCompareValue()
+                If DropDownBaseValue.SelectedValue = DropDownCompareValue.SelectedValue Then
+                    LabelError.Text = "Base and compare values should be different."
+                    Exit Sub
+                End If
             End If
 
             output = CreateVarianceTable(source)
@@ -311,6 +337,16 @@ Partial Class Variance
 
         Session("VarianceTable") = output
         BindAnalysis(output)
+    End Sub
+
+    Private Sub SelectDifferentCompareValue()
+        If DropDownBaseValue.Items.Count <= 1 OrElse DropDownCompareValue.Items.Count <= 1 Then Exit Sub
+        For i As Integer = 0 To DropDownCompareValue.Items.Count - 1
+            If DropDownCompareValue.Items(i).Value <> DropDownBaseValue.SelectedValue Then
+                DropDownCompareValue.SelectedIndex = i
+                Exit Sub
+            End If
+        Next
     End Sub
 
     Private Sub BindAnalysis(dt As DataTable)

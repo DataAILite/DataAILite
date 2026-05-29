@@ -123,8 +123,36 @@ Partial Class ABCPareto
             
         Next
         If DropDownValueField.Items.Count = 0 Then DropDownValueField.Items.Add(New ListItem("(records)", ""))
+        SetDefaultValueField(source)
         ApplyRequestSelections()
+        SetDefaultAggregate()
     End Sub
+
+    Private Sub SetDefaultValueField(source As DataTable)
+        For Each col As DataColumn In source.Columns
+            If ColumnTypeIsNumeric(col) AndAlso Not LooksLikeIdentifierField(col.ColumnName) Then
+                DropDownValueField.SelectedValue = col.ColumnName
+                Exit Sub
+            End If
+        Next
+
+        For Each col As DataColumn In source.Columns
+            If ColumnTypeIsNumeric(col) Then
+                DropDownValueField.SelectedValue = col.ColumnName
+                Exit Sub
+            End If
+        Next
+    End Sub
+
+    Private Sub SetDefaultAggregate()
+        If LooksLikeIdentifierField(DropDownValueField.SelectedValue) AndAlso DropDownAggregate.Items.FindByValue("Count") IsNot Nothing Then DropDownAggregate.SelectedValue = "Count"
+    End Sub
+
+    Private Function LooksLikeIdentifierField(fieldName As String) As Boolean
+        If fieldName Is Nothing Then Return False
+        Dim normalized As String = fieldName.Trim().Replace("_", "").Replace(" ", "").Replace("-", "").ToUpperInvariant()
+        Return normalized = "ID" OrElse normalized = "IND" OrElse normalized = "INDX" OrElse normalized.EndsWith("ID")
+    End Function
 
     Private Sub ApplyRequestSelections()
         SelectDropDownValue(DropDownPrimaryField, Request("cat1"))

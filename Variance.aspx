@@ -106,7 +106,7 @@
             display: block;
             padding-bottom: 4px;
         }
-        .analysisRecommendation { font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:12px; }
+        .analysisRecommendation { display:block; text-align:center; font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:0; }
         .analysisRecommendation a { font-weight:bold; }
     </style>
 </head>
@@ -230,9 +230,9 @@
                                     <asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Variance Analysis</asp:Label>
             <asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Compare base and comparison values to show percent change, variance, and contribution to total."></asp:Label>
                                 </div>
-                                <br /><br />
-
-                                <table class="controlpanel" cellpadding="4" cellspacing="0">
+<span class="analysisRecommendation">Work Flow suggested: review the complete results in <a class="NodeStyle" href="ComparisonReports.aspx">Comparison Reports</a> and <a class="NodeStyle" href="TimeBasedSummaries.aspx">Time Based Summaries</a>.</span>
+<br />
+<table class="controlpanel" cellpadding="4" cellspacing="0">
                                     <tr>
                                         <td align="left" style="font-weight: bold;">Analysis:</td>
                                         <td align="left">
@@ -285,10 +285,9 @@
 
                                 <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label>
                                 <br />
-                                <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><span class="analysisRecommendation">Highly recommended: review the complete results in <a class="NodeStyle" href="ComparisonReports.aspx">Comparison Reports</a> and <a class="NodeStyle" href="TimeBasedSummaries.aspx">Time Based Summaries</a>.</span>
-                                <br /><br />
-
-                                <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div><div style="overflow: auto; max-width: 100%;">
+                                <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label>
+                                <br />
+<div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div><div style="overflow: auto; max-width: 100%;">
                                     <asp:GridView ID="GridViewAnalysis" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView>
                                 </div>
 <div class="analysisExplanation">

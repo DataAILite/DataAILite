@@ -36,7 +36,7 @@
             display: block;
             padding-bottom: 4px;
         }
-        .analysisRecommendation { font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:12px; }
+        .analysisRecommendation { display:block; text-align:center; font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:0; }
         .analysisRecommendation a { font-weight:bold; }
         .modal { position:fixed; z-index:2147483647; height:100%; width:100%; top:0; background-color:#f8f8d3; opacity:0.8; }
         .center { z-index:2147483647; margin:300px auto; padding-left:25px; padding-top:10px; width:130px; background-color:#f8f8d3; border-radius:10px; }
@@ -146,8 +146,9 @@
                             <br /><br />
                             <div style="text-align:center;"><asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Outlier Flagging</asp:Label>
             <asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Flag outliers using standard deviation, percentage difference, or configurable business-rule thresholds."></asp:Label></div>
-                            <br /><br />
-                            <table class="controlpanel" cellpadding="4" cellspacing="0">
+<span class="analysisRecommendation">Work Flow suggested: review the complete results in <a class="NodeStyle" href="DataQuality.aspx">Data Quality</a> and <a class="NodeStyle" href="Regression.aspx">Regression Analysis</a>.</span>
+<br />
+<table class="controlpanel" cellpadding="4" cellspacing="0">
                                 <tr>
                                     <td style="font-weight:bold;">Value field:</td><td><asp:DropDownList ID="DropDownValueField" runat="server"></asp:DropDownList></td>
                                     <td style="font-weight:bold;">Method:</td><td><asp:DropDownList ID="DropDownMethod" runat="server"><asp:ListItem Value="StdDev">Standard Deviation</asp:ListItem><asp:ListItem Value="PercentDifference">Percentage Difference</asp:ListItem><asp:ListItem Value="BusinessRule">Business Rule</asp:ListItem></asp:DropDownList></td>
@@ -163,8 +164,7 @@
                                 <tr><td colspan="4" style="font-weight:bold;">Search: <asp:TextBox ID="txtSearch" runat="server" Width="260px"></asp:TextBox><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" /><asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" />&nbsp;&nbsp;<asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" /><asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" /><asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkOutlierAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret the current outlier flags, thresholds, reasons, and records that should be reviewed.">AI</asp:LinkButton></td></tr>
                             </table>
                             <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
-                            <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><span class="analysisRecommendation">Highly recommended: review the complete results in <a class="NodeStyle" href="DataQuality.aspx">Data Quality</a> and <a class="NodeStyle" href="Regression.aspx">Regression Analysis</a>.</span><br /><br />
-                            <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div><div style="overflow:auto; max-width:100%;"><asp:GridView ID="GridViewOutliers" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView></div>
+                            <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br /><div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div><div style="overflow:auto; max-width:100%;"><asp:GridView ID="GridViewOutliers" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView></div>
 <div class="analysisExplanation">
     <asp:Label ID="LabelModelExplanation" runat="server"></asp:Label>
     <asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label>

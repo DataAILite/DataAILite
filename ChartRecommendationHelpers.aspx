@@ -136,7 +136,7 @@
                                 <tr><td colspan="4" style="font-weight:bold; padding-top:4px;">Search: <asp:TextBox ID="txtSearch" runat="server" Width="260px" AutoPostBack="true"></asp:TextBox><asp:Button ID="ButtonSearch" runat="server" CssClass="ticketbutton" Text="Search" /></td></tr>
                             </table>
                             <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
-                            <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br />
+                            <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:Label ID="LabelChartsLinkText" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Small" Text="To customize them click "></asp:Label><asp:HyperLink ID="HyperLinkCharts" runat="server" CssClass="NodeStyle" Font-Names="Arial" Font-Size="Small">Charts</asp:HyperLink><asp:Label ID="LabelChartsLinkEnd" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Small" Text="."></asp:Label><br />
                             <asp:HyperLink ID="HyperLinkDashboard" runat="server" CssClass="NodeStyle" Font-Names="Arial" Visible="False">Open dashboard</asp:HyperLink><br />
                             <asp:Label ID="LabelRecordCount" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br />
                             <div style="font-family:Arial; font-size:small; padding-bottom:6px;">

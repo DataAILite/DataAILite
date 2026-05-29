@@ -106,7 +106,7 @@
             display: block;
             padding-bottom: 4px;
         }
-        .analysisRecommendation { font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:12px; }
+        .analysisRecommendation { display:block; text-align:center; font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:0; }
         .analysisRecommendation a { font-weight:bold; }
     </style>
 </head>
@@ -229,10 +229,10 @@
                                 <div style="text-align: center; width: 100%; max-width: 900px;">
                                     <asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Pivot / Cross Tab</asp:Label>
             <asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Build pivot-style cross-tab reports from selected row fields, column fields, value fields, and aggregation options."></asp:Label>
+<br /><span class="analysisRecommendation">Work Flow suggested: review the complete results in <a class="NodeStyle" href="Variance.aspx">Variance Analysis</a>, <a class="NodeStyle" href="Ranking.aspx">Ranking Analysis</a>, and <asp:HyperLink ID="HyperLinkMatrixPivotRecommendation" runat="server" CssClass="NodeStyle" ToolTip="Open the matrix/pivot report for the selected row, column, value, and aggregation fields.">matrix/pivot</asp:HyperLink>.</span>
                                 </div>
-                                <br /><br />
-
-                                <table class="controlpanel" cellpadding="4" cellspacing="0">
+<br />
+<table class="controlpanel" cellpadding="4" cellspacing="0">
                                     <tr>
                                         <td align="left" style="font-weight: bold;">Row field:</td>
                                         <td align="left">
@@ -271,10 +271,7 @@
 
                                 <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label>
                                 <br />
-                                <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><span class="analysisRecommendation">Highly recommended: review the complete results in <a class="NodeStyle" href="Variance.aspx">Variance Analysis</a>, <a class="NodeStyle" href="Ranking.aspx">Ranking Analysis</a>, and <asp:HyperLink ID="HyperLinkMatrixPivotRecommendation" runat="server" CssClass="NodeStyle" ToolTip="Open the matrix/pivot report for the selected row, column, value, and aggregation fields.">matrix/pivot</asp:HyperLink>.</span>
-                                <br /><br />
-
-                                <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div><div style="overflow: auto; max-width: 100%;">
+                                <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br /><div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div><div style="overflow: auto; max-width: 100%;">
                                     <asp:GridView ID="GridViewPivot" runat="server" CssClass="pivotgrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView>
                                 </div>
 <div class="analysisExplanation">

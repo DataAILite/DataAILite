@@ -90,9 +90,10 @@
             font-family: Arial;
             font-size: 13px;
             font-weight: bold;
+            text-align: center;
         }
         .guided-report-row {
-            background-color: #FFFE71 !important;
+            background-color: #FFFDC4 !important;
         }
         .show-report-spacing {
             padding-left: 24px;
@@ -297,7 +298,7 @@
      <tr>
        <td align="left" valign="top">
 
-         <asp:Label ID="lblReadinessInstructions" runat="server" CssClass="guided-readiness-note" Visible="False">Scroll down to the highlighted report or click &quot;Advanced User&quot; and import data -&gt; click &quot;data readiness&quot; to open Data Readiness Scanner with suggested Work Flow-&gt; open Analytics or Market Dashboard -&gt; export results or ask AI.</asp:Label>
+         <asp:Label ID="lblReadinessInstructions" runat="server" CssClass="guided-readiness-note" Visible="False">Scroll down to the highlighted report, click &quot;data readiness&quot; to open Data Readiness Scanner with suggested Work Flow for recommended analytics and market models-&gt; export results or ask AI.</asp:Label>
          <asp:Label ID="lblHeader" runat="server" Font-Bold="True" Font-Size="22px" Font-Names="Arial" >Reports:</asp:Label>
            
          <%--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
@@ -341,6 +342,7 @@
                     <td class="auto-style3" style="font-weight:bold"></td>
                     <td class="auto-style3" style="font-weight:bold"></td>
                     <td class="auto-style2" style="font-weight:bold"></td>
+                    <td class="auto-style1" style="font-weight:bold"></td>
                     <td class="auto-style1" style="font-weight:bold"></td>
                     <td class="auto-style1" style="font-weight:bold"></td>
                     <td class="auto-style1" style="font-weight:bold"></td>

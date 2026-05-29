@@ -295,7 +295,7 @@
               </asp:DropDownList>&nbsp;
             <asp:TextBox ID="TextBoxSearch" runat="server" Width="100px"></asp:TextBox>
             <asp:Button ID="ButtonSearch" runat="server" CssClass="ticketbutton" Text="Search" ToolTip="Show data selected" AutoPostBack="true" Width="80px" /> 
-            <span class="readinessRecommendation">Highly recommended: review <a class="NodeStyle" href="DataReadinessScanner.aspx">Data Readiness Scanner</a> to see analyses and fields ranked by readiness score.</span>
+            <span class="readinessRecommendation">Work Flow suggested: review <a class="NodeStyle" href="DataReadinessScanner.aspx">Data Readiness Scanner</a> to see analyses and fields ranked by readiness score.</span>
             </td>
         </tr>
          <tr ID="trParameters" runat="server" style="border-color:#ffffff" >

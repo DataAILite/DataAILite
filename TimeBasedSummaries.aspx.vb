@@ -118,13 +118,30 @@ Partial Class TimeBasedSummaries
             DropDownValueField.Items.Add(New ListItem(fld, fld))
         Next
 
+        SetDefaultValueField(dt)
+    End Sub
+
+    Private Sub SetDefaultValueField(dt As DataTable)
+        For i As Integer = 0 To dt.Columns.Count - 1
+            If ColumnTypeIsNumeric(dt.Columns(i)) AndAlso Not LooksLikeIdentifierField(dt.Columns(i).ColumnName) Then
+                DropDownValueField.SelectedValue = dt.Columns(i).ColumnName
+                Exit Sub
+            End If
+        Next
+
         For i As Integer = 0 To dt.Columns.Count - 1
             If ColumnTypeIsNumeric(dt.Columns(i)) Then
                 DropDownValueField.SelectedValue = dt.Columns(i).ColumnName
-                Exit For
+                Exit Sub
             End If
         Next
     End Sub
+
+    Private Function LooksLikeIdentifierField(fieldName As String) As Boolean
+        If fieldName Is Nothing Then Return False
+        Dim normalized As String = fieldName.Trim().Replace("_", "").Replace(" ", "").Replace("-", "").ToUpperInvariant()
+        Return normalized = "ID" OrElse normalized = "IND" OrElse normalized = "INDX" OrElse normalized.EndsWith("ID")
+    End Function
 
     Private Function IsDateField(dt As DataTable, columnName As String) As Boolean
         If dt.Columns(columnName).DataType Is GetType(DateTime) Then Return True

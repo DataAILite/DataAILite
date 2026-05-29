@@ -363,7 +363,7 @@ Public MustInherit Class MarketAnalysisBase
 
         If Not String.Equals(MarketModel, "Pricing", StringComparison.OrdinalIgnoreCase) Then SelectFieldByHints(dimension, PreferredDimensionHints())
         SelectFieldsByHints(dimensionMulti, PreferredDimensionHints())
-        SelectFieldByHints(valueField, PreferredValueHints())
+        SelectPreferredValueField(valueField, dt, PreferredValueHints())
         SelectFieldByHints(dateField, New String() {"date", "order date", "invoice date", "sale date"})
         SelectFieldByHints(secondary, PreferredSecondaryHints())
         If inventoryField IsNot Nothing Then SelectFieldByHints(inventoryField, New String() {"inventory", "stock", "on hand", "available", "balance"})
@@ -521,6 +521,36 @@ Public MustInherit Class MarketAnalysisBase
             Next
         Next
     End Sub
+
+    Private Sub SelectPreferredValueField(dropDown As DropDownList, source As DataTable, hints() As String)
+        If dropDown Is Nothing OrElse source Is Nothing Then Exit Sub
+
+        For Each hint As String In hints
+            For Each item As ListItem In dropDown.Items
+                If LooksLikeIdentifierField(item.Value) Then Continue For
+                If item.Text.IndexOf(hint, StringComparison.OrdinalIgnoreCase) >= 0 Then
+                    dropDown.ClearSelection()
+                    item.Selected = True
+                    Exit Sub
+                End If
+            Next
+        Next
+
+        For Each col As DataColumn In source.Columns
+            If ColumnTypeIsNumeric(col) AndAlso Not LooksLikeIdentifierField(col.ColumnName) Then
+                SelectDropDownValue(dropDown, col.ColumnName)
+                Exit Sub
+            End If
+        Next
+
+        SelectFieldByHints(dropDown, hints)
+    End Sub
+
+    Private Function LooksLikeIdentifierField(fieldName As String) As Boolean
+        If fieldName Is Nothing Then Return False
+        Dim normalized As String = fieldName.Trim().Replace("_", "").Replace(" ", "").Replace("-", "").ToUpperInvariant()
+        Return normalized = "ID" OrElse normalized = "IND" OrElse normalized = "INDX" OrElse normalized.EndsWith("ID")
+    End Function
 
     Private Sub SelectFieldsByHints(listBox As ListBox, hints() As String)
         If listBox Is Nothing Then Exit Sub
