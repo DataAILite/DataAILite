@@ -348,10 +348,20 @@ Partial Class DataDictionary
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Data dictionary model documents every selected field in the current report dataset. Inputs are field group, number of examples, and optional field-name search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page scans each field, detects numeric/date/text behavior, counts blanks and distinct values, captures examples, and calculates numeric summaries where applicable."
-        LabelOutputExplanation.Text = "Output: The grid shows field name, detected type, records, blanks, distinct values, min, max, average, standard deviation, examples, recommended use, and record links to the source data."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Field Group filters the dictionary to all fields, numeric fields, date fields, text fields, or other supported groups.", "Number of Examples controls how many sample values are shown.", "Search filters by field name or related field text.", "The page uses all available current report columns.", "Use this page before deeper analysis when field meaning or data behavior is unclear.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Data dictionary model documents field meaning and practical analytical use.", "The page scans values to detect type, blanks, distinct values, examples, and numeric summaries.", "It identifies likely measures, categories, IDs, dates, and text fields.", "Recommended use is inferred from field behavior and naming patterns.", "The dictionary supports choosing better fields on other analytics pages.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Field and Detected Type identify each column.", "Records, Blanks, and Distinct Values describe completeness and uniqueness.", "Min, Max, Average, and Std Dev appear where applicable.", "Examples show representative values from the data.", "Recommended Use explains how the field can be used in analytics, charts, filters, grouping, or quality review.")
         ReadinessFooterGuidance.SetFooter(Me, "Data Dictionary", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 

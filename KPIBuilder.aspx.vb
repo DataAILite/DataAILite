@@ -111,21 +111,21 @@ Partial Class KPIBuilder
         Dim source As DataTable = GetSourceTable()
         If source Is Nothing Then Exit Sub
         DropDownPrimaryField.Items.Clear()
-        
-        
+
+
         DropDownValueField.Items.Clear()
         DropDownSecondaryValueField.Items.Clear()
         For Each col As DataColumn In source.Columns
             DropDownPrimaryField.Items.Add(New ListItem(col.ColumnName, col.ColumnName))
-            
-            
+
+
             If ColumnTypeIsNumeric(col) Then DropDownValueField.Items.Add(New ListItem(col.ColumnName, col.ColumnName))
             If ColumnTypeIsNumeric(col) Then DropDownSecondaryValueField.Items.Add(New ListItem(col.ColumnName, col.ColumnName))
         Next
         If DropDownValueField.Items.Count = 0 Then DropDownValueField.Items.Add(New ListItem("(records)", ""))
         If DropDownSecondaryValueField.Items.Count = 0 Then DropDownSecondaryValueField.Items.Add(New ListItem("(records)", ""))
-        
-        
+
+
     End Sub
 
     Private Sub BuildAndBindAnalysis()
@@ -331,10 +331,20 @@ Partial Class KPIBuilder
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: KPI model creates simple business metrics from selected numeric fields and groups them by a dimension. Inputs are dimension field, numerator field, denominator field, operation, and search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page sums numerator and denominator values for each dimension, then applies ratio, difference, sum, or product to create a KPI value."
-        LabelOutputExplanation.Text = "Output: The grid shows dimension, records, numerator, denominator, operation, KPI value, and record links for each dimension."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Dimension field groups KPI results by category, department, customer, product, period, or location.", "Numerator field is the main numeric measure.", "Denominator field is used for ratios or comparisons when selected.", "Operation chooses ratio, difference, sum, product, or other KPI calculation.", "Search filters the source records before KPI values are calculated.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "KPI model builds reusable business metrics from selected fields.", "The page groups records by dimension.", "Numerator and denominator values are summed for each group.", "The selected operation is applied to produce the KPI value.", "Division-style calculations protect against missing or zero denominator values.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Dimension identifies the KPI group.", "Records links open rows behind the KPI.", "Numerator and Denominator show the summarized inputs.", "Operation explains how KPI Value was calculated.", "KPI Value is the resulting metric for monitoring performance or comparing groups.")
         ReadinessFooterGuidance.SetFooter(Me, "KPI Builder", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 

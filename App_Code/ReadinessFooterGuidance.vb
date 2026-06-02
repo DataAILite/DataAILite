@@ -26,7 +26,7 @@ Public Module ReadinessFooterGuidance
         If whyUseful.Trim() = "" AndAlso suggestedFields.Trim() = "" Then Return
 
         whyLabel.Text = "Why Useful: " & whyUseful
-        fieldsLabel.Text = "Suggested Fields: " & suggestedFields
+        fieldsLabel.Text = SuggestedFieldsBlock(suggestedFields)
         whyLabel.Visible = True
         fieldsLabel.Visible = True
     End Sub
@@ -47,7 +47,7 @@ Public Module ReadinessFooterGuidance
         For Each row As DataRow In recommendations.Rows
             If String.Equals(Convert.ToString(row("Analysis")).Trim(), analysisName.Trim(), StringComparison.OrdinalIgnoreCase) Then
                 whyLabel.Text = "Why Useful: " & Convert.ToString(row("Why Useful"))
-                fieldsLabel.Text = "Suggested Fields: " & Convert.ToString(row("Suggested Fields"))
+                fieldsLabel.Text = SuggestedFieldsBlock(Convert.ToString(row("Suggested Fields")))
                 whyLabel.Visible = True
                 fieldsLabel.Visible = True
                 Return True
@@ -85,90 +85,101 @@ Public Module ReadinessFooterGuidance
         Select Case analysisName
             Case "Data Dictionary"
                 whyUseful = "Field-level documentation is useful for any unfamiliar dataset."
-                suggestedFields = FieldGuidance("Fields to document", textFields, numericFields, dateFields)
+                suggestedFields = FieldGuidance("Field Group / Search: use all fields, or narrow to fields whose meaning, type, examples, blanks, or distinct values need documentation", textFields, numericFields, dateFields)
             Case "Data Profiling"
                 whyUseful = "Detect type, blanks, distinct values, min, max, average, and standard deviation."
-                suggestedFields = FieldGuidance("Profile all fields; numeric fields get min/max/average/stdev and text fields get blanks/distinct/examples", textFields, numericFields, dateFields)
+                suggestedFields = FieldGuidance("Automatic profiling: all fields are scanned; numeric fields receive min/max/average/stdev, date fields receive date ranges, and text/category fields receive blanks, distinct counts, and examples", textFields, numericFields, dateFields)
             Case "Data Quality"
                 whyUseful = "Missing values: " & CountMissingValues(source).ToString() & "; duplicate records: " & CountDuplicateRows(source).ToString() & "."
-                suggestedFields = FieldGuidance("Check date fields for invalid dates", dateFields) & "; " & FieldGuidance("check numeric fields for out-of-range values", numericFields) & "; " & FieldGuidance("check category/text fields for blanks, inconsistent categories, and suspicious text", textFields)
+                suggestedFields = FieldGuidance("Date checks: review date-like fields for invalid dates, impossible dates, and missing date values", dateFields) & "; " & FieldGuidance("Numeric checks: review numeric measure fields for out-of-range values, suspicious extremes, and standard-deviation exceptions", numericFields) & "; " & FieldGuidance("Category/Text checks: review text fields for blanks, inconsistent spelling/casing, duplicate-looking categories, and suspicious text values", textFields)
             Case "Ranking Analysis"
                 whyUseful = "Category fields and numeric values can be ranked by top, bottom, or average."
-                suggestedFields = FieldGuidance("Group dropdown", categoryFields) & "; " & FieldGuidance("Value field dropdown", numericFields) & "; Rank Type can use Top, Bottom, or Average"
+                suggestedFields = FieldGuidance("Group Field dropdown: optionally split rankings by category, customer, product, department, location, period, or another dimension", categoryFields) & "; " & FieldGuidance("Value Field dropdown: select the numeric measure to rank, such as sales, revenue, quantity, amount, cost, profit, score, or duration", numericFields) & "; Rank Type dropdown: choose Top, Bottom, or Average, and use Top Count to control how many rows are returned"
             Case "Pivot / Cross Tab"
                 whyUseful = "Two category fields can form row and column axes for a cross-tab summary."
-                suggestedFields = FieldGuidance("Row and Column field dropdowns", categoryFields) & "; " & FieldGuidance("Value field dropdown", Prefer(numericFields, textFields)) & "; choose Count, Sum, Average, Minimum, Maximum, or Standard Deviation aggregation where applicable"
+                suggestedFields = FieldGuidance("Row Field and Column Field dropdowns: select two category/group fields that form the pivot rows and pivot columns", categoryFields) & "; " & FieldGuidance("Value Field dropdown: select the measure to Count, CountDistinct, Sum, Average, Minimum, Maximum, or Standard Deviation", Prefer(numericFields, textFields)) & "; Aggregation dropdown: choose Count, CountDistinct, Sum, Average, Minimum, Maximum, or Standard Deviation where applicable"
             Case "ABC Pareto Analysis"
                 whyUseful = "Find the few categories, products, or customers that explain most of the value."
-                suggestedFields = FieldGuidance("Category field should be product/customer/category", Prefer(productFields, categoryFields)) & "; " & FieldGuidance("Value field should be sales, revenue, amount, quantity, profit, or another numeric measure", numericFields)
+                suggestedFields = FieldGuidance("Category Field dropdown: select product, customer, category, item, department, region, channel, or another dimension to classify by contribution", Prefer(productFields, categoryFields)) & "; " & FieldGuidance("Value Field dropdown: select sales, revenue, amount, quantity, profit, cost, or another numeric contribution measure", numericFields)
             Case "KPI Builder"
                 whyUseful = "Numeric measures can become KPIs, totals, averages, rates, and thresholds."
-                suggestedFields = FieldGuidance("KPI value fields", numericFields) & "; " & FieldGuidance("optional group/category fields", categoryFields) & "; " & FieldGuidance("optional date field for period KPIs", dateFields)
+                suggestedFields = FieldGuidance("Numerator / KPI value fields: select the main numeric measure used to build the KPI", numericFields) & "; " & FieldGuidance("Dimension Field dropdown: optionally group KPI results by category, product, customer, department, location, or period", categoryFields) & "; " & FieldGuidance("Date Field dropdown: optionally select a date field when KPI results should be reviewed by period", dateFields)
             Case "Regression Analysis"
                 whyUseful = "Two or more numeric fields can be tested for prediction and fitted equations."
-                suggestedFields = FieldGuidance("X Field should be the possible driver", numericFields) & "; " & FieldGuidance("Y Field should be the value to explain or predict", numericFields) & "; select equation type and Predict Y when X is for forecasting"
+                suggestedFields = FieldGuidance("X Field dropdown: select the numeric driver or independent variable that may explain changes", numericFields) & "; " & FieldGuidance("Y Field dropdown: select the numeric result or dependent variable to explain or predict", numericFields) & "; Equation Type dropdown selects the fitted model, and Predict Y when X is supplies the X value for forecast calculation"
             Case "Correlation Threshold"
                 whyUseful = "Filter correlation pairs by minimum strength and focus on the strongest relationships."
-                suggestedFields = FieldGuidance("Numeric fields for correlation threshold filtering", numericFields) & "; raise threshold to show only stronger relationships"
+                suggestedFields = FieldGuidance("Numeric Fields: select or review numeric measure fields to create correlation pairs; avoid ID/index fields because they usually do not explain business relationships", numericFields) & "; Threshold textbox controls minimum absolute correlation, and View dropdown filters All, Positive, or Negative relationships"
             Case "Variance Analysis"
                 whyUseful = "Compare values across groups, periods, or categories."
-                suggestedFields = FieldGuidance("Row/group field dropdowns", categoryFields) & "; " & FieldGuidance("value field and aggregation dropdowns", numericFields) & "; compare base and comparison categories or periods"
+                suggestedFields = FieldGuidance("Group Field dropdown: select the category, period, location, department, customer, product, or other dimension that becomes each output row", categoryFields) & "; " & FieldGuidance("Value Field and Aggregation dropdowns: select the numeric measure and how records should be summarized before comparison", numericFields) & "; Analysis Type dropdown chooses Variance, Percent Change, or Contribution to Total; for Variance/Percent Change, Compare Field supplies Base Value and Compare Value choices; for Contribution to Total, Base/Compare are not used"
             Case "Comparison Reports"
                 whyUseful = "Compare two periods, groups, locations, queries, or imported files."
-                suggestedFields = FieldGuidance("Comparison dropdown can use periods, groups, locations, two queries, or two imported files", categoryFields, dateFields) & "; " & FieldGuidance("value fields for differences", numericFields)
+                suggestedFields = FieldGuidance("Comparison Type dropdown: choose Periods, Groups, Locations, Two Queries, or Two Imported Files; then fill the matching base/compare query, file, period, group, or location controls", categoryFields, dateFields) & "; " & FieldGuidance("Value Field / Aggregation controls: select the numeric measure and summary calculation used to compare base and compare results", numericFields)
             Case "Time Based Summaries"
                 whyUseful = "Date and numeric fields support summaries by day, week, month, quarter, and year."
-                suggestedFields = FieldGuidance("Date Field dropdown", dateFields) & "; " & FieldGuidance("Value Field dropdown", numericFields) & "; Date Aggregation can be Day, Week, Month, Quarter, or Year"
+                suggestedFields = FieldGuidance("Date Field dropdown: select the date column used to create day, week, month, quarter, or year periods", dateFields) & "; " & FieldGuidance("Value Field dropdown: select the numeric measure summarized in each period", numericFields) & "; Date Aggregation dropdown can be Day, Week, Month, Quarter, or Year"
             Case "Time Series"
                 whyUseful = "Date and value fields support moving averages and rolling totals."
-                suggestedFields = FieldGuidance("Date Field dropdown", dateFields) & "; " & FieldGuidance("Value Field dropdown", numericFields) & "; Number of time periods controls moving average or rolling total window"
+                suggestedFields = FieldGuidance("Date Field dropdown: select the chronological date column used to order periods", dateFields) & "; " & FieldGuidance("Value Field dropdown: select the numeric measure used for period value, moving average, and rolling total", numericFields) & "; Number of time periods textbox controls the rolling window used for moving average and rolling total"
             Case "Data Drift Analysis"
                 whyUseful = "Repeated periods can reveal distribution changes across time."
-                suggestedFields = FieldGuidance("Date/period field", dateFields) & "; " & FieldGuidance("numeric fields for value drift", numericFields) & "; " & FieldGuidance("category fields for distribution drift", categoryFields)
+                suggestedFields = FieldGuidance("Date or Segment Field dropdown: select the field that separates base and compare periods or segments for drift review", dateFields) & "; " & FieldGuidance("Numeric/Value fields: use numeric measures when drift should compare value levels or measure distributions", numericFields) & "; " & FieldGuidance("Compare Field dropdown: use category/status/product/channel fields when drift should compare distribution changes", categoryFields)
             Case "Cohort Analysis"
                 whyUseful = "Customer or user IDs with dates can be grouped into cohorts."
-                suggestedFields = FieldGuidance("Cohort date field", dateFields) & "; " & FieldGuidance("customer/user/entity ID field", Prefer(customerFields, idFields)) & "; optional value field can measure cohort value"
+                suggestedFields = FieldGuidance("Date Field dropdown: select the first-activity or event date used to assign each entity to a cohort period", dateFields) & "; " & FieldGuidance("Entity Field dropdown: select customer, account, user, member, order, device, product, or another identifier followed over time", Prefer(customerFields, idFields)) & "; Value Field is optional and summarizes cohort value when revenue, amount, quantity, or score fields exist"
             Case "Funnel Analysis"
                 whyUseful = "Stage/status fields with user/order IDs can show conversion through steps."
-                suggestedFields = FieldGuidance("Stage/status field", statusFields) & "; " & FieldGuidance("customer/order/entity ID field", customerFields, orderFields, idFields) & "; optional date field can order events"
+                suggestedFields = FieldGuidance("Stage Field dropdown: select the status, stage, outcome, step, workflow, or lifecycle field used as funnel steps", statusFields) & "; " & FieldGuidance("Entity/Record Field dropdown: select customer, order, transaction, account, user, or another identifier counted through stages", customerFields, orderFields, idFields) & "; Date Field is optional and can support event order or period review when stage records include dates"
             Case "Outlier Flagging"
                 whyUseful = "Numeric values can be checked for unusual deviations or business-rule exceptions."
-                suggestedFields = FieldGuidance("Row/category field", categoryFields) & "; " & FieldGuidance("value field for standard deviation or percent-difference checks", numericFields) & "; threshold controls sensitivity"
+                suggestedFields = FieldGuidance("Row Field dropdown: select the row label, category, entity, or record identifier shown for each flagged outlier", categoryFields) & "; " & FieldGuidance("Value Field dropdown: select the numeric measure tested by standard deviation, percent difference, or business rule limits", numericFields) & "; Method dropdown selects Standard Deviation, Percent Difference, or Business Rule, and threshold textboxes control sensitivity"
             Case "Audit Summaries"
                 whyUseful = "Document which fields, filters, thresholds, and aggregation options produced each analytical result."
-                suggestedFields = FieldGuidance("Use the fields selected in other analytics pages as audit inputs", categoryFields, numericFields, dateFields)
+                suggestedFields = FieldGuidance("Audit textboxes: enter the report fields, filters, thresholds, aggregation options, result name, and notes used by the analysis being documented", categoryFields, numericFields, dateFields)
             Case "Market Demand"
                 whyUseful = "Demand models need product/category, period, and value or quantity fields."
-                suggestedFields = FieldGuidance("Primary field should be product/category/market segment", Prefer(productFields, categoryFields)) & "; " & FieldGuidance("Date field supports period-based demand", dateFields) & "; " & FieldGuidance("Value field should be units, volume, sales, or revenue", numericFields)
+                suggestedFields = FieldGuidance("Primary Field(s): select product, category, customer, region, channel, location, or market segment used to group demand", Prefer(productFields, categoryFields)) & "; " & FieldGuidance("Date Field / Date Aggregation: select a date field and day/week/month/quarter/year when demand should be summarized by period", dateFields) & "; " & FieldGuidance("Value Field: select units, volume, quantity, sales, revenue, amount, or another demand measure", numericFields)
             Case "Market Pricing"
                 whyUseful = "Pricing analysis needs price-like fields and quantity or revenue response fields."
-                suggestedFields = FieldGuidance("Price field or price-band source", priceFields) & "; " & FieldGuidance("quantity/revenue response field", quantityFields, revenueFields) & "; optional Primary Field groups pricing by product/category/customer"
+                suggestedFields = FieldGuidance("Value Field: select price, rate, fee, unit price, or another numeric field used to build price bands", priceFields) & "; " & FieldGuidance("Secondary Field: select quantity, units, volume, orders, sales, revenue, or another response measure affected by price", quantityFields, revenueFields) & "; Primary Field is optional: choose (None) for price bands only or choose product/category/customer/location to group price bands by Dimension"
             Case "Market Elasticity"
                 whyUseful = "Elasticity needs price variation and quantity or demand response."
-                suggestedFields = FieldGuidance("Price field", priceFields) & "; " & FieldGuidance("quantity/demand field", quantityFields) & "; " & FieldGuidance("product/category field for separate elasticity curves", productFields, categoryFields)
+                suggestedFields = FieldGuidance("Value Field: select price, rate, fee, unit price, or another numeric price driver", priceFields) & "; " & FieldGuidance("Secondary Field: select quantity, units, volume, demand, or orders used to measure price response", quantityFields) & "; " & FieldGuidance("Primary Field(s): select product, category, customer, region, channel, or segment to calculate separate elasticity rows", productFields, categoryFields)
             Case "Market Basket"
                 whyUseful = "Basket analysis needs order/customer identifiers and product or item fields."
-                suggestedFields = FieldGuidance("Order/customer transaction field", orderFields, customerFields) & "; " & FieldGuidance("item/product field", productFields) & "; optional Value Field weights basket value"
+                suggestedFields = FieldGuidance("Secondary Field: select order, invoice, transaction, receipt, basket, customer, or session field defining items seen together", orderFields, customerFields) & "; " & FieldGuidance("Primary Field(s): select item, product, SKU, service, or category used to build basket pairs", productFields) & "; Value Field is optional and weights basket value for the matching item pairs"
             Case "Market Segments"
                 whyUseful = "Segmentation groups customers, products, or categories by behavior and value."
-                suggestedFields = FieldGuidance("Primary/customer/category field", customerFields, categoryFields) & "; " & FieldGuidance("value/behavior fields", numericFields, statusFields)
+                suggestedFields = FieldGuidance("Primary Field(s): select customer, product, category, region, channel, department, or combined fields defining each segment", customerFields, categoryFields) & "; " & FieldGuidance("Value Field: select revenue, sales, amount, quantity, score, status count, or another behavior/value measure", numericFields, statusFields)
             Case "Market Churn"
                 whyUseful = "Churn needs customer/user fields plus dates or status outcomes."
-                suggestedFields = FieldGuidance("Customer/user field", customerFields) & "; " & FieldGuidance("date field for activity recency", dateFields) & "; " & FieldGuidance("status/outcome field for churn flags", statusFields)
+                suggestedFields = FieldGuidance("Primary Field(s): select customer, account, user, member, client, or segment being scored for churn/retention", customerFields) & "; " & FieldGuidance("Date Field: select last activity, order date, transaction date, service date, or another recency field", dateFields) & "; " & FieldGuidance("Status/Outcome field: use churn, active/inactive, status, result, or outcome fields when available for interpretation", statusFields)
             Case "Market Risk"
                 whyUseful = "Risk scoring uses outcome/status fields or multiple numeric risk signals."
-                suggestedFields = FieldGuidance("status/outcome risk field", statusFields) & "; " & FieldGuidance("numeric risk indicators", numericFields) & "; optional group field separates risk by segment"
+                suggestedFields = FieldGuidance("Status/Outcome field: use risk, status, result, flag, default, claim, incident, or outcome fields when available", statusFields) & "; " & FieldGuidance("Value Field / numeric indicators: select exposure, amount, balance, score, loss, count, or other risk-weight fields", numericFields) & "; Primary Field(s) separate risk by customer, product, region, channel, or segment"
             Case "Market Inventory"
                 whyUseful = "Inventory movement needs product/category plus quantity, movement, or period fields."
-                suggestedFields = FieldGuidance("product/category field", productFields, categoryFields) & "; " & FieldGuidance("quantity/current inventory/movement field", quantityFields, numericFields) & "; " & FieldGuidance("date field supports movement by period", dateFields)
+                suggestedFields = FieldGuidance("Primary Field(s): select item, product, SKU, category, location, warehouse, or combined inventory dimension", productFields, categoryFields) & "; " & FieldGuidance("Value Field / Current Inventory: select movement, demand, units, quantity, on-hand, stock, or inventory fields", quantityFields, numericFields) & "; " & FieldGuidance("Date Field / Date Aggregation: select movement date and day/week/month/quarter/year to review inventory by period", dateFields)
             Case "Market Profit"
                 whyUseful = "Profit models need revenue, price, cost, margin, or other numeric drivers."
-                suggestedFields = FieldGuidance("revenue/price/profit field", revenueFields, priceFields) & "; " & FieldGuidance("cost or numeric driver fields", numericFields) & "; optional category field finds profit drivers"
+                suggestedFields = FieldGuidance("Value Field: select revenue, sales, amount, price, profit, margin, or another profitability value", revenueFields, priceFields) & "; " & FieldGuidance("Cost/Numeric fields: use direct cost, unit cost, quantity, discount, expense, or other cost-driver fields when present", numericFields) & "; Primary Field(s) group profit by product, customer, region, channel, department, or other driver"
             Case "Market Scenario"
                 whyUseful = "Scenario models use numeric assumptions to test possible business changes."
-                suggestedFields = FieldGuidance("numeric assumption fields", numericFields) & "; " & FieldGuidance("category fields restrict or group the scenario", categoryFields) & "; assumption percent changes the scenario result"
+                suggestedFields = FieldGuidance("Value Field: select the current numeric value, revenue, demand, cost, quantity, or score being stressed by the scenario", numericFields) & "; " & FieldGuidance("Primary Field(s): select category, product, customer, region, channel, department, or location to group scenario results", categoryFields) & "; Assumption % textbox creates downside and upside scenario values around the current value"
         End Select
     End Sub
+
+    Private Function SuggestedFieldsBlock(suggestedFields As String) As String
+        Dim html As String = "<div class=""suggestedFieldsBlock""><div class=""suggestedFieldsTitle""><strong>Suggested Fields:</strong></div><ul>"
+        Dim items As String() = Convert.ToString(suggestedFields).Split(";"c)
+        For Each item As String In items
+            Dim itemText As String = item.Trim()
+            If itemText <> "" Then html &= "<li>" & System.Web.HttpUtility.HtmlEncode(itemText) & "</li>"
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
 
     Private Function DetectNumericFields(dt As DataTable) As List(Of String)
         Dim fields As New List(Of String)()

@@ -320,10 +320,20 @@ Partial Class CorrelationThreshold
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Correlation threshold analysis for numeric field relationships. Inputs are eligible numeric fields, threshold direction, threshold value, and search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page calculates pairwise correlation values between numeric fields, compares each pair to the selected threshold, and classifies the relationship direction and strength."
-        LabelOutputExplanation.Text = "Output: The grid shows field pair, correlation value, threshold match, direction, and interpretation. Values close to 1 indicate strong positive movement together; values close to -1 indicate strong opposite movement."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Uses eligible numeric fields from the current report data.", "Threshold Direction controls whether to show values above, below, or matching the selected strength rule.", "Threshold Value sets the minimum or maximum correlation strength to display.", "Search filters field-pair results after calculation.", "Avoid ID/index fields because they can create misleading correlations.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Correlation-threshold model filters numeric relationships by strength.", "The page calculates pairwise correlation between numeric field pairs.", "Each correlation is compared with the selected threshold rule.", "The result is classified by direction and strength.", "Only pairs meeting the threshold are shown so the user can focus on stronger relationships.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Field 1 and Field 2 identify the numeric pair being compared.", "Correlation ranges from -1 to 1.", "Strength shows Moderate or Strong based on the absolute correlation value.", "View shows Positive when the fields move together and Negative when they move in opposite directions.", "Only field pairs that pass the selected threshold and view filter are displayed.")
         ReadinessFooterGuidance.SetFooter(Me, "Correlation Threshold", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, CurrentReportData())
     End Sub
 End Class

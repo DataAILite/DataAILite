@@ -969,10 +969,20 @@ Partial Class ComparisonReports
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Two-source comparison analysis. Inputs can be two periods, two groups, two locations, two SQL queries, or two imported files, plus the row field, value field, aggregate option, base value, compare value, and search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page builds base and compare datasets, groups both sides by the selected row dimension, aggregates the selected value field, matches groups by the row value, and calculates Compare minus Base plus percent change from Base where Base is not zero."
-        LabelOutputExplanation.Text = "Output: The grid shows comparison type, row dimension, Base value, Compare value, Variance, Percent Change, Base Records, and Compare Records. Base Records and Compare Records link to the exact rows used for each side of the comparison."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Choose whether to compare two periods, groups, locations, SQL queries, or imported files.", "Row field identifies the common dimension used to align base and compare results.", "Value field and aggregation define the measure being compared.", "Base and Compare controls select the two sides of the comparison.", "For Two Queries, enter each SQL statement; for Two Imported Files, choose the two files to load and compare.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Two-source comparison model aligns two datasets by the selected row dimension.", "The page builds separate base and compare datasets, then groups and aggregates each side.", "Matching row values are joined so differences can be calculated side by side.", "Variance is Compare minus Base; Percent Change is calculated from Base where possible.", "Base/compare filters are registered so each result can drill back to its source records.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Comparison Type identifies the selected comparison method.", "The row-dimension column is named from the selected Row Field and shows the value used to match base and compare rows.", "Base and Compare columns include the selected base and compare values in their captions.", "Variance and Percent Change show the comparison result.", "Base Records and Compare Records link to the exact records used for each side.")
         ReadinessFooterGuidance.SetFooter(Me, "Comparison Reports", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

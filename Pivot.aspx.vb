@@ -577,10 +577,20 @@ Partial Class Pivot
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Pivot cross-tab summary. Inputs are the current report records after the page search text is applied, the selected Row field, Column field, Value field, and Aggregate option."
-        LabelAlgorithmExplanation.Text = "Algorithm: Each record is assigned to a row group and column group, then the value field is accumulated by the selected aggregate such as Sum, Count, Average, Minimum, or Maximum. The grid is rebuilt from these grouped buckets so the row and column intersections show comparable totals."
-        LabelOutputExplanation.Text = "Output: The first columns identify the row-field values, each generated pivot column represents a column-field value, and the cells show the calculated aggregate for that row/column intersection. Blank or zero cells mean no matching records or no usable numeric value for that intersection."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Use the current report or imported data after the Search filter is applied.", "Row field selects the category shown down the left side of the cross-tab.", "Column field selects the category expanded into pivot columns across the grid.", "Value field supplies the measure to count, sum, average, min, max, standard deviation, or show as value.", "Aggregation controls how repeated records inside the same row/column intersection are combined.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Pivot/cross-tab model converts a flat table into a two-dimensional matrix.", "Each source record is assigned to one row bucket and one column bucket.", "The selected value is accumulated inside each bucket using the selected aggregation.", "The page rebuilds the grid so intersections can be compared across row and column categories.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "The first column shows the selected row-field value.", "Generated pivot columns represent distinct values from the selected column field.", "Each cell is the calculated aggregate for that row/column intersection.", "Total shows the row total across generated pivot columns.", "Blank or zero cells mean no matching records or no usable value for that intersection.")
         ReadinessFooterGuidance.SetFooter(Me, "Pivot / Cross Tab", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

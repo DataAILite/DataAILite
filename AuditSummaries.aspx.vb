@@ -441,10 +441,20 @@ Partial Class AuditSummaries
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Audit summary for analytical traceability. Inputs are the selected report fields, filters, thresholds, aggregation choices, search text, and current report context."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page records the analytical settings that produced the result, including field selections, filter text, threshold values, aggregation options, and result counts so the analysis can be reviewed later."
-        LabelOutputExplanation.Text = "Output: The grid shows analysis type, selected fields, filters, thresholds, aggregation options, records/results affected, and audit notes. It explains which choices produced each analytical result."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Result Name describes the analytical result being documented.", "Report Fields lists the fields used by the analysis.", "Filters records any filter text, page filter, or business restriction applied.", "Thresholds records numeric limits, readiness thresholds, or rule values.", "Aggregation Options records the aggregation choices used and is locked so the audit remains traceable.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Audit-summary model documents how an analytical result was produced.", "The page captures selected fields, filters, thresholds, aggregation choices, and record/result counts.", "It turns analysis settings into a repeatable audit row.", "This does not recalculate the business analysis; it records the configuration that produced it.", "The audit can be exported or sent to AI with the visible grid rows.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Section groups the audit row, such as Report, Analysis, Current Result, or Audit.", "Audit Item names the setting or traceability item being documented.", "Value shows the selected field list, filter, threshold, aggregation option, note, saved result size, user, or timestamp.", "Purpose explains why that audit item matters.", "The grid documents the analytical settings and available session result summaries so the analysis can be reviewed and reproduced.")
         ReadinessFooterGuidance.SetFooter(Me, "Audit Summaries", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

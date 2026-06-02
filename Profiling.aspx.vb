@@ -467,10 +467,20 @@ Partial Class Profiling
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Automatic field profiling for the current report or imported dataset. Inputs are all available columns and the records that match the current search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page scans every field, detects usable data type patterns, counts total and blank values, counts distinct values, and calculates numeric or date statistics where the column values support those calculations."
-        LabelOutputExplanation.Text = "Output: The grid lists one row per field with detected type, count, blanks, distinct values, minimum, maximum, average, standard deviation, and notes. Numeric statistics are populated only for fields that can be interpreted as numbers."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Profiles every field in the current report or imported dataset.", "Search limits the records scanned when the user wants profiling for a subset.", "No field selection is required; the page automatically inspects all columns.", "Numeric-looking, date-looking, and text fields are handled differently so each receives meaningful statistics.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Automatic profiling model describes the structure and behavior of each field.", "The page counts records, blanks, and distinct values for every column.", "It detects likely data type from actual values and column behavior.", "Numeric fields receive min, max, average, and standard deviation where calculation is valid.", "Date fields receive date-oriented min/max values; text fields receive distinct/blank patterns.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Each grid row represents one field in the dataset.", "Data Type explains how the field is interpreted.", "Count, Blanks, and Distinct Values show completeness and uniqueness.", "Min, Max, Average, and Standard Deviation are populated where applicable.", "Blank statistic cells mean the field does not support that calculation.")
         ReadinessFooterGuidance.SetFooter(Me, "Data Profiling", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

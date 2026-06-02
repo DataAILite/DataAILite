@@ -645,10 +645,20 @@ Partial Class Variance
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Variance, percent-change, and contribution-to-total analysis. Inputs are the selected grouping fields, base value field, comparison value field, and any search restriction on the current report data."
-        LabelAlgorithmExplanation.Text = "Algorithm: Records are grouped by the selected dimension, base and comparison values are aggregated separately, variance is calculated as Compare minus Base, percent change is calculated from the base value when possible, and contribution shows the row share of the total comparison amount."
-        LabelOutputExplanation.Text = "Output: The grid shows each dimension/group, base value, comparison value, variance, percent change, contribution to total, and record counts. Positive variance means the compare value is higher than the base value; negative variance means it is lower."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Use the current report data after Search filtering.", "Analysis Type selects one of three models: Variance, Percent Change, or Contribution to Total.", "Group Field defines the output rows, such as category, period, location, department, customer, product, or another dimension.", "Value Field selects the numeric measure to summarize, and Aggregation defines how repeated records are combined.", "For Variance and Percent Change, Compare Field supplies the list of Base Value and Compare Value choices; those two selected values must be different.", "For Contribution to Total, Base Value and Compare Value are not used; the page calculates each group share of the selected value total.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Variance compares a base result against a comparison result by group.", "Percent Change uses the same base/compare groups but expresses the difference relative to Base.", "Contribution to Total ignores base/compare selections and calculates each group value divided by the total value.", "Records are grouped by the selected Group Field and summarized with the selected Aggregation.", "For Variance and Percent Change, Variance is Compare minus Base, and Percent Change is calculated against Base when Base is not zero.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "For Variance and Percent Change analysis, the grid shows the selected group field, Base value, Compare value, Variance, and Percent Change.", "Base and Compare column captions include the selected base and compare values.", "Variance is Compare minus Base; positive values mean compare is higher and negative values mean compare is lower.", "Percent Change shows the relative movement from Base when Base is not zero.", "For Contribution analysis, the grid instead shows the selected group field, Value, and Contribution to Total.")
         ReadinessFooterGuidance.SetFooter(Me, "Variance Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

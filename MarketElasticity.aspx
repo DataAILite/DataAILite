@@ -24,6 +24,16 @@
         .marketExplanation span { display:block; margin-bottom:4px; }
         .marketRecommendation { display:block; text-align:center; font-family:Arial; font-size:small; font-weight:bold; color:red; margin-left:0; }
         .marketRecommendation a { font-weight:bold; }
+
+        .explanationBlock { margin:6px 0 8px 0; padding:6px 8px; background-color:#fbfff8; border-left:4px solid #9ccc65; }
+        .explanationTitle { color:#2f4f1f; margin-bottom:3px; }
+        .explanationBlock ul { margin:3px 0 0 18px; padding:0; }
+        .explanationBlock li { margin:2px 0; white-space:normal; }
+
+        .suggestedFieldsBlock { margin-top:3px; }
+        .suggestedFieldsTitle { display:block; margin-bottom:2px; }
+        .suggestedFieldsBlock ul { margin:2px 0 0 18px; padding:0; }
+        .suggestedFieldsBlock li { margin:1px 0; white-space:normal; }
     </style>
 </head>
 <body>

@@ -1172,10 +1172,20 @@ Partial Class Regression
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Regression and prediction analysis for numeric relationships. Inputs are selected X field, Y field, optional group field, equation type, and optional prediction X value."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page collects numeric X/Y pairs, optionally separates them by group, fits the selected model type, calculates coefficients and prediction values, and creates a trend link with the equation and selected fields."
-        LabelOutputExplanation.Text = "Output: The grid shows group, X field, Y field, equation, coefficient details, predicted Y where requested, record count, and a Trends link. Record links open the rows used to fit each equation."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "X Field is the driver or independent numeric field.", "Y Field is the result or dependent numeric field to explain or predict.", "Optional Group field fits separate models for different categories.", "Equation Type selects linear, polynomial, exponential, power, logarithmic, or logistic-style fitting where data supports it.", "Predict Y when X is supplies an optional X value used to calculate a forecast.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Regression model estimates how Y changes when X changes.", "The page collects valid numeric X/Y pairs, excluding blank or nonnumeric values.", "For each group, it fits the selected equation type and calculates coefficients.", "The best supported equation is shown without zero-value terms.", "Prediction is calculated by substituting the requested X value into the equation.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Group identifies the combined segment when grouping is used.", "Equation shows the fitted relationship between X and Y.", "Predicted Y shows the forecast for the requested X value when provided.", "Records links open the rows used to fit each equation.", "Trends links open an interactive chart where the equation can be explored and exported.")
         ReadinessFooterGuidance.SetFooter(Me, "Regression Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

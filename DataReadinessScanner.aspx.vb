@@ -663,11 +663,21 @@ Partial Class DataReadinessScanner
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
         LabelAnalysisSubtitle.Text = "Scan the current report or imported dataset and recommend the analytics, market models, charts, maps, and quality checks that are most useful for its fields. The grid is sorted by readiness score assigned by the algorithm."
-        LabelModelExplanation.Text = "Model: The readiness scanner treats the dataset as an unknown table and classifies fields as numeric measures, dates, categories, IDs, products, customers, orders, locations, prices, quantities, revenue, and status/outcome fields."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page inspects column names, data types, blank counts, duplicate records, distinct values, and field combinations. Each analysis receives a readiness score based on the minimum fields normally needed for that analysis."
-        LabelOutputExplanation.Text = "Output: Work Flow is one connected line beginning with Detail Analytics, continuing through the longest High-readiness route and showing every What Next connection from each High-readiness page inline, including destinations with lower readiness scores. Additional paths are appended only when needed to include every High recommendation. The grid shows each recommended analysis, readiness level, score, reason, suggested fields, an open link to the page, highly recommended What Next follow-up pages, and a records link back to Data Explorer."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Uses the current report or imported dataset as an unknown table.", "No manual field selection is required; the scanner evaluates every column.", "Search can narrow the visible recommendation grid after scoring.", "The scanner detects numeric measures, dates, categories, IDs, products, customers, orders, locations, prices, quantities, revenue, and status/outcome fields.", "Detected fields are used to suggest which analytics and market models are likely useful.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Readiness model scores each analysis by checking whether the dataset contains the fields normally required.", "Column names, data types, blank counts, duplicate records, distinct values, and field combinations are inspected.", "High readiness means the minimum field pattern exists and the analysis should likely produce useful output.", "What Next links are generated from known relationships between pages.", "The Suggested Work Flow connects high-readiness pages into practical analysis paths.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Readiness Level and Score rank the usefulness of each page for the current dataset.", "Why Useful explains the reason the analysis is recommended.", "Suggested Fields names the dropdowns or input controls on that page and the fields that make sense to use.", "Open links launch the recommended page; What Next links show follow-up analysis.", "Records links return to Data Explorer; the workflow line suggests an efficient order for reviewing high-scored pages.")
     End Sub
 
     Private Function DetectNumericFields(dt As DataTable) As List(Of String)

@@ -111,21 +111,21 @@ Partial Class Funnel
         Dim source As DataTable = GetSourceTable()
         If source Is Nothing Then Exit Sub
         DropDownPrimaryField.Items.Clear()
-        
-        
+
+
         DropDownValueField.Items.Clear()
-        
+
         For Each col As DataColumn In source.Columns
             DropDownPrimaryField.Items.Add(New ListItem(col.ColumnName, col.ColumnName))
-            
-            
+
+
             If ColumnTypeIsNumeric(col) Then DropDownValueField.Items.Add(New ListItem(col.ColumnName, col.ColumnName))
-            
+
         Next
         If DropDownValueField.Items.Count = 0 Then DropDownValueField.Items.Add(New ListItem("(records)", ""))
-        
-        
-        
+
+
+
     End Sub
 
     Private Sub BuildAndBindAnalysis()
@@ -334,10 +334,20 @@ Partial Class Funnel
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Funnel model treats one field as an ordered process stage or status and measures how many records remain at each step. Inputs are stage field, optional value field, optional stage order, and search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page counts records and value by stage, applies the user-supplied order when provided, then calculates drop-off from the previous stage and conversion percent from the first stage."
-        LabelOutputExplanation.Text = "Output: The grid shows step, stage, records, value, drop-off, conversion percent, and record links for each stage."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Stage field selects the process step, status, outcome, or funnel stage.", "Optional Value field summarizes revenue, amount, quantity, or other value by stage.", "Stage Order lets the user define the intended process sequence.", "Search filters source records before funnel counts are calculated.", "Use fields such as lead status, order status, conversion step, application stage, or workflow state.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Funnel model measures movement through ordered stages.", "The page counts records and value for each stage.", "If Stage Order is supplied, that order controls the funnel sequence.", "Drop-off is calculated against the previous stage.", "Conversion percent is calculated against the first stage.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Step shows the stage order used for the funnel.", "Stage is the selected status or process value.", "Records and Value summarize activity at that stage.", "Drop-off shows how many records were lost from the prior stage.", "Conversion % shows how much of the first stage remains at each step; record links open the stage records.")
         ReadinessFooterGuidance.SetFooter(Me, "Funnel Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 

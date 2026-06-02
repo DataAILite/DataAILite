@@ -111,16 +111,16 @@ Partial Class ABCPareto
         Dim source As DataTable = GetSourceTable()
         If source Is Nothing Then Exit Sub
         DropDownPrimaryField.Items.Clear()
-        
-        
+
+
         DropDownValueField.Items.Clear()
-        
+
         For Each col As DataColumn In source.Columns
             DropDownPrimaryField.Items.Add(New ListItem(col.ColumnName, col.ColumnName))
-            
-            
+
+
             If ColumnTypeIsNumeric(col) Then DropDownValueField.Items.Add(New ListItem(col.ColumnName, col.ColumnName))
-            
+
         Next
         If DropDownValueField.Items.Count = 0 Then DropDownValueField.Items.Add(New ListItem("(records)", ""))
         SetDefaultValueField(source)
@@ -379,10 +379,20 @@ Partial Class ABCPareto
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: ABC/Pareto model ranks dimensions by contribution to total value and assigns A, B, or C classes. Inputs are dimension field, value field, aggregate option, and search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page aggregates the selected value by dimension, sorts dimensions from largest to smallest contribution, calculates share and cumulative share, and assigns A through roughly 80%, B through roughly 95%, and C for the remaining tail."
-        LabelOutputExplanation.Text = "Output: The grid shows dimension, records, value, share percent, cumulative percent, ABC class, and record links for each dimension."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Dimension field selects the category, product, customer, item, or other entity to classify.", "Value field selects the numeric measure used for contribution.", "Aggregation defines how repeated records for the same dimension are combined.", "Search filters records before Pareto ranking is calculated.", "Use sales, revenue, units, profit, cost, or amount fields for meaningful Pareto value.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "ABC/Pareto model finds which dimensions explain most of the total value.", "The page aggregates value by dimension and sorts rows from largest to smallest.", "Share percent is each dimension value divided by total value.", "Cumulative percent is calculated down the sorted list.", "ABC class assigns A to the main contributors, B to the middle contribution, and C to the remaining tail.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Dimension identifies the category or entity being classified.", "Records links open rows behind that dimension.", "Value, Share %, and Cumulative % show contribution strength.", "ABC Class separates high-impact, mid-impact, and low-impact groups.", "Use this to focus action on the few rows that explain most of the result.")
         ReadinessFooterGuidance.SetFooter(Me, "ABC Pareto Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 

@@ -423,10 +423,20 @@ Partial Class OutlierFlagging
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Outlier detection for numeric values. Inputs are the selected row field, value field, rule type, threshold settings, and search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page calculates baseline statistics such as average and standard deviation or applies percent/business-rule thresholds, then flags records whose value is outside the selected rule limits."
-        LabelOutputExplanation.Text = "Output: The grid shows row value, numeric value, rule, threshold, difference, average, standard deviation, and a reason explaining why the row was flagged. Row links open the flagged records in Data Explorer."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Row field identifies the record, category, or entity shown in the output.", "Value field selects the numeric measure being tested.", "Rule Type chooses standard deviation, percent difference, or business-rule style checks.", "Threshold controls how sensitive the flagging should be.", "Search filters records before outlier statistics are calculated.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Outlier model flags values that are unusual compared with the selected rule.", "For standard deviation rules, the page calculates average and standard deviation.", "For percent-difference rules, the page compares values against a baseline.", "Business-rule thresholds flag values above or below configured limits.", "Each flagged row receives a reason explaining the rule that matched.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Row is the source-record number and is linked to the matching record in Data Explorer.", "Field shows the selected numeric field being checked.", "Value shows the flagged value from that row.", "Method and Reason explain which outlier rule was applied and why the row was flagged.", "Average and Std Dev show the baseline statistics used by standard-deviation and percent-difference methods.")
         ReadinessFooterGuidance.SetFooter(Me, "Outlier Flagging", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

@@ -494,10 +494,20 @@ Partial Class TimeBasedSummaries
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Period-based summary analysis for reports with date fields. Inputs are the selected date field, aggregation period, value field, aggregate option, and search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: Dates are normalized into day, week, month, quarter, or year buckets. Values inside each bucket are aggregated using the selected calculation, and each period receives a filter back to the contributing records."
-        LabelOutputExplanation.Text = "Output: The grid shows time period, record count, selected aggregate value, and record links. The links open the records in the selected period so totals can be traced back to the report data."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Date Field selects the date column used to create time periods.", "Date Aggregation chooses Day, Week, Month, Quarter, or Year.", "Value Field selects the measure summarized inside each period.", "Aggregation defines Count, Sum, Average, Min, Max, or other available calculation.", "Search filters the records before period totals are created.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Period-summary model converts raw date records into grouped time buckets.", "Dates are normalized to the selected aggregation level.", "Records inside each period are grouped together.", "The selected value field is summarized using the selected aggregation.", "A filter is registered for each period so totals can be traced back to source records.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Period shows the calculated day, week, month, quarter, or year bucket.", "Period Start shows the normalized beginning date for that bucket.", "Records shows how many rows are included in that period and links to them.", "The calculated value column is named from the selected Aggregation and Value Field, such as Sum of Sales or Average of Amount.", "The grid is useful for seasonality, monthly summaries, annual rollups, and period comparisons.")
         ReadinessFooterGuidance.SetFooter(Me, "Time Based Summaries", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

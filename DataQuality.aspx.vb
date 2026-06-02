@@ -764,10 +764,20 @@ Partial Class DataQuality
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Data quality rule checks for the current report data. Inputs are all fields, current search text, and the configured numeric standard-deviation threshold."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page evaluates missing values, duplicate rows, invalid date-like values, out-of-range or suspicious numeric values, inconsistent category spelling/casing, and suspicious text patterns. Each issue is registered with a filter that can reopen the affected records."
-        LabelOutputExplanation.Text = "Output: The grid shows the issue type, field, affected record count, and issue description. Record-count links open the exact rows in Data Explorer so the questionable values can be reviewed in context."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Checks all available fields in the current report data.", "Search filters the records before quality rules are applied.", "Threshold settings control numeric sensitivity for suspicious values.", "Date-like fields are checked for invalid dates; numeric fields for range issues; text/category fields for blanks, inconsistent values, and suspicious content.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Data quality model applies rule-based checks to identify records that may need correction.", "The page checks missing values, duplicate rows, invalid dates, out-of-range numbers, inconsistent categories, and suspicious text.", "Each issue is stored with a filter pointing back to affected records.", "Duplicate detection compares complete row signatures.", "Category checks look for casing, spacing, and low-quality text patterns.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Check names the quality check that found the issue.", "Field identifies the affected column when the issue is field-specific.", "Issue describes the problem found in the data.", "Count shows how many records are affected and links to those records when a record filter is available.", "Details gives the extra context needed to review or correct the issue.")
         ReadinessFooterGuidance.SetFooter(Me, "Data Quality", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

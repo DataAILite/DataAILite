@@ -700,10 +700,20 @@ Partial Class Ranking
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Ranking and top/bottom/average analysis for categories or other dimensions. Inputs are the selected rank field, optional group field, value field, rank type, top count, and search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: Records are grouped by the rank field and optional group, the selected value field is aggregated, then rows are sorted for Top, Bottom, or Average ranking. Group value columns show the selected rank result inside each group when a group field is used."
-        LabelOutputExplanation.Text = "Output: The grid shows the ranked dimension, optional group, rank type, calculated top/bottom/average value, group value when applicable, and record count. Record links open the rows used to calculate each ranked result."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Rank field selects the dimension to rank, such as category, customer, product, department, or location.", "Optional Group field creates separate rankings inside each group.", "Value field selects the numeric measure to rank.", "Rank Type chooses Top, Bottom, or Average analysis.", "Top Count controls how many ranked rows are returned; Search filters source records before ranking.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Ranking model orders dimensions by calculated business value.", "Records are grouped by Rank field and optional Group field.", "The selected Value field is aggregated, then sorted according to Rank Type.", "Top and Bottom use the largest or smallest totals; Average uses average value per record.", "When a group is selected, the page also calculates the rank value within each group.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Group shows the selected group value when a group field is used; otherwise it is blank.", "Top Value, Bottom Value, or Average Value appears when a group field is selected and summarizes the selected Rank Type for that group.", "Rank shows row order inside the group or complete result.", "Item is the selected rank-field value, and the value column shows the calculated Top, Bottom, or Average result.", "Records links open the rows behind each ranking result.")
         ReadinessFooterGuidance.SetFooter(Me, "Ranking Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

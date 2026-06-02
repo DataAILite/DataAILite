@@ -415,10 +415,20 @@ Partial Class TimeSeries
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Time-series rolling analysis. Inputs are date field, value field, date aggregation period, number of time periods, calculation type, and optional search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: Records are grouped into ordered time periods, period totals are calculated, and the selected rolling window is applied to produce moving averages or rolling totals across consecutive periods."
-        LabelOutputExplanation.Text = "Output: The grid shows each period, records, period total, moving average or rolling total, and record links. The Number of time periods controls how many prior periods are included in each rolling calculation."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Date Field selects the chronological field used to order periods.", "Date Aggregation controls whether periods are day, week, month, quarter, or year.", "Value Field selects the numeric measure analyzed over time.", "Number of time periods sets the rolling window size.", "Calculation Type chooses moving average or rolling total; Search filters the source records first.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Time-series model analyzes ordered period values.", "Records are grouped into periods and sorted chronologically.", "Period totals are calculated from the selected Value Field.", "The rolling window looks back across the selected number of periods.", "Moving average divides the rolling sum by available periods; rolling total keeps the sum.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Date shows the ordered time bucket.", "Records links open source rows in that period.", "Value shows the summarized value for the period before rolling calculations.", "Moving Average and Rolling Total show the rolling results for the selected number of time periods.", "This helps smooth noisy values and reveal trend direction over time.")
         ReadinessFooterGuidance.SetFooter(Me, "Time Series", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 End Class

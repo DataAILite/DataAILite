@@ -112,19 +112,19 @@ Partial Class DataDrift
         If source Is Nothing Then Exit Sub
         DropDownPrimaryField.Items.Clear()
         DropDownSecondaryField.Items.Clear()
-        
-        
-        
+
+
+
         For Each col As DataColumn In source.Columns
             DropDownPrimaryField.Items.Add(New ListItem(col.ColumnName, col.ColumnName))
             DropDownSecondaryField.Items.Add(New ListItem(col.ColumnName, col.ColumnName))
-            
-            
-            
+
+
+
         Next
-        
-        
-        
+
+
+
         FillSegmentValues()
     End Sub
 
@@ -371,10 +371,20 @@ Partial Class DataDrift
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
     Private Sub SetAnalysisExplanationLabels()
-        LabelModelExplanation.Text = "Model: Data drift model compares how one field is distributed between two selected segments. Inputs are compare field, segment field, base value, compare value, and search text."
-        LabelAlgorithmExplanation.Text = "Algorithm: The page counts each compare-field value in the base and compare segments, converts counts to segment share percentages, then calculates percentage-point drift."
-        LabelOutputExplanation.Text = "Output: The grid shows field value, base records, compare records, base share, compare share, drift points, and links to the base and compare records."
+        LabelModelExplanation.Text = ExplanationBlock("Input and Fields Selection", "Compare Field selects the value whose distribution is being compared.", "Segment Field selects the field containing base and compare groups or periods.", "Base Value and Compare Value select the two segments to compare.", "Search filters records before drift is calculated.", "Use dates, periods, regions, channels, statuses, or source systems as segment fields.")
+        LabelAlgorithmExplanation.Text = ExplanationBlock("Model and Algorithm", "Data drift model compares distributions between two selected segments.", "The page counts each Compare Field value in the base segment and compare segment.", "Counts are converted to share percentages inside each segment.", "Drift points are calculated as Compare Share minus Base Share.", "Large positive or negative drift means the distribution changed materially.")
+        LabelOutputExplanation.Text = ExplanationBlock("Output", "Field Value is the compared category or value.", "Base Records and Compare Records link to the rows on each side.", "Base Share and Compare Share show relative distribution inside each segment.", "Drift Points shows the percentage-point change.", "Use this page to detect data mix changes, channel shifts, product mix changes, or source drift.")
         ReadinessFooterGuidance.SetFooter(Me, "Data Drift Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
 

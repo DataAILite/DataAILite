@@ -681,14 +681,54 @@ Public MustInherit Class MarketAnalysisBase
 
     Private Sub SetMarketExplanationLabels()
         Dim explanations As String() = MarketExplanations()
-        SetLabel("LabelModelExplanation", "Model: " & explanations(0))
-        SetLabel("LabelAlgorithmExplanation", "Algorithm: " & explanations(1))
-        SetLabel("LabelOutputExplanation", "Output: " & explanations(2))
+        SetLabel("LabelModelExplanation", ExplanationBlock("Input and Fields Selection", MarketInputExplanation(), MarketFieldSelectionExplanation(), explanations(0)))
+        SetLabel("LabelAlgorithmExplanation", ExplanationBlock("Model and Algorithm", explanations(1)))
+        SetLabel("LabelOutputExplanation", ExplanationBlock("Output", explanations(2)))
         ReadinessFooterGuidance.SetFooter(Me, "Market " & MarketModel,
             LabelControl("LabelReadinessWhyUseful"),
             LabelControl("LabelReadinessSuggestedFields"),
             SourceTable())
     End Sub
+
+    Private Function ExplanationBlock(title As String, ParamArray bullets() As String) As String
+        Dim html As String = "<div class=""explanationBlock""><div class=""explanationTitle""><strong>" & Server.HtmlEncode(title) & "</strong></div><ul>"
+        For Each bullet As String In bullets
+            If bullet IsNot Nothing AndAlso bullet.Trim() <> "" Then
+                html &= "<li>" & Server.HtmlEncode(bullet) & "</li>"
+            End If
+        Next
+        html &= "</ul></div>"
+        Return html
+    End Function
+
+    Private Function MarketInputExplanation() As String
+        Return "Input comes from the current report or imported in-memory data after the Search filter is applied. The page can also use sample market data when no report data is available."
+    End Function
+
+    Private Function MarketFieldSelectionExplanation() As String
+        Select Case MarketModel
+            Case "Pricing"
+                Return "Primary field is optional: choose (None) to analyze price bands only, or choose a category/product/customer/location field to split price bands by Dimension. Value Field is the price field. Secondary Field is the quantity, units, or volume field used to estimate demand response. Search limits the result rows."
+            Case "Elasticity"
+                Return "Primary field separates elasticity curves by product, category, customer, location, or combined selected dimensions. Value Field is the price field. Secondary Field is the quantity, units, volume, or demand field. Assumption % is the what-if price change used for projections."
+            Case "Basket"
+                Return "Primary field is the item, product, SKU, or service being paired. Secondary Field is the order, invoice, transaction, receipt, basket, or customer identifier that defines items seen together. Value Field is optional and weights the basket value for the matching pair."
+            Case "Segments"
+                Return "Primary field(s) define the segment, such as customer, product, region, channel, department, or a combined dimension. Value Field measures segment size or value. Search can focus segmentation on a subset of records."
+            Case "Churn"
+                Return "Primary field identifies the customer, account, user, member, or segment being scored. Value Field summarizes account or segment value. Date Field supplies activity recency, and Date Aggregation can group churn review by day, week, month, quarter, or year."
+            Case "Risk"
+                Return "Primary field(s) define the exposure group such as customer, product, region, channel, vendor, or account. Value Field is treated as exposure, loss, amount, revenue, or other risk weight. Search can limit risk scoring to a selected population."
+            Case "Inventory"
+                Return "Primary field(s) identify the item, product, SKU, location, category, or combined inventory dimension. Value Field is movement, demand, units, or quantity. Date Field and Date Aggregation create period movement. Current Inventory is detected or selected from inventory-like fields, and Assumption % is safety stock."
+            Case "Profit"
+                Return "Primary field(s) identify the profitability driver, such as product, customer, region, channel, or department. Value Field is revenue, sales, amount, or value. Cost is detected from cost fields when possible, or estimated from unit cost and quantity, or from Assumption % as a fallback."
+            Case "Scenario"
+                Return "Primary field(s) define the scenario dimension. Value Field is the current value being stressed. Assumption % creates downside and upside changes around the base value. Search limits the scenario to the selected records."
+            Case Else
+                Return "Primary field(s) define demand by product, category, customer, region, channel, location, or combined dimension. Value Field is units, sales, revenue, quantity, or another demand measure. Date Field and Date Aggregation add period-based demand. Assumption % creates projected demand."
+        End Select
+    End Function
 
     Private Function MarketExplanations() As String()
         Select Case MarketModel

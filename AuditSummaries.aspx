@@ -42,6 +42,16 @@
         .modal { position:fixed; z-index:2147483647; height:100%; width:100%; top:0; background-color:#f8f8d3; opacity:0.8; }
         .center { z-index:2147483647; margin:300px auto; padding-left:25px; padding-top:10px; width:130px; background-color:#f8f8d3; border-radius:10px; }
         .center img { height:100px; width:100px; }
+
+        .explanationBlock { margin:6px 0 8px 0; padding:6px 8px; background-color:#fbfff8; border-left:4px solid #9ccc65; }
+        .explanationTitle { color:#2f4f1f; margin-bottom:3px; }
+        .explanationBlock ul { margin:3px 0 0 18px; padding:0; }
+        .explanationBlock li { margin:2px 0; white-space:normal; }
+
+        .suggestedFieldsBlock { margin-top:3px; }
+        .suggestedFieldsTitle { display:block; margin-bottom:2px; }
+        .suggestedFieldsBlock ul { margin:2px 0 0 18px; padding:0; }
+        .suggestedFieldsBlock li { margin:1px 0; white-space:normal; }
     </style>
 </head>
 <body>
