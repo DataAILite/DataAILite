@@ -1374,6 +1374,7 @@ Partial Class ChartRecommendationHelpers
             LabelRecordCount.Text = "Number of records: " & dt.Rows.Count.ToString()
         End If
         UpdateRecommendationPager(dt)
+        AnalysisExportSnapshot.Save(Me, "ChartRecommendations", "Chart Recommendations", LabelInfo, GridViewRecommendations, dt)
     End Sub
 
     Private Function RecommendationPageCount(dt As DataTable) As Integer

@@ -269,6 +269,7 @@ Partial Class OutlierFlagging
             If filterIndex >= 0 AndAlso filterIndex < GridViewOutliers.HeaderRow.Cells.Count Then GridViewOutliers.HeaderRow.Cells(filterIndex).Visible = False
         End If
         If dt Is Nothing Then LabelInfo.Text = "" Else LabelInfo.Text = "Outlier flags (" & dt.Rows.Count.ToString() & " rows)"
+        AnalysisExportSnapshot.Save(Me, "OutlierFlagging", "Outlier Flagging", LabelInfo, GridViewOutliers, dt)
     End Sub
 
     Private Function NumericValue(valueObject As Object) As Double

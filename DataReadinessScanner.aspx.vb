@@ -412,6 +412,7 @@ Partial Class DataReadinessScanner
         UpdateAnalysisPager(dt)
         SetAnalysisExplanationLabels()
         LabelInfo.Text = "Data Readiness Scanner (" & If(dt Is Nothing, 0, dt.Rows.Count).ToString() & " recommendations)"
+        AnalysisExportSnapshot.Save(Me, "DataReadinessScanner", "Data Readiness Scanner", LabelInfo, GridViewDataReadinessScanner, dt)
         HyperLinkAnalyticsDashboardTop.NavigateUrl = AddReportParameter("DataAdmin.aspx")
         HyperLinkMarketDashboardTop.NavigateUrl = AddReportParameter("MarketAdmin.aspx")
         BindWorkflow(dt)

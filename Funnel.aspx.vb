@@ -209,6 +209,7 @@ Partial Class Funnel
         UpdateAnalysisPager(dt)
         SetAnalysisExplanationLabels()
         LabelInfo.Text = "Funnel Analysis (" & dt.Rows.Count.ToString() & " rows)"
+        AnalysisExportSnapshot.Save(Me, "FunnelAnalysis", "Funnel Analysis", LabelInfo, GridViewFunnel, dt)
     End Sub
 
     Private Sub HideFilterColumnsInRow(dt As DataTable, row As GridViewRow)

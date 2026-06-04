@@ -119,28 +119,26 @@
                             <div style="text-align:center;"><asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Export Packages</asp:Label></div>
                             <br /><br />
                             <table class="controlpanel" cellpadding="4" cellspacing="0">
-                                <tr>
-                                    <td><asp:CheckBox ID="CheckReport" runat="server" Text="Report" Checked="True" /></td>
-                                    <td><asp:CheckBox ID="CheckDefinitions" runat="server" Text="Report Definition" Checked="True" /></td>
-                                    <td>
-                                        <asp:Label ID="LabelDataFormat" runat="server" Text="Data in format:" AssociatedControlID="DropDownDataFormat"></asp:Label>
-                                        <asp:DropDownList ID="DropDownDataFormat" runat="server">
-                                            <asp:ListItem Text="CSV" Value="CSV" Selected="True"></asp:ListItem>
-                                            <asp:ListItem Text="Excel" Value="Excel"></asp:ListItem>
-                                        </asp:DropDownList>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><asp:CheckBox ID="CheckCharts" runat="server" Text="Charts" Checked="True" /></td>
-                                    <td><asp:CheckBox ID="CheckAIAnalysis" runat="server" Text="AI analysis" Checked="True" /></td>
-                                    <td><asp:CheckBox ID="CheckNotes" runat="server" Text="Notes" Checked="True" /></td>
-                                </tr>
-                                <tr><td colspan="3" style="font-weight:bold;">Notes:<br /><asp:TextBox ID="txtNotes" runat="server" TextMode="MultiLine" Rows="2" Width="680px"></asp:TextBox></td></tr>
-                                <tr><td colspan="3"><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Export" OnClientClick="showExportWaiting();" /></td></tr>
+                                <tr><td style="font-weight:bold;">Notes:<br /><asp:TextBox ID="txtNotes" runat="server" TextMode="MultiLine" Rows="8" Width="980px"></asp:TextBox></td></tr>
+                                <tr><td><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Export" OnClientClick="showExportWaiting();" /></td></tr>
                             </table>
                             <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
                             <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br />
-                            <div style="overflow:auto; max-width:100%;"><asp:GridView ID="GridViewPackage" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView></div>
+                            <div style="overflow:auto; max-width:100%;">
+                                <asp:GridView ID="GridViewPackage" runat="server" CssClass="analysisgrid" AutoGenerateColumns="False" GridLines="Both">
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Included">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="chkIncluded" runat="server" Checked='<%# Convert.ToBoolean(Eval("Included")) %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:BoundField DataField="Package Item" HeaderText="Package Item" />
+                                        <asp:BoundField DataField="Label Above Grid" HeaderText="Label Above Grid" />
+                                        <asp:BoundField DataField="File" HeaderText="File" />
+                                        <asp:BoundField DataField="Description" HeaderText="Description" />
+                                    </Columns>
+                                </asp:GridView>
+                            </div>
                         </td>
                     </tr>
                 </table>

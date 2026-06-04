@@ -223,6 +223,7 @@ Partial Class DataDictionary
         UpdateAnalysisPager(dt)
         SetAnalysisExplanationLabels()
         LabelInfo.Text = "Data Dictionary (" & dt.Rows.Count.ToString() & " rows)"
+        AnalysisExportSnapshot.Save(Me, "DataDictionary", "Data Dictionary", LabelInfo, GridViewDataDictionary, dt)
     End Sub
 
     Private Sub HideFilterColumnsInRow(dt As DataTable, row As GridViewRow)

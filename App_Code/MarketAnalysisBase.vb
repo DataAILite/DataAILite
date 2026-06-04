@@ -624,6 +624,7 @@ Public MustInherit Class MarketAnalysisBase
         If dt IsNot Nothing Then SetLabel("LabelInfo", MarketTitle & " (" & dt.Rows.Count.ToString() & " rows)")
         UpdateMarketPager(dt)
         SetMarketExplanationLabels()
+        AnalysisExportSnapshot.Save(Me, "Market_" & MarketModel, MarketTitle, LabelControl("LabelInfo"), grid, dt)
     End Sub
 
     Private Function MarketGridPageSize() As Integer

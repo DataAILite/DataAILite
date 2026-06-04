@@ -356,6 +356,7 @@ Partial Class Variance
             LabelInfo.Text = ""
         Else
             LabelInfo.Text = AnalysisTitle() & " (" & dt.Rows.Count.ToString() & " rows)"
+            AnalysisExportSnapshot.Save(Me, "VarianceAnalysis", "Variance Analysis", LabelInfo, GridViewAnalysis, dt)
         End If
     End Sub
 

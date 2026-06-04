@@ -197,6 +197,7 @@ Partial Class DataQuality
             LabelInfo.Text = ""
         Else
             LabelInfo.Text = QualityTitle() & " (" & dt.Rows.Count.ToString() & " findings)"
+            AnalysisExportSnapshot.Save(Me, "DataQuality", "Data Quality", LabelInfo, GridViewQuality, dt)
         End If
     End Sub
 

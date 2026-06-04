@@ -214,6 +214,7 @@ Partial Class AuditSummaries
     Private Sub BindAudit(dt As DataTable)
         BindAnalysisGrid(dt)
         If dt Is Nothing Then LabelInfo.Text = "" Else LabelInfo.Text = "Audit summary (" & dt.Rows.Count.ToString() & " rows)"
+        AnalysisExportSnapshot.Save(Me, "AuditSummaries", "Audit Summaries", LabelInfo, GridViewAudit, dt)
     End Sub
 
     Private Function FieldList(dt As DataTable) As String

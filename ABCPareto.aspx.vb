@@ -254,6 +254,7 @@ Partial Class ABCPareto
         UpdateAnalysisPager(dt)
         SetAnalysisExplanationLabels()
         LabelInfo.Text = "ABC Pareto Analysis (" & dt.Rows.Count.ToString() & " rows)"
+        AnalysisExportSnapshot.Save(Me, "ABCParetoAnalysis", "ABC Pareto Analysis", LabelInfo, GridViewABCPareto, dt)
     End Sub
 
     Private Sub HideFilterColumnsInRow(dt As DataTable, row As GridViewRow)

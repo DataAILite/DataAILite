@@ -337,6 +337,7 @@ Partial Class TimeBasedSummaries
             If filterIndex >= 0 AndAlso filterIndex < GridViewSummary.HeaderRow.Cells.Count Then GridViewSummary.HeaderRow.Cells(filterIndex).Visible = False
         End If
         If dt Is Nothing Then LabelInfo.Text = "" Else LabelInfo.Text = "Time based summaries (" & dt.Rows.Count.ToString() & " rows)"
+        AnalysisExportSnapshot.Save(Me, "TimeBasedSummaries", "Time Based Summaries", LabelInfo, GridViewSummary, dt)
     End Sub
 
     Private Function TryGetDate(valueObject As Object, ByRef dateValue As DateTime) As Boolean

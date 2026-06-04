@@ -251,6 +251,7 @@ Partial Class TimeSeries
             If filterIndex >= 0 AndAlso filterIndex < GridViewTimeSeries.HeaderRow.Cells.Count Then GridViewTimeSeries.HeaderRow.Cells(filterIndex).Visible = False
         End If
         If dt Is Nothing Then LabelInfo.Text = "" Else LabelInfo.Text = "Time series (" & dt.Rows.Count.ToString() & " rows)"
+        AnalysisExportSnapshot.Save(Me, "TimeSeries", "Time Series", LabelInfo, GridViewTimeSeries, dt)
     End Sub
 
     Private Function TryGetDate(valueObject As Object, ByRef dateValue As DateTime) As Boolean

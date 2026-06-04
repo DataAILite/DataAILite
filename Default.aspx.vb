@@ -28,6 +28,8 @@ Partial Class _Default
         ' You should have received a copy of the GNU General Public License
         ' along with this program. If not, see <https://www.gnu.org/licenses/>.
         Session("dvListOfReports") = Nothing
+        AnalysisExportSnapshot.Cleanup(Session)
+        AnalysisExportSnapshot.CleanupOldFolders()
         Session("OURConnProvider") = System.Configuration.ConfigurationManager.ConnectionStrings.Item("mySQLconnection").ProviderName.ToString
         If Session("OURConnProvider") = "Sqlite" Then
             If Session("logon") IsNot Nothing AndAlso Session("logon").ToString.Trim <> "" Then

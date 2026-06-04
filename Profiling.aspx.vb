@@ -260,6 +260,7 @@ Partial Class Profiling
             LabelInfo.Text = ""
         Else
             LabelInfo.Text = ProfileTitle() & " (" & dt.Rows.Count.ToString() & " fields)"
+            AnalysisExportSnapshot.Save(Me, "DataProfiling", "Data Profiling", LabelInfo, GridViewProfile, dt)
         End If
     End Sub
 

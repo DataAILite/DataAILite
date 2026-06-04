@@ -246,6 +246,7 @@ Partial Class DataDrift
         UpdateAnalysisPager(dt)
         SetAnalysisExplanationLabels()
         LabelInfo.Text = "Data Drift Analysis (" & dt.Rows.Count.ToString() & " rows)"
+        AnalysisExportSnapshot.Save(Me, "DataDriftAnalysis", "Data Drift Analysis", LabelInfo, GridViewDataDrift, dt)
     End Sub
 
     Private Sub HideFilterColumnsInRow(dt As DataTable, row As GridViewRow)

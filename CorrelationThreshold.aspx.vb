@@ -178,6 +178,7 @@ Partial Class CorrelationThreshold
     Private Sub BindCorrelation(dt As DataTable)
         BindAnalysisGrid(dt)
         If dt Is Nothing Then LabelInfo.Text = "" Else LabelInfo.Text = "Correlation threshold results (" & dt.Rows.Count.ToString() & " rows)"
+        AnalysisExportSnapshot.Save(Me, "CorrelationThreshold", "Correlation Threshold", LabelInfo, GridViewCorrelation, dt)
     End Sub
 
     Private Function NumericValue(valueObject As Object) As Double

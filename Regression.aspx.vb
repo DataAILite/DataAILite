@@ -381,6 +381,7 @@ Partial Class Regression
             LabelInfo.Text = ""
         Else
             LabelInfo.Text = RegressionTitle() & " (" & dt.Rows.Count.ToString() & " rows)"
+            AnalysisExportSnapshot.Save(Me, "RegressionAnalysis", "Regression Analysis", LabelInfo, GridViewRegression, dt)
         End If
     End Sub
 

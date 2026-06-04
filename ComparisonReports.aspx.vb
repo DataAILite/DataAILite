@@ -640,6 +640,7 @@ Partial Class ComparisonReports
             LabelInfo.Text = ""
         Else
             LabelInfo.Text = ComparisonTitle() & " (" & dt.Rows.Count.ToString() & " rows)"
+            AnalysisExportSnapshot.Save(Me, "ComparisonReports", "Comparison Reports", LabelInfo, GridViewComparison, dt)
         End If
     End Sub
 

@@ -318,6 +318,7 @@ Partial Class Pivot
             LabelInfo.Text = ""
         Else
             LabelInfo.Text = PivotTitle() & " (" & dt.Rows.Count.ToString() & " rows)"
+            AnalysisExportSnapshot.Save(Me, "PivotCrossTab", "Pivot / Cross Tab", LabelInfo, GridViewPivot, dt)
             Session("cat1") = DropDownRowField.SelectedValue
             Session("cat2") = DropDownColumnField.SelectedValue
             Session("AxisY") = DropDownValueField.SelectedValue

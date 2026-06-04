@@ -324,6 +324,7 @@ Partial Class Ranking
             LabelInfo.Text = ""
         Else
             LabelInfo.Text = RankingTitle() & " (" & dt.Rows.Count.ToString() & " rows)"
+            AnalysisExportSnapshot.Save(Me, "RankingAnalysis", "Ranking Analysis", LabelInfo, GridViewRanking, dt)
         End If
     End Sub
 

@@ -206,6 +206,7 @@ Partial Class KPIBuilder
         UpdateAnalysisPager(dt)
         SetAnalysisExplanationLabels()
         LabelInfo.Text = "KPI Builder (" & dt.Rows.Count.ToString() & " rows)"
+        AnalysisExportSnapshot.Save(Me, "KPIBuilder", "KPI Builder", LabelInfo, GridViewKPIBuilder, dt)
     End Sub
 
     Private Sub HideFilterColumnsInRow(dt As DataTable, row As GridViewRow)

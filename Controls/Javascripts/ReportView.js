@@ -3488,10 +3488,6 @@ function getDisplaySettings(div,itm) {
         var borderWidth = div.dataset.borderwidth || "1";
         var borderStyle = div.dataset.borderstyle || "Solid";
 
-        itm.CaptionBackColor = backColor;
-        itm.CaptionBorderColor = borderColor;
-        itm.CaptionBorderStyle = borderStyle;
-        itm.CaptionBorderWidth = borderWidth;
 
         if (div.id.startsWith("caption_") || div.id.startsWith("divLabel_")) {
             itm.CaptionBackColor = backColor;

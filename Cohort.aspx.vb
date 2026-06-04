@@ -232,6 +232,7 @@ Partial Class Cohort
         UpdateAnalysisPager(dt)
         SetAnalysisExplanationLabels()
         LabelInfo.Text = "Cohort Analysis (" & dt.Rows.Count.ToString() & " rows)"
+        AnalysisExportSnapshot.Save(Me, "CohortAnalysis", "Cohort Analysis", LabelInfo, GridViewCohort, dt)
     End Sub
 
     Private Sub HideFilterColumnsInRow(dt As DataTable, row As GridViewRow)
