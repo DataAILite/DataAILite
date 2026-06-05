@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ChartGoogle.aspx.vb" Inherits="ChartGoogle" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ChartGoogle.aspx.vb" Inherits="ChartGoogle" %>
 
 <!DOCTYPE html>
 
@@ -56,6 +56,7 @@
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Count_chart_div'));
          
         chart.draw(data, options);
+        captureDashboardChartImage(chart, 'Count', '<%=ttlCount%>');
         }
 
 
@@ -76,6 +77,7 @@
         // Instantiate and draw the chart for Distinct Count.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('DistCount_chart_div'));
         chart.draw(data, options);
+        captureDashboardChartImage(chart, 'Distinct Count', '<%=ttlDistCount%>');
         }
 
 
@@ -96,6 +98,7 @@
         // Instantiate and draw the chart for Value.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Value_chart_div'));
         chart.draw(data, options);
+        captureDashboardChartImage(chart, 'Value', '<%=ttlValue%>');
         }
 
 
@@ -117,6 +120,7 @@
         // Instantiate and draw the chart for Sum.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Sum_chart_div'));
         chart.draw(data, options);
+        captureDashboardChartImage(chart, 'Sum', '<%=ttlSum%>');
         }
 
 
@@ -138,6 +142,7 @@
         // Instantiate and draw the chart for Avg.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Avg_chart_div'));
         chart.draw(data, options);
+        captureDashboardChartImage(chart, 'Average', '<%=ttlAvg%>');
         }
 
 
@@ -159,6 +164,7 @@
         // Instantiate and draw the chart for StDev.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('StDev_chart_div'));
         chart.draw(data, options);
+        captureDashboardChartImage(chart, 'Standard Deviation', '<%=ttlStDev%>');
         }
 
 
@@ -180,6 +186,7 @@
         // Instantiate and draw the chart for Max.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Max_chart_div'));
         chart.draw(data, options);
+        captureDashboardChartImage(chart, 'Maximum', '<%=ttlMax%>');
         }
 
 
@@ -201,6 +208,7 @@
         // Instantiate and draw the chart for Min.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Min_chart_div'));
         chart.draw(data, options);
+        captureDashboardChartImage(chart, 'Minimum', '<%=ttlMin%>');
         }
 
 
@@ -254,6 +262,79 @@
         // Instantiate and draw the chart for Anthony's pizza.
         var chart = new google.visualization.PieChart(document.getElementById('Anthony_chart_div'));
         chart.draw(data, options);
+      }
+
+      var chartGoogleDashboardImagesSaved = {};
+
+      function captureDashboardChartImage(chart, sectionName, titleText) {
+          try {
+              if (!chart || typeof chart.getImageURI !== 'function' || typeof PageMethods === 'undefined') {
+                  return;
+              }
+              if (chartGoogleDashboardImagesSaved[sectionName]) {
+                  return;
+              }
+              var capture = function () {
+                  try {
+                      if (chartGoogleDashboardImagesSaved[sectionName]) {
+                          return;
+                      }
+                      var imageUri = chart.getImageURI();
+                      if (imageUri && imageUri.indexOf('data:image') === 0) {
+                          chartGoogleDashboardImagesSaved[sectionName] = true;
+                          uploadDashboardChartImage(sectionName, titleText, imageUri);
+                      }
+                  }
+                  catch (e) {
+                  }
+              };
+              if (google.visualization.events) {
+                  google.visualization.events.addListener(chart, 'ready', capture);
+              }
+              window.setTimeout(capture, 1500);
+          }
+          catch (e) {
+          }
+      }
+
+      function uploadDashboardChartImage(sectionName, titleText, imageUri) {
+          try {
+              var commaIndex = imageUri.indexOf(',');
+              if (commaIndex < 0) {
+                  chartGoogleDashboardImagesSaved[sectionName] = false;
+                  return;
+              }
+              var header = imageUri.substring(0, commaIndex + 1);
+              var data = imageUri.substring(commaIndex + 1);
+              var chunkSize = 24000;
+              var totalChunks = Math.ceil(data.length / chunkSize);
+              if (totalChunks < 1) {
+                  chartGoogleDashboardImagesSaved[sectionName] = false;
+                  return;
+              }
+              uploadDashboardChartImageChunk(sectionName, titleText, header, data, chunkSize, totalChunks, 0);
+          }
+          catch (e) {
+              chartGoogleDashboardImagesSaved[sectionName] = false;
+          }
+      }
+
+      function uploadDashboardChartImageChunk(sectionName, titleText, header, data, chunkSize, totalChunks, chunkIndex) {
+          try {
+              var chunkText = data.substring(chunkIndex * chunkSize, Math.min(data.length, (chunkIndex + 1) * chunkSize));
+              PageMethods.SaveDashboardChartImageChunkForExport(sectionName, titleText, header, chunkText, chunkIndex, totalChunks,
+                  function () {
+                      if (chunkIndex + 1 < totalChunks) {
+                          uploadDashboardChartImageChunk(sectionName, titleText, header, data, chunkSize, totalChunks, chunkIndex + 1);
+                      }
+                  },
+                  function () {
+                      chartGoogleDashboardImagesSaved[sectionName] = false;
+                  });
+          }
+          catch (e) {
+              chartGoogleDashboardImagesSaved[sectionName] = false;
+          }
       }
     </script>
 
@@ -337,7 +418,9 @@
                  <asp:Label ID="LabelWhere" runat="server" Font-Underline="False" Text=""></asp:Label>
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/ListOfReports.aspx" Font-Names="Arial" Font-Size="Small">List of Reports</asp:HyperLink>
-                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <asp:LinkButton ID="lnkExportDashboardData" runat="server" Font-Names="Arial" Font-Size="Small">export dashboard data</asp:LinkButton>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Default.aspx" Font-Names="Arial" Font-Size="Small">Log off</asp:HyperLink>
         &nbsp;
       <!--Table and divs that hold the pie charts-->

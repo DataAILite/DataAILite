@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Collections
 Imports System.Collections.Generic
 Imports System.Configuration
@@ -47,7 +47,7 @@ Partial Class ExportPackages
         sb.AppendLine("Report: " & FieldText(Session("REPORTID")))
         sb.AppendLine("Title: " & FieldText(Session("REPTITLE")))
         sb.AppendLine("This package includes the checked rows from the Export Package grid.")
-        sb.AppendLine("Report, report definition, CSV data, Excel data, AI analysis, charts, and notes can be included or excluded with the Included checkboxes.")
+        sb.AppendLine("Report, report definition, CSV data, Excel data, AI analysis, chart snapshots, and notes can be included or excluded with the Included checkboxes.")
         sb.AppendLine("Analytics and Market Excel snapshots are created when Build is clicked on those pages and are listed here with the label that appeared above each result grid.")
         txtNotes.Text = sb.ToString().Trim()
     End Sub
@@ -68,7 +68,6 @@ Partial Class ExportPackages
         AddPackageRow(dt, "CSVData", "CSV Data", True, "", "ReportData.csv", "Current report data exported as comma-delimited text.")
         AddPackageRow(dt, "ExcelData", "Excel Data", True, "", "ReportData.xls", "Current report data exported as Excel-compatible tab-delimited content.")
         AddPackageRow(dt, "AIAnalysis", "AI analysis", True, "", "AIAnalysis.txt", "Real AI output for the current report when AI settings are available.")
-        AddPackageRow(dt, "Charts", "Charts", True, "", "Charts folder", "Report charts and analytics chart views calculated from the current report data.")
         AddSnapshotRows(dt)
 
         Session("ExportPackageTable") = dt
@@ -212,7 +211,7 @@ Partial Class ExportPackages
         File.WriteAllText(Path.Combine(packageFolder, "PackageManifest.txt"), PackageHeader() & Environment.NewLine & ExportToCSVtext(ManifestForPackage(manifest), Chr(9), "", ""), Encoding.UTF8)
 
         Dim reportData As DataTable = Nothing
-        If IsIncluded("CSVData") OrElse IsIncluded("ExcelData") OrElse IsIncluded("Report") OrElse IsIncluded("AIAnalysis") OrElse IsIncluded("Charts") Then
+        If IsIncluded("CSVData") OrElse IsIncluded("ExcelData") OrElse IsIncluded("Report") OrElse IsIncluded("AIAnalysis") Then
             reportData = CurrentReportData()
         End If
 
@@ -238,10 +237,6 @@ Partial Class ExportPackages
 
         If IsIncluded("AIAnalysis") Then
             WriteAIAnalysisFile(packageFolder, reportData)
-        End If
-
-        If IsIncluded("Charts") Then
-            WriteChartsPackage(packageFolder, reportData)
         End If
 
         If IsIncluded("Notes") Then

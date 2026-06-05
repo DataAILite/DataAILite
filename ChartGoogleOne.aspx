@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ChartGoogleOne.aspx.vb" Inherits="ChartGoogleOne" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ChartGoogleOne.aspx.vb" Inherits="ChartGoogleOne" %>
 
 <%@ Register TagPrefix="uc1" TagName="DropDownColumns" src="~/Controls/uc1.ascx" %>
 
@@ -304,8 +304,17 @@
            
                var chart = new google.visualization.<%=charttype%>(document.getElementById('chart_div'));                
 
-           
+                window.chartGoogleOneImageSaved = false;
+                if (google.visualization.events && typeof chart.getImageURI === 'function') {
+                    google.visualization.events.addListener(chart, 'ready', function () {
+                        saveChartImageForExport(chart);
+                    });
+                }
+
                 chart.draw(data, options);
+                window.setTimeout(function () {
+                    saveChartImageForExport(chart);
+                }, 1500);
            
             
             
@@ -324,6 +333,64 @@
                 //    chart.draw(data, options);
                 //    }, 26000);
             };--%>
+        }
+
+        function saveChartImageForExport(chart) {
+            try {
+                if (window.chartGoogleOneImageSaved) {
+                    return;
+                }
+                if (typeof PageMethods === 'undefined' || typeof chart.getImageURI !== 'function') {
+                    return;
+                }
+                var imageUri = chart.getImageURI();
+                if (imageUri && imageUri.indexOf('data:image') === 0) {
+                    window.chartGoogleOneImageSaved = true;
+                    uploadChartImageForExport(imageUri);
+                }
+            }
+            catch (e) {
+            }
+        }
+
+        function uploadChartImageForExport(imageUri) {
+            try {
+                var commaIndex = imageUri.indexOf(',');
+                if (commaIndex < 0) {
+                    window.chartGoogleOneImageSaved = false;
+                    return;
+                }
+                var header = imageUri.substring(0, commaIndex + 1);
+                var data = imageUri.substring(commaIndex + 1);
+                var chunkSize = 24000;
+                var totalChunks = Math.ceil(data.length / chunkSize);
+                if (totalChunks < 1) {
+                    window.chartGoogleOneImageSaved = false;
+                    return;
+                }
+                uploadChartImageChunk(header, data, chunkSize, totalChunks, 0);
+            }
+            catch (e) {
+                window.chartGoogleOneImageSaved = false;
+            }
+        }
+
+        function uploadChartImageChunk(header, data, chunkSize, totalChunks, chunkIndex) {
+            try {
+                var chunkText = data.substring(chunkIndex * chunkSize, Math.min(data.length, (chunkIndex + 1) * chunkSize));
+                PageMethods.SaveChartImageChunkForExport(header, chunkText, chunkIndex, totalChunks,
+                    function () {
+                        if (chunkIndex + 1 < totalChunks) {
+                            uploadChartImageChunk(header, data, chunkSize, totalChunks, chunkIndex + 1);
+                        }
+                    },
+                    function () {
+                        window.chartGoogleOneImageSaved = false;
+                    });
+            }
+            catch (e) {
+                window.chartGoogleOneImageSaved = false;
+            }
         }
 
     </script>

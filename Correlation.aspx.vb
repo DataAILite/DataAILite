@@ -2,12 +2,15 @@ Imports System
 Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
+Imports System.IO
 Imports System.Math
+Imports System.Security.Cryptography
+Imports System.Text
 Partial Class Correlation
     Inherits System.Web.UI.Page
     Private Sub Correlation_Init(sender As Object, e As EventArgs) Handles Me.Init
         lblHeader.Text = Session("REPTITLE") & " - Correlations"
-        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Fields_Correlation"
+        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Correlation"
         repid = Session("REPORTID")
         Session("nv") = 8
         Session("writetext") = ""
@@ -214,6 +217,7 @@ Partial Class Correlation
             'list.Rows(i + 1).Cells(7).Controls.Add(ctlLnk)
 
         Next
+        RegisterCorrelationExportSnapshot(ddtv.Table)
     End Sub
     Private Sub TreeView1_SelectedNodeChanged(sender As Object, e As EventArgs) Handles TreeView1.SelectedNodeChanged
         Dim node As WebControls.TreeNode = TreeView1.SelectedNode
@@ -455,6 +459,142 @@ Partial Class Correlation
     Private Sub Correlation_Unload(sender As Object, e As EventArgs) Handles Me.Unload
         Dim ret As String = String.Empty
     End Sub
+
+    Private Sub RegisterCorrelationExportSnapshot(sourceTable As DataTable)
+        If sourceTable Is Nothing OrElse sourceTable.Rows.Count = 0 Then Exit Sub
+        If Session Is Nothing Then Exit Sub
+
+        Dim exportTable As DataTable = CorrelationExportTable(sourceTable)
+        If exportTable.Rows.Count = 0 Then Exit Sub
+
+        Dim labelText As String = "Fields Correlation (" & exportTable.Rows.Count.ToString() & " rows). Correlation coefficient shows how strongly two numeric fields move together. Stronger positive relationships are highlighted on the page and can be reviewed in Correlation Threshold, charts, and dashboards."
+        Dim signature As String = CorrelationSnapshotSignature(labelText, exportTable)
+        Dim snapshots As DataTable = AnalysisExportSnapshot.SnapshotTable(Session)
+        For Each row As DataRow In snapshots.Rows
+            If snapshots.Columns.Contains("Signature") AndAlso String.Equals(row("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Exit Sub
+        Next
+
+        Dim folderPath As String = CorrelationSnapshotFolder()
+        If folderPath.Trim() = "" Then Exit Sub
+        Directory.CreateDirectory(folderPath)
+
+        Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
+        Dim fileName As String = "Correlation_" & SafeFilePartLocal(FieldTextLocal(Session("REPORTID"))) & "_" & stamp & ".xls"
+        Dim filePath As String = Path.Combine(folderPath, fileName)
+        WriteCorrelationSnapshotFile(filePath, labelText, exportTable)
+
+        Dim snapshotRow As DataRow = snapshots.NewRow()
+        snapshotRow("Key") = "Correlation_" & stamp
+        snapshotRow("Included") = True
+        snapshotRow("Package Item") = "Fields Correlation - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+        snapshotRow("Label Above Grid") = labelText
+        snapshotRow("File") = fileName
+        snapshotRow("Description") = "Excel snapshot created from the Correlation page loaded table and explanation."
+        snapshotRow("FullPath") = filePath
+        If snapshots.Columns.Contains("Signature") Then snapshotRow("Signature") = signature
+        snapshots.Rows.Add(snapshotRow)
+    End Sub
+
+    Private Function CorrelationExportTable(sourceTable As DataTable) As DataTable
+        Dim dt As New DataTable()
+        dt.Columns.Add("Field 1", GetType(String))
+        dt.Columns.Add("Field 2", GetType(String))
+        dt.Columns.Add("Correlation Coefficient", GetType(String))
+        dt.Columns.Add("Review", GetType(String))
+
+        For Each sourceRow As DataRow In sourceTable.Rows
+            Dim row As DataRow = dt.NewRow()
+            row("Field 1") = FieldTextLocal(sourceRow("Tbl1Fld1"))
+            row("Field 2") = FieldTextLocal(sourceRow("Tbl2Fld2"))
+            row("Correlation Coefficient") = FieldTextLocal(sourceRow("Param2"))
+            row("Review") = If(Val(row("Correlation Coefficient").ToString()) > 0.55, "Strong relationship", "Visible because Show All or Search selected it")
+            dt.Rows.Add(row)
+        Next
+        Return dt
+    End Function
+
+    Private Function CorrelationSnapshotFolder() As String
+        Dim folderPath As String = ""
+        If Session("AnalysisExportSnapshotFolder") IsNot Nothing Then folderPath = Session("AnalysisExportSnapshotFolder").ToString()
+        If folderPath.Trim() <> "" Then Return folderPath
+
+        Dim tempPath As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory(), "Temp")
+        Dim sessionName As String = "AnalysisSnapshots_" & SafeFilePartLocal(Session.SessionID)
+        If Session("logon") IsNot Nothing AndAlso Session("logon").ToString().Trim() <> "" Then sessionName &= "_" & SafeFilePartLocal(Session("logon").ToString())
+        folderPath = Path.Combine(tempPath, sessionName)
+        Session("AnalysisExportSnapshotFolder") = folderPath
+        Return folderPath
+    End Function
+
+    Private Sub WriteCorrelationSnapshotFile(filePath As String, labelText As String, exportTable As DataTable)
+        Dim sb As New StringBuilder()
+        sb.AppendLine("<html><head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" /></head><body style=""font-family:Arial"">")
+        sb.AppendLine("<h2>Fields Correlation</h2>")
+        sb.AppendLine("<table border=""1"" cellspacing=""0"" cellpadding=""4"">")
+        sb.AppendLine("<tr><th align=""left"">Created</th><td>" & HtmlEncodeText(DateTime.Now.ToString()) & "</td></tr>")
+        sb.AppendLine("<tr><th align=""left"">Report</th><td>" & HtmlEncodeText(FieldTextLocal(Session("REPORTID"))) & "</td></tr>")
+        sb.AppendLine("<tr><th align=""left"">Report Title</th><td>" & HtmlEncodeText(FieldTextLocal(Session("REPTITLE"))) & "</td></tr>")
+        sb.AppendLine("<tr><th align=""left"">Label Above Grid</th><td>" & HtmlEncodeText(labelText) & "</td></tr>")
+        sb.AppendLine("</table>")
+        sb.AppendLine("<h3>Correlation Results</h3>")
+        AppendDataTableHtml(sb, exportTable)
+        sb.AppendLine("</body></html>")
+        File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8)
+    End Sub
+
+    Private Sub AppendDataTableHtml(sb As StringBuilder, dt As DataTable)
+        sb.AppendLine("<table border=""1"" cellspacing=""0"" cellpadding=""4"">")
+        sb.AppendLine("<tr>")
+        For Each col As DataColumn In dt.Columns
+            sb.AppendLine("<th>" & HtmlEncodeText(col.ColumnName) & "</th>")
+        Next
+        sb.AppendLine("</tr>")
+        For Each row As DataRow In dt.Rows
+            sb.AppendLine("<tr>")
+            For Each col As DataColumn In dt.Columns
+                sb.AppendLine("<td>" & HtmlEncodeText(row(col).ToString()) & "</td>")
+            Next
+            sb.AppendLine("</tr>")
+        Next
+        sb.AppendLine("</table>")
+    End Sub
+
+    Private Function CorrelationSnapshotSignature(labelText As String, exportTable As DataTable) As String
+        Dim sb As New StringBuilder()
+        sb.AppendLine("Correlation")
+        sb.AppendLine(FieldTextLocal(Session("REPORTID")))
+        sb.AppendLine(labelText)
+        For Each row As DataRow In exportTable.Rows
+            For Each col As DataColumn In exportTable.Columns
+                sb.Append(FieldTextLocal(row(col))).Append(ChrW(30))
+            Next
+            sb.AppendLine()
+        Next
+        Using sha As SHA256 = SHA256.Create()
+            Return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()))).Replace("-", "")
+        End Using
+    End Function
+
+    Private Function HtmlEncodeText(valueText As String) As String
+        If valueText Is Nothing Then Return ""
+        Return Server.HtmlEncode(valueText)
+    End Function
+
+    Private Function FieldTextLocal(value As Object) As String
+        If value Is Nothing OrElse Convert.IsDBNull(value) Then Return ""
+        Return value.ToString()
+    End Function
+
+    Private Function SafeFilePartLocal(valueText As String) As String
+        If valueText Is Nothing Then valueText = ""
+        Dim invalidChars() As Char = Path.GetInvalidFileNameChars()
+        For Each ch As Char In invalidChars
+            valueText = valueText.Replace(ch, "_"c)
+        Next
+        valueText = valueText.Replace(" ", "_")
+        If valueText.Trim() = "" Then valueText = "Correlation"
+        Return valueText
+    End Function
 
     Private Sub lnkExport_Click(sender As Object, e As EventArgs) Handles lnkExport.Click
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then

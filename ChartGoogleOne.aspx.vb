@@ -1,9 +1,13 @@
-Imports System
+﻿Imports System
 Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.IO
 Imports System.Math
+Imports System.Security.Cryptography
+Imports System.Text
+Imports System.Web
+Imports System.Web.Services
 Partial Class ChartGoogleOne
     Inherits System.Web.UI.Page
     Public dv3 As DataView
@@ -577,7 +581,7 @@ Partial Class ChartGoogleOne
                 For i = 0 To dv3.Table.Rows.Count - 1
                     If IsDBNull(dv3.Table.Rows(i)(j)) Then
                         dv3.Table.Rows(i)(j) = ""
-                    ElseIf dv3.Table.Rows(i)(j).ToString.trim <> "" AndAlso dv3.Table.Rows(i)(j).ToString.IndexOf(",") > 0 Then
+                    ElseIf dv3.Table.Rows(i)(j).ToString.Trim <> "" AndAlso dv3.Table.Rows(i)(j).ToString.IndexOf(",") > 0 Then
                         dv3.Table.Rows(i)(j) = dv3.Table.Rows(i)(j).ToString.Replace(",", ";")
                     End If
                 Next
@@ -1913,8 +1917,247 @@ Partial Class ChartGoogleOne
             ret = ex.Message
         Finally
             UpdateOpenTrendsVisibility()
+            RegisterChartGoogleOneDataSnapshot()
         End Try
     End Sub
+
+    Private Sub RegisterChartGoogleOneDataSnapshot()
+        If Session Is Nothing Then Exit Sub
+        If Session("arr") Is Nothing OrElse Session("arr").ToString().Trim() = "" Then Exit Sub
+
+        Try
+            Dim labelText As String = ChartGoogleOneLabelText()
+            Dim signature As String = ChartGoogleOneSnapshotSignature("data", labelText, Session("arr").ToString())
+            If Session("ChartGoogleOneLastDataSnapshotSignature") IsNot Nothing AndAlso
+                String.Equals(Session("ChartGoogleOneLastDataSnapshotSignature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Exit Sub
+
+            Dim snapshots As DataTable = AnalysisExportSnapshot.SnapshotTable(Session)
+            For Each row As DataRow In snapshots.Rows
+                If snapshots.Columns.Contains("Signature") AndAlso String.Equals(row("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Exit Sub
+            Next
+
+            Dim folderPath As String = ChartGoogleOneSnapshotFolder(Session)
+            If folderPath.Trim() = "" Then Exit Sub
+            Directory.CreateDirectory(folderPath)
+
+            Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
+            Dim fileName As String = SafeFilePartLocal("ChartData_" & FieldTextLocal(Session("REPORTID")) & "_" & stamp) & ".html"
+            Dim filePath As String = Path.Combine(folderPath, fileName)
+            File.WriteAllText(filePath, BuildChartGoogleOneSnapshotHtml(labelText), Encoding.UTF8)
+
+            Dim snapshotRow As DataRow = snapshots.NewRow()
+            snapshotRow("Key") = "ChartGoogleOneData_" & stamp
+            snapshotRow("Included") = True
+            snapshotRow("Package Item") = "Chart Data File - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            snapshotRow("Label Above Grid") = labelText
+            snapshotRow("File") = fileName
+            snapshotRow("Description") = "Separate HTML file created from ChartGoogleOne chart selections and chart-ready data."
+            snapshotRow("FullPath") = filePath
+            If snapshots.Columns.Contains("Signature") Then snapshotRow("Signature") = signature
+            snapshots.Rows.Add(snapshotRow)
+            Session("ChartGoogleOneLastDataSnapshotSignature") = signature
+        Catch ex As Exception
+            If LabelError IsNot Nothing AndAlso Not ex.Message.StartsWith("Thread ") Then LabelError.Text = "ERROR!! " & ex.Message
+        End Try
+    End Sub
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function SaveChartImageForExport(imageData As String) As String
+        If HttpContext.Current Is Nothing OrElse HttpContext.Current.Session Is Nothing Then Return ""
+        If imageData Is Nothing OrElse Not imageData.StartsWith("data:image", StringComparison.OrdinalIgnoreCase) Then Return ""
+
+        Try
+            Dim session = HttpContext.Current.Session
+            If session("arr") Is Nothing OrElse session("arr").ToString().Trim() = "" Then Return ""
+
+            Dim commaIndex As Integer = imageData.IndexOf(","c)
+            If commaIndex < 0 OrElse commaIndex >= imageData.Length - 1 Then Return ""
+
+            Dim base64Text As String = imageData.Substring(commaIndex + 1)
+            Dim imageBytes() As Byte = Convert.FromBase64String(base64Text)
+            If imageBytes.Length = 0 Then Return ""
+
+            Dim labelText As String = ChartGoogleOneLabelTextShared(session)
+            Dim signature As String = ChartGoogleOneSnapshotSignatureShared("image", labelText, session("arr").ToString())
+            Dim snapshots As DataTable = AnalysisExportSnapshot.SnapshotTable(session)
+            For Each row As DataRow In snapshots.Rows
+                If snapshots.Columns.Contains("Signature") AndAlso String.Equals(row("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Return "exists"
+            Next
+
+            Dim folderPath As String = ChartGoogleOneSnapshotFolder(session)
+            If folderPath.Trim() = "" Then Return ""
+            Directory.CreateDirectory(folderPath)
+
+            Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
+            Dim chartTypeText As String = FieldTextLocalShared(session("ChartType"))
+            If chartTypeText.Trim() = "" Then chartTypeText = "Chart"
+            Dim fileName As String = SafeFilePartLocal("ChartPng" & chartTypeText & "_" & FieldTextLocalShared(session("REPORTID")) & "_" & stamp) & ".png"
+            Dim filePath As String = Path.Combine(folderPath, fileName)
+            File.WriteAllBytes(filePath, imageBytes)
+
+            Dim snapshotRow As DataRow = snapshots.NewRow()
+            snapshotRow("Key") = "ChartGoogleOneImage_" & stamp
+            snapshotRow("Included") = True
+            snapshotRow("Package Item") = "Chart PNG Picture - " & chartTypeText & " - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            snapshotRow("Label Above Grid") = labelText
+            snapshotRow("File") = fileName
+            snapshotRow("Description") = "Separate PNG picture captured from Google Charts after ChartGoogleOne rendered the chart."
+            snapshotRow("FullPath") = filePath
+            If snapshots.Columns.Contains("Signature") Then snapshotRow("Signature") = signature
+            snapshots.Rows.Add(snapshotRow)
+            Return "saved"
+        Catch
+            Return ""
+        End Try
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function SaveChartImageChunkForExport(imageHeader As String, chunkText As String, chunkIndex As Integer, totalChunks As Integer) As String
+        If HttpContext.Current Is Nothing OrElse HttpContext.Current.Session Is Nothing Then Return ""
+        If imageHeader Is Nothing OrElse Not imageHeader.StartsWith("data:image", StringComparison.OrdinalIgnoreCase) Then Return ""
+        If chunkText Is Nothing Then chunkText = ""
+        If totalChunks <= 0 OrElse chunkIndex < 0 OrElse chunkIndex >= totalChunks Then Return ""
+
+        Try
+            Dim session = HttpContext.Current.Session
+            Dim uploadKey As String = ChartGoogleOneSnapshotSignatureShared("imageUpload", ChartGoogleOneLabelTextShared(session), FieldTextLocalShared(session("arr")))
+            Dim chunksKey As String = "ChartGoogleOneImageChunks_" & uploadKey
+            Dim receivedKey As String = "ChartGoogleOneImageReceived_" & uploadKey
+
+            Dim chunks As String() = TryCast(session(chunksKey), String())
+            If chunks Is Nothing OrElse chunks.Length <> totalChunks Then
+                chunks = New String(totalChunks - 1) {}
+                session(chunksKey) = chunks
+                session(receivedKey) = 0
+            End If
+
+            If chunks(chunkIndex) Is Nothing Then
+                chunks(chunkIndex) = chunkText
+                Dim received As Integer = 0
+                If session(receivedKey) IsNot Nothing AndAlso IsNumeric(session(receivedKey).ToString()) Then received = CInt(session(receivedKey))
+                received += 1
+                session(receivedKey) = received
+            End If
+
+            Dim receivedCount As Integer = 0
+            If session(receivedKey) IsNot Nothing AndAlso IsNumeric(session(receivedKey).ToString()) Then receivedCount = CInt(session(receivedKey))
+            If receivedCount < totalChunks Then Return "chunk"
+
+            Dim sb As New StringBuilder()
+            For i As Integer = 0 To totalChunks - 1
+                If chunks(i) Is Nothing Then Return "chunk"
+                sb.Append(chunks(i))
+            Next
+
+            Dim result As String = SaveChartImageForExport(imageHeader & sb.ToString())
+            session.Remove(chunksKey)
+            session.Remove(receivedKey)
+            Return result
+        Catch
+            Return ""
+        End Try
+    End Function
+
+    Private Function ChartGoogleOneLabelText() As String
+        Return ChartGoogleOneLabelTextShared(Session)
+    End Function
+
+    Private Shared Function ChartGoogleOneLabelTextShared(session As HttpSessionState) As String
+        Dim sb As New StringBuilder()
+        sb.Append("Chart. ")
+        sb.Append("Report: " & FieldTextLocalShared(session("REPTITLE")) & ". ")
+        sb.Append("Chart type: " & FieldTextLocalShared(session("ChartType")) & ". ")
+        sb.Append("X Axis field(s): " & FieldTextLocalShared(session("AxisXM")) & ". ")
+        sb.Append("Y Axis field(s): " & FieldTextLocalShared(session("AxisYM")) & ". ")
+        sb.Append("Aggregation: " & FieldTextLocalShared(session("AggregateM")) & ". ")
+        If FieldTextLocalShared(session("MFld")).Trim() <> "" Then sb.Append("Multilines by field: " & FieldTextLocalShared(session("MFld")) & ". ")
+        If FieldTextLocalShared(session("SELECTEDValuesM")).Trim() <> "" Then sb.Append("Selected values: " & FieldTextLocalShared(session("SELECTEDValuesM")) & ". ")
+        If FieldTextLocalShared(session("WhereStm")).Trim() <> "" Then sb.Append("Filter: " & FieldTextLocalShared(session("WhereStm")).Trim().Replace("^", "'") & ". ")
+        sb.Append("The export package item includes the chart-ready data used to render this chart.")
+        Return sb.ToString()
+    End Function
+
+    Private Function BuildChartGoogleOneSnapshotHtml(labelText As String) As String
+        Dim sb As New StringBuilder()
+        sb.AppendLine("<html><head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" /><title>Chart Data</title>")
+        sb.AppendLine("<style>pre{white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere;max-width:100%;} body{font-family:Arial;}</style>")
+        sb.AppendLine("</head><body>")
+        sb.AppendLine("<h2>Chart Data</h2>")
+        sb.AppendLine("<table border=""1"" cellspacing=""0"" cellpadding=""4"">")
+        AppendChartInfoRow(sb, "Created", DateTime.Now.ToString())
+        AppendChartInfoRow(sb, "Report", FieldTextLocal(Session("REPORTID")))
+        AppendChartInfoRow(sb, "Report Title", FieldTextLocal(Session("REPTITLE")))
+        AppendChartInfoRow(sb, "Chart Type", FieldTextLocal(Session("ChartType")))
+        AppendChartInfoRow(sb, "X Axis Field(s)", FieldTextLocal(Session("AxisXM")))
+        AppendChartInfoRow(sb, "Y Axis Field(s)", FieldTextLocal(Session("AxisYM")))
+        AppendChartInfoRow(sb, "Aggregation", FieldTextLocal(Session("AggregateM")))
+        AppendChartInfoRow(sb, "Multilines By Field", FieldTextLocal(Session("MFld")))
+        AppendChartInfoRow(sb, "Selected Values", FieldTextLocal(Session("SELECTEDValuesM")))
+        AppendChartInfoRow(sb, "Label Above Grid", labelText)
+        sb.AppendLine("</table>")
+        sb.AppendLine("<p>This file contains the server-side chart-ready data used by ChartGoogleOne.aspx. The browser renders the visual chart with Google Charts from these grouped values.</p>")
+        sb.AppendLine("<pre>" & HtmlEncodeText(Session("arr").ToString()) & "</pre>")
+        sb.AppendLine("</body></html>")
+        Return sb.ToString()
+    End Function
+
+    Private Sub AppendChartInfoRow(sb As StringBuilder, labelText As String, valueText As String)
+        If valueText Is Nothing Then valueText = ""
+        sb.AppendLine("<tr><th align=""left"">" & HtmlEncodeText(labelText) & "</th><td>" & HtmlEncodeText(valueText) & "</td></tr>")
+    End Sub
+
+    Private Function ChartGoogleOneSnapshotSignature(itemType As String, labelText As String, dataText As String) As String
+        Return ChartGoogleOneSnapshotSignatureShared(itemType, labelText, dataText)
+    End Function
+
+    Private Shared Function ChartGoogleOneSnapshotSignatureShared(itemType As String, labelText As String, dataText As String) As String
+        Dim sb As New StringBuilder()
+        sb.AppendLine("ChartGoogleOne")
+        sb.AppendLine(itemType)
+        sb.AppendLine(labelText)
+        sb.AppendLine(dataText)
+        Using sha As SHA256 = SHA256.Create()
+            Return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()))).Replace("-", "")
+        End Using
+    End Function
+
+    Private Shared Function ChartGoogleOneSnapshotFolder(session As HttpSessionState) As String
+        Dim folderPath As String = ""
+        If session("AnalysisExportSnapshotFolder") IsNot Nothing Then folderPath = session("AnalysisExportSnapshotFolder").ToString()
+        If folderPath.Trim() <> "" Then Return folderPath
+
+        Dim tempPath As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory(), "Temp")
+        Dim sessionName As String = "AnalysisSnapshots_" & SafeFilePartLocal(session.SessionID)
+        If session("logon") IsNot Nothing AndAlso session("logon").ToString().Trim() <> "" Then sessionName &= "_" & SafeFilePartLocal(session("logon").ToString())
+        folderPath = Path.Combine(tempPath, sessionName)
+        session("AnalysisExportSnapshotFolder") = folderPath
+        Return folderPath
+    End Function
+
+    Private Function HtmlEncodeText(valueText As String) As String
+        If valueText Is Nothing Then Return ""
+        Return Server.HtmlEncode(valueText)
+    End Function
+
+    Private Function FieldTextLocal(value As Object) As String
+        Return FieldTextLocalShared(value)
+    End Function
+
+    Private Shared Function FieldTextLocalShared(value As Object) As String
+        If value Is Nothing OrElse Convert.IsDBNull(value) Then Return ""
+        Return value.ToString()
+    End Function
+
+    Private Shared Function SafeFilePartLocal(valueText As String) As String
+        If valueText Is Nothing Then valueText = ""
+        Dim invalidChars() As Char = Path.GetInvalidFileNameChars()
+        For Each ch As Char In invalidChars
+            valueText = valueText.Replace(ch, "_"c)
+        Next
+        valueText = valueText.Replace(" ", "_")
+        If valueText.Trim() = "" Then valueText = "Chart"
+        Return valueText
+    End Function
 
     Private Sub UpdateOpenTrendsVisibility()
         Dim currentChartType As String = charttype

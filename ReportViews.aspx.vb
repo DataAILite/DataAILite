@@ -3,6 +3,8 @@ Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.IO
+Imports System.Security.Cryptography
+Imports System.Text
 Imports System.Xml
 Imports System.Net
 Imports System.Net.Http
@@ -112,7 +114,7 @@ Partial Class ReportViews
                 Session("srd") = Request("srd").ToString.Trim
             End If
         End If
-        HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=View_Report"
+            HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report%20Views"
         'If Session("UserConnProvider") = "InterSystems.Data.IRISClient" Then
         '    HyperLinkHelp.NavigateUrl = "OnlineUserReporting.pdf#page=75"
         'ElseIf Session("UserConnProvider") = "InterSystems.Data.CacheClient" Then
@@ -1071,7 +1073,7 @@ Partial Class ReportViews
                 gr = SeeReport()
                 Session("See") = "Report"
                 Session("GraphType") = ""
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=View_Report"
+            HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report%20Views"
             ElseIf Not IsPostBack AndAlso Request("det") = "yes" Then
                 lblReportFunction.Text = "Detail Report:"
                 lblDesignerCreated.Visible = False
@@ -1132,7 +1134,7 @@ Partial Class ReportViews
                 Session("See") = "Graph"
                 LinkButtonDownRDL.Visible = False
                 LinkButtonDownRDL.Enabled = False
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Show_Report_Graphs"
+                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Show%20Report%20Charts"
                 If Session("srd") = 11 OrElse Session("RunSched") = "yes" Then  'from analytics or from run scheduled reports
                     If Not IsPostBack AndAlso Request("grtype") = "bar" Then
                         gr = SeeGraph("bar")  'bar
@@ -1544,6 +1546,7 @@ Partial Class ReportViews
                 rds.Name = Session("REPORTID")
                 rds.Value = dt
                 viewer.LocalReport.DataSources.Add(rds)
+                RegisterReportViewPdfSnapshot(ReportViewTypeName(graphtype), ReportViewLabelText(ReportViewTypeName(graphtype)), dt)
             End If
             Session("GraphRDL") = graphstr
             If Not Session("srd") Is Nothing AndAlso (Session("srd") = 4 Or Session("srd") = 5 Or Session("srd") = 6) Then
@@ -1757,6 +1760,7 @@ Partial Class ReportViews
                 rds.Name = Session("REPORTID")
                 rds.Value = dt
                 viewer.LocalReport.DataSources.Add(rds)
+                RegisterReportViewPdfSnapshot("Matrix", ReportViewLabelText("Matrix"), dt)
             End If
 
 
@@ -2514,6 +2518,7 @@ Partial Class ReportViews
                 rds.Name = Session("REPORTID")
                 rds.Value = dtf
                 viewer.LocalReport.DataSources.Add(rds)
+                RegisterReportViewPdfSnapshot("DrillDown", ReportViewLabelText("DrillDown"), dtf)
             End If
             Session("GraphRDL") = graphstr
             If Not IsPostBack AndAlso Not Session("srd") Is Nothing AndAlso (Session("srd") = 4 Or Session("srd") = 5 Or Session("srd") = 6 Or Session("srd") = 18) Then
@@ -3048,6 +3053,132 @@ Partial Class ReportViews
             Response.Redirect("HelpDesk.aspx?attachrep=yes&tn=" & tnum.ToString & "&repid=" & Session("REPORTID").ToString & "&saved=" & Session("appldirSavedFiles") & Session("myfile"))
         End If
     End Sub
+
+    Private Sub RegisterReportViewPdfSnapshot(viewType As String, labelText As String, reportData As DataTable)
+        If Session Is Nothing Then Exit Sub
+        If reportData Is Nothing OrElse reportData.Rows.Count = 0 Then Exit Sub
+        Try
+            Dim signature As String = ReportViewSnapshotSignature(viewType, labelText)
+            Dim snapshots As DataTable = AnalysisExportSnapshot.SnapshotTable(Session)
+            For Each row As DataRow In snapshots.Rows
+                If snapshots.Columns.Contains("Signature") AndAlso String.Equals(row("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Exit Sub
+            Next
+
+            Dim folderPath As String = ReportViewSnapshotFolder()
+            If folderPath.Trim() = "" Then Exit Sub
+            Directory.CreateDirectory(folderPath)
+
+            Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
+            Dim fileName As String = SafeFilePartLocal("ReportViews_" & viewType & "_" & FieldTextLocal(Session("REPORTID")) & "_" & stamp) & ".pdf"
+            Dim filePath As String = Path.Combine(folderPath, fileName)
+            Dim pdfBytes() As Byte = RenderCurrentViewerPdf()
+            If pdfBytes Is Nothing OrElse pdfBytes.Length = 0 Then Exit Sub
+            File.WriteAllBytes(filePath, pdfBytes)
+
+            Dim snapshotRow As DataRow = snapshots.NewRow()
+            snapshotRow("Key") = "ReportViews_" & viewType & "_" & stamp
+            snapshotRow("Included") = True
+            snapshotRow("Package Item") = viewType & " RDL Report - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            snapshotRow("Label Above Grid") = labelText
+            snapshotRow("File") = fileName
+            snapshotRow("Description") = "PDF created from the Report Views " & viewType & " RDL report using the selected fields and aggregation."
+            snapshotRow("FullPath") = filePath
+            If snapshots.Columns.Contains("Signature") Then snapshotRow("Signature") = signature
+            snapshots.Rows.Add(snapshotRow)
+        Catch ex As Exception
+            If Not ex.Message.StartsWith("Thread ") Then LabelError.Text = "ERROR!! " & ex.Message
+        End Try
+    End Sub
+
+    Private Function RenderCurrentViewerPdf() As Byte()
+        pagewidth = Session("pagewidth")
+        pageheight = Session("pageheight")
+        If pagewidth Is Nothing OrElse pagewidth.Trim() = "" Then pagewidth = "11in"
+        If pageheight Is Nothing OrElse pageheight.Trim() = "" Then pageheight = "8.5in"
+
+        Dim mimeType As String = ""
+        Dim encoding As String = ""
+        Dim fileNameExtension As String = ""
+        Dim streams As String() = Nothing
+        Dim warnings As Warning() = Nothing
+        Dim deviceInf As String = "<DeviceInfo>"
+        deviceInf &= "<OutputFormat>PDF</OutputFormat>"
+        deviceInf &= "<PageWidth>" & pagewidth & "</PageWidth>"
+        deviceInf &= "<PageHeight>" & pageheight & "</PageHeight>"
+        deviceInf &= "<MarginTop>0.25in</MarginTop>"
+        deviceInf &= "<MarginLeft>0.25in</MarginLeft>"
+        deviceInf &= "<MarginRight>0.25in</MarginRight>"
+        deviceInf &= "<MarginBottom>0.25in</MarginBottom>"
+        deviceInf &= "</DeviceInfo>"
+        Return viewer.LocalReport.Render("PDF", deviceInf, mimeType, encoding, fileNameExtension, streams, warnings)
+    End Function
+
+    Private Function ReportViewLabelText(viewType As String) As String
+        Dim sb As New StringBuilder()
+        sb.Append(viewType & " RDL Report. ")
+        sb.Append("Report: " & FieldTextLocal(Session("REPTITLE")) & ". ")
+        sb.Append("Primary field: " & DropDownList1.SelectedValue & "; ")
+        sb.Append("Secondary field: " & DropDownList2.SelectedValue & "; ")
+        sb.Append("Value field: " & DropDownList3.SelectedValue & "; ")
+        sb.Append("Aggregation: " & DropDownList4.SelectedValue & ". ")
+        If LabelAddWhere.Text.Trim() <> "" AndAlso LabelAddWhere.Text.Trim() <> "<=>" Then sb.Append("Filter: " & LabelAddWhere.Text.Trim() & ". ")
+        sb.Append("This PDF is created from the generated RDL report view and can be included in Export Packages.")
+        Return sb.ToString()
+    End Function
+
+    Private Function ReportViewTypeName(graphtype As String) As String
+        If graphtype Is Nothing Then Return "Bar"
+        Select Case graphtype.Trim().ToLower()
+            Case "pie"
+                Return "Pie"
+            Case "line"
+                Return "Line"
+            Case Else
+                Return "Bar"
+        End Select
+    End Function
+
+    Private Function ReportViewSnapshotSignature(viewType As String, labelText As String) As String
+        Dim sb As New StringBuilder()
+        sb.AppendLine("ReportViewsPdf")
+        sb.AppendLine(viewType)
+        sb.AppendLine(FieldTextLocal(Session("REPORTID")))
+        sb.AppendLine(labelText)
+        sb.AppendLine(FieldTextLocal(Session("GraphRDL")))
+        Using sha As SHA256 = SHA256.Create()
+            Return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()))).Replace("-", "")
+        End Using
+    End Function
+
+    Private Function ReportViewSnapshotFolder() As String
+        Dim folderPath As String = ""
+        If Session("AnalysisExportSnapshotFolder") IsNot Nothing Then folderPath = Session("AnalysisExportSnapshotFolder").ToString()
+        If folderPath.Trim() <> "" Then Return folderPath
+
+        Dim tempPath As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory(), "Temp")
+        Dim sessionName As String = "AnalysisSnapshots_" & SafeFilePartLocal(Session.SessionID)
+        If Session("logon") IsNot Nothing AndAlso Session("logon").ToString().Trim() <> "" Then sessionName &= "_" & SafeFilePartLocal(Session("logon").ToString())
+        folderPath = Path.Combine(tempPath, sessionName)
+        Session("AnalysisExportSnapshotFolder") = folderPath
+        Return folderPath
+    End Function
+
+    Private Function FieldTextLocal(value As Object) As String
+        If value Is Nothing OrElse Convert.IsDBNull(value) Then Return ""
+        Return value.ToString()
+    End Function
+
+    Private Function SafeFilePartLocal(valueText As String) As String
+        If valueText Is Nothing Then valueText = ""
+        Dim invalidChars() As Char = Path.GetInvalidFileNameChars()
+        For Each ch As Char In invalidChars
+            valueText = valueText.Replace(ch, "_"c)
+        Next
+        valueText = valueText.Replace(" ", "_")
+        If valueText.Trim() = "" Then valueText = "ReportViews"
+        Return valueText
+    End Function
+
     Private Sub ButtonReset_Click(sender As Object, e As EventArgs) Handles ButtonReset.Click
         Session("ParamNames") = Nothing
         Session("ParamValues") = Nothing
