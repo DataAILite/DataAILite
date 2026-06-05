@@ -11,6 +11,7 @@
         .analysisgrid { font-family:Arial; font-size:12px; border-collapse:collapse; background-color:white; }
         .analysisgrid th { background-color:#663300; color:white; border:1px solid white; padding:4px; white-space:nowrap; }
         .analysisgrid td { border:1px solid #d0d0d0; padding:4px; white-space:nowrap; }
+        .analysisgrid .wrapcell { white-space:normal; word-break:break-word; overflow-wrap:anywhere; max-width:320px; }
         .controlpanel { background-color:#e5e5e5; border:medium double #FFFFFF; color:black; font-family:Arial; font-size:small; width:auto; min-width:760px; max-width:980px; margin-left:0; margin-right:auto; }
         .modal { position:fixed; z-index:2147483647; height:100%; width:100%; top:0; background-color:#f8f8d3; opacity:0.8; }
         .center { z-index:2147483647; margin:300px auto; padding-left:25px; padding-top:10px; width:130px; background-color:#f8f8d3; border-radius:10px; }
@@ -133,9 +134,19 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:BoundField DataField="Package Item" HeaderText="Package Item" />
-                                        <asp:BoundField DataField="Label Above Grid" HeaderText="Label Above Grid" />
-                                        <asp:BoundField DataField="File" HeaderText="File" />
-                                        <asp:BoundField DataField="Description" HeaderText="Description" />
+                                        <asp:BoundField DataField="Label Above Grid" HeaderText="Details">
+                                            <ItemStyle CssClass="wrapcell" Wrap="True" Width="300px" />
+                                            <HeaderStyle Wrap="False" />
+                                        </asp:BoundField>
+                                        <asp:BoundField DataField="Description" HeaderText="Description">
+                                            <ItemStyle CssClass="wrapcell" Wrap="True" Width="300px" />
+                                            <HeaderStyle Wrap="False" />
+                                        </asp:BoundField>
+                                        <asp:TemplateField HeaderText="File">
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="lnkOpenFile" runat="server" CommandName="OpenPackageFile" CommandArgument="<%# Container.DataItemIndex %>" Text='<%# Eval("File") %>' CssClass="NodeStyle"></asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                             </div>

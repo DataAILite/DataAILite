@@ -1662,7 +1662,9 @@ Partial Class ChartGoogleOne
                     End If
                     Session("ttl") = ttl
                     msql = msql & sqlq   '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    msql = msql.Replace(" ORDER BY ", " GROUP BY " & ssrt & " ORDER BY ")
+                    If fn <> "Value" Then
+                        msql = msql.Replace(" ORDER BY ", " GROUP BY " & ssrt & " ORDER BY ")
+                    End If
 
                     Try
                         dt = mRecords(msql, ret, Session("UserConnString"), Session("UserConnProvider")).ToTable

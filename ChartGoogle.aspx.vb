@@ -132,6 +132,7 @@ Partial Class ChartGoogle
 
     Private Sub ChartGoogle_Load(sender As Object, e As EventArgs) Handles Me.Load
         charttype = DropDownChartType.SelectedItem.Text
+        Session("ChartType") = charttype
         Dim repid As String = String.Empty
         If Request("Report") Is Nothing OrElse Request("Report").ToString.Trim = "" Then
             Exit Sub
@@ -457,7 +458,7 @@ Partial Class ChartGoogle
     End Sub
 
     <WebMethod(EnableSession:=True)>
-    Public Shared Function SaveDashboardChartImageChunkForExport(sectionName As String, titleText As String, imageHeader As String, chunkText As String, chunkIndex As Integer, totalChunks As Integer) As String
+    Public Shared Function SaveDashboardChartImageChunkForExport(sectionName As String, titleText As String, chartTypeText As String, imageHeader As String, chunkText As String, chunkIndex As Integer, totalChunks As Integer) As String
         If HttpContext.Current Is Nothing OrElse HttpContext.Current.Session Is Nothing Then Return ""
         If imageHeader Is Nothing OrElse Not imageHeader.StartsWith("data:image", StringComparison.OrdinalIgnoreCase) Then Return ""
         If sectionName Is Nothing OrElse sectionName.Trim() = "" Then Return ""
@@ -499,7 +500,7 @@ Partial Class ChartGoogle
                 sb.Append(chunks(i))
             Next
 
-            Dim result As String = SaveDashboardChartImageForExport(session, sectionName, titleText, imageHeader & sb.ToString(), chartData, labelText)
+            Dim result As String = SaveDashboardChartImageForExport(session, sectionName, titleText, chartTypeText, imageHeader & sb.ToString(), chartData, labelText)
             session.Remove(chunksKey)
             session.Remove(receivedKey)
             Return result
@@ -508,7 +509,7 @@ Partial Class ChartGoogle
         End Try
     End Function
 
-    Private Shared Function SaveDashboardChartImageForExport(session As HttpSessionState, sectionName As String, titleText As String, imageData As String, chartData As String, labelText As String) As String
+    Private Shared Function SaveDashboardChartImageForExport(session As HttpSessionState, sectionName As String, titleText As String, chartTypeTextFromPage As String, imageData As String, chartData As String, labelText As String) As String
         Try
             Dim commaIndex As Integer = imageData.IndexOf(","c)
             If commaIndex < 0 OrElse commaIndex >= imageData.Length - 1 Then Return ""
@@ -527,7 +528,8 @@ Partial Class ChartGoogle
             If folderPath.Trim() = "" Then Return ""
             Directory.CreateDirectory(folderPath)
 
-            Dim chartTypeText As String = FieldTextLocalShared(session("ChartType"))
+            Dim chartTypeText As String = FieldTextLocalShared(chartTypeTextFromPage)
+            If chartTypeText.Trim() = "" Then chartTypeText = FieldTextLocalShared(session("ChartType"))
             If chartTypeText.Trim() = "" Then chartTypeText = "Chart"
             Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
             Dim fileName As String = SafeFilePartLocalShared("ChartDashboardPng" & chartTypeText & "_" & FieldTextLocalShared(session("REPORTID")) & "_" & sectionName & "_" & stamp) & ".png"
@@ -540,7 +542,7 @@ Partial Class ChartGoogle
             snapshotRow("Package Item") = "Chart Dashboard PNG Picture - " & chartTypeText & " - " & sectionName & " - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
             snapshotRow("Label Above Grid") = labelText & " Picture section: " & sectionName & "."
             snapshotRow("File") = fileName
-            snapshotRow("Description") = "Separate PNG picture captured from the ChartGoogle dashboard " & sectionName & " tile."
+            snapshotRow("Description") = "Separate PNG picture captured from the ChartGoogle dashboard " & chartTypeText & " " & sectionName & " tile."
             snapshotRow("FullPath") = filePath
             If snapshots.Columns.Contains("Signature") Then snapshotRow("Signature") = signature
             snapshots.Rows.Add(snapshotRow)

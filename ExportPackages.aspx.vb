@@ -39,6 +39,31 @@ Partial Class ExportPackages
         ExportPackage()
     End Sub
 
+    Private Sub GridViewPackage_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridViewPackage.RowDataBound
+        If e.Row.RowType <> DataControlRowType.DataRow Then Exit Sub
+        Dim lnk As LinkButton = TryCast(e.Row.FindControl("lnkOpenFile"), LinkButton)
+        If lnk Is Nothing Then Exit Sub
+        If lnk.Text.Trim() = "" Then
+            lnk.Visible = False
+            Exit Sub
+        End If
+        Dim sm As ScriptManager = ScriptManager.GetCurrent(Page)
+        If sm IsNot Nothing Then sm.RegisterPostBackControl(lnk)
+    End Sub
+
+    Private Sub GridViewPackage_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GridViewPackage.RowCommand
+        If Not String.Equals(e.CommandName, "OpenPackageFile", StringComparison.OrdinalIgnoreCase) Then Exit Sub
+        Dim rowIndex As Integer
+        If Not Integer.TryParse(e.CommandArgument.ToString(), rowIndex) Then Exit Sub
+        Dim manifest As DataTable = TryCast(Session("ExportPackageTable"), DataTable)
+        If manifest Is Nothing Then
+            BuildAndBindPackage()
+            manifest = TryCast(Session("ExportPackageTable"), DataTable)
+        End If
+        If manifest Is Nothing OrElse rowIndex < 0 OrElse rowIndex >= manifest.Rows.Count Then Exit Sub
+        OpenPackageFile(manifest.Rows(rowIndex))
+    End Sub
+
     Private Sub SetDefaultNotes()
         If txtNotes.Text.Trim() <> "" Then Exit Sub
 
@@ -279,6 +304,130 @@ Partial Class ExportPackages
             File.Copy(filePath, Path.Combine(snapshotsFolder, targetName), True)
         Next
     End Sub
+
+    Private Sub OpenPackageFile(row As DataRow)
+        If row Is Nothing Then Exit Sub
+        Dim fullPath As String = row("FullPath").ToString()
+        If fullPath.Trim() <> "" Then
+            ServeExistingPackageFile(fullPath, row("File").ToString())
+            Exit Sub
+        End If
+
+        Dim tempFolder As String = PreviewPackageFolder()
+        Directory.CreateDirectory(tempFolder)
+        Dim itemKey As String = row("Key").ToString()
+        Dim filePath As String = ""
+
+        Select Case itemKey.ToLowerInvariant()
+            Case "notes"
+                filePath = Path.Combine(tempFolder, "AnalysisNotes.txt")
+                File.WriteAllText(filePath, txtNotes.Text, Encoding.UTF8)
+            Case "csvdata"
+                Dim reportData As DataTable = CurrentReportData()
+                If reportData Is Nothing Then Throw New Exception("Report data is not available.")
+                filePath = Path.Combine(tempFolder, "ReportData.csv")
+                File.WriteAllText(filePath, ExportToCSVtext(reportData, ",", "", ""), Encoding.UTF8)
+            Case "exceldata"
+                Dim reportData As DataTable = CurrentReportData()
+                If reportData Is Nothing Then Throw New Exception("Report data is not available.")
+                Dim header As String = "Data for Report: " & FieldText(Session("REPTITLE")) & Environment.NewLine & "Records returned: " & reportData.Rows.Count.ToString()
+                DataModule.ExportToExcel(reportData, EnsureTrailingSlash(tempFolder), "ReportData.xls", header, FieldText(Session("PageFtr")))
+                filePath = Path.Combine(tempFolder, "ReportData.xls")
+            Case "reportdefinition"
+                Dim definitionFolder As String = Path.Combine(tempFolder, "ReportDefinition")
+                Directory.CreateDirectory(definitionFolder)
+                File.WriteAllText(Path.Combine(definitionFolder, "ReportDefinitions.txt"), ReportDefinitionsText(), Encoding.UTF8)
+                WriteRdlDefinitionFile(definitionFolder)
+                filePath = Path.Combine(tempFolder, "ReportDefinition.zip")
+                If File.Exists(filePath) Then File.Delete(filePath)
+                ZipFile.CreateFromDirectory(definitionFolder, filePath)
+            Case "report"
+                Dim reportData As DataTable = CurrentReportData()
+                If reportData Is Nothing Then Throw New Exception("Report data is not available.")
+                WriteReportPdfFile(tempFolder, reportData)
+                filePath = Path.Combine(tempFolder, "Report.pdf")
+            Case "aianalysis"
+                Dim reportData As DataTable = CurrentReportData()
+                WriteAIAnalysisFile(tempFolder, reportData)
+                filePath = Path.Combine(tempFolder, "AIAnalysis.txt")
+        End Select
+
+        If filePath.Trim() = "" OrElse Not File.Exists(filePath) Then Throw New Exception("The selected export file was not created.")
+        ServeExistingPackageFile(filePath, Path.GetFileName(filePath))
+    End Sub
+
+    Private Function PreviewPackageFolder() As String
+        If applpath Is Nothing OrElse applpath.Trim() = "" Then applpath = System.AppDomain.CurrentDomain.BaseDirectory()
+        Dim sessionPart As String = "nosession"
+        If Session IsNot Nothing AndAlso Session.SessionID IsNot Nothing Then sessionPart = SafeFilePart(Session.SessionID)
+        Return Path.Combine(applpath, "Temp", "ExportPackagePreview_" & sessionPart)
+    End Function
+
+    Private Function EnsureTrailingSlash(folderPath As String) As String
+        If folderPath.EndsWith("\") Then Return folderPath
+        Return folderPath & "\"
+    End Function
+
+    Private Sub ServeExistingPackageFile(filePath As String, displayName As String)
+        If filePath Is Nothing OrElse filePath.Trim() = "" OrElse Not File.Exists(filePath) Then Throw New Exception("The selected export file was not found.")
+        If Not IsAllowedPackageFilePath(filePath) Then Throw New Exception("The selected export file is outside the package Temp folder.")
+
+        Dim fileName As String = Path.GetFileName(If(displayName Is Nothing OrElse displayName.Trim() = "", filePath, displayName))
+        Response.Clear()
+        Response.ClearHeaders()
+        Response.ClearContent()
+        Response.BufferOutput = True
+        Response.ContentType = ContentTypeForFile(fileName)
+        Response.AppendHeader("Content-Disposition", "inline; filename=" & fileName)
+        Response.AppendHeader("Content-Length", New FileInfo(filePath).Length.ToString())
+        Response.TransmitFile(filePath)
+        Response.Flush()
+        Response.End()
+    End Sub
+
+    Private Function IsAllowedPackageFilePath(filePath As String) As Boolean
+        Dim fullFilePath As String = Path.GetFullPath(filePath)
+        Dim baseTempRoot As String = NormalizedFolderPath(Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory(), "Temp"))
+        If fullFilePath.StartsWith(baseTempRoot, StringComparison.OrdinalIgnoreCase) Then Return True
+
+        If applpath IsNot Nothing AndAlso applpath.Trim() <> "" Then
+            Dim appTempRoot As String = NormalizedFolderPath(Path.Combine(applpath, "Temp"))
+            If fullFilePath.StartsWith(appTempRoot, StringComparison.OrdinalIgnoreCase) Then Return True
+        End If
+
+        Return False
+    End Function
+
+    Private Function NormalizedFolderPath(folderPath As String) As String
+        Dim normalized As String = Path.GetFullPath(folderPath)
+        If Not normalized.EndsWith(Path.DirectorySeparatorChar.ToString()) Then normalized &= Path.DirectorySeparatorChar
+        Return normalized
+    End Function
+
+    Private Function ContentTypeForFile(fileName As String) As String
+        Select Case Path.GetExtension(fileName).ToLowerInvariant()
+            Case ".pdf"
+                Return "application/pdf"
+            Case ".png"
+                Return "image/png"
+            Case ".jpg", ".jpeg"
+                Return "image/jpeg"
+            Case ".gif"
+                Return "image/gif"
+            Case ".html", ".htm"
+                Return "text/html"
+            Case ".csv"
+                Return "text/csv"
+            Case ".xls"
+                Return "application/vnd.ms-excel"
+            Case ".xlsx"
+                Return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            Case ".zip"
+                Return "application/zip"
+            Case Else
+                Return "text/plain"
+        End Select
+    End Function
 
     Private Function PackageHeader() As String
         Dim sb As New StringBuilder()
