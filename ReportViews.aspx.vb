@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
@@ -2713,6 +2713,7 @@ Partial Class ReportViews
                 rds.Name = Session("REPORTID")
                 rds.Value = dt
                 viewer.LocalReport.DataSources.Add(rds)
+                RegisterReportViewPdfSnapshot("Group Statistics", ReportViewLabelText("Group Statistics"), dt)
             End If
             Session("GraphRDL") = graphstr
             If Not IsPostBack AndAlso Not Session("srd") Is Nothing AndAlso (Session("srd") = 4 Or Session("srd") = 5 Or Session("srd") = 6 Or Session("srd") = 18) Then
@@ -3069,19 +3070,40 @@ Partial Class ReportViews
             Directory.CreateDirectory(folderPath)
 
             Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
-            Dim fileName As String = SafeFilePartLocal("ReportViews_" & viewType & "_" & FieldTextLocal(Session("REPORTID")) & "_" & stamp) & ".pdf"
-            Dim filePath As String = Path.Combine(folderPath, fileName)
             Dim pdfBytes() As Byte = RenderCurrentViewerPdf()
             If pdfBytes Is Nothing OrElse pdfBytes.Length = 0 Then Exit Sub
+            RegisterReportViewPdfSnapshotBytes(viewType, labelText, pdfBytes, signature, snapshots, folderPath)
+        Catch ex As Exception
+            If Not ex.Message.StartsWith("Thread ") Then LabelError.Text = "ERROR!! " & ex.Message
+        End Try
+    End Sub
+
+    Private Sub RegisterReportViewPdfSnapshotBytes(viewType As String, labelText As String, pdfBytes() As Byte, Optional signature As String = "", Optional snapshots As DataTable = Nothing, Optional folderPath As String = "")
+        If Session Is Nothing Then Exit Sub
+        If pdfBytes Is Nothing OrElse pdfBytes.Length = 0 Then Exit Sub
+        Try
+            If signature.Trim() = "" Then signature = ReportViewSnapshotSignature(viewType, labelText)
+            If snapshots Is Nothing Then snapshots = AnalysisExportSnapshot.SnapshotTable(Session)
+            For Each row As DataRow In snapshots.Rows
+                If snapshots.Columns.Contains("Signature") AndAlso String.Equals(row("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Exit Sub
+            Next
+
+            If folderPath.Trim() = "" Then folderPath = ReportViewSnapshotFolder()
+            If folderPath.Trim() = "" Then Exit Sub
+            Directory.CreateDirectory(folderPath)
+
+            Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
+            Dim fileName As String = SafeFilePartLocal("ReportViews_" & viewType & "_" & FieldTextLocal(Session("REPORTID")) & "_" & stamp) & ".pdf"
+            Dim filePath As String = Path.Combine(folderPath, fileName)
             File.WriteAllBytes(filePath, pdfBytes)
 
             Dim snapshotRow As DataRow = snapshots.NewRow()
             snapshotRow("Key") = "ReportViews_" & viewType & "_" & stamp
             snapshotRow("Included") = True
-            snapshotRow("Package Item") = viewType & " RDL Report - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            snapshotRow("Package Item") = viewType & " PDF Report - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
             snapshotRow("Label Above Grid") = labelText
             snapshotRow("File") = fileName
-            snapshotRow("Description") = "PDF created from the Report Views " & viewType & " RDL report using the selected fields and aggregation."
+            snapshotRow("Description") = "PDF created from the Report Views " & viewType & " report using the same export logic as the Export report to PDF link."
             snapshotRow("FullPath") = filePath
             If snapshots.Columns.Contains("Signature") Then snapshotRow("Signature") = signature
             snapshots.Rows.Add(snapshotRow)
@@ -3091,26 +3113,47 @@ Partial Class ReportViews
     End Sub
 
     Private Function RenderCurrentViewerPdf() As Byte()
-        pagewidth = Session("pagewidth")
-        pageheight = Session("pageheight")
-        If pagewidth Is Nothing OrElse pagewidth.Trim() = "" Then pagewidth = "11in"
-        If pageheight Is Nothing OrElse pageheight.Trim() = "" Then pageheight = "8.5in"
-
         Dim mimeType As String = ""
         Dim encoding As String = ""
         Dim fileNameExtension As String = ""
         Dim streams As String() = Nothing
         Dim warnings As Warning() = Nothing
-        Dim deviceInf As String = "<DeviceInfo>"
-        deviceInf &= "<OutputFormat>PDF</OutputFormat>"
-        deviceInf &= "<PageWidth>" & pagewidth & "</PageWidth>"
-        deviceInf &= "<PageHeight>" & pageheight & "</PageHeight>"
-        deviceInf &= "<MarginTop>0.25in</MarginTop>"
-        deviceInf &= "<MarginLeft>0.25in</MarginLeft>"
-        deviceInf &= "<MarginRight>0.25in</MarginRight>"
-        deviceInf &= "<MarginBottom>0.25in</MarginBottom>"
-        deviceInf &= "</DeviceInfo>"
+        Dim deviceInf As String = ReportPdfDeviceInfo()
         Return viewer.LocalReport.Render("PDF", deviceInf, mimeType, encoding, fileNameExtension, streams, warnings)
+    End Function
+
+    Private Function ReportPdfExportLabelText() As String
+        Dim sb As New StringBuilder()
+        sb.Append("Export Report to PDF. ")
+        sb.Append("Report: " & FieldTextLocal(Session("REPTITLE")) & ". ")
+        If FieldTextLocal(Session("GraphType")).Trim() <> "" Then sb.Append("Report view: " & FieldTextLocal(Session("GraphType")) & ". ")
+        If FieldTextLocal(Session("DynamicType")).Trim() <> "" Then sb.Append("Dynamic report type: " & FieldTextLocal(Session("DynamicType")) & ". ")
+        If LabelAddWhere.Text.Trim() <> "" AndAlso LabelAddWhere.Text.Trim() <> "<=>" Then sb.Append("Filter: " & LabelAddWhere.Text.Trim() & ". ")
+        sb.Append("This PDF is the same file produced by the Export report to PDF link and can be included in Export Packages.")
+        Return sb.ToString()
+    End Function
+
+    Private Function ReportPdfDeviceInfo() As String
+        pagewidth = Session("pagewidth")
+        pageheight = Session("pageheight")
+        Dim drep As DataTable = GetReportInfo(Session("REPORTID").ToString)
+        If drep(0)("Param9type") = "landscape" Then
+            If pagewidth Is Nothing OrElse pagewidth.Trim = "" Then pagewidth = "11in"
+            If pageheight Is Nothing OrElse pageheight.Trim = "" Then pageheight = "8.5in"
+        Else
+            If pagewidth Is Nothing OrElse pagewidth.Trim = "" Then pagewidth = "8.5in"
+            If pageheight Is Nothing OrElse pageheight.Trim = "" Then pageheight = "11in"
+        End If
+
+        Dim deviceInf As String = "<DeviceInfo>" & "  <OutputFormat>PDF</OutputFormat>"
+        deviceInf = deviceInf & "  <PageWidth>" & pagewidth & "</PageWidth>"
+        deviceInf = deviceInf & "  <PageHeight>" & pageheight & "</PageHeight>"
+        deviceInf = deviceInf & "  <MarginTop>0in</MarginTop>"
+        deviceInf = deviceInf & "  <MarginLeft>0in</MarginLeft>"
+        deviceInf = deviceInf & "  <MarginRight>0in</MarginRight>"
+        deviceInf = deviceInf & "  <MarginBottom>0in</MarginBottom>"
+        deviceInf = deviceInf & "</DeviceInfo>"
+        Return deviceInf
     End Function
 
     Private Function ReportViewLabelText(viewType As String) As String
@@ -3288,30 +3331,12 @@ Partial Class ReportViews
         Dim ret As String = String.Empty
         Dim Bytes() As Byte = Nothing
 
-        pagewidth = Session("pagewidth")
-        pageheight = Session("pageheight")
-        Dim drep As DataTable = GetReportInfo(Session("REPORTID").ToString)
-        If drep(0)("Param9type") = "landscape" Then
-            If pagewidth Is Nothing OrElse pagewidth.Trim = "" Then pagewidth = "11in"
-            If pageheight Is Nothing OrElse pageheight.Trim = "" Then pageheight = "8.5in"
-        Else
-            If pagewidth Is Nothing OrElse pagewidth.Trim = "" Then pagewidth = "8.5in"
-            If pageheight Is Nothing OrElse pageheight.Trim = "" Then pageheight = "11in"
-        End If
-
         Dim mimeType As String = ""
         Dim encoding As String = ""
         Dim fileNameExtension As String = ""
         Dim streams As String() = Nothing
         Dim warnings As Warning() = Nothing
-        Dim deviceInf As String = "<DeviceInfo>" & "  <OutputFormat>PDF</OutputFormat>"
-        deviceInf = deviceInf & "  <PageWidth>" & pagewidth & "</PageWidth>"       ' Set the page width
-        deviceInf = deviceInf & "  <PageHeight>" & pageheight & "</PageHeight>"    ' Set the page height
-        deviceInf = deviceInf & "  <MarginTop>0in</MarginTop>"
-        deviceInf = deviceInf & "  <MarginLeft>0in</MarginLeft>"
-        deviceInf = deviceInf & "  <MarginRight>0in</MarginRight>"
-        deviceInf = deviceInf & "  <MarginBottom>0in</MarginBottom>"
-        deviceInf = deviceInf & "</DeviceInfo>"
+        Dim deviceInf As String = ReportPdfDeviceInfo()
 
 
         Bytes = viewer.LocalReport.Render("PDF", deviceInf, mimeType, encoding, fileNameExtension, streams, warnings)
@@ -3330,6 +3355,7 @@ Partial Class ReportViews
                 Stream.Close()
                 Stream.Dispose()
             End Using
+            RegisterReportViewPdfSnapshotBytes("Export Report to PDF", ReportPdfExportLabelText(), Bytes)
             Try
                 Response.ContentType = "application/octet-stream"
                 Response.AppendHeader("Content-Disposition", "attachment; filename=" & myfile & ".pdf")
