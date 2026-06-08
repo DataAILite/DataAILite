@@ -196,9 +196,6 @@ Public MustInherit Class MarketAnalysisBase
         parts.Add(baseQuestion)
         Dim subtitleText As String = LabelText("LabelMarketSubtitle")
         If subtitleText.Trim() <> "" Then parts.Add("Input: " & subtitleText.Trim())
-        AddQuestionPart(parts, "LabelModelExplanation")
-        AddQuestionPart(parts, "LabelAlgorithmExplanation")
-        AddQuestionPart(parts, "LabelOutputExplanation")
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 

@@ -658,9 +658,6 @@ Partial Class DataReadinessScanner
         Dim parts As New List(Of String)()
         parts.Add(baseQuestion)
         parts.Add(LabelAnalysisSubtitle.Text.Trim())
-        parts.Add(LabelModelExplanation.Text.Trim())
-        parts.Add(LabelAlgorithmExplanation.Text.Trim())
-        parts.Add(LabelOutputExplanation.Text.Trim())
         Return String.Join(vbCrLf & vbCrLf, parts.ToArray())
     End Function
 

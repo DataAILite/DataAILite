@@ -1,8 +1,11 @@
 Imports System.Net
 Imports System.Net.Http
+Imports System.Data
 Imports System.Threading.Tasks
 Imports Newtonsoft.Json
 Imports System.IO
+Imports System.Security.Cryptography
+Imports System.Text
 
 'Imports System.Threading
 'Imports System.Text.Json
@@ -364,6 +367,7 @@ Partial Class ChatAI
         End Try
 
         'Dim taskResult As Task = GenerateText(prompt)
+        RegisterAIOutputForExport()
     End Sub
 
     Public Async Function GenerateText(prompt As String) As Task(Of String)
@@ -449,6 +453,105 @@ Partial Class ChatAI
             ret = "ERROR!! " & ex.Message
         End Try
         Return ret
+    End Function
+
+    Private Sub RegisterAIOutputForExport()
+        Try
+            If Session Is Nothing Then Exit Sub
+            If chatresponse Is Nothing OrElse chatresponse.Trim() = "" Then Exit Sub
+
+            Dim folderPath As String = ChatAIExportFolder()
+            If folderPath.Trim() = "" Then Exit Sub
+            Directory.CreateDirectory(folderPath)
+
+            Dim signature As String = HashText("ChatAI|" & FieldTextLocal(Session("REPORTID")) & "|" & FieldTextLocal(chatrequest) & "|" & FieldTextLocal(chatresponse))
+            Dim snapshots As DataTable = AnalysisExportSnapshot.SnapshotTable(Session)
+            If snapshots.Columns.Contains("Signature") Then
+                For Each existingRow As DataRow In snapshots.Rows
+                    If String.Equals(existingRow("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Exit Sub
+                Next
+            End If
+
+            Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
+            Dim fileName As String = "ChatAIOutput_" & SafeFilePartLocal(FieldTextLocal(Session("REPORTID"))) & "_" & stamp & ".html"
+            Dim filePath As String = Path.Combine(folderPath, fileName)
+            File.WriteAllText(filePath, ChatAIExportHtml(), Encoding.UTF8)
+
+            Dim row As DataRow = snapshots.NewRow()
+            row("Key") = "ChatAIOutput_" & stamp
+            row("Included") = True
+            row("Package Item") = "AI Chat Output - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            row("Label Above Grid") = "Question: " & FieldTextLocal(chatrequest)
+            row("File") = fileName
+            row("Description") = "AI output generated in ChatAI from the current page question. The file contains the question and AI answer only."
+            row("FullPath") = filePath
+            If snapshots.Columns.Contains("Signature") Then row("Signature") = signature
+            snapshots.Rows.Add(row)
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Private Function ChatAIExportFolder() As String
+        Const SnapshotFolderSessionKey As String = "AnalysisExportSnapshotFolder"
+        If Session(SnapshotFolderSessionKey) IsNot Nothing AndAlso Session(SnapshotFolderSessionKey).ToString().Trim() <> "" Then
+            Return Session(SnapshotFolderSessionKey).ToString()
+        End If
+
+        Dim basePath As String = System.AppDomain.CurrentDomain.BaseDirectory()
+        Dim tempPath As String = Path.Combine(basePath, "Temp")
+        Dim sessionName As String = "AnalysisSnapshots_" & SafeFilePartLocal(Session.SessionID)
+        Dim logonText As String = FieldTextLocal(Session("logon"))
+        If logonText.Trim() <> "" Then sessionName &= "_" & SafeFilePartLocal(logonText)
+        Dim folderPath As String = Path.Combine(tempPath, sessionName)
+        Session(SnapshotFolderSessionKey) = folderPath
+        Return folderPath
+    End Function
+
+    Private Function ChatAIExportHtml() As String
+        Dim sb As New StringBuilder()
+        sb.AppendLine("<html><head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" /></head><body style=""font-family:Arial"">")
+        sb.AppendLine("<h2>AI Chat Output</h2>")
+        sb.AppendLine("<table border=""1"" cellspacing=""0"" cellpadding=""4"">")
+        AppendExportInfoRow(sb, "Created", DateTime.Now.ToString())
+        AppendExportInfoRow(sb, "Report", FieldTextLocal(Session("REPORTID")))
+        AppendExportInfoRow(sb, "Report Title", FieldTextLocal(Session("REPTITLE")))
+        AppendExportInfoRow(sb, "Model", model)
+        AppendExportInfoRow(sb, "Question", chatrequest)
+        sb.AppendLine("</table>")
+        sb.AppendLine("<h3>AI Answer</h3>")
+        sb.AppendLine("<div>" & chatresponse & "</div>")
+        sb.AppendLine("</body></html>")
+        Return sb.ToString()
+    End Function
+
+    Private Sub AppendExportInfoRow(sb As StringBuilder, labelText As String, valueText As String)
+        sb.AppendLine("<tr><th align=""left"">" & HtmlEncodeLocal(labelText) & "</th><td>" & HtmlEncodeLocal(valueText) & "</td></tr>")
+    End Sub
+
+    Private Function HashText(valueText As String) As String
+        Using sha As SHA256 = SHA256.Create()
+            Dim bytes() As Byte = Encoding.UTF8.GetBytes(FieldTextLocal(valueText))
+            Return BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "")
+        End Using
+    End Function
+
+    Private Function SafeFilePartLocal(valueText As String) As String
+        If valueText Is Nothing OrElse valueText.Trim() = "" Then Return "AI"
+        Dim safeText As String = valueText.Trim()
+        For Each invalidChar As Char In Path.GetInvalidFileNameChars()
+            safeText = safeText.Replace(invalidChar, "_"c)
+        Next
+        safeText = safeText.Replace(" "c, "_"c)
+        Return safeText
+    End Function
+
+    Private Function FieldTextLocal(valueObject As Object) As String
+        If valueObject Is Nothing Then Return ""
+        Return valueObject.ToString()
+    End Function
+
+    Private Function HtmlEncodeLocal(valueText As String) As String
+        Return System.Web.HttpUtility.HtmlEncode(FieldTextLocal(valueText))
     End Function
 
     Private Sub btnQuestion_Click(sender As Object, e As EventArgs) Handles btnQuestion.Click
