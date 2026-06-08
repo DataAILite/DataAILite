@@ -170,14 +170,14 @@
                                     <asp:ListItem Value="Power">Power</asp:ListItem>
                                 </asp:DropDownList>
                                 &nbsp;&nbsp;
-                                <asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" ToolTip="Build trend rows from the current chart data." />
+                                <asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" ToolTip="Build or refresh the page results using the selected controls. The Build action also saves an Excel snapshot of the results in the session temporary folder so it can be included later in Export Packages if needed." />
                                 <asp:Button ID="ButtonBack" runat="server" CssClass="ticketbutton" Text="Back" ToolTip="Return to the chart page." />
                                 &nbsp;&nbsp;
                                 <asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkOpenTrendsAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret trend equations created from the current chart.">AI</asp:LinkButton>
                             </asp:Panel>
                             <asp:Label ID="LabelError" runat="server" Font-Names="Arial" Font-Size="Small" ForeColor="Red"></asp:Label>
                             <br />
-                            <asp:Label ID="LabelInfo" runat="server" Font-Names="Arial" Font-Size="Small" ForeColor="#333333"></asp:Label>
+                            <asp:Label ID="LabelBuildExportHint" runat="server" ForeColor="DarkGreen" Font-Names="Arial" Font-Size="Small" Text="Click Build to save results in temporary folder for future Export Packages if needed."></asp:Label><br /><asp:Label ID="LabelInfo" runat="server" Font-Names="Arial" Font-Size="Small" ForeColor="#333333"></asp:Label>
                             <br /><br />
                             <div style="font-family:Arial; font-size:small; font-weight:bold; color:#333333; padding-bottom:6px;">
                                 <asp:Label ID="LabelChartTitle" runat="server"></asp:Label>

@@ -1,5 +1,7 @@
-﻿Imports System.Data
+Imports System.Data
 Imports System.IO
+Imports System.Security.Cryptography
+Imports System.Text
 Partial Class DataAI
     Inherits System.Web.UI.Page
     Dim tblname As String
@@ -196,6 +198,7 @@ Partial Class DataAI
         End If
 
         LabelRowCount.Text = "Records returned: " & Session("dataTable").Rows.Count.ToString
+        RegisterDataAIExportSnapshots()
 
     End Sub
 
@@ -2308,6 +2311,129 @@ Partial Class DataAI
         End Try
     End Sub
 
+    Private Sub RegisterDataAIExportSnapshots()
+        Try
+            If Session Is Nothing Then Exit Sub
+            Dim dt As DataTable = TryCast(Session("dataTable"), DataTable)
+            Dim resultText As String = ""
+            If TextboxResult IsNot Nothing AndAlso TextboxResult.Text IsNot Nothing Then resultText = TextboxResult.Text
+            If (dt Is Nothing OrElse dt.Rows.Count = 0) AndAlso resultText.Trim() = "" Then Exit Sub
+
+            Dim folderPath As String = DataAIExportFolder()
+            If folderPath.Trim() = "" Then Exit Sub
+            Directory.CreateDirectory(folderPath)
+
+            Dim snapshots As DataTable = AnalysisExportSnapshot.SnapshotTable(Session)
+            Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
+            Dim reportPart As String = SafeFilePartLocal(FieldTextLocal(Session("REPORTID")))
+            If reportPart.Trim() = "" Then reportPart = "DataAI"
+
+            If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                Dim gridSignature As String = HashText("DataAIGrid|" & FieldTextLocal(Session("REPORTID")) & "|" & TableSignatureText(dt))
+                If Not SnapshotSignatureExists(snapshots, gridSignature) Then
+                    Dim gridFileName As String = "DataAIGrid_" & reportPart & "_" & stamp & ".xls"
+                    Dim header As String = "DataAI grid for report: " & FieldTextLocal(Session("REPTITLE")) & Environment.NewLine & LabelRowCount.Text
+                    DataModule.ExportToExcel(dt, EnsureTrailingSlash(folderPath), gridFileName, header, FieldTextLocal(Session("PageFtr")))
+                    Dim gridPath As String = Path.Combine(folderPath, gridFileName)
+                    If File.Exists(gridPath) Then
+                        AddDataAIExportSnapshot(snapshots, "DataAIGrid_" & stamp, "DataAI Grid - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), LabelRowCount.Text, gridFileName, "Excel snapshot of the DataAI grid saved automatically for future Export Packages.", gridPath, gridSignature)
+                    End If
+                End If
+            End If
+
+            If resultText.Trim() <> "" Then
+                Dim resultSignature As String = HashText("DataAIResult|" & FieldTextLocal(Session("REPORTID")) & "|" & resultText)
+                If Not SnapshotSignatureExists(snapshots, resultSignature) Then
+                    Dim resultFileName As String = "DataAIResult_" & reportPart & "_" & stamp & ".txt"
+                    Dim resultPath As String = Path.Combine(folderPath, resultFileName)
+                    File.WriteAllText(resultPath, resultText, Encoding.UTF8)
+                    AddDataAIExportSnapshot(snapshots, "DataAIResult_" & stamp, "DataAI Result Text - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "DataAI result text generated on page load.", resultFileName, "Text snapshot of the DataAI Result box saved automatically for future Export Packages.", resultPath, resultSignature)
+                End If
+            End If
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Private Function DataAIExportFolder() As String
+        Const SnapshotFolderSessionKey As String = "AnalysisExportSnapshotFolder"
+        If Session(SnapshotFolderSessionKey) IsNot Nothing AndAlso Session(SnapshotFolderSessionKey).ToString().Trim() <> "" Then
+            Return Session(SnapshotFolderSessionKey).ToString()
+        End If
+
+        Dim basePath As String = System.AppDomain.CurrentDomain.BaseDirectory()
+        Dim tempPath As String = Path.Combine(basePath, "Temp")
+        Dim sessionName As String = "AnalysisSnapshots_" & SafeFilePartLocal(Session.SessionID)
+        Dim logonText As String = FieldTextLocal(Session("logon"))
+        If logonText.Trim() <> "" Then sessionName &= "_" & SafeFilePartLocal(logonText)
+        Dim folderPath As String = Path.Combine(tempPath, sessionName)
+        Session(SnapshotFolderSessionKey) = folderPath
+        Return folderPath
+    End Function
+
+    Private Sub AddDataAIExportSnapshot(snapshots As DataTable, itemKey As String, itemName As String, labelText As String, fileName As String, description As String, filePath As String, signature As String)
+        If snapshots Is Nothing Then Exit Sub
+        Dim row As DataRow = snapshots.NewRow()
+        row("Key") = itemKey
+        row("Included") = True
+        row("Package Item") = itemName
+        row("Label Above Grid") = labelText
+        row("File") = fileName
+        row("Description") = description
+        row("FullPath") = filePath
+        If snapshots.Columns.Contains("Signature") Then row("Signature") = signature
+        snapshots.Rows.Add(row)
+    End Sub
+
+    Private Function SnapshotSignatureExists(snapshots As DataTable, signature As String) As Boolean
+        If snapshots Is Nothing OrElse Not snapshots.Columns.Contains("Signature") Then Return False
+        For Each row As DataRow In snapshots.Rows
+            If String.Equals(row("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Return True
+        Next
+        Return False
+    End Function
+
+    Private Function TableSignatureText(dt As DataTable) As String
+        If dt Is Nothing Then Return ""
+        Dim sb As New StringBuilder()
+        For Each col As DataColumn In dt.Columns
+            sb.Append(col.ColumnName).Append(ChrW(30))
+        Next
+        sb.AppendLine()
+        For Each row As DataRow In dt.Rows
+            For Each col As DataColumn In dt.Columns
+                sb.Append(FieldTextLocal(row(col))).Append(ChrW(30))
+            Next
+            sb.AppendLine()
+        Next
+        Return sb.ToString()
+    End Function
+
+    Private Function HashText(valueText As String) As String
+        Using sha As SHA256 = SHA256.Create()
+            Dim bytes() As Byte = Encoding.UTF8.GetBytes(FieldTextLocal(valueText))
+            Return BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "")
+        End Using
+    End Function
+
+    Private Function EnsureTrailingSlash(folderPath As String) As String
+        If folderPath.EndsWith("\") Then Return folderPath
+        Return folderPath & "\"
+    End Function
+
+    Private Function SafeFilePartLocal(valueText As String) As String
+        If valueText Is Nothing OrElse valueText.Trim() = "" Then Return "DataAI"
+        Dim safeText As String = valueText.Trim()
+        For Each invalidChar As Char In Path.GetInvalidFileNameChars()
+            safeText = safeText.Replace(invalidChar, "_"c)
+        Next
+        safeText = safeText.Replace(" "c, "_"c)
+        Return safeText
+    End Function
+
+    Private Function FieldTextLocal(valueObject As Object) As String
+        If valueObject Is Nothing Then Return ""
+        Return valueObject.ToString()
+    End Function
     Private Sub lnkExportGrid1_Click(sender As Object, e As EventArgs) Handles lnkExportGrid1.Click
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
@@ -2444,6 +2570,7 @@ Partial Class DataAI
         Session("DataToChatAI") = TextboxResult.Text
 
         LabelRowCount.Text = "Records returned: " & Session("dataTable").Rows.Count.ToString
+        RegisterDataAIExportSnapshots()
 
     End Sub
 

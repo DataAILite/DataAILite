@@ -121,7 +121,7 @@
                             <br /><br />
                             <table class="controlpanel" cellpadding="4" cellspacing="0">
                                 <tr><td style="font-weight:bold;">Notes:<br /><asp:TextBox ID="txtNotes" runat="server" TextMode="MultiLine" Rows="8" Width="980px"></asp:TextBox></td></tr>
-                                <tr><td><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Export" OnClientClick="showExportWaiting();" /></td></tr>
+                                <tr><td><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Export" OnClientClick="showExportWaiting();" ToolTip="Export all checked files from the grid into one ZIP file and download it. Unchecked files are left out of the ZIP package." /></td></tr>
                             </table>
                             <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
                             <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br />
