@@ -130,7 +130,7 @@ Partial Class ChatAI
             Exit Sub
         End If
         chatrequest = Session("QuestionToAI")  '"Interpret this data."
-        Dim prompt As String = Session("QuestionToAI") & Environment.NewLine() & Session("DataToChatAI").ToString
+        Dim prompt As String = Session("QuestionToAI") & Environment.NewLine() & "Use only the data below:" & Session("DataToChatAI").ToString
 
         If prompt.Length > maxTokens Then
             prompt = prompt.Substring(0, maxTokens)

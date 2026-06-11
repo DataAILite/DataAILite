@@ -4,7 +4,7 @@ Imports System.Drawing
 Imports System.IO.Compression
 Imports System.Net
 Imports System.Math
-Imports OracleInternal.Secure
+'Imports OracleInternal.Secure
 Imports Mysqlx
 Imports Microsoft.Data
 Partial Class DataImport

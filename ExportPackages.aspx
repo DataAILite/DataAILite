@@ -121,7 +121,7 @@
                             <br /><br />
                             <table class="controlpanel" cellpadding="4" cellspacing="0">
                                 <tr><td style="font-weight:bold;">Notes:<br /><asp:TextBox ID="txtNotes" runat="server" TextMode="MultiLine" Rows="8" Width="980px"></asp:TextBox></td></tr>
-                                <tr><td><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Export" OnClientClick="showExportWaiting();" ToolTip="Export all checked files from the grid into one ZIP file and download it. Unchecked files are left out of the ZIP package." /></td></tr>
+                                <tr><td><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Export as zipped folder" Width="170px" OnClientClick="showExportWaiting();" ToolTip="Export all checked existing files from the grid into one ZIP file and download it. Unchecked files are left out of the ZIP package." /><asp:Button ID="ButtonExportPdf" runat="server" CssClass="ticketbutton" Text="Export as PDF document(s)" Width="190px" OnClientClick="showExportWaiting();" ToolTip="Export checked analytical outputs as PDF. RDL files and raw data files are skipped; grid snapshots are shown as readable tables. If checked PDF files are involved and Ghostscript is not available to render their pages into the main PDF, a ZIP file is downloaded instead containing the main PDF plus those separate PDF files." /></td></tr>
                             </table>
                             <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
                             <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br />
@@ -154,7 +154,7 @@
                     </tr>
                 </table>
             </ContentTemplate>
-            <Triggers><asp:PostBackTrigger ControlID="ButtonBuild" /></Triggers>
+            <Triggers><asp:PostBackTrigger ControlID="ButtonBuild" /><asp:PostBackTrigger ControlID="ButtonExportPdf" /></Triggers>
         </asp:UpdatePanel>
         <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="udpExportPackages">
             <ProgressTemplate>
