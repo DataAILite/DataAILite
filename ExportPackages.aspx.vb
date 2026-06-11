@@ -690,7 +690,7 @@ Partial Class ExportPackages
         If skipExternalPdfRendering AndAlso externalPdfFilesForZip IsNot Nothing AndAlso externalPdfFilesForZip.Count > 0 Then
             elements.Add(PdfElement.Space())
             elements.Add(PdfElement.Section("PDF Files Included In ZIP"))
-            elements.Add(PdfElement.TextLine("Ghostscript was not found. Checked PDF files are included as separate files in the ZIP download instead of being inserted into this PDF."))
+            elements.Add(PdfElement.TextLine("Ghostscript was not found. Checked PDF files are stored separately in the ZIP file and are not inserted into this PDF."))
             For Each filePath As String In externalPdfFilesForZip
                 elements.Add(PdfElement.TextLine(Path.GetFileName(filePath)))
             Next
@@ -1961,11 +1961,36 @@ Partial Class ExportPackages
             result.Add("")
             Return result
         End If
-        While text.Length > width
-            result.Add(text.Substring(0, width))
-            text = text.Substring(width)
-        End While
-        result.Add(text)
+
+        Dim words As String() = Regex.Split(text.Trim(), "\s+")
+        Dim line As New StringBuilder()
+        For Each word As String In words
+            If word.Length = 0 Then Continue For
+
+            If word.Length > width Then
+                If line.Length > 0 Then
+                    result.Add(line.ToString())
+                    line.Length = 0
+                End If
+                Dim remaining As String = word
+                While remaining.Length > width
+                    result.Add(remaining.Substring(0, width))
+                    remaining = remaining.Substring(width)
+                End While
+                If remaining.Length > 0 Then line.Append(remaining)
+            ElseIf line.Length = 0 Then
+                line.Append(word)
+            ElseIf line.Length + 1 + word.Length <= width Then
+                line.Append(" ").Append(word)
+            Else
+                result.Add(line.ToString())
+                line.Length = 0
+                line.Append(word)
+            End If
+        Next
+
+        If line.Length > 0 Then result.Add(line.ToString())
+        If result.Count = 0 Then result.Add("")
         Return result
     End Function
 
