@@ -45,6 +45,14 @@ Partial Class ExportPackages
         ExportPackagePdf()
     End Sub
 
+    Private Sub LinkCheckAll_Click(sender As Object, e As EventArgs) Handles LinkCheckAll.Click
+        SetAllPackageRowsIncluded(True)
+    End Sub
+
+    Private Sub LinkUncheckAll_Click(sender As Object, e As EventArgs) Handles LinkUncheckAll.Click
+        SetAllPackageRowsIncluded(False)
+    End Sub
+
     Private Sub GridViewPackage_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridViewPackage.RowDataBound
         If e.Row.RowType <> DataControlRowType.DataRow Then Exit Sub
         Dim lnk As LinkButton = TryCast(e.Row.FindControl("lnkOpenFile"), LinkButton)
@@ -103,10 +111,11 @@ Partial Class ExportPackages
         PrepareStandardPackageFiles(dt)
         AddSnapshotRows(dt)
 
-        Session("ExportPackageTable") = dt
-        GridViewPackage.DataSource = dt
+        Dim orderedTable As DataTable = OrderedManifestTable(dt)
+        Session("ExportPackageTable") = orderedTable
+        GridViewPackage.DataSource = orderedTable
         GridViewPackage.DataBind()
-        LabelInfo.Text = "Export package manifest (" & dt.Rows.Count.ToString() & " rows)"
+        LabelInfo.Text = "Export package manifest (" & orderedTable.Rows.Count.ToString() & " rows)"
     End Sub
 
     Private Sub AddPackageRow(dt As DataTable, itemKey As String, itemName As String, included As Boolean, labelText As String, fileText As String, description As String, Optional fullPath As String = "")
@@ -125,8 +134,14 @@ Partial Class ExportPackages
     Private Sub AddSnapshotRows(dt As DataTable)
         Dim snapshots As DataTable = AnalysisExportSnapshot.SnapshotTable(Session)
         If snapshots Is Nothing Then Exit Sub
+        RegisterMissingDashboardPngSnapshots(snapshots)
         Dim addedPaths As New Dictionary(Of String, Boolean)(StringComparer.OrdinalIgnoreCase)
+        Dim snapshotRows As New List(Of DataRow)()
         For Each snapshot As DataRow In snapshots.Rows
+            snapshotRows.Add(snapshot)
+        Next
+
+        For Each snapshot As DataRow In snapshotRows
             Dim fullPath As String = snapshot("FullPath").ToString()
             If fullPath.Trim() <> "" Then
                 If addedPaths.ContainsKey(fullPath) Then Continue For
@@ -141,6 +156,47 @@ Partial Class ExportPackages
                 snapshot("Description").ToString(),
                 fullPath)
         Next
+    End Sub
+
+    Private Sub RegisterMissingDashboardPngSnapshots(snapshots As DataTable)
+        Try
+            If snapshots Is Nothing OrElse Session Is Nothing Then Exit Sub
+            If Session("AnalysisExportSnapshotFolder") Is Nothing Then Exit Sub
+            Dim folderPath As String = Session("AnalysisExportSnapshotFolder").ToString()
+            If folderPath.Trim() = "" OrElse Not Directory.Exists(folderPath) Then Exit Sub
+
+            Dim existingPaths As New Dictionary(Of String, Boolean)(StringComparer.OrdinalIgnoreCase)
+            Dim existingSections As New Dictionary(Of String, Boolean)(StringComparer.OrdinalIgnoreCase)
+            For Each row As DataRow In snapshots.Rows
+                Dim existingPath As String = row("FullPath").ToString()
+                If existingPath.Trim() <> "" AndAlso Not existingPaths.ContainsKey(existingPath) Then existingPaths.Add(existingPath, True)
+                If IsDashboardPngRow(row) Then
+                    Dim existingSection As String = DashboardPngSection(row)
+                    If existingSection.Trim() <> "" AndAlso Not existingSections.ContainsKey(existingSection) Then existingSections.Add(existingSection, True)
+                End If
+            Next
+
+            For Each filePath As String In Directory.GetFiles(folderPath, "ChartDashboardPng*.png")
+                If existingPaths.ContainsKey(filePath) Then Continue For
+                Dim fileSection As String = DashboardPngSectionFromFileName(Path.GetFileName(filePath))
+                If fileSection.Trim() <> "" AndAlso existingSections.ContainsKey(fileSection) Then Continue For
+                Dim fileName As String = Path.GetFileName(filePath)
+                Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
+                Dim row As DataRow = snapshots.NewRow()
+                row("Key") = "ChartGoogleImage_Restored_" & stamp
+                row("Included") = True
+                row("Package Item") = "Chart Dashboard PNG Picture - " & If(fileSection.Trim() = "", "Dashboard", fileSection) & " - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                row("Label Above Grid") = "Chart dashboard PNG picture section: " & If(fileSection.Trim() = "", "Dashboard", fileSection) & "."
+                row("File") = fileName
+                row("Description") = "Separate PNG picture captured from the ChartGoogle dashboard tile."
+                row("FullPath") = filePath
+                If snapshots.Columns.Contains("Signature") Then row("Signature") = "Restored|" & filePath
+                snapshots.Rows.Add(row)
+                existingPaths.Add(filePath, True)
+                If fileSection.Trim() <> "" AndAlso Not existingSections.ContainsKey(fileSection) Then existingSections.Add(fileSection, True)
+            Next
+        Catch ex As Exception
+        End Try
     End Sub
 
     Private Sub PrepareStandardPackageFiles(dt As DataTable)
@@ -201,6 +257,24 @@ Partial Class ExportPackages
             If chk IsNot Nothing Then manifest.Rows(i)("Included") = chk.Checked
         Next
         Session("ExportPackageTable") = manifest
+    End Sub
+
+    Private Sub SetAllPackageRowsIncluded(included As Boolean)
+        Dim manifest As DataTable = TryCast(Session("ExportPackageTable"), DataTable)
+        If manifest Is Nothing Then
+            BuildAndBindPackage()
+            manifest = TryCast(Session("ExportPackageTable"), DataTable)
+        End If
+        If manifest Is Nothing Then Exit Sub
+
+        For Each row As DataRow In manifest.Rows
+            row("Included") = included
+        Next
+
+        Session("ExportPackageTable") = manifest
+        GridViewPackage.DataSource = manifest
+        GridViewPackage.DataBind()
+        LabelInfo.Text = "Export package manifest (" & manifest.Rows.Count.ToString() & " rows)"
     End Sub
 
     Private Function IsIncluded(itemKey As String) As Boolean
@@ -325,13 +399,17 @@ Partial Class ExportPackages
             Dim packageName As String = "ExportPackagePdf_" & SafeFilePart(FieldText(Session("REPORTID"))) & "_" & DateTime.Now.ToString("yyyyMMddHHmmssfff") & "_" & Guid.NewGuid().ToString("N").Substring(0, 8)
             Dim manifest As DataTable = CType(Session("ExportPackageTable"), DataTable)
             Dim checkedPdfFiles As List(Of String) = CheckedPdfFilesForInlinePages(manifest)
+            Dim chartDataPdfFiles As List(Of String) = ChartDataPdfFilesForZip(manifest, packageName)
             Dim ghostscriptMissingForExternalPdfs As Boolean = checkedPdfFiles.Count > 0 AndAlso FindGhostscriptPath().Trim() = ""
             Dim pdfBytes() As Byte = BuildExportPackagePdf(manifest, ghostscriptMissingForExternalPdfs, checkedPdfFiles)
             If pdfBytes Is Nothing OrElse pdfBytes.Length = 0 Then Throw New Exception("Export package PDF was not created.")
 
             Dim pdfName As String = packageName & ".pdf"
-            If ghostscriptMissingForExternalPdfs Then
-                ExportCheckedPdfFilesZip(packageName, pdfName, pdfBytes, checkedPdfFiles)
+            Dim pdfFilesForZip As New List(Of String)()
+            If ghostscriptMissingForExternalPdfs Then pdfFilesForZip.AddRange(checkedPdfFiles)
+            pdfFilesForZip.AddRange(chartDataPdfFiles)
+            If pdfFilesForZip.Count > 0 Then
+                ExportCheckedPdfFilesZip(packageName, pdfName, pdfBytes, pdfFilesForZip)
                 Exit Sub
             End If
 
@@ -711,13 +789,27 @@ Partial Class ExportPackages
         For Each row As DataRow In manifest.Rows
             rows.Add(row)
         Next
+        Dim dashboardSortOrders As Dictionary(Of DataRow, Integer) = DashboardSortMap(rows)
         rows.Sort(Function(a, b)
                       Dim orderCompare As Integer = PackageOrder(a).CompareTo(PackageOrder(b))
                       If orderCompare <> 0 Then Return orderCompare
+                      If IsDashboardRow(a) AndAlso IsDashboardRow(b) Then
+                          Dim dashboardCompare As Integer = DashboardSortOrder(a, dashboardSortOrders).CompareTo(DashboardSortOrder(b, dashboardSortOrders))
+                          If dashboardCompare <> 0 Then Return dashboardCompare
+                      End If
                       If PackageOrder(a) >= 1000 Then Return ManifestOrder(a).CompareTo(ManifestOrder(b))
                       Return String.Compare(a("Package Item").ToString(), b("Package Item").ToString(), StringComparison.OrdinalIgnoreCase)
                   End Function)
         Return rows
+    End Function
+
+    Private Function OrderedManifestTable(manifest As DataTable) As DataTable
+        If manifest Is Nothing Then Return Nothing
+        Dim ordered As DataTable = manifest.Clone()
+        For Each row As DataRow In OrderedManifestRows(manifest)
+            ordered.ImportRow(row)
+        Next
+        Return ordered
     End Function
 
     Private Function PackageOrder(row As DataRow) As Integer
@@ -728,6 +820,7 @@ Partial Class ExportPackages
         If key = "reportdefinition" Then Return 30
         If key = "exceldata" Then Return 40
         If key = "csvdata" Then Return 50
+        If IsDashboardRow(row) Then Return 1000
         If IsSnapshotPackageRow(row) Then Return 1000
         If item.Contains("dataai") Then Return 20
         If item.Contains("ai") Then Return 30
@@ -750,11 +843,140 @@ Partial Class ExportPackages
         Return 0
     End Function
 
+    Private Function IsDashboardPngRow(row As DataRow) As Boolean
+        Dim item As String = row("Package Item").ToString().ToLowerInvariant()
+        Dim fileName As String = row("File").ToString().ToLowerInvariant()
+        Return item.Contains("chart dashboard png picture") OrElse fileName.StartsWith("chartdashboardpng")
+    End Function
+
+    Private Function IsDashboardDataRow(row As DataRow) As Boolean
+        Dim item As String = row("Package Item").ToString().ToLowerInvariant()
+        Dim fileName As String = row("File").ToString().ToLowerInvariant()
+        Return item.Contains("chart dashboard data file") OrElse fileName.StartsWith("chartdashboarddata")
+    End Function
+
+    Private Function IsDashboardRow(row As DataRow) As Boolean
+        Return IsDashboardDataRow(row) OrElse IsDashboardPngRow(row)
+    End Function
+
+    Private Function DashboardSortMap(rows As List(Of DataRow)) As Dictionary(Of DataRow, Integer)
+        Dim map As New Dictionary(Of DataRow, Integer)()
+        Dim groupOrders As New Dictionary(Of String, Integer)(StringComparer.OrdinalIgnoreCase)
+        Dim nextGroupOrder As Integer = 0
+
+        For Each row As DataRow In rows
+            If IsDashboardDataRow(row) Then
+                Dim groupKey As String = DashboardGroupKey(row)
+                If groupKey.Trim() = "" Then groupKey = "DashboardData|" & ManifestOrder(row).ToString()
+                If Not groupOrders.ContainsKey(groupKey) Then
+                    groupOrders.Add(groupKey, nextGroupOrder)
+                    nextGroupOrder += 1
+                End If
+            End If
+        Next
+
+        For Each row As DataRow In rows
+            If Not IsDashboardRow(row) Then Continue For
+
+            Dim groupKey As String = DashboardGroupKey(row)
+            Dim groupOrder As Integer
+            If groupKey.Trim() <> "" AndAlso groupOrders.ContainsKey(groupKey) Then
+                groupOrder = groupOrders(groupKey)
+            Else
+                groupOrder = 10000 + ManifestOrder(row)
+            End If
+
+            Dim rowTypeOrder As Integer = If(IsDashboardDataRow(row), 0, 1)
+            Dim sectionOrder As Integer = If(IsDashboardPngRow(row), DashboardPngOrder(row), 0)
+            map(row) = (groupOrder * 1000) + (rowTypeOrder * 100) + sectionOrder
+        Next
+
+        Return map
+    End Function
+
+    Private Function DashboardSortOrder(row As DataRow, sortOrders As Dictionary(Of DataRow, Integer)) As Integer
+        If sortOrders IsNot Nothing AndAlso sortOrders.ContainsKey(row) Then Return sortOrders(row)
+        Return 1000000 + ManifestOrder(row)
+    End Function
+
+    Private Function DashboardGroupKey(row As DataRow) As String
+        Dim labelText As String = row("Label Above Grid").ToString()
+        If labelText.Trim() = "" Then Return ""
+
+        labelText = Regex.Replace(labelText, "(?i)\s*Picture\s+section\s*:\s*(Count|Distinct\s+Count|Average|Avg|Sum|Maximum|Max|Minimum|Min|Standard\s+Deviation|StDev|Value)\s*\.?\s*", "")
+        labelText = Regex.Replace(labelText, "\s+", " ").Trim()
+        labelText = labelText.Trim("."c, " "c)
+        Return labelText
+    End Function
+
+    Private Function DashboardPngSection(row As DataRow) As String
+        Dim fileSection As String = DashboardPngSectionFromFileName(row("File").ToString())
+        If fileSection.Trim() <> "" Then Return fileSection
+
+        Dim text As String = row("Package Item").ToString()
+        Dim marker As String = "Chart Dashboard PNG Picture - "
+        Dim markerIndex As Integer = text.IndexOf(marker, StringComparison.OrdinalIgnoreCase)
+        If markerIndex >= 0 Then
+            Dim sectionText As String = text.Substring(markerIndex + marker.Length)
+            Dim dateMarker As Integer = sectionText.LastIndexOf(" - ")
+            If dateMarker > 0 Then sectionText = sectionText.Substring(0, dateMarker)
+            sectionText = sectionText.Trim()
+            If sectionText.Trim() <> "" Then Return NormalizeDashboardSection(sectionText)
+        End If
+
+        Return ""
+    End Function
+
+    Private Function DashboardPngSectionFromFileName(fileName As String) As String
+        Dim name As String = Path.GetFileNameWithoutExtension(fileName)
+        If name Is Nothing OrElse Not name.StartsWith("ChartDashboardPng", StringComparison.OrdinalIgnoreCase) Then Return ""
+
+        Dim lowerName As String = name.ToLowerInvariant()
+        If lowerName.Contains("_distinct_count_") OrElse lowerName.Contains("_distinctcount_") OrElse lowerName.Contains("_distcount_") Then Return "Distinct Count"
+        If lowerName.Contains("_standard_deviation_") OrElse lowerName.Contains("_standarddeviation_") OrElse lowerName.Contains("_stdev_") Then Return "Standard Deviation"
+        If lowerName.Contains("_average_") OrElse lowerName.Contains("_avg_") Then Return "Average"
+        If lowerName.Contains("_maximum_") OrElse lowerName.Contains("_max_") Then Return "Maximum"
+        If lowerName.Contains("_minimum_") OrElse lowerName.Contains("_min_") Then Return "Minimum"
+        If lowerName.Contains("_count_") Then Return "Count"
+        If lowerName.Contains("_sum_") Then Return "Sum"
+        If lowerName.Contains("_value_") Then Return "Value"
+        Return ""
+    End Function
+
+    Private Function NormalizeDashboardSection(sectionText As String) As String
+        Dim text As String = sectionText.Trim().Replace("_", " ")
+        Select Case text.ToLowerInvariant()
+            Case "distcount", "distinctcount"
+                Return "Distinct Count"
+            Case "avg"
+                Return "Average"
+            Case "stdev", "standarddeviation"
+                Return "Standard Deviation"
+            Case "max"
+                Return "Maximum"
+            Case "min"
+                Return "Minimum"
+        End Select
+        Return text
+    End Function
+
+    Private Function DashboardPngOrder(row As DataRow) As Integer
+        Dim text As String = (row("Package Item").ToString() & " " & row("File").ToString() & " " & row("Label Above Grid").ToString()).ToLowerInvariant()
+        If text.Contains("distinct count") OrElse text.Contains("distcount") Then Return 20
+        If text.Contains("count") Then Return 10
+        If text.Contains("average") OrElse text.Contains("avg") Then Return 30
+        If text.Contains("sum") Then Return 40
+        If text.Contains("maximum") OrElse text.Contains("max") Then Return 50
+        If text.Contains("minimum") OrElse text.Contains("min") Then Return 60
+        If text.Contains("standard deviation") OrElse text.Contains("stdev") Then Return 70
+        If text.Contains("value") Then Return 80
+        Return 900
+    End Function
+
     Private Function IncludeRowInPdf(row As DataRow) As Boolean
         Dim key As String = row("Key").ToString().ToLowerInvariant()
         Dim fileName As String = row("File").ToString().ToLowerInvariant()
         Dim fullPath As String = row("FullPath").ToString()
-        If IsChartDataFile(row) Then Return False
         If key = "csvdata" OrElse key = "exceldata" OrElse key = "reportdefinition" Then Return False
         If fileName.EndsWith(".rdl") OrElse fileName.EndsWith(".csv") Then Return False
         If fullPath.ToLowerInvariant().EndsWith(".rdl") OrElse fullPath.ToLowerInvariant().EndsWith(".csv") Then Return False
@@ -770,6 +992,11 @@ Partial Class ExportPackages
         If row("Label Above Grid").ToString().Trim() <> "" Then elements.Add(PdfElement.TextLine("Details: " & row("Label Above Grid").ToString()))
         If row("Description").ToString().Trim() <> "" Then elements.Add(PdfElement.TextLine("Description: " & row("Description").ToString()))
         If row("File").ToString().Trim() <> "" Then elements.Add(PdfElement.TextLine("File: " & row("File").ToString()))
+
+        If IsChartDataFile(row) Then
+            elements.Add(PdfElement.TextLine("Chart data are converted to a separate PDF file and included in the ZIP download when this item is checked."))
+            Return True
+        End If
 
         If row("Key").ToString().Equals("Notes", StringComparison.OrdinalIgnoreCase) Then
             AppendNotesToPdfElements(elements)
@@ -809,6 +1036,42 @@ Partial Class ExportPackages
         If description.Contains("chart selections and chart-ready data") Then Return True
         If description.Contains("chartgoogle dashboard chart-ready data") Then Return True
         Return False
+    End Function
+
+    Private Function ChartDataPdfFilesForZip(manifest As DataTable, packageName As String) As List(Of String)
+        Dim files As New List(Of String)()
+        If manifest Is Nothing Then Return files
+
+        Dim outputFolder As String = Path.Combine(PreviewPackageFolder(), SafeFilePart(packageName & "_ChartDataPdf"))
+        Directory.CreateDirectory(outputFolder)
+        Dim usedNames As New Dictionary(Of String, Integer)(StringComparer.OrdinalIgnoreCase)
+
+        For Each row As DataRow In OrderedManifestRows(manifest)
+            If Not Convert.ToBoolean(row("Included")) Then Continue For
+            If Not IsChartDataFile(row) Then Continue For
+            For Each sourcePath As String In PackageFilesForRow(row)
+                If sourcePath.Trim() = "" OrElse Not File.Exists(sourcePath) Then Continue For
+                If Not IsPdfTextReadableFile(sourcePath) Then Continue For
+
+                Dim baseName As String = Path.GetFileNameWithoutExtension(sourcePath)
+                If baseName.Trim() = "" Then baseName = "ChartData"
+                Dim pdfName As String = UniquePackageFileName(SafeFilePart(baseName) & ".pdf", usedNames)
+                Dim pdfPath As String = Path.Combine(outputFolder, pdfName)
+
+                Dim elements As New List(Of PdfElement)()
+                elements.Add(PdfElement.Title(row("Package Item").ToString()))
+                If row("Label Above Grid").ToString().Trim() <> "" Then elements.Add(PdfElement.TextLine("Details: " & row("Label Above Grid").ToString()))
+                If row("Description").ToString().Trim() <> "" Then elements.Add(PdfElement.TextLine("Description: " & row("Description").ToString()))
+                elements.Add(PdfElement.TextLine("Source file: " & Path.GetFileName(sourcePath)))
+                elements.Add(PdfElement.Space())
+                AppendReadableFileElements(elements, sourcePath)
+
+                File.WriteAllBytes(pdfPath, StyledPdf(elements))
+                files.Add(pdfPath)
+            Next
+        Next
+
+        Return files
     End Function
 
     Private Function IsPngFile(filePath As String) As Boolean

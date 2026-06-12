@@ -2329,14 +2329,15 @@ Partial Class DataAI
             If reportPart.Trim() = "" Then reportPart = "DataAI"
 
             If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
-                Dim gridSignature As String = HashText("DataAIGrid|" & FieldTextLocal(Session("REPORTID")) & "|" & TableSignatureText(dt))
+                RemoveDataAIGridExcelSnapshots(snapshots)
+                Dim gridSignature As String = HashText("DataAIGridPdf|" & FieldTextLocal(Session("REPORTID")) & "|" & TableSignatureText(dt))
                 If Not SnapshotSignatureExists(snapshots, gridSignature) Then
-                    Dim gridFileName As String = "DataAIGrid_" & reportPart & "_" & stamp & ".xls"
+                    Dim gridFileName As String = "DataAIGrid_" & reportPart & "_" & stamp & ".pdf"
                     Dim header As String = "DataAI grid for report: " & FieldTextLocal(Session("REPTITLE")) & Environment.NewLine & LabelRowCount.Text
-                    DataModule.ExportToExcel(dt, EnsureTrailingSlash(folderPath), gridFileName, header, FieldTextLocal(Session("PageFtr")))
+                    WriteDataAIGridPdf(folderPath, gridFileName, dt, header)
                     Dim gridPath As String = Path.Combine(folderPath, gridFileName)
                     If File.Exists(gridPath) Then
-                        AddDataAIExportSnapshot(snapshots, "DataAIGrid_" & stamp, "DataAI Grid - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), LabelRowCount.Text, gridFileName, "Excel snapshot of the DataAI grid saved automatically for future Export Packages.", gridPath, gridSignature)
+                        AddDataAIExportSnapshot(snapshots, "DataAIGrid_" & stamp, "DataAI Grid PDF - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), LabelRowCount.Text, gridFileName, "PDF snapshot of the DataAI grid saved automatically for future Export Packages.", gridPath, gridSignature)
                     End If
                 End If
             End If
@@ -2353,6 +2354,98 @@ Partial Class DataAI
         Catch ex As Exception
         End Try
     End Sub
+
+    Private Sub RemoveDataAIGridExcelSnapshots(snapshots As DataTable)
+        If snapshots Is Nothing Then Exit Sub
+        For i As Integer = snapshots.Rows.Count - 1 To 0 Step -1
+            Dim row As DataRow = snapshots.Rows(i)
+            Dim key As String = row("Key").ToString().ToLowerInvariant()
+            Dim fileName As String = row("File").ToString().ToLowerInvariant()
+            If key.StartsWith("dataaigrid") AndAlso fileName.EndsWith(".xls") Then
+                Try
+                    Dim fullPath As String = row("FullPath").ToString()
+                    If fullPath.Trim() <> "" AndAlso File.Exists(fullPath) Then File.Delete(fullPath)
+                Catch ex As Exception
+                End Try
+                snapshots.Rows.RemoveAt(i)
+            End If
+        Next
+    End Sub
+
+    Private Sub WriteDataAIGridPdf(folderPath As String, fileName As String, dt As DataTable, headerText As String)
+        If dt Is Nothing Then Exit Sub
+        Directory.CreateDirectory(folderPath)
+
+        Dim document As New PdfSharp.Pdf.PdfDocument()
+        document.Info.Title = "DataAI Grid"
+
+        Dim titleFont As New PdfSharp.Drawing.XFont("Arial", 14, PdfSharp.Drawing.XFontStyle.Bold)
+        Dim headerFont As New PdfSharp.Drawing.XFont("Arial", 7, PdfSharp.Drawing.XFontStyle.Bold)
+        Dim cellFont As New PdfSharp.Drawing.XFont("Arial", 7, PdfSharp.Drawing.XFontStyle.Regular)
+        Dim smallFont As New PdfSharp.Drawing.XFont("Arial", 8, PdfSharp.Drawing.XFontStyle.Regular)
+
+        Dim page As PdfSharp.Pdf.PdfPage = Nothing
+        Dim gfx As PdfSharp.Drawing.XGraphics = Nothing
+        Dim y As Double = 0
+        Dim pageNumber As Integer = 0
+        Dim columnsToShow As Integer = Math.Min(dt.Columns.Count, 8)
+        Dim left As Double = 28
+        Dim top As Double = 34
+        Dim rowHeight As Double = 20
+        Dim headerHeight As Double = 24
+        Dim usableWidth As Double = 0
+        Dim colWidth As Double = 0
+
+        Dim startPage As Action =
+            Sub()
+                page = document.AddPage()
+                page.Size = PdfSharp.PageSize.Letter
+                page.Orientation = PdfSharp.PageOrientation.Landscape
+                gfx = PdfSharp.Drawing.XGraphics.FromPdfPage(page)
+                pageNumber += 1
+                usableWidth = page.Width.Point - (left * 2)
+                colWidth = usableWidth / Math.Max(1, columnsToShow)
+                y = top
+                gfx.DrawString("Page " & pageNumber.ToString(), smallFont, PdfSharp.Drawing.XBrushes.Gray, New PdfSharp.Drawing.XRect(page.Width.Point - 80, page.Height.Point - 24, 60, 12), PdfSharp.Drawing.XStringFormats.TopLeft)
+
+                gfx.DrawString("DataAI Grid", titleFont, PdfSharp.Drawing.XBrushes.Black, New PdfSharp.Drawing.XRect(left, y, usableWidth, 18), PdfSharp.Drawing.XStringFormats.TopLeft)
+                y += 20
+                For Each line As String In FieldTextLocal(headerText).Replace(vbCrLf, vbLf).Replace(vbCr, vbLf).Split(ControlChars.Lf)
+                    If line.Trim() <> "" Then
+                        gfx.DrawString(line, smallFont, PdfSharp.Drawing.XBrushes.Black, New PdfSharp.Drawing.XRect(left, y, usableWidth, 12), PdfSharp.Drawing.XStringFormats.TopLeft)
+                        y += 12
+                    End If
+                Next
+                y += 6
+
+                For c As Integer = 0 To columnsToShow - 1
+                    Dim rect As New PdfSharp.Drawing.XRect(left + (c * colWidth), y, colWidth, headerHeight)
+                    gfx.DrawRectangle(PdfSharp.Drawing.XBrushes.LightGray, rect)
+                    gfx.DrawRectangle(PdfSharp.Drawing.XPens.Gray, rect)
+                    gfx.DrawString(DataAIGridPdfCellText(dt.Columns(c).ColumnName, 18), headerFont, PdfSharp.Drawing.XBrushes.Black, rect, PdfSharp.Drawing.XStringFormats.Center)
+                Next
+                y += headerHeight
+            End Sub
+
+        startPage()
+        For Each dataRow As DataRow In dt.Rows
+            If y + rowHeight > page.Height.Point - 34 Then startPage()
+            For c As Integer = 0 To columnsToShow - 1
+                Dim rect As New PdfSharp.Drawing.XRect(left + (c * colWidth), y, colWidth, rowHeight)
+                gfx.DrawRectangle(PdfSharp.Drawing.XPens.LightGray, rect)
+                gfx.DrawString(DataAIGridPdfCellText(FieldTextLocal(dataRow(c)), 24), cellFont, PdfSharp.Drawing.XBrushes.Black, New PdfSharp.Drawing.XRect(rect.X + 2, rect.Y + 3, rect.Width - 4, rect.Height - 4), PdfSharp.Drawing.XStringFormats.TopLeft)
+            Next
+            y += rowHeight
+        Next
+
+        document.Save(Path.Combine(folderPath, fileName))
+    End Sub
+
+    Private Function DataAIGridPdfCellText(valueText As String, maxLength As Integer) As String
+        Dim text As String = FieldTextLocal(valueText).Replace(vbCrLf, " ").Replace(vbCr, " ").Replace(vbLf, " ").Replace(vbTab, " ")
+        If text.Length > maxLength Then text = text.Substring(0, Math.Max(0, maxLength - 3)) & "..."
+        Return text
+    End Function
 
     Private Function DataAIExportFolder() As String
         Const SnapshotFolderSessionKey As String = "AnalysisExportSnapshotFolder"

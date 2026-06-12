@@ -55,17 +55,7 @@ Partial Class ChartGoogle
         End If
         Session("StatDash") = "yes"
         charttype = DropDownChartType.Text
-        If charttype = "MapChart" OrElse charttype = "Map" Then
-            chartpckg = "Map"
-        ElseIf charttype = "GeoChart" Then
-            chartpckg = "geochart"
-        ElseIf charttype = "Gauge" Then
-            chartpckg = "gauge"
-        ElseIf charttype = "Sankey" Then
-            chartpckg = "sankey"
-        Else
-            chartpckg = "corechart"
-        End If
+        chartpckg = ChartPackageForType(charttype)
         Session("arr") = ""
         arr = "['Mushrooms', 2],"
         arr = arr & "['Onions', 2],"
@@ -100,6 +90,8 @@ Partial Class ChartGoogle
         ElseIf Session("ChartType") IsNot Nothing AndAlso Session("ChartType").ToString.Trim <> "" Then
             DropDownChartType.Text = Session("ChartType")
         End If
+        charttype = DropDownChartType.Text
+        chartpckg = ChartPackageForType(charttype)
         If nv < 8 Then
             Value_chart_div.Visible = False
             Sum_chart_div.Visible = False
@@ -132,6 +124,7 @@ Partial Class ChartGoogle
 
     Private Sub ChartGoogle_Load(sender As Object, e As EventArgs) Handles Me.Load
         charttype = DropDownChartType.SelectedItem.Text
+        chartpckg = ChartPackageForType(charttype)
         Session("ChartType") = charttype
         Dim repid As String = String.Empty
         If Request("Report") Is Nothing OrElse Request("Report").ToString.Trim = "" Then
@@ -362,6 +355,25 @@ Partial Class ChartGoogle
 
     End Sub
 
+    Private Function ChartPackageForType(chartTypeText As String) As String
+        If chartTypeText = "MapChart" OrElse chartTypeText = "Map" Then
+            Return "Map"
+        ElseIf chartTypeText = "GeoChart" Then
+            Return "geochart"
+        ElseIf chartTypeText = "Gauge" Then
+            Return "gauge"
+        ElseIf chartTypeText = "Sankey" Then
+            Return "sankey"
+        End If
+        Return "corechart"
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function LogDashboardChartCaptureStatusForExport(sectionName As String, statusText As String) As String
+        If HttpContext.Current Is Nothing OrElse HttpContext.Current.Session Is Nothing Then Return "no-session"
+        Return DashboardUploadStatus(HttpContext.Current.Session, sectionName, statusText)
+    End Function
+
     Private Sub RegisterChartGoogleExportSnapshot(repid As String)
         If Session Is Nothing Then Exit Sub
         If repid Is Nothing OrElse repid.Trim() = "" Then Exit Sub
@@ -371,29 +383,35 @@ Partial Class ChartGoogle
             Dim labelText As String = ChartGoogleLabelText()
             Dim signature As String = ChartGoogleSnapshotSignature(labelText)
             Dim snapshots As DataTable = AnalysisExportSnapshot.SnapshotTable(Session)
+            Dim dataSnapshotExists As Boolean = False
             For Each row As DataRow In snapshots.Rows
-                If snapshots.Columns.Contains("Signature") AndAlso String.Equals(row("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Exit Sub
+                If snapshots.Columns.Contains("Signature") AndAlso String.Equals(row("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then
+                    dataSnapshotExists = True
+                    Exit For
+                End If
             Next
 
             Dim folderPath As String = ChartGoogleSnapshotFolder()
             If folderPath.Trim() = "" Then Exit Sub
             Directory.CreateDirectory(folderPath)
 
-            Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
-            Dim fileName As String = SafeFilePartLocal("ChartDashboardData_" & repid & "_" & stamp) & ".html"
-            Dim filePath As String = Path.Combine(folderPath, fileName)
-            File.WriteAllText(filePath, BuildChartGoogleSnapshotHtml(labelText), Encoding.UTF8)
+            If Not dataSnapshotExists Then
+                Dim stamp As String = DateTime.Now.ToString("yyyyMMddHHmmssfff")
+                Dim fileName As String = SafeFilePartLocal("ChartDashboardData_" & repid & "_" & stamp) & ".html"
+                Dim filePath As String = Path.Combine(folderPath, fileName)
+                File.WriteAllText(filePath, BuildChartGoogleSnapshotHtml(labelText), Encoding.UTF8)
 
-            Dim snapshotRow As DataRow = snapshots.NewRow()
-            snapshotRow("Key") = "ChartGoogle_" & stamp
-            snapshotRow("Included") = True
-            snapshotRow("Package Item") = "Chart Dashboard Data File - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-            snapshotRow("Label Above Grid") = labelText
-            snapshotRow("File") = fileName
-            snapshotRow("Description") = "Separate HTML export created from ChartGoogle dashboard chart-ready data and page selections."
-            snapshotRow("FullPath") = filePath
-            If snapshots.Columns.Contains("Signature") Then snapshotRow("Signature") = signature
-            snapshots.Rows.Add(snapshotRow)
+                Dim snapshotRow As DataRow = snapshots.NewRow()
+                snapshotRow("Key") = "ChartGoogle_" & stamp
+                snapshotRow("Included") = True
+                snapshotRow("Package Item") = "Chart Dashboard Data File - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                snapshotRow("Label Above Grid") = labelText
+                snapshotRow("File") = fileName
+                snapshotRow("Description") = "Separate HTML export created from ChartGoogle dashboard chart-ready data and page selections."
+                snapshotRow("FullPath") = filePath
+                If snapshots.Columns.Contains("Signature") Then snapshotRow("Signature") = signature
+                snapshots.Rows.Add(snapshotRow)
+            End If
         Catch ex As Exception
             If Not ex.Message.StartsWith("Thread ") Then LabelError.Text = "ERROR!! " & ex.Message
         End Try
@@ -459,18 +477,17 @@ Partial Class ChartGoogle
 
     <WebMethod(EnableSession:=True)>
     Public Shared Function SaveDashboardChartImageChunkForExport(sectionName As String, titleText As String, chartTypeText As String, imageHeader As String, chunkText As String, chunkIndex As Integer, totalChunks As Integer) As String
-        If HttpContext.Current Is Nothing OrElse HttpContext.Current.Session Is Nothing Then Return ""
-        If imageHeader Is Nothing OrElse Not imageHeader.StartsWith("data:image", StringComparison.OrdinalIgnoreCase) Then Return ""
-        If sectionName Is Nothing OrElse sectionName.Trim() = "" Then Return ""
+        If HttpContext.Current Is Nothing OrElse HttpContext.Current.Session Is Nothing Then Return "no-session"
+        Dim session = HttpContext.Current.Session
+        If imageHeader Is Nothing OrElse Not imageHeader.StartsWith("data:image", StringComparison.OrdinalIgnoreCase) Then Return DashboardUploadStatus(session, sectionName, "invalid-image-header")
+        If sectionName Is Nothing OrElse sectionName.Trim() = "" Then Return DashboardUploadStatus(session, sectionName, "blank-section")
         If chunkText Is Nothing Then chunkText = ""
-        If totalChunks <= 0 OrElse chunkIndex < 0 OrElse chunkIndex >= totalChunks Then Return ""
+        If totalChunks <= 0 OrElse chunkIndex < 0 OrElse chunkIndex >= totalChunks Then Return DashboardUploadStatus(session, sectionName, "invalid-chunk-index")
 
         Try
-            Dim session = HttpContext.Current.Session
-            Dim chartData As String = DashboardChartArrayForSection(session, sectionName)
-            If chartData.Trim() = "" Then Return ""
-
             Dim labelText As String = ChartGoogleLabelTextShared(session)
+            Dim chartData As String = DashboardChartArrayForSection(session, sectionName)
+            If chartData.Trim() = "" Then chartData = "Dashboard image only: " & sectionName.Trim() & ". " & FieldTextLocalShared(titleText)
             Dim uploadKey As String = ChartGoogleSnapshotSignatureShared("imageUpload", sectionName, titleText, labelText, chartData)
             Dim chunksKey As String = "ChartGoogleDashboardImageChunks_" & uploadKey
             Dim receivedKey As String = "ChartGoogleDashboardImageReceived_" & uploadKey
@@ -503,29 +520,30 @@ Partial Class ChartGoogle
             Dim result As String = SaveDashboardChartImageForExport(session, sectionName, titleText, chartTypeText, imageHeader & sb.ToString(), chartData, labelText)
             session.Remove(chunksKey)
             session.Remove(receivedKey)
+            DashboardUploadStatus(session, sectionName, result)
             Return result
-        Catch
-            Return ""
+        Catch ex As Exception
+            Return DashboardUploadStatus(session, sectionName, "exception: " & ex.Message)
         End Try
     End Function
 
     Private Shared Function SaveDashboardChartImageForExport(session As HttpSessionState, sectionName As String, titleText As String, chartTypeTextFromPage As String, imageData As String, chartData As String, labelText As String) As String
         Try
             Dim commaIndex As Integer = imageData.IndexOf(","c)
-            If commaIndex < 0 OrElse commaIndex >= imageData.Length - 1 Then Return ""
+            If commaIndex < 0 OrElse commaIndex >= imageData.Length - 1 Then Return DashboardUploadStatus(session, sectionName, "invalid-image-data")
 
             Dim base64Text As String = imageData.Substring(commaIndex + 1)
             Dim imageBytes() As Byte = Convert.FromBase64String(base64Text)
-            If imageBytes.Length = 0 Then Return ""
+            If imageBytes.Length = 0 Then Return DashboardUploadStatus(session, sectionName, "empty-image-bytes")
 
             Dim signature As String = ChartGoogleSnapshotSignatureShared("image", sectionName, titleText, labelText, chartData)
             Dim snapshots As DataTable = AnalysisExportSnapshot.SnapshotTable(session)
             For Each row As DataRow In snapshots.Rows
-                If snapshots.Columns.Contains("Signature") AndAlso String.Equals(row("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Return "exists"
+                If snapshots.Columns.Contains("Signature") AndAlso String.Equals(row("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Return DashboardUploadStatus(session, sectionName, "exists")
             Next
 
             Dim folderPath As String = ChartGoogleSnapshotFolderShared(session)
-            If folderPath.Trim() = "" Then Return ""
+            If folderPath.Trim() = "" Then Return DashboardUploadStatus(session, sectionName, "blank-folder")
             Directory.CreateDirectory(folderPath)
 
             Dim chartTypeText As String = FieldTextLocalShared(chartTypeTextFromPage)
@@ -546,9 +564,10 @@ Partial Class ChartGoogle
             snapshotRow("FullPath") = filePath
             If snapshots.Columns.Contains("Signature") Then snapshotRow("Signature") = signature
             snapshots.Rows.Add(snapshotRow)
-            Return "saved"
-        Catch
-            Return ""
+            If chartData.StartsWith("Dashboard image only:", StringComparison.OrdinalIgnoreCase) Then Return DashboardUploadStatus(session, sectionName, "blank-data-but-saved")
+            Return DashboardUploadStatus(session, sectionName, "saved")
+        Catch ex As Exception
+            Return DashboardUploadStatus(session, sectionName, "exception: " & ex.Message)
         End Try
     End Function
 
@@ -627,6 +646,26 @@ Partial Class ChartGoogle
 
     Private Function ChartGoogleSnapshotFolder() As String
         Return ChartGoogleSnapshotFolderShared(Session)
+    End Function
+
+    Private Shared Function DashboardUploadStatus(session As HttpSessionState, sectionName As String, statusText As String) As String
+        Try
+            If session Is Nothing Then Return statusText
+            Dim folderPath As String = ChartGoogleSnapshotFolderShared(session)
+            If folderPath.Trim() <> "" Then
+                Directory.CreateDirectory(folderPath)
+                Dim logPath As String = Path.Combine(folderPath, "ChartGoogleDashboardUploadLog.txt")
+                Dim lineText As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") &
+                    " | " & FieldTextLocalShared(sectionName) &
+                    " | " & FieldTextLocalShared(statusText) &
+                    " | Report=" & FieldTextLocalShared(session("REPORTID")) &
+                    " | ChartType=" & FieldTextLocalShared(session("ChartType")) &
+                    Environment.NewLine
+                File.AppendAllText(logPath, lineText, Encoding.UTF8)
+            End If
+        Catch
+        End Try
+        Return statusText
     End Function
 
     Private Shared Function ChartGoogleSnapshotFolderShared(session As HttpSessionState) As String

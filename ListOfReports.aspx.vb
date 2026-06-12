@@ -43,6 +43,8 @@ Partial Class ListOfReports
         Session("dv3") = Nothing
         Session("dtb") = Nothing
         Session("dbstats") = Nothing
+        AnalysisExportSnapshot.Cleanup(Session)
+        Session("ExportPackageTable") = Nothing
         Session("RepTablesCount") = 0
         Session("RepTable") = Nothing
         Session("ParamNames") = Nothing

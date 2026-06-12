@@ -55,8 +55,8 @@
         // Instantiate and draw the chart for Count.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Count_chart_div'));
          
-        chart.draw(data, options);
         captureDashboardChartImage(chart, 'Count', '<%=ttlCount%>');
+        chart.draw(data, options);
         }
 
 
@@ -76,8 +76,8 @@
                        height:300};
         // Instantiate and draw the chart for Distinct Count.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('DistCount_chart_div'));
-        chart.draw(data, options);
         captureDashboardChartImage(chart, 'Distinct Count', '<%=ttlDistCount%>');
+        chart.draw(data, options);
         }
 
 
@@ -97,8 +97,8 @@
                        height:300};
         // Instantiate and draw the chart for Value.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Value_chart_div'));
-        chart.draw(data, options);
         captureDashboardChartImage(chart, 'Value', '<%=ttlValue%>');
+        chart.draw(data, options);
         }
 
 
@@ -119,8 +119,8 @@
                        height:300};
         // Instantiate and draw the chart for Sum.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Sum_chart_div'));
-        chart.draw(data, options);
         captureDashboardChartImage(chart, 'Sum', '<%=ttlSum%>');
+        chart.draw(data, options);
         }
 
 
@@ -141,8 +141,8 @@
                        height:300};
         // Instantiate and draw the chart for Avg.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Avg_chart_div'));
-        chart.draw(data, options);
         captureDashboardChartImage(chart, 'Average', '<%=ttlAvg%>');
+        chart.draw(data, options);
         }
 
 
@@ -163,8 +163,8 @@
                        height:300};
         // Instantiate and draw the chart for StDev.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('StDev_chart_div'));
-        chart.draw(data, options);
         captureDashboardChartImage(chart, 'Standard Deviation', '<%=ttlStDev%>');
+        chart.draw(data, options);
         }
 
 
@@ -185,8 +185,8 @@
                        height:300};
         // Instantiate and draw the chart for Max.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Max_chart_div'));
-        chart.draw(data, options);
         captureDashboardChartImage(chart, 'Maximum', '<%=ttlMax%>');
+        chart.draw(data, options);
         }
 
 
@@ -207,8 +207,8 @@
                        height:300};
         // Instantiate and draw the chart for Min.
         var chart = new google.visualization.<%=charttype%>(document.getElementById('Min_chart_div'));
-        chart.draw(data, options);
         captureDashboardChartImage(chart, 'Minimum', '<%=ttlMin%>');
+        chart.draw(data, options);
         }
 
 
@@ -265,43 +265,100 @@
       }
 
       var chartGoogleDashboardImagesSaved = {};
+      var chartGoogleDashboardImagesQueued = {};
+      var chartGoogleDashboardImageAttempts = {};
 
-      function captureDashboardChartImage(chart, sectionName, titleText) {
+      function dashboardImageKey(sectionName, titleText) {
+          return String(chrt || '') + '|' + String(sectionName || '') + '|' + String(titleText || '');
+      }
+
+      function logDashboardCaptureStatus(sectionName, statusText) {
           try {
-              if (!chart || typeof chart.getImageURI !== 'function' || typeof PageMethods === 'undefined') {
-                  return;
+              if (typeof PageMethods !== 'undefined' && PageMethods.LogDashboardChartCaptureStatusForExport) {
+                  PageMethods.LogDashboardChartCaptureStatusForExport(sectionName, statusText, function () { }, function () { });
               }
-              if (chartGoogleDashboardImagesSaved[sectionName]) {
-                  return;
-              }
-              var capture = function () {
-                  try {
-                      if (chartGoogleDashboardImagesSaved[sectionName]) {
-                          return;
-                      }
-                      var imageUri = chart.getImageURI();
-                      if (imageUri && imageUri.indexOf('data:image') === 0) {
-                          chartGoogleDashboardImagesSaved[sectionName] = true;
-                          uploadDashboardChartImage(sectionName, titleText, imageUri);
-                      }
-                  }
-                  catch (e) {
-                  }
-              };
-              if (google.visualization.events) {
-                  google.visualization.events.addListener(chart, 'ready', capture);
-              }
-              window.setTimeout(capture, 1500);
           }
           catch (e) {
           }
       }
 
-      function uploadDashboardChartImage(sectionName, titleText, imageUri) {
+      function captureDashboardChartImage(chart, sectionName, titleText) {
           try {
+              if (!chart || typeof chart.getImageURI !== 'function' || typeof PageMethods === 'undefined') {
+                  logDashboardCaptureStatus(sectionName, 'getImageURI-not-available');
+                  return;
+              }
+              var imageKey = dashboardImageKey(sectionName, titleText);
+              if (chartGoogleDashboardImagesSaved[imageKey] || chartGoogleDashboardImagesQueued[imageKey]) {
+                  return;
+              }
+              if (typeof chartGoogleDashboardImageAttempts[imageKey] === 'undefined') {
+                  chartGoogleDashboardImageAttempts[imageKey] = 0;
+              }
+              var capture = function () {
+                  try {
+                      if (chartGoogleDashboardImagesSaved[imageKey] || chartGoogleDashboardImagesQueued[imageKey]) {
+                          return;
+                      }
+                      chartGoogleDashboardImageAttempts[imageKey] = (chartGoogleDashboardImageAttempts[imageKey] || 0) + 1;
+                      var imageUri = chart.getImageURI();
+                      if (imageUri && imageUri.indexOf('data:image') === 0) {
+                          enqueueDashboardChartImage(chart, sectionName, titleText, imageUri, imageKey);
+                      } else if (chartGoogleDashboardImageAttempts[imageKey] < 15) {
+                          window.setTimeout(capture, 2000);
+                      } else {
+                          logDashboardCaptureStatus(sectionName, 'image-uri-empty-after-retry');
+                      }
+                  }
+                  catch (e) {
+                      if ((chartGoogleDashboardImageAttempts[imageKey] || 0) < 15) {
+                          window.setTimeout(capture, 2000);
+                      } else {
+                          logDashboardCaptureStatus(sectionName, 'capture-exception: ' + e.message);
+                      }
+                  }
+              };
+              if (google.visualization.events) {
+                  google.visualization.events.addListener(chart, 'ready', capture);
+              }
+              window.setTimeout(capture, 1000);
+          }
+          catch (e) {
+          }
+      }
+
+      function enqueueDashboardChartImage(chart, sectionName, titleText, imageUri, imageKey) {
+          if (chartGoogleDashboardImagesSaved[imageKey] || chartGoogleDashboardImagesQueued[imageKey]) {
+              return;
+          }
+          chartGoogleDashboardImagesQueued[imageKey] = true;
+          var item = {
+              chart: chart,
+              sectionName: sectionName,
+              titleText: titleText,
+              imageUri: imageUri,
+              imageKey: imageKey
+          };
+          uploadDashboardChartImage(item, function (saved) {
+              chartGoogleDashboardImagesQueued[item.imageKey] = false;
+              chartGoogleDashboardImagesSaved[item.imageKey] = saved;
+              if (!saved) {
+                  chartGoogleDashboardImageAttempts[item.imageKey] = (chartGoogleDashboardImageAttempts[item.imageKey] || 0) + 1;
+                  if (chartGoogleDashboardImageAttempts[item.imageKey] <= 15) {
+                      window.setTimeout(function () { captureDashboardChartImage(item.chart, item.sectionName, item.titleText); }, 2000);
+                  } else {
+                      logDashboardCaptureStatus(item.sectionName, 'upload-failed-after-retry');
+                  }
+              }
+          });
+      }
+
+      function uploadDashboardChartImage(item, done) {
+          try {
+              var imageUri = item.imageUri;
               var commaIndex = imageUri.indexOf(',');
               if (commaIndex < 0) {
-                  chartGoogleDashboardImagesSaved[sectionName] = false;
+                  done(false);
                   return;
               }
               var header = imageUri.substring(0, commaIndex + 1);
@@ -309,31 +366,33 @@
               var chunkSize = 24000;
               var totalChunks = Math.ceil(data.length / chunkSize);
               if (totalChunks < 1) {
-                  chartGoogleDashboardImagesSaved[sectionName] = false;
+                  done(false);
                   return;
               }
-              uploadDashboardChartImageChunk(sectionName, titleText, header, data, chunkSize, totalChunks, 0, chrt);
+              uploadDashboardChartImageChunk(item, header, data, chunkSize, totalChunks, 0, chrt, done);
           }
           catch (e) {
-              chartGoogleDashboardImagesSaved[sectionName] = false;
+              done(false);
           }
       }
 
-      function uploadDashboardChartImageChunk(sectionName, titleText, header, data, chunkSize, totalChunks, chunkIndex, chartTypeText) {
+      function uploadDashboardChartImageChunk(item, header, data, chunkSize, totalChunks, chunkIndex, chartTypeText, done) {
           try {
               var chunkText = data.substring(chunkIndex * chunkSize, Math.min(data.length, (chunkIndex + 1) * chunkSize));
-              PageMethods.SaveDashboardChartImageChunkForExport(sectionName, titleText, chartTypeText, header, chunkText, chunkIndex, totalChunks,
-                  function () {
+              PageMethods.SaveDashboardChartImageChunkForExport(item.sectionName, item.titleText, chartTypeText, header, chunkText, chunkIndex, totalChunks,
+                  function (result) {
                       if (chunkIndex + 1 < totalChunks) {
-                          uploadDashboardChartImageChunk(sectionName, titleText, header, data, chunkSize, totalChunks, chunkIndex + 1, chartTypeText);
+                          uploadDashboardChartImageChunk(item, header, data, chunkSize, totalChunks, chunkIndex + 1, chartTypeText, done);
+                      } else {
+                          done(result === 'saved' || result === 'exists' || result === 'blank-data-but-saved');
                       }
                   },
                   function () {
-                      chartGoogleDashboardImagesSaved[sectionName] = false;
+                      done(false);
                   });
           }
           catch (e) {
-              chartGoogleDashboardImagesSaved[sectionName] = false;
+              done(false);
           }
       }
     </script>

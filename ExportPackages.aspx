@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ExportPackages.aspx.vb" Inherits="ExportPackages" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ExportPackages.aspx.vb" Inherits="ExportPackages" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -124,7 +124,12 @@
                                 <tr><td><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Export as zipped folder" Width="170px" OnClientClick="showExportWaiting();" ToolTip="Export all checked existing files from the grid into one ZIP file and download it. Unchecked files are left out of the ZIP package." /><asp:Button ID="ButtonExportPdf" runat="server" CssClass="ticketbutton" Text="Export as PDF document(s)" Width="190px" OnClientClick="showExportWaiting();" ToolTip="Export checked analytical outputs as PDF. RDL files and raw data files are skipped; grid snapshots are shown as readable tables. If checked PDF files are involved and Ghostscript is not available to render their pages into the main PDF, a ZIP file is downloaded instead containing the main PDF plus those separate PDF files." /></td></tr>
                             </table>
                             <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
-                            <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br />
+                            <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br />
+                            <br />
+                            <asp:LinkButton ID="LinkCheckAll" runat="server" CssClass="NodeStyle" Font-Names="Arial" Font-Size="Small" ToolTip="Check all package rows for export.">check all</asp:LinkButton>
+                            &nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="LinkUncheckAll" runat="server" CssClass="NodeStyle" Font-Names="Arial" Font-Size="Small" ToolTip="Uncheck all package rows for export.">uncheck all</asp:LinkButton>
+                            <br />
                             <div style="overflow:auto; max-width:100%;">
                                 <asp:GridView ID="GridViewPackage" runat="server" CssClass="analysisgrid" AutoGenerateColumns="False" GridLines="Both">
                                     <Columns>
