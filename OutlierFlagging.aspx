@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="OutlierFlagging.aspx.vb" Inherits="OutlierFlagging" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="OutlierFlagging.aspx.vb" Inherits="OutlierFlagging" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -125,6 +125,7 @@
                                             <asp:TreeNode Text="Funnel Analysis" Value="Funnel.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
@@ -156,7 +157,7 @@
                             <br /><br />
                             <div style="text-align:center;"><asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Outlier Flagging</asp:Label>
             <asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Flag outliers using standard deviation, percentage difference, or configurable business-rule thresholds."></asp:Label></div>
-<span class="analysisRecommendation">Work Flow suggested: review the complete results in <a class="NodeStyle" href="DataQuality.aspx">Data Quality</a> and <a class="NodeStyle" href="Regression.aspx">Regression Analysis</a>.</span>
+<span class="analysisRecommendation">Work Flow suggested: review the complete results in <a class="NodeStyle" href="DataQuality.aspx">Data Quality</a>, <a class="NodeStyle" href="AnomalyScoring.aspx">Anomaly Scoring</a>, and <a class="NodeStyle" href="Regression.aspx">Regression Analysis</a>.</span>
 <br />
 <table class="controlpanel" cellpadding="4" cellspacing="0">
                                 <tr>
@@ -223,4 +224,3 @@
     </script>
 </body>
 </html>
-

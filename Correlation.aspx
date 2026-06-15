@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="Correlation.aspx.vb" Inherits="Correlation" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="Correlation.aspx.vb" Inherits="Correlation" %>
 
 <!DOCTYPE html>
 
@@ -58,7 +58,7 @@
     text-decoration:underline;
     color:darkblue;
 }
-.ticketbutton 
+.ticketbutton
 {
   width: 80px;
   height: 25px;
@@ -73,7 +73,7 @@
 
   padding: 3px;
   margin:5px;
-  z-index: 9999; 
+  z-index: 9999;
 }
         .analysisRecommendation { display:block; font-family:Arial; font-size:small; font-weight:bold; color:red; padding-top:4px; }
         .analysisRecommendation a { font-weight:bold; }
@@ -81,7 +81,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />      
+    <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
     <asp:UpdatePanel ID="udpTablesList" runat ="server" >
        <ContentTemplate>
             <div>
@@ -90,7 +90,7 @@
           <td colspan="3" style="font-size:x-large; font-style:normal; font-weight:bold; background-color: #e5e5e5; vertical-align:middle; text-align: left; height: 40px;">
               <asp:Label ID="LabelPageTtl" runat="server" Text="Online User Reporting"></asp:Label>
           </td>
-      </tr> 
+      </tr>
         <tr>
             <td style="font-size: x-small; font-style: normal; font-weight: normal; background-color: #e5e5e5; vertical-align: top; text-align: left; width: 15%;">
                     <div id="tree" style="font-size: x-small; font-weight: normal; font-style: normal">
@@ -159,6 +159,7 @@
                                             <asp:TreeNode Text="Funnel Analysis" Value="Funnel.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
@@ -183,36 +184,36 @@
     </div>
             </td>
             <td width="5px"></td>
-   <td id="main" style="width: 85%; text-align: left; vertical-align: top"> 
+   <td id="main" style="width: 85%; text-align: left; vertical-align: top">
     <div style="text-align: center;width:100%;">
     <div style="text-align: center;">
       <%--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
            <asp:HyperLink ID="HyperLinkListOfReports" runat="server" NavigateUrl="~/ListOfReports.aspx" Enabled="True" Visible="True" CssClass="NodeStyle" Font-Names="Arial">List of Reports</asp:HyperLink>
-          --%>  
-           <asp:LinkButton ID="LinkButtonRefresh" runat="server" CssClass="NodeStyle" Font-Names="Arial" ToolTip="May take a long time...">Recalculate Correlations</asp:LinkButton> 
-     
+          --%>
+           <asp:LinkButton ID="LinkButtonRefresh" runat="server" CssClass="NodeStyle" Font-Names="Arial" ToolTip="May take a long time...">Recalculate Correlations</asp:LinkButton>
+
         &nbsp;&nbsp;<%--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
         <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/FriendlyNames.aspx" CssClass="NodeStyle" Font-Names="Arial" Enabled="False" Visible="False">FriendlyNames</asp:HyperLink>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        
-        &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; 
+
+        &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
         <asp:HyperLink ID="HyperLinkDataAI" runat="server" NavigateUrl="~/DataAI.aspx?pg=cor" CssClass="NodeStyle" Font-Names="Arial" Font-Size="12px" Visible="True" ToolTip="DataAI analytics" Font-Bold="False">DataAI</asp:HyperLink>
-    
+
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLinkCorrelationThreshold" runat="server" NavigateUrl="~/CorrelationThreshold.aspx" CssClass="NodeStyle" Font-Names="Arial" Font-Size="12px" Visible="True" ToolTip="Correlation threshold filters and specialized correlation views" Font-Bold="False">Correlation Threshold</asp:HyperLink>
 
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:LinkButton  ID="lnkDataAI" runat="server" Font-Size="Small" Visible="False">DataAI</asp:LinkButton>       
-        
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; 
+        <asp:LinkButton  ID="lnkDataAI" runat="server" Font-Size="Small" Visible="False">DataAI</asp:LinkButton>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
         <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Fields%20Correlation" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>&nbsp;&nbsp;
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-       <%-- <asp:LinkButton ID="LinkButtonHelpDesk" runat="server" OnClientClick="target='_blank'" CssClass="NodeStyle" Font-Names="Arial">Report a problem</asp:LinkButton> 
+       <%-- <asp:LinkButton ID="LinkButtonHelpDesk" runat="server" OnClientClick="target='_blank'" CssClass="NodeStyle" Font-Names="Arial">Report a problem</asp:LinkButton>
          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
        <%-- !! DO NOT DELETE, NEXT LINE IS FOR TESTING ON SITE ONLY !! Comment it for production: --%>
-        <%--<asp:HyperLink ID="HyperLinkTestHelp" runat="server" NavigateUrl="~/HelpDesk.aspx" visible="False" CssClass="NodeStyle" Font-Names="Arial">Test to report a problem </asp:HyperLink>--%>  
+        <%--<asp:HyperLink ID="HyperLinkTestHelp" runat="server" NavigateUrl="~/HelpDesk.aspx" visible="False" CssClass="NodeStyle" Font-Names="Arial">Test to report a problem </asp:HyperLink>--%>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>            
-        
+        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
+
     <table border="0" cellpadding="1" cellspacing="0" width="100%">
      <%--<tr id="trDB" runat ="server" visible ="false">
        <td align="center" valign="top">
@@ -232,18 +233,18 @@
      <tr>
        <td align="center" valign="top">
         <table border="0" cellpadding="0" cellspacing="5" width="50%">
-            
+
         </table>
        </td>
      <tr>
        <td align="center" valign="top">
-         
+
          <asp:Label ID="lblHeader" runat="server"  Font-Size="22px" Font-Names="Arial" >Analytics:</asp:Label>
          <span class="analysisRecommendation">Work Flow suggested: review stronger relationships in <a class="NodeStyle" href="CorrelationThreshold.aspx">Correlation Threshold</a>.</span>
 
        </td>
       </tr>
-      
+
         <tr>
             <td align="left" style="font-weight: normal; color: #ffffff; font-family: Arial; background-color: LightGray; font-size:small;" class="auto-style1">
                         <asp:Label ID="Label2" runat="server" ForeColor="Black" Text="Search:"></asp:Label>
@@ -256,7 +257,7 @@
                         <asp:Label ID="lblRecordsCount" runat="server" Text=" " ForeColor="Black"></asp:Label>
 
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp
-                        &nbsp;&nbsp;&nbsp;&nbsp;<asp:LinkButton ID="lnkExport" runat="server" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Export to CSV file. May take a long time...">Export to Excel</asp:LinkButton></td> 
+                        &nbsp;&nbsp;&nbsp;&nbsp;<asp:LinkButton ID="lnkExport" runat="server" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Export to CSV file. May take a long time...">Export to Excel</asp:LinkButton></td>
 
              </td>
         </tr>
@@ -268,23 +269,23 @@
                     <td class="auto-style3"  style="font-weight:bold">Field 2</td>
                     <td class="auto-style1" style="font-weight:bold">Correlation Coefficient</td>
                     <td class="auto-style1" style="font-weight:bold">RDL</td>
-                    <td class="auto-style1" style="font-weight:bold">Charts</td>   
-                    <td class="auto-style1" style="font-weight:bold">Dashboard</td> 
+                    <td class="auto-style1" style="font-weight:bold">Charts</td>
+                    <td class="auto-style1" style="font-weight:bold">Dashboard</td>
                     <%--<td class="auto-style1" style="font-weight:bold">Pie Chart</td>--%>
-                    <%--<td class="auto-style1" style="font-weight:bold">Line Chart</td>      --%>              
+                    <%--<td class="auto-style1" style="font-weight:bold">Line Chart</td>      --%>
                     <%--<td class="auto-style1" style="font-weight:bold">Data records</td>--%>
                     <%--<td class="auto-style2" style="font-weight:bold">Delete </td>   --%>
-                </tr>           
-             </table> 
+                </tr>
+             </table>
             </td>
         </tr>
-    </table>       
-            
+    </table>
+
         <br />
          <div align="left" backcolor="Gray"  style="background-color: lightgray; font-family: Arial, Helvetica, sans-serif; font-size: medium; font-weight: bold; color: #FFFFFF;">
                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                  </div>
-        
+
         <asp:Label ID="Label1" runat="server" Font-Size="Larger" ForeColor="Maroon"> </asp:Label>
         <br />
         <br />
@@ -302,7 +303,7 @@
         <ucMsgBox:Msgbox id="MessageBox" runat ="server" > </ucMsgBox:Msgbox>
         <ucDlgTextbox:DlgTextbox id="dlgTextbox" runat="server" />
       </ContentTemplate>
-      </asp:UpdatePanel>   
+      </asp:UpdatePanel>
         <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="udpTablesList">
                 <ProgressTemplate >
                 <div class="modal">
@@ -312,10 +313,7 @@
                    </div>
                 </div>
                 </ProgressTemplate>
-        </asp:UpdateProgress>     
+        </asp:UpdateProgress>
     </form>
 </body>
 </html>
-
-
-

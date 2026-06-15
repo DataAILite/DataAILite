@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="RDLformat.aspx.vb" Inherits="RDLformat" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="RDLformat.aspx.vb" Inherits="RDLformat" %>
 
 <script type="text/javascript" src="Controls/Javascripts/OUR.js"></script>
 <script type="text/javascript" src="Controls/Javascripts/ReportDesignMenu.js"></script>
@@ -35,7 +35,7 @@
             width: 100%;
             height: 30px;
             font-weight: bold;
-            color: White; 
+            color: White;
             font-family: Arial;
             background-color: #C0C0C0;
             font-size: medium;
@@ -80,7 +80,7 @@
              font-weight: bold;
              font-size: small;
              color: white;
-             font-family: Arial; 
+             font-family: Arial;
              background-color: #C0C0C0;
         }
         .auto-style20 {
@@ -173,11 +173,11 @@
     width: 100px;
 }
 
-.auto-style85 
+.auto-style85
 {
     width: 407px;
 }
-.auto-style86 
+.auto-style86
 {
     width: 100%;
     height: 23px;
@@ -194,7 +194,7 @@
     text-decoration:underline;
     color:darkblue;
         }
-.ticketbutton 
+.ticketbutton
 {
   width: 30px;
   height: 25px;
@@ -209,7 +209,7 @@
 
   padding: 3px;
   margin:5px;
-  z-index: 9999; 
+  z-index: 9999;
 }
         </style>
 </head>
@@ -225,7 +225,7 @@
           <td colspan="3" style="font-size:x-large; font-style:normal; font-weight:bold; background-color: #e5e5e5; vertical-align:middle; text-align: left; height: 40px;">
               <asp:Label ID="LabelPageTtl" runat="server" Text="Online User Reporting"></asp:Label>
           </td>
-      </tr> 
+      </tr>
         <tr>
         <td style="font-size: x-small; font-style: normal; font-weight: normal; background-color: #e5e5e5; vertical-align: top; text-align: left; width: 15%;">
            <div id="tree">
@@ -292,6 +292,7 @@
                                             <asp:TreeNode Text="Funnel Analysis" Value="Funnel.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
@@ -313,11 +314,11 @@
        <NodeStyle CssClass="NodeStyle" />
        <ParentNodeStyle Font-Bold="True" />
      </asp:TreeView>
-    
+
     </div>
     </td>
   <td style="width: 5px"></td>
-  <td id="main" style="width: 85%; text-align: left; vertical-align: top"> 
+  <td id="main" style="width: 85%; text-align: left; vertical-align: top">
                 <table id="tblTitle" style="width:100%; font-family: Arial;">
                   <tr>
                     <td style="width:61%;text-align:right">
@@ -329,24 +330,24 @@
                        <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/ListOfReports.aspx" Visible="false" CssClass="NodeStyle" Font-Size="12px">List of reports</asp:HyperLink>
                     </td>
 <%--                    <td style="width:13%;text-align:center;">
-                      <asp:HyperLink ID="HyperLink6" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" ToolTip="Run Report" CssClass="NodeStyle" Font-Size="12px" Visible="False" Enabled="False">Show report data</asp:HyperLink>    
+                      <asp:HyperLink ID="HyperLink6" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" ToolTip="Run Report" CssClass="NodeStyle" Font-Size="12px" Visible="False" Enabled="False">Show report data</asp:HyperLink>
                     </td>--%>
                     <td style="width:13%;text-align:center;">
                       <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Report%20Format%20Definition" Target="_blank" CssClass="NodeStyle" Font-Size="12px">Help</asp:HyperLink>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink> 
-                    </td>                                          
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
+                    </td>
                   </tr>
-                </table> 
+                </table>
 
  <%--               <div style="width:100%; font-family: Arial; font-size: xx-small; text-align:center">
                        <asp:Label ID="lblView" runat="server" Font-Bold="True" Font-Names="Arial" Font-Size="Medium" ForeColor="#000099" Text="Column Order, Expressions"></asp:Label>
                 </div> --%>
-        <asp:HyperLink ID="HyperLink1" runat="server"  NavigateUrl="~/ReportEdit.aspx" ToolTip="Edit Report" Enabled="False" Visible="False">Edit report</asp:HyperLink> 
+        <asp:HyperLink ID="HyperLink1" runat="server"  NavigateUrl="~/ReportEdit.aspx" ToolTip="Edit Report" Enabled="False" Visible="False">Edit report</asp:HyperLink>
         <div>
         <asp:Menu ID="MenuMain" Visible="false" Width="600px" runat="server" Orientation="Horizontal"  OnMenuItemClick="MenuMain_MenuItemClick" StaticSelectedStyle-BackColor="LightGray" DynamicSelectedStyle-BackColor="LightGray"    StaticSelectedStyle-Font-Bold="true"  StaticMenuItemStyle-BackColor="#999999" BorderWidth ="0px" Height="20px">
     <Items>
         <asp:MenuItem Text="Report Data" Value="0" ToolTip="Report Query to get data from db">
-            <asp:MenuItem Text=" Data Fields" ToolTip="SELECT statement" Value="10"></asp:MenuItem>                    
+            <asp:MenuItem Text=" Data Fields" ToolTip="SELECT statement" Value="10"></asp:MenuItem>
             <asp:MenuItem Text=" Join Tables" ToolTip="JOIN statement" Value="11"></asp:MenuItem>
             <asp:MenuItem Text=" Filters " ToolTip="Filter data by defined conditions" Value="12"></asp:MenuItem>
             <asp:MenuItem Text=" Sorting" ToolTip="ORDER BY statement" Value="13"></asp:MenuItem>
@@ -357,19 +358,19 @@
             <asp:MenuItem Text=" Combine column values " ToolTip="Listing of column values" Value="22"></asp:MenuItem>
         </asp:MenuItem>
 
-        <asp:MenuItem Text=" Report Info" Value="2" ToolTip="Report Info and Report Files" ></asp:MenuItem>        
+        <asp:MenuItem Text=" Report Info" Value="2" ToolTip="Report Info and Report Files" ></asp:MenuItem>
         <asp:MenuItem Text=" Parameters " Value="3" ToolTip="Report Parameters" ></asp:MenuItem>
-        <asp:MenuItem Text=" Users " Value="4" ToolTip="Report Users" ></asp:MenuItem>        
+        <asp:MenuItem Text=" Users " Value="4" ToolTip="Report Users" ></asp:MenuItem>
     </Items>
 </asp:Menu>
-            
+
              <asp:Menu ID="Menu1" runat="server" BorderWidth="0px" DynamicSelectedStyle-BackColor="LightGray" OnMenuItemClick="Menu1_MenuItemClick" Orientation="Horizontal" StaticMenuItemStyle-BackColor="#e5e5e5" StaticSelectedStyle-BackColor="LightGray" StaticSelectedStyle-Font-Bold="true" Width="900px">
                 <Items>
                     <asp:MenuItem Text=" Column Order, Expressions" ToolTip="Columns Order, functions" Value="0"></asp:MenuItem>
                     <asp:MenuItem Text=" Groups and Totals" ToolTip="Grouping and Totals" Value="1"></asp:MenuItem>
                     <asp:MenuItem Text=" Combine column values " ToolTip="Listing of column values" Value="2"></asp:MenuItem>
-                    <asp:MenuItem Text=" Advanced report designer " ToolTip="Advanced report designer" Value="3"></asp:MenuItem> 
-                    <asp:MenuItem Text=" Map definition " ToolTip="Map designer" Value="4"></asp:MenuItem> 
+                    <asp:MenuItem Text=" Advanced report designer " ToolTip="Advanced report designer" Value="3"></asp:MenuItem>
+                    <asp:MenuItem Text=" Map definition " ToolTip="Map designer" Value="4"></asp:MenuItem>
                 </Items>
             </asp:Menu>
         <asp:MultiView ID="MultiView1" runat="server" ActiveViewIndex="0">
@@ -395,22 +396,22 @@
                                 <table id="RDLadds2" runat="server" bgcolor="#e5e5e5" border="1" rules="rows" style=" font-size: small;
                 color: black; font-family: Arial; background-color: #e5e5e5;border:medium double #FFFFFF;" width="40%">
                                     <tr valign="top">
-                                       
+
                                         <td align="left" colspan=2 class="auto-style46" style="font-weight: bold; font-size: small; color: black; font-family: Arial; background-color: #e5e5e5;border:medium double #FFFFFF;" valign="top">
-                                           
+
                                             <br />&nbsp;&nbsp;Column:&nbsp;&nbsp;&nbsp;
-                                            
+
                                             <asp:DropDownList ID="DropDownRepFields" runat="server" AutoPostBack="True" Width="300px"> </asp:DropDownList>
                                             <br />&nbsp;
-                                            <br />&nbsp;&nbsp;Friendly Name:&nbsp;&nbsp; 
-                                            
+                                            <br />&nbsp;&nbsp;Friendly Name:&nbsp;&nbsp;
+
                                             <asp:TextBox ID="TextBoxFieldFriendly" runat="server" Height="20px" Width="250px"></asp:TextBox>
-                                            <br />&nbsp; 
+                                            <br />&nbsp;
                                         </td>
                                     </tr>
-                                    
+
                                     <tr valign="top">
-                                       
+
                                         <%--<td align="left"  class="auto-style46" style="font-weight: bold; font-size: small; color: white; font-family: Arial; background-color: #999999" valign="top">--%>
                                         <td align="left"  style=" font-weight: bold; font-size: small; color:black; font-family: Arial; background-color: #e5e5e5;border:medium double #FFFFFF;" valign="top">
                                             <br />&nbsp;
@@ -425,37 +426,37 @@
                                                 <%--<asp:ListItem>Statistics</asp:ListItem>--%>
                                             </asp:DropDownList>
                                        <%-- </td>
-                                       <td align="left"  style="width:450px; font-weight: bold; font-size: small; color: white;  font-family: Arial; background-color: #999999" valign="top"> 
-                                       --%>  
-                                           <%--<br />--%> 
+                                       <td align="left"  style="width:450px; font-weight: bold; font-size: small; color: white;  font-family: Arial; background-color: #999999" valign="top">
+                                       --%>
+                                           <%--<br />--%>
                                            &nbsp;Function:&nbsp;&nbsp;
-                                            
+
                                              <asp:DropDownList ID="DropDownFunctions" runat="server" AutoPostBack="True" Width="150px">
                                             </asp:DropDownList>
                                         <%--</td>
                                         <td align="left" colspan=2 style="font-weight: bold; font-size: small; color: white; font-family: Arial; background-color: #999999; " valign="top" class="auto-style47">
-                                        --%>   
+                                        --%>
                                             <br /> <br />&nbsp;
                                             &nbsp;Expression:&nbsp;
-                                            
+
                                             <asp:TextBox ID="TextBoxExpression" runat="server" Height="20px" Width="600px" TextMode="SingleLine"></asp:TextBox>&nbsp;&nbsp;&nbsp;
                                             <br />&nbsp;
-                                        </td>                                        
+                                        </td>
                                     </tr>
 
                                     <tr>
-                                        <td align="left"  nowrap="nowrap" style="font-weight: bold; font-size: small; color: black; font-family: Arial; background-color: #e5e5e5;border:medium double #FFFFFF;" valign="top"> 
+                                        <td align="left"  nowrap="nowrap" style="font-weight: bold; font-size: small; color: black; font-family: Arial; background-color: #e5e5e5;border:medium double #FFFFFF;" valign="top">
                                             <br />&nbsp;
                                             <%--<asp:Label ID="Label21" runat="server" Text=" "></asp:Label>--%>
                                              &nbsp;<asp:CheckBox ID="chkReplaceColValue"  runat="server" Text="replace column value" ToolTip="Replace Column Value with expression or add new column with value = expression." Font-Size="X-Small" Font-Names="Arial" Font-Italic="True" ForeColor="#3333CC" />
-                                             
+
                                             &nbsp;&nbsp;
                                             <asp:Button ID="ButtonAddField" runat="server" Text="Add/Update Column" Width="171px"  CssClass="ticketbutton" />
                                            <br />&nbsp;
                                             <%-- <asp:Button ID="ButtonUpdateField" runat="server" Text="Update Column" Width="171px" CssClass="auto-style83" />--%>
                                         </td>
                                     </tr>
-                                    
+
                                 </table>
                             </td>
                         </tr>
@@ -466,7 +467,7 @@
                                                     <td>
                                                       <div class="vertical-center">
                                                         Report Columns
-                                                      </div>                                                                                                    
+                                                      </div>
                                                     </td>
                                                     <td>
                                                       <div id="divColumnMenu" runat="server"  class="ColumnMenu"  title="Set Column Order">
@@ -485,12 +486,12 @@
                         </tr>
                         <tr>
                             <td style="white-space: nowrap; text-align: left; vertical-align: text-top; height:27px; width:100%; font-size: small; color: white; font-family: Arial; background-color: #C0C0C0; ">
-                                <table id="RDLrepfields" runat="server" bgcolor="#663300" border="1" rules="rows" style=" font-size: small; color: black; font-family: Arial; background-color: #ffffff" width="100%"> 
-                                                                        
-                                    <tr>                                        
+                                <table id="RDLrepfields" runat="server" bgcolor="#663300" border="1" rules="rows" style=" font-size: small; color: black; font-family: Arial; background-color: #ffffff" width="100%">
+
+                                    <tr>
                                         <td class="ColumnHeader" style="width:20%;">
                                             Column
-                                        </td>                
+                                        </td>
                                         <td class="ColumnHeader" style="width:5%;">
                                             Delete
                                         </td>
@@ -523,7 +524,7 @@
                                         <td align="left"  style="color: #ffffff; font-family: Arial; letter-spacing: normal;">--%>
                                             <asp:Button ID="ButtonSubmit2" runat="server"  BackColor="#7CDC99" CssClass="ticketbutton" Text="Submit" Width="131px" ToolTip="Submit list of columns and update XSD and RDL" />
                                         <asp:Label ID="Label23" runat="server" Text=" "></asp:Label>&nbsp;&nbsp;&nbsp;
-                                        
+
                                         </td>
                                     </tr>
                                 </table>
@@ -544,7 +545,7 @@
                                     <asp:Label ID="Label8" runat="server" Text="Add Group" ></asp:Label>
                                     &nbsp;&nbsp;&nbsp;<asp:Label ID="LabelNoGroups" runat="server" Text=" "></asp:Label></td>
                                 <td align="left" style="color: black; font-family: Arial; letter-spacing: normal;" >
-                                   <asp:Label ID="Label3" runat="server" Text="   " Font-Underline="True"></asp:Label> </td>                                
+                                   <asp:Label ID="Label3" runat="server" Text="   " Font-Underline="True"></asp:Label> </td>
                             </tr>
                          </table>
                     </td>
@@ -552,8 +553,8 @@
                 <tr valign="top">
         <td align="left" width="100%">
             <table id="RDLadds" runat="server" bgcolor="#e5e5e5" border="1" rules="rows" style=" font-size: small;
-                color: black; font-family: Arial; background-color: #e5e5e5;border:medium double #FFFFFF;" width="30%">              
-                
+                color: black; font-family: Arial; background-color: #e5e5e5;border:medium double #FFFFFF;" width="30%">
+
                 <tr valign="top">
                     <td align="left" valign="top" nowrap="nowrap" style="font-weight: bold; font-size: small; color: black;background-color: #e5e5e5;border:medium double #FFFFFF;
                         font-family: Arial; " >
@@ -561,9 +562,9 @@
                         &nbsp;Group by the field:&nbsp;&nbsp;
                         <asp:DropDownList ID="DropDownGroupFields" runat="server" Width="290px" CssClass="auto-style12" AutoPostBack="True"></asp:DropDownList>
                         <br />&nbsp;
-                        </td>    
+                        </td>
                 </tr>
-                
+
                 <tr>
                      <td align="left"  style="font-weight: bold; font-size: small;font-family: Arial; color: black;background-color: #e5e5e5;border:medium double #FFFFFF; "
                        valign="top" class="auto-style75" >
@@ -574,7 +575,7 @@
                      </td>
                 </tr>
 
-                <tr>    
+                <tr>
                     <td align="left" style="font-weight: bold; font-size: small; color: black;background-color: #e5e5e5;border:medium double #FFFFFF;
                         font-family: Arial;" valign="top">
                         &nbsp;Totals for Column:
@@ -587,14 +588,14 @@
                 <tr>
                     <td align="left" valign="top"  nowrap="nowrap" style="font-weight: bold; font-size: small; color: black;background-color: #e5e5e5;border:medium double #FFFFFF;
                         font-family: Arial; " >
-                       <br />&nbsp; 
-                       &nbsp;&nbsp;&nbsp; <asp:Button ID="ButtonAddGroup" runat="server" Text="Add/Update Group" Width="130px"  CssClass="ticketbutton" /> 
-                        
+                       <br />&nbsp;
+                       &nbsp;&nbsp;&nbsp; <asp:Button ID="ButtonAddGroup" runat="server" Text="Add/Update Group" Width="130px"  CssClass="ticketbutton" />
+
                          <br />
                          &nbsp;<asp:Label ID="LabelSelected" runat="server" Text="Selected" Visible="False"></asp:Label>
                     </td>
                 </tr>
-                
+
                 </table>
             </td>
             </tr>
@@ -603,8 +604,8 @@
                         Groups and Totals</td>
             </tr>
             <tr><td>
-            <table id="RDLgroups" runat="server" bgcolor="#663300" border="1" rules="rows" style=" font-size: small; color: black; font-family: Arial; background-color: #ffffff" width="100%"> 
-                
+            <table id="RDLgroups" runat="server" bgcolor="#663300" border="1" rules="rows" style=" font-size: small; color: black; font-family: Arial; background-color: #ffffff" width="100%">
+
                 <tr>
                     <td class="ColumnHeader" >
                         Group By &nbsp;</td>
@@ -619,7 +620,7 @@
                     <td class="ColumnHeader"  >
                         Max</td>
                     <td class="ColumnHeader" >
-                        Min</td>                   
+                        Min</td>
                     <td class="ColumnHeader" >
                         Average</td>
                     <td class="ColumnHeader" >
@@ -641,7 +642,7 @@
                     <td class="ColumnHeader" >
                         Delete </td>
                 </tr>
-               
+
             </table>
         </td>
         </tr>
@@ -653,7 +654,7 @@
                                     <asp:Label ID="Label1" runat="server" Text="Save Groups and update report:"></asp:Label>
                                     &nbsp;&nbsp;&nbsp;<asp:Label ID="Label2" runat="server" Text=" "></asp:Label></td>
                                 <td align="left" style="color: #ffffff; font-family: Arial; letter-spacing: normal;">
-                                    <asp:Button ID="ButtonSubmit" runat="server" Text="Submit" Width="131px" ToolTip="Submit Groups and update XSD and RDL"  BackColor="#7CDC99" CssClass="ticketbutton" /></td>                                
+                                    <asp:Button ID="ButtonSubmit" runat="server" Text="Submit" Width="131px" ToolTip="Submit Groups and update XSD and RDL"  BackColor="#7CDC99" CssClass="ticketbutton" /></td>
                             </tr>
                          </table>
                     </td>
@@ -688,8 +689,8 @@
                                         <td align="left"  style="font-weight: bold; font-size: small; color: black;font-family: Arial;background-color: #e5e5e5;border:medium double #FFFFFF;">
                                             <br />&nbsp;
                                             &nbsp;For the set of columns defined by:&nbsp;&nbsp;
-                                            <asp:DropDownList ID="DropDownListRecFields" runat="server" AutoPostBack="False" Width="250px"></asp:DropDownList>                                            
-                                        </td> 
+                                            <asp:DropDownList ID="DropDownListRecFields" runat="server" AutoPostBack="False" Width="250px"></asp:DropDownList>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td align="left"  style="font-weight: bold; font-size: small; color: black;font-family: Arial;background-color: #e5e5e5;border:medium double #FFFFFF;">
@@ -711,22 +712,22 @@
                                     <tr>
                                         <td align="left"  style="font-weight: bold; font-size: small; color: black;font-family: Arial;background-color: #e5e5e5;border:medium double #FFFFFF;">
                                             <br />&nbsp;
-                                            &nbsp;Friendly Name:&nbsp; &nbsp; 
-                                            
+                                            &nbsp;Friendly Name:&nbsp; &nbsp;
+
                                             <asp:TextBox ID="TextBoxFriendlyNameField" runat="server" Height="20px" Width="370px" AutoPostBack="False"></asp:TextBox>
-                                           <br /> 
+                                           <br />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align="left"  style="font-weight: bold; font-size: small; color: black;font-family: Arial;background-color: #e5e5e5;border:medium double #FFFFFF;">
                                             <br />&nbsp;
                                             &nbsp;<asp:CheckBox ID="chkOldColumn"  runat="server" Text="replace column value" ToolTip="Replace Column value with combined values or add new column." Font-Names="Arial" Font-Italic="True" Font-Size="X-Small" ForeColor="#3333CC" />
-                                            
+
                                             &nbsp; &nbsp;&nbsp; &nbsp;<asp:Button ID="ButtonAddList" runat="server" Text="Add/Update Column" Width="140px" CssClass="ticketbutton" />
                                            <br />
                                         </td>
                                     </tr>
-                                    
+
                                 </table>
                             </td>
                         </tr>
@@ -735,16 +736,16 @@
                         </tr>
                         <tr>
                             <td align="left" bgcolor="#999999" class="auto-style19" nowrap="nowrap" style=" font-size: small; color: white; font-family: Arial; background-color: #C0C0C0; " valign="top">
-                                <table id="RDLlists" runat="server" bgcolor="#663300" border="1" rules="rows" style=" font-size: small; color: black; font-family: Arial; background-color: #ffffff" width="100%"> 
+                                <table id="RDLlists" runat="server" bgcolor="#663300" border="1" rules="rows" style=" font-size: small; color: black; font-family: Arial; background-color: #ffffff" width="100%">
                                     <tr>
                                         <td class="ColumnHeader" style="width:20%;">
                                             Column Name</td>
                                         <td class="ColumnHeader" style="width:20%;">
                                             For the set of columns defined by</td>
                                         <td class="ColumnHeader" style="width:20%;">
-                                            combine all values in the Column &nbsp;</td> 
+                                            combine all values in the Column &nbsp;</td>
                                         <td class="ColumnHeader" style="width:15%;">
-                                            Friendly Name &nbsp;</td>      
+                                            Friendly Name &nbsp;</td>
                                         <td class="ColumnHeader" style="width:25%;">
                                             Delete</td>
                                     </tr>
@@ -771,27 +772,27 @@
   <asp:View ID="Tab4" runat="server">
         <table width="100%"cellpadding=0 cellspacing=0 border="0" >
             <tr valign="top">
-                <td class="TabArea" style="width: 100%"/>             
+                <td class="TabArea" style="width: 100%"/>
             </tr>
         </table>
     </asp:View>
     <asp:View ID="Tab5" runat="server">
         <table width="100%" cellpadding=0 cellspacing=0 border="0" >
             <tr valign="top">
-                <td class="TabArea" style="width: 100%"/>             
+                <td class="TabArea" style="width: 100%"/>
             </tr>
         </table>
     </asp:View>
-       &nbsp;              
+       &nbsp;
             </asp:MultiView>
         <asp:Label ID="LabelAlert1" runat="server" Font-Bold="True" Font-Names="Arial" Font-Size="Large"
             ForeColor="Gray" Text="_________________________________________________________________________"></asp:Label>
-            
+
         </div>
 
 </td>
         </tr>
-    </table> 
+    </table>
 
         <div>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -849,5 +850,3 @@
     </form>
 </body>
 </html>
-
-

@@ -1,4 +1,4 @@
-# Data Analysis Capabilities in This Project
+﻿# Data Analysis Capabilities in This Project
 
 This project can be used as a web-based data analysis, reporting, visualization, and AI-assisted insight platform. It is built around connecting to existing databases or imported files, turning data into reports and dashboards, and then applying statistical, charting, mapping, matrix-balancing, and OpenAI-assisted interpretation workflows in ASP.NET Web Forms and VB.NET.
 
@@ -585,7 +585,7 @@ Other existing pages also cover major capabilities:
 
 - **`Correlation.aspx`** provides dedicated field-correlation analysis and export.
 - **`AdvancedAnalytics.aspx`** provides matrix balancing and advanced matrix workflows.
-- **`MultidimentionalBalancing.aspx`** provides multidimensional balancing workflows.
+- **`MultidimensionalBalancing.aspx`** provides multidimensional balancing workflows.
 - **`MapReport.aspx`** provides map report definition and geographic output workflows.
 - **`MapReadines.aspx`** provides map readiness checks for latitude/longitude quality, missing coordinates, duplicate locations, invalid coordinate ranges, and KML-ready data.
 - **`DataImport.aspx`** provides import workflows for CSV, Excel, XML, JSON, Access, and related report creation.

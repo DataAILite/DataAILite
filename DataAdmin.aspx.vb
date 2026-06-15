@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Collections.Generic
 Imports System.Data
 Imports System.Globalization
@@ -79,6 +79,7 @@ Partial Class DataAdmin
         litPreviewFunnel.Text = BuildFunnelPreviewHtml(dv)
         litPreviewABCPareto.Text = BuildABCParetoPreviewHtml(dv)
         litPreviewDataDrift.Text = BuildDataDriftPreviewHtml(dv)
+        litPreviewAnomalyScoring.Text = BuildAnomalyScoringPreviewHtml(dv)
         litPreviewKPIBuilder.Text = BuildKPIBuilderPreviewHtml(dv)
         litPreviewDataDictionary.Text = BuildDataDictionaryPreviewHtml(dv)
         litPreviewMapReadiness.Text = BuildMapReadinessPreviewHtml(dv)
@@ -136,6 +137,7 @@ Partial Class DataAdmin
         tiles.Add(tileFunnel)
         tiles.Add(tileABCPareto)
         tiles.Add(tileDataDrift)
+        tiles.Add(tileAnomalyScoring)
         tiles.Add(tileKPIBuilder)
         tiles.Add(tileDataDictionary)
         tiles.Add(tileMapReadiness)
@@ -600,6 +602,42 @@ Partial Class DataAdmin
 
         If rows.Count = 0 Then Return BuildGroupsPreviewHtml(dv)
         Return RenderPreviewTable(New String() {compareCol.ColumnName, segments(0), segments(1), "Drift"}, rows)
+    End Function
+
+    Private Function BuildAnomalyScoringPreviewHtml(dv As DataView) As String
+        If Not HasPreviewData(dv) Then Return EmptyPreview("No report data available.")
+
+        Dim groupCol As DataColumn = FirstTextColumn(dv.Table)
+        Dim valueCol As DataColumn = FirstNumericColumn(dv.Table)
+        If groupCol Is Nothing OrElse valueCol Is Nothing Then Return BuildOutlierPreviewHtml(dv)
+
+        Dim totals As Dictionary(Of String, Double) = GroupTotals(dv, groupCol, valueCol)
+        Dim counts As Dictionary(Of String, Integer) = GroupCounts(dv, groupCol)
+        If totals.Count = 0 Then Return BuildOutlierPreviewHtml(dv)
+
+        Dim averages As New Dictionary(Of String, Double)(StringComparer.OrdinalIgnoreCase)
+        Dim allAverage As Double = 0
+        Dim groupCount As Integer = 0
+        For Each pair As KeyValuePair(Of String, Double) In totals
+            Dim countValue As Integer = If(counts.ContainsKey(pair.Key), counts(pair.Key), 0)
+            If countValue <= 0 Then Continue For
+            averages(pair.Key) = pair.Value / countValue
+            allAverage += averages(pair.Key)
+            groupCount += 1
+        Next
+        If groupCount = 0 Then Return BuildOutlierPreviewHtml(dv)
+        allAverage = allAverage / groupCount
+
+        Dim rows As New List(Of String())()
+        For Each pair As KeyValuePair(Of String, Double) In averages
+            Dim diff As Double = pair.Value - allAverage
+            If Math.Abs(diff) > 0 Then rows.Add(New String() {pair.Key, FormatPreviewNumber(pair.Value), FormatPreviewNumber(allAverage), FormatPreviewNumber(diff)})
+        Next
+        rows.Sort(Function(left, right) Math.Abs(NumericValue(right(3))).CompareTo(Math.Abs(NumericValue(left(3)))))
+
+        If rows.Count > PreviewRows Then rows = rows.GetRange(0, PreviewRows)
+        If rows.Count = 0 Then Return BuildOutlierPreviewHtml(dv)
+        Return RenderPreviewTable(New String() {groupCol.ColumnName, "Avg " & valueCol.ColumnName, "Expected", "Difference"}, rows)
     End Function
 
     Private Function BuildKPIBuilderPreviewHtml(dv As DataView) As String

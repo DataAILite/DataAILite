@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataDrift.aspx.vb" Inherits="DataDrift" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataDrift.aspx.vb" Inherits="DataDrift" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -161,6 +161,7 @@
                                             <asp:TreeNode Text="Funnel Analysis" Value="Funnel.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
 
@@ -209,7 +210,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
 <br /><br />
 <div style="text-align:center;"><asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Data Drift Analysis</asp:Label><asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Compare field distributions between two periods, groups, locations, or other selected segments."></asp:Label></div>
-<span class="analysisRecommendation">Work Flow suggested: review the complete results in <a class="NodeStyle" href="ComparisonReports.aspx">Comparison Reports</a> and <a class="NodeStyle" href="TimeSeries.aspx">Time Series</a>.</span>
+<span class="analysisRecommendation">Work Flow suggested: review the complete results in <a class="NodeStyle" href="ComparisonReports.aspx">Comparison Reports</a>, <a class="NodeStyle" href="AnomalyScoring.aspx">Anomaly Scoring</a>, and <a class="NodeStyle" href="TimeSeries.aspx">Time Series</a>.</span>
 <br />
 <table class="controlpanel" cellpadding="4" cellspacing="0">
 <tr><td style="font-weight:bold;">Compare Field:</td><td><asp:DropDownList ID="DropDownPrimaryField" runat="server" Width="190px" ToolTip="Field whose distribution is compared between base and compare segments."></asp:DropDownList></td><td style="font-weight:bold;">Segment Field:</td><td><asp:DropDownList ID="DropDownSecondaryField" runat="server" Width="190px" AutoPostBack="True" ToolTip="Date, group, location, or category field that defines the two segments."></asp:DropDownList></td></tr>

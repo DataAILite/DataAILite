@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Configuration
 Imports System.Collections.Generic
 Imports System.Data
@@ -413,7 +413,7 @@ Partial Class ShowReport
                             drvalue = DateToString(drvalue, Session("UserConnProvider"), bTimeStamp)
                         End If
                         If drvalue <> "" Then
-                            'option 
+                            'option
                             Dim li As New ListItem(drvalue)
                             If drvalue = ddrequest Then
                                 li.Selected = True
@@ -430,7 +430,7 @@ Partial Class ShowReport
                 End If
                 main.Rows(4).Cells(0).Controls.Add(ctldd)
 
-            Next   ' go to next draw dop-down 
+            Next   ' go to next draw dop-down
 
             Session("ParamNames") = ParamNames
             Session("ParamValues") = ParamValues
@@ -695,6 +695,20 @@ Partial Class ShowReport
                     Session("srch") = srch
                     Session("DataDriftFilter") = srch
                     LabelAddWhere.Text = "Data Drift filter"
+                End If
+            End If
+            If Not Request("anomalyfilter") Is Nothing AndAlso Request("anomalyfilter").ToString.Trim() <> "" Then
+                Dim anomalyFilters As Dictionary(Of String, String) = TryCast(Session("AnomalyScoringFilters"), Dictionary(Of String, String))
+                Dim anomalyId As String = Request("anomalyfilter").ToString.Trim()
+                If anomalyFilters IsNot Nothing AndAlso anomalyFilters.ContainsKey(anomalyId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & anomalyFilters(anomalyId) & ")"
+                    Else
+                        srch = anomalyFilters(anomalyId)
+                    End If
+                    Session("srch") = srch
+                    Session("AnomalyScoringFilter") = srch
+                    LabelAddWhere.Text = "Anomaly Scoring filter"
                 End If
             End If
             If Not Request("kpifilter") Is Nothing AndAlso Request("kpifilter").ToString.Trim() <> "" Then
@@ -1773,7 +1787,7 @@ Partial Class ShowReport
     End Sub
 
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
@@ -2092,5 +2106,3 @@ Partial Class ShowReport
     End Sub
 
 End Class
-
-

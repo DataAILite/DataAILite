@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ReportViews.aspx.vb" Inherits="ReportViews" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ReportViews.aspx.vb" Inherits="ReportViews" %>
 <%@ Register Assembly="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
 
 <script type="text/javascript" src="Controls/Javascripts/OUR.js"></script>
@@ -47,7 +47,7 @@
     text-decoration:underline;
     color:darkblue;
 }
-.ticketbutton 
+.ticketbutton
 {
   width: 80px;
   height: 25px;
@@ -62,7 +62,7 @@
 
   padding: 3px;
   margin:5px;
-  z-index: 9999; 
+  z-index: 9999;
  }
  .readinessRecommendation {
      font-family: Arial;
@@ -102,14 +102,14 @@
         </script>
 
     <asp:UpdatePanel ID="udpViewReport" runat ="server">
-       <ContentTemplate> 
-           <div>               
+       <ContentTemplate>
+           <div>
     <table>
       <tr>
         <td colspan="3" style="font-size: x-large; font-style: normal; font-weight: bold; background-color: #e5e5e5; vertical-align: middle; height: 40px; text-align: left;">
             <asp:Label ID="LabelPageTtl" runat="server" Text="Online User Reporting"></asp:Label>
           </td>
-      </tr> 
+      </tr>
       <tr>
             <td style="font-size: x-small; font-style: normal; font-weight: normal; background-color: #e5e5e5; vertical-align: top; text-align: left; width: 15%; ">
                     <div id="tree" style="font-size: x-small; font-weight: normal; font-style: normal">
@@ -176,6 +176,7 @@
                                             <asp:TreeNode Text="Funnel Analysis" Value="Funnel.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
@@ -197,11 +198,11 @@
         <NodeStyle CssClass="NodeStyle" />
         <ParentNodeStyle Font-Bold="True" />
      </asp:TreeView>
-     
+
      </div>
             </td>
             <td style="width: 5px"></td>
-            <td id="main" style="vertical-align: top; text-align: left; width: 85%"> 
+            <td id="main" style="vertical-align: top; text-align: left; width: 85%">
                 <table  id="maintable" runat="server" width="100%">
                     <tr ID="trReportTitle" runat="server" style="border-color:#ffffff" width="100%">
                         <td width="100%">
@@ -211,26 +212,26 @@
                                     <asp:Label ID ="lblReportFunction" runat ="server" Font-Bold="True" Font-Names="Arial" Font-Size="Large" Text="Generic Report:" ForeColor="Gray"></asp:Label>
                                     <asp:Label ID="LabelReportTitle" runat="server" Font-Bold="True" Font-Names="Arial" Font-Size="Large" Text="REPORT" ForeColor="#000099"></asp:Label>
                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                      <%--<asp:HyperLink ID="HyperLinkChatAI" runat="server" NavigateUrl="~/ChatAI.aspx" Font-Size="Small" Target="_blank" ToolTip="Analyze resulting data with AI" Font-Bold="True" Visible="False">AI</asp:HyperLink>--%> 
-                                      <asp:LinkButton  ID="lnkChatAI" runat="server" Font-Size="Medium" Visible="True" ToolTip="Analyze resulting data with AI" Font-Bold="True">AI</asp:LinkButton> 
-                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                
- 
+                                      <%--<asp:HyperLink ID="HyperLinkChatAI" runat="server" NavigateUrl="~/ChatAI.aspx" Font-Size="Small" Target="_blank" ToolTip="Analyze resulting data with AI" Font-Bold="True" Visible="False">AI</asp:HyperLink>--%>
+                                      <asp:LinkButton  ID="lnkChatAI" runat="server" Font-Size="Medium" Visible="True" ToolTip="Analyze resulting data with AI" Font-Bold="True">AI</asp:LinkButton>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
                                     &nbsp; &nbsp; &nbsp; <asp:Label ID="LabelAddWhere" runat="server" Text=" " Font-Italic="True" ForeColor="Black" Font-Size="Small"><=></asp:Label>
-                                    &nbsp; &nbsp; &nbsp;  &nbsp;  &nbsp;                                      
-                                    <asp:LinkButton ID="ButtonReset" runat="server" Text="Reset" ToolTip="Remove restrictions and show original report" AutoPostBack="true" CssClass="NodeStyle" Font-Names="Arial" Font-Size="Small"/> 
-                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                    &nbsp; &nbsp; &nbsp;  &nbsp;  &nbsp;
+                                    <asp:LinkButton ID="ButtonReset" runat="server" Text="Reset" ToolTip="Remove restrictions and show original report" AutoPostBack="true" CssClass="NodeStyle" Font-Names="Arial" Font-Size="Small"/>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <asp:HyperLink ID="HyperLinkSchedule" runat="server" NavigateUrl="~/ScheduleReportsCalendar.aspx" CssClass="NodeStyle" Font-Names="Arial" Font-Size="Small">Schedule report</asp:HyperLink>
                                     &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkChartDashboards" runat="server" NavigateUrl="~/ListOfDashboards.aspx" CssClass="NodeStyle" Font-Names="Arial">Chart Dashboards</asp:HyperLink>
-                                   &nbsp; &nbsp; &nbsp; 
+                                   &nbsp; &nbsp; &nbsp;
                                 <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Report%20Views" Target="_blank" CssClass="NodeStyle" Font-Names="Arial" Font-Size="Small">Help</asp:HyperLink>
-                                    
+
                                     &nbsp; &nbsp; &nbsp; <asp:Label ID="LabelRunSched" runat="server" Text=" " Font-Italic="True" ForeColor="Black" Font-Size="Small" Visible="False"></asp:Label>
-                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>  
-                                  
+                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
+
                                 </td>
                             </tr>
-                          </table>                              
-                        </td>                    
+                          </table>
+                        </td>
                     </tr>
                      <tr ID="trParameters" runat="server" style="border-color:#ffffff" >
                         <td bgcolor="white" style="border-color:#ffffff; font-weight: bold; font-size: medium; color: Gray;" align="left" font-bold="True">
@@ -247,42 +248,42 @@
                             <asp:Label ID="Label2" runat="server" Text=" and "  ToolTip="secondary group - Axis X, optional"></asp:Label>
                             <asp:DropDownList ID="DropDownList2" runat="server"  ToolTip="Axis Y, optional" AutoPostBack="False"></asp:DropDownList>
                             <asp:Label ID="Label3" runat="server" Text=", axis Y" ToolTip="Axis Y"></asp:Label>
-                            <asp:DropDownList ID="DropDownList3" runat="server" ToolTip="Axis Y" AutoPostBack="True"></asp:DropDownList>  
+                            <asp:DropDownList ID="DropDownList3" runat="server" ToolTip="Axis Y" AutoPostBack="True"></asp:DropDownList>
                             <asp:CheckBox ID="chkboxNumeric" runat="server" Checked="False" Text="numeric," Font-Names="Arial" Font-Size="X-Small"  AutoPostBack="True" Enabled="True" ToolTip="Axis Y field values are numeric. Do all statistics as for numeric field." />
                             <asp:Label ID="Label4" runat="server" Text=" aggregate "  ToolTip="aggegate function"></asp:Label>
-                            <asp:DropDownList ID="DropDownList4" runat="server"  ToolTip="Numeric or Text aggrigate functions"></asp:DropDownList>&nbsp;                                                   
-                            &nbsp; 
+                            <asp:DropDownList ID="DropDownList4" runat="server"  ToolTip="Numeric or Text aggrigate functions"></asp:DropDownList>&nbsp;
+                            &nbsp;
                             <asp:LinkButton ID="LinkButtonReverse" runat="server" CssClass="NodeStyle" Font-Names="Arial">reverse group order</asp:LinkButton>
-                            
-                         
-                            
+
+
+
                             <br />
                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                            <asp:Button ID="ButtonCharts" runat="server" CssClass="ticketbutton" Text="Google Charts ..." ToolTip="Show Google Charts" AutoPostBack="true" Width="100px"  OnClientClick="target='_blank'"/> 
-                             <asp:Button ID="ButtonDashbords" runat="server" CssClass="ticketbutton" Text="Dashboard Statistics" ToolTip="Show Google Statistical Dashboard" AutoPostBack="true" Width="130px"  OnClientClick="target='_blank'"/> 
+                            <asp:Button ID="ButtonCharts" runat="server" CssClass="ticketbutton" Text="Google Charts ..." ToolTip="Show Google Charts" AutoPostBack="true" Width="100px"  OnClientClick="target='_blank'"/>
+                             <asp:Button ID="ButtonDashbords" runat="server" CssClass="ticketbutton" Text="Dashboard Statistics" ToolTip="Show Google Statistical Dashboard" AutoPostBack="true" Width="130px"  OnClientClick="target='_blank'"/>
                             <%--&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;--%>
                             <%--&nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; --%>&nbsp;&nbsp;&nbsp;&nbsp;
-                            
+
                             <%--&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;--%>
 
                             <%--&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;--%>&nbsp;&nbsp;<asp:Label ID="Label6" runat="server" Text="SSRS reports:"  ToolTip="Advanced users can download RDL files"  CssClass="NodeStyle" Font-Names="Arial"></asp:Label>
                             <asp:Button ID="ButtonMatrix" runat="server" CssClass="ticketbutton" Text="Matrix" ToolTip="Matrix/Pivot table: group by Primary and Secondary fields the aggrigate value of field" Visible="True" />
                             <asp:Button ID="ButtonDynamicReport" runat="server" CssClass="ticketbutton" Text="DrillDown" ToolTip="Data by categories as groups and totals" Visible="True" />
-                           
+
                             <asp:Button ID="ButtonShowGraph" runat="server" CssClass="ticketbutton" Text="Bar" ToolTip="RDL Bar Chart: Axis X - group by Primary and Secondary fields, Axis Y - aggrigate value of the field" />
                             <asp:Button ID="ButtonPie" runat="server" CssClass="ticketbutton" Text="Pie" ToolTip="RDL Pie Chart: Axis X - group by Primary and Secondary fields, Axis Y -  the aggrigate value of field" />
-                            <asp:Button ID="ButtonLine" runat="server" CssClass="ticketbutton" Text="Line" ToolTip="RDL Line Chart: Axis X - group by Primary and Secondary fields, Axis Y -  the aggrigate value of field" />                        
+                            <asp:Button ID="ButtonLine" runat="server" CssClass="ticketbutton" Text="Line" ToolTip="RDL Line Chart: Axis X - group by Primary and Secondary fields, Axis Y -  the aggrigate value of field" />
                         </td>
                     </tr>
                     <tr>
-                        <td bgcolor="Gray" align="left">&nbsp; 
+                        <td bgcolor="Gray" align="left">&nbsp;
                             <%-- <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="~/OnlineUserReporting.pdf" Target="_blank" CssClass="NodeStyle" Font-Names="Arial" Font-Size="Small" Font-Italic="True" ForeColor="#33CCFF">Help</asp:HyperLink>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>&nbsp;
                              <asp:CheckBox ID="CheckBoxHideDuplicates" runat="server" Checked="True" Text="hide duplicate records" Font-Names="Arial" Font-Size="Smaller" AutoPostBack="True" Enabled="False" ToolTip="It does not apply for big data..." />
                                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <%--&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;--%>
-                        <asp:label runat="server" ID="LabelRowCount" Font-Bold="True" ForeColor="White" ToolTip="Row Count" Font-Size="Small"></asp:label> &nbsp;   
-                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<%-- &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;--%><asp:Label ID="LabelSearch" runat="server" Text="Search: " Font-Italic="True" ForeColor="White" ></asp:Label>        
-                                    <asp:DropDownList ID="DropDownColumns" runat="server" Width="150px" AutoPostBack="false" ></asp:DropDownList>&nbsp; 
+                        <asp:label runat="server" ID="LabelRowCount" Font-Bold="True" ForeColor="White" ToolTip="Row Count" Font-Size="Small"></asp:label> &nbsp;
+                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<%-- &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;--%><asp:Label ID="LabelSearch" runat="server" Text="Search: " Font-Italic="True" ForeColor="White" ></asp:Label>
+                                    <asp:DropDownList ID="DropDownColumns" runat="server" Width="150px" AutoPostBack="false" ></asp:DropDownList>&nbsp;
                                     <asp:DropDownList ID="DropDownOperator" runat="server"  ToolTip="Numeric or Text operators">
                                         <asp:ListItem></asp:ListItem>
                                         <asp:ListItem>=</asp:ListItem>
@@ -301,9 +302,9 @@
                                         <asp:ListItem>Not EndsWith</asp:ListItem>
                                     </asp:DropDownList>&nbsp;
                                     <asp:TextBox ID="TextBoxSearch" runat="server" Width="100px"></asp:TextBox>
-                                    <asp:Button ID="ButtonSearch" runat="server" CssClass="ticketbutton" Text="Search" ToolTip="Show data selected" AutoPostBack="true" Width="80px" /> 
+                                    <asp:Button ID="ButtonSearch" runat="server" CssClass="ticketbutton" Text="Search" ToolTip="Show data selected" AutoPostBack="true" Width="80px" />
 
-                                       &nbsp; 
+                                       &nbsp;
                                     <asp:Label ID="lblDesignerCreated" runat ="server" Font-Bold="True" ForeColor="Blue" Font-Size="Medium" Text="Not Created by Designer" Font-Names="Tahoma"> </asp:Label>
                         </td>
                     </tr>
@@ -311,70 +312,70 @@
                         <td  bgcolor="#e5e5e5" align="left">
 
                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
-                            <asp:LinkButton  ID="lnkImage" runat="server" Font-Size="Small" Visible="True" ToolTip="Export current page of report to image png file">Export page to Image</asp:LinkButton> 
-                                    
+                            <asp:LinkButton  ID="lnkImage" runat="server" Font-Size="Small" Visible="True" ToolTip="Export current page of report to image png file">Export page to Image</asp:LinkButton>
+
                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:LinkButton  ID="lnkWord" runat="server" Font-Size="Small" Visible="True" ToolTip="Export whole report to Word document">Export report to Word</asp:LinkButton> 
-                            
+                            <asp:LinkButton  ID="lnkWord" runat="server" Font-Size="Small" Visible="True" ToolTip="Export whole report to Word document">Export report to Word</asp:LinkButton>
+
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:LinkButton  ID="lnkPDF" runat="server" Font-Size="Small" Visible="True" ToolTip="Export  whole report to PDF file">Export report to PDF</asp:LinkButton> 
-                            
+                            <asp:LinkButton  ID="lnkPDF" runat="server" Font-Size="Small" Visible="True" ToolTip="Export  whole report to PDF file">Export report to PDF</asp:LinkButton>
+
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:LinkButton  ID="lnkExpandAll" runat="server" Font-Size="Small" Visible="True" ToolTip="Expand all details in report">Expand all</asp:LinkButton>  
+                            <asp:LinkButton  ID="lnkExpandAll" runat="server" Font-Size="Small" Visible="True" ToolTip="Expand all details in report">Expand all</asp:LinkButton>
 
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <span class="readinessRecommendation">Work Flow suggested: review <a class="NodeStyle" href="DataReadinessScanner.aspx">Data Readiness Scanner</a> to see analyses and fields ranked by readiness score.</span>
 
                         </td>
                     </tr>
-                   
+
                     <tr>
                         <td>
-                            <div style="text-align: center;width:100%">     
+                            <div style="text-align: center;width:100%">
                             <rsweb:ReportViewer ID="viewer" ShowRefreshButton="false" PageCountMode="Actual" runat="server" Width="100%" SizeToReportContent="true" ShowPrintButton="true" ShowExportControls="true" ShowPageNavigationControls="true" align="left" ShowBackButton="False" ShowParameterPrompts="True" AsyncRendering="False" InteractivityPostBackMode="AlwaysSynchronous"></rsweb:ReportViewer>
                             </div>
-                           
+
                         </td>
                     </tr>
-                    <tr><td bgcolor="white" align="left">&nbsp; 
-                        
-                       &nbsp; &nbsp; &nbsp; &nbsp;<br /><br /> 
+                    <tr><td bgcolor="white" align="left">&nbsp;
+
+                       &nbsp; &nbsp; &nbsp; &nbsp;<br /><br />
                         <asp:Label ID="LabelShare" runat="server" Text=" Send report link to email address:" ForeColor="black" Font-Size="Small" ToolTip="Up To Date Report will be available from the link in email"></asp:Label>&nbsp;
                         <asp:TextBox ID="txtShareEmail" runat="server" ToolTip="Enter email address"></asp:TextBox>&nbsp;<asp:Button ID="btnShare" runat="server" CssClass="ticketbutton" Text="Share" Font-Size="X-Small" />
                         <br />
-                         <%-- &nbsp; &nbsp;&nbsp;--%> 
-                            <asp:LinkButton ID="LinkButtonDownRDL" runat="server" Text="Download Report Definition file"  CssClass="NodeStyle" Font-Names="Arial"></asp:LinkButton> 
-                              
+                         <%-- &nbsp; &nbsp;&nbsp;--%>
+                            <asp:LinkButton ID="LinkButtonDownRDL" runat="server" Text="Download Report Definition file"  CssClass="NodeStyle" Font-Names="Arial"></asp:LinkButton>
+
                             <asp:HyperLink ID="HyperLinkRDL" runat="server" NavigateUrl="~/RDLFILES/" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">See Report Definition (RDL)</asp:HyperLink>&nbsp;&nbsp;
-                       
+
                         <br />
-                        <asp:Label ID="LabelSQL" runat="server" Text=" " ForeColor="Black" Font-Size="X-Small"></asp:Label>  
+                        <asp:Label ID="LabelSQL" runat="server" Text=" " ForeColor="Black" Font-Size="X-Small"></asp:Label>
                         <br /><br />
                         <asp:Label ID="LabelError" runat="server" Font-Bold="True"></asp:Label>
                         <br /><br />
                         <%--&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; --%>
                         <asp:Label ID="LabelTicket" runat="server" Text=" Create a new ticket in HelpDesk with the report attached or add a comment to the existing ticket:" ForeColor="black" Font-Size="Small"></asp:Label>&nbsp;
                         <asp:DropDownList ID="DropDownTickets" runat="server"  ToolTip="Tickets in HelpDesk" AutoPostBack="False"></asp:DropDownList>&nbsp;<asp:Button ID="ButtonTicket" runat="server" CssClass="ticketbutton" Text="Open a Ticket" Font-Size="X-Small" />
-                        
+
                      </td</tr>
-                    
+
                 </table>
-       
+
                   </td>
         </tr>
         <tr><td>
-            <asp:Label ID="LabelReportID" runat="server" Font-Bold="False" Font-Names="Arial" Font-Size="XX-Small" ForeColor="Black" Text=" ">...</asp:Label>       
+            <asp:Label ID="LabelReportID" runat="server" Font-Bold="False" Font-Names="Arial" Font-Size="XX-Small" ForeColor="Black" Text=" ">...</asp:Label>
         </td></tr>
-    </table> 
-                
+    </table>
+
                <ucmsgbox:msgbox id="MessageBox" runat ="server" > </ucmsgbox:msgbox>
          </ContentTemplate>
         <Triggers>
         <asp:PostBackTrigger ControlID="DropDownList3" />
             <%-- lnkImage needs to be here to get download to work --%>
-            <asp:PostBackTrigger ControlID="lnkImage"/> 
-            <asp:PostBackTrigger ControlID="lnkPdf"/> 
-            <asp:PostBackTrigger ControlID="lnkWord"/> 
+            <asp:PostBackTrigger ControlID="lnkImage"/>
+            <asp:PostBackTrigger ControlID="lnkPdf"/>
+            <asp:PostBackTrigger ControlID="lnkWord"/>
         </Triggers>
       </asp:UpdatePanel>
         <div id="spinner" class="modal" style="display:none;">
@@ -396,8 +397,6 @@
             </ProgressTemplate>
         </asp:UpdateProgress>
     </form>
-   
+
 </body>
 </html>
-
-

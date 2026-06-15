@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAdmin.aspx.vb" Inherits="DataAdmin" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAdmin.aspx.vb" Inherits="DataAdmin" %>
 
 <!DOCTYPE html>
 
@@ -358,6 +358,7 @@
                                             <asp:TreeNode Text="Funnel Analysis" Value="Funnel.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
@@ -621,6 +622,16 @@
                                             <span class="openText">Open</span>
                                         </a>
 
+                                        <a id="tileAnomalyScoring" runat="server" class="analyticsTile" href="AnomalyScoring.aspx" title="Open Anomaly Scoring">
+                                            <span class="tileCaption">
+                                                <span class="tileTitle">Anomaly Scoring</span>
+                                                <span class="tileText">Unusual combinations, group values, period movement, and suspicious patterns.</span>
+                                            </span>
+                                            <span class="tileBody">Score broader anomalies that go beyond simple row-level outliers.</span>
+                                            <span class="previewBox"><asp:Literal ID="litPreviewAnomalyScoring" runat="server"></asp:Literal></span>
+                                            <span class="openText">Open</span>
+                                        </a>
+
                                         <a id="tileKPIBuilder" runat="server" class="analyticsTile" href="KPIBuilder.aspx" title="Open KPI Builder">
                                             <span class="tileCaption">
                                                 <span class="tileTitle">KPI Builder</span>
@@ -681,5 +692,3 @@
     </form>
 </body>
 </html>
-
-

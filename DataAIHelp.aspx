@@ -1,4 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAIHelp.aspx.vb" Inherits="DataAIHelp" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAIHelp.aspx.vb" Inherits="DataAIHelp" %>
 
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -295,9 +295,10 @@
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=19">Funnel Analysis</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=20">ABC Pareto Analysis</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=21">Data Drift Analysis</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=26">Anomaly Scoring</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=22">KPI Builder</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=23">Data Dictionary</a>
-                    <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=24">Data Readiness</a>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=25">Data Readiness</a>
                 </div>
             </div>
         </div>
