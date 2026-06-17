@@ -158,6 +158,7 @@ Partial Class DataReadinessScanner
         AddRecommendation(output, "Time Series", If(dateFields.Count > 0 AndAlso numericFields.Count > 0, 88, 20), "Date and value fields support moving averages and rolling totals.", FieldGuidance("Date Field dropdown", dateFields) & "; " & FieldGuidance("Value Field dropdown", numericFields) & "; Number of time periods controls moving average or rolling total window", "TimeSeries.aspx", rowCount)
         AddRecommendation(output, "Data Drift Analysis", If(dateFields.Count > 0 AndAlso (numericFields.Count > 0 OrElse categoryFields.Count > 0), 86, 25), "Repeated periods can reveal distribution changes across time.", FieldGuidance("Date/period field", dateFields) & "; " & FieldGuidance("numeric fields for value drift", numericFields) & "; " & FieldGuidance("category fields for distribution drift", categoryFields), "DataDrift.aspx", rowCount)
         AddRecommendation(output, "Anomaly Scoring", If((categoryFields.Count > 0 OrElse dateFields.Count > 0) AndAlso numericFields.Count > 0, 86, 25), "Broader anomaly checks can find unusual combinations, unusual group values, unusual period movement, and suspicious category/value patterns.", FieldGuidance("Group Field dropdown", categoryFields) & "; " & FieldGuidance("Category Field dropdown", categoryFields) & "; " & FieldGuidance("Value Field dropdown", numericFields) & "; " & FieldGuidance("Date Field dropdown for period movement", dateFields) & "; Score Threshold controls sensitivity", "AnomalyScoring.aspx", rowCount)
+        AddRecommendation(output, "Rule-Based Alerts", If(numericFields.Count > 0 OrElse textFields.Count > 0 OrElse dateFields.Count > 0, 84, 25), "User-defined rules can flag missing values, high variance, strong correlations, outliers, map-readiness failures, and churn-score thresholds.", "Missing Values % applies to all fields; Variance %, Correlation, and Outlier thresholds use numeric fields; Map readiness looks for latitude/longitude fields; Churn score below uses score-like numeric fields", "RuleBasedAlerts.aspx", rowCount)
         AddRecommendation(output, "Cohort Analysis", If(dateFields.Count > 0 AndAlso (customerFields.Count > 0 OrElse idFields.Count > 0), 84, 20), "Customer or user IDs with dates can be grouped into cohorts.", FieldGuidance("Cohort date field", dateFields) & "; " & FieldGuidance("customer/user/entity ID field", Prefer(customerFields, idFields)) & "; optional value field can measure cohort value", "Cohort.aspx", rowCount)
         AddRecommendation(output, "Funnel Analysis", If(statusFields.Count > 0 AndAlso (customerFields.Count > 0 OrElse orderFields.Count > 0 OrElse idFields.Count > 0), 84, 20), "Stage/status fields with user/order IDs can show conversion through steps.", FieldGuidance("Stage/status field", statusFields) & "; " & FieldGuidance("customer/order/entity ID field", customerFields, orderFields, idFields) & "; optional date field can order events", "Funnel.aspx", rowCount)
         AddRecommendation(output, "Outlier Flagging", If(numericFields.Count > 0, 82, 25), "Numeric values can be checked for unusual deviations or business-rule exceptions.", FieldGuidance("Row/category field", categoryFields) & "; " & FieldGuidance("value field for standard deviation or percent-difference checks", numericFields) & "; threshold controls sensitivity", "OutlierFlagging.aspx", rowCount)
@@ -228,7 +229,7 @@ Partial Class DataReadinessScanner
             Case "Data Profiling"
                 Return "DataQuality.aspx|Data Quality;DataDictionary.aspx|Data Dictionary"
             Case "Data Quality"
-                Return "Profiling.aspx|Data Profiling;AnomalyScoring.aspx|Anomaly Scoring;DataDictionary.aspx|Data Dictionary"
+                Return "Profiling.aspx|Data Profiling;RuleBasedAlerts.aspx|Rule-Based Alerts;AnomalyScoring.aspx|Anomaly Scoring;DataDictionary.aspx|Data Dictionary"
             Case "Ranking Analysis"
                 Return "ABCPareto.aspx|ABC Pareto Analysis;MarketSegments.aspx|Market Segments"
             Case "Pivot / Cross Tab"
@@ -250,15 +251,17 @@ Partial Class DataReadinessScanner
             Case "Time Series"
                 Return "TimeBasedSummaries.aspx|Time Based Summaries;OutlierFlagging.aspx|Outlier Flagging"
             Case "Data Drift Analysis"
-                Return "ComparisonReports.aspx|Comparison Reports;AnomalyScoring.aspx|Anomaly Scoring;TimeSeries.aspx|Time Series"
+                Return "ComparisonReports.aspx|Comparison Reports;RuleBasedAlerts.aspx|Rule-Based Alerts;AnomalyScoring.aspx|Anomaly Scoring;TimeSeries.aspx|Time Series"
             Case "Cohort Analysis"
                 Return "MarketChurn.aspx|Market Churn;TimeSeries.aspx|Time Series"
             Case "Funnel Analysis"
                 Return "MarketChurn.aspx|Market Churn;MarketSegments.aspx|Market Segments"
             Case "Outlier Flagging"
-                Return "DataQuality.aspx|Data Quality;AnomalyScoring.aspx|Anomaly Scoring;Regression.aspx|Regression Analysis"
+                Return "DataQuality.aspx|Data Quality;RuleBasedAlerts.aspx|Rule-Based Alerts;AnomalyScoring.aspx|Anomaly Scoring;Regression.aspx|Regression Analysis"
             Case "Anomaly Scoring"
-                Return "OutlierFlagging.aspx|Outlier Flagging;DataDrift.aspx|Data Drift Analysis;DataQuality.aspx|Data Quality"
+                Return "OutlierFlagging.aspx|Outlier Flagging;RuleBasedAlerts.aspx|Rule-Based Alerts;DataDrift.aspx|Data Drift Analysis;DataQuality.aspx|Data Quality"
+            Case "Rule-Based Alerts"
+                Return "DataQuality.aspx|Data Quality;AnomalyScoring.aspx|Anomaly Scoring;CorrelationThreshold.aspx|Correlation Threshold;MapReadines.aspx|Map Readiness"
             Case "Chart Recommendations"
                 Return "DataAdmin.aspx|Analytics Dashboard;MarketAdmin.aspx|Market Dashboard"
             Case "Map Readiness"

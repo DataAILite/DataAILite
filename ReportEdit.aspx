@@ -41,7 +41,7 @@
             height: 138px;
         }
         .auto-style17 {
-            height: 1px;
+            height: 1px;            
         }
         .auto-style18 {
             height: 131px;
@@ -63,28 +63,28 @@
             text-wrap:none;
         }
 #divParamList {
-            padding: 0px;
-            font-family: Arial;
-            font-size: x-large;
-            color: #FFFFFF;
+            padding: 0px; 
+            font-family: Arial; 
+            font-size: x-large; 
+            color: #FFFFFF; 
             background-color: LightGray;
-            border-width: 0px;
+            border-width: 0px;  
             width: 100%;
         }
 #divParamList1 {
-            padding: 3px 0px 4px 0px;
-            border-width: 0px;
-            display: inline-block;
-            width: 89%;
+            padding: 3px 0px 4px 0px; 
+            border-width: 0px; 
+            display: inline-block; 
+            width: 89%; 
             /*width: 100%;*/
             height: 25px;
             border-width: 0px;
         }
 #divParamList2 {
-            padding: 0px;
-            border-width: 0px;
-            display: inline-block;
-            width: 10%;
+            padding: 0px; 
+            border-width: 0px; 
+            display: inline-block; 
+            width: 10%; 
             height: 35px;
         }
 .ParamButtonStyleSubmit {
@@ -216,7 +216,7 @@
         .auto-style28 {
             height: 101px;
         }
- .ticketbutton
+ .ticketbutton 
 {
   width: 30px;
   height: 25px;
@@ -231,13 +231,13 @@
 
   padding: 3px;
   margin:5px;
-  z-index: 9999;
+  z-index: 9999; 
 }
         </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />      
         <asp:UpdatePanel ID="udpReportEdit" runat ="server">
           <ContentTemplate>
               <asp:HiddenField ID="hfSizeLimit" runat="Server" Value="4096" />
@@ -246,7 +246,7 @@
          <td colspan="3" style="text-align:left; font-size: x-large; font-style: normal; font-weight: bold; background-color: #e5e5e5; vertical-align: middle; height: 40px;">
               <asp:Label ID="LabelPageTtl" runat="server" Text="Online User Reporting"></asp:Label>
           </td>
-      </tr>
+      </tr> 
         <tr>
         <td style="font-size: x-small; font-style: normal; font-weight: normal; background-color: #e5e5e5; vertical-align: top; text-align: left; width: 15%;">
            <div id="tree" style="font-size: x-small; font-weight: normal; font-style: normal; padding-top: 8px;">
@@ -314,6 +314,7 @@
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
+<asp:TreeNode Text="Rule-Based Alerts" Value="RuleBasedAlerts.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
@@ -337,9 +338,9 @@
             </asp:TreeView>
           </div>
         </td>
-
+   
         <td style="width: 5px"></td>
-        <td id="MainSection" style="vertical-align: top; text-align: left; width: 85%">
+        <td id="MainSection" style="vertical-align: top; text-align: left; width: 85%">  
             <table style="width:100%; font-family: Arial; font-size: xx-small;">
                 <tr>
                 <td style="width:15%;text-align:left;font-family: Arial; font-size: xx-small;">
@@ -354,16 +355,16 @@
                     <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/ListOfReports.aspx" Visible="false" CssClass="NodeStyle" Font-Size="12px">List of reports</asp:HyperLink>
                 </td>
 <%--                <td style="width:15%;text-align:center;font-family: Arial; font-size: xx-small;">
-                    <asp:HyperLink ID="HyperLink1" runat="server"  NavigateUrl="~/ShowReport.aspx?srd=3"  Visible="False" Enabled="False" ToolTip="Show Report data" CssClass="NodeStyle" Font-Size="12px">Show report data</asp:HyperLink>
+                    <asp:HyperLink ID="HyperLink1" runat="server"  NavigateUrl="~/ShowReport.aspx?srd=3"  Visible="False" Enabled="False" ToolTip="Show Report data" CssClass="NodeStyle" Font-Size="12px">Show report data</asp:HyperLink>    
                 </td>--%>
                 <td style="width:15%;text-align:center;font-family: Arial; font-size: xx-small;">
                     <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Report%20Info" Target="_blank" CssClass="NodeStyle" Font-Size="12px">Help</asp:HyperLink>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                    <asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
-                </td>
+                    <asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink> 
+                </td>                                          
                 </tr>
-            </table>
+            </table>    
             <%--<br />--%>
 <%--            <div style="width:100%; font-family: Arial; font-size: xx-small; text-align:center">
                        <asp:Label ID="lblView" runat="server" Font-Bold="True" Font-Names="Arial" Font-Size="Medium" ForeColor="#000099" Text="Report Info"></asp:Label>
@@ -372,7 +373,7 @@
  <asp:Menu ID="MenuMain" Width="600px" runat="server" Orientation="Horizontal"  OnMenuItemClick="MenuMain_MenuItemClick" StaticSelectedStyle-BackColor="LightGray" DynamicSelectedStyle-BackColor="LightGray"    StaticSelectedStyle-Font-Bold="true"  StaticMenuItemStyle-BackColor="#e5e5e5" BorderWidth ="0px" Height="20px">
     <Items>
         <asp:MenuItem Text="Report Data Query" Value="0" ToolTip="Report Query to get data from db">
-            <asp:MenuItem Text=" Data Fields" ToolTip="SELECT statement" Value="10"></asp:MenuItem>
+            <asp:MenuItem Text=" Data Fields" ToolTip="SELECT statement" Value="10"></asp:MenuItem>                    
             <asp:MenuItem Text=" Join Tables" ToolTip="JOIN statement" Value="11"></asp:MenuItem>
             <asp:MenuItem Text=" Filters " ToolTip="Filter data by defined conditions" Value="12"></asp:MenuItem>
             <asp:MenuItem Text=" Sorting" ToolTip="ORDER BY statement" Value="13"></asp:MenuItem>
@@ -381,13 +382,13 @@
             <asp:MenuItem Text=" Column Order, Expressions" ToolTip="Columns Order, functions" Value="20"></asp:MenuItem>
             <asp:MenuItem Text=" Groups and Totals" ToolTip="Grouping and Totals" Value="21"></asp:MenuItem>
             <asp:MenuItem Text=" Combine column values " ToolTip="Listing of column values" Value="22"></asp:MenuItem>
-            <asp:MenuItem Text=" Advanced report designer " ToolTip="Advanced report designer" Value="23"></asp:MenuItem>
+            <asp:MenuItem Text=" Advanced report designer " ToolTip="Advanced report designer" Value="23"></asp:MenuItem> 
             <asp:MenuItem Text=" Map definition " ToolTip="Map designer" Value="24"></asp:MenuItem>
         </asp:MenuItem>
 
-        <asp:MenuItem Text=" Report Info" Value="2" ToolTip="Report Info and Report Files" ></asp:MenuItem>
+        <asp:MenuItem Text=" Report Info" Value="2" ToolTip="Report Info and Report Files" ></asp:MenuItem>        
         <asp:MenuItem Text=" Parameters " Value="3" ToolTip="Report Parameters" ></asp:MenuItem>
-        <asp:MenuItem Text=" Users " Value="4" ToolTip="Report Users" ></asp:MenuItem>
+        <asp:MenuItem Text=" Users " Value="4" ToolTip="Report Users" ></asp:MenuItem> 
        <%-- <asp:MenuItem Text=" Import Data " Value="5" ToolTip="Import Data to new or existing table in database" ></asp:MenuItem>--%>
     </Items>
 </asp:Menu>
@@ -396,14 +397,14 @@
        <asp:View ID="Tab1" runat="server">
         <table width="100%"cellpadding=0 cellspacing=0 border="0" >
             <tr valign="top">
-                <td class="TabArea" style="width: 100%"/>
+                <td class="TabArea" style="width: 100%"/>             
             </tr>
         </table>
     </asp:View>
     <asp:View ID="Tab2" runat="server">
         <table width="100%" cellpadding=0 cellspacing=0 border="0" >
             <tr valign="top">
-                <td class="TabArea" style="width: 100%"/>
+                <td class="TabArea" style="width: 100%"/>             
             </tr>
         </table>
     </asp:View>
@@ -427,7 +428,7 @@
                             <td align="left" width="90%" class="auto-style11">
                                 <asp:TextBox ID="TextBoxReportID" runat="server" Width="60%"></asp:TextBox>
                                 <asp:Label ID="LabelReportID" runat="server" ForeColor="black" Text="Label"></asp:Label>
-
+                                
                             </td>
                         </tr>
                         <tr bgcolor="#e5e5e5">
@@ -458,7 +459,7 @@
                                     <asp:ListItem>portrait</asp:ListItem>
                                     <asp:ListItem>landscape</asp:ListItem>
                                 </asp:DropDownList>
-
+                         
                             </td>
                         </tr>
                         <tr bgcolor="#e5e5e5" id="trEditRep2" runat="server" >
@@ -466,13 +467,13 @@
                                 <asp:Label ID="Label5" runat="server" Text="Data Source:"></asp:Label>
                             </td>
                             <td align="left" width="90%" style="color: black; font-family: Arial; letter-spacing: normal; height: 24px;" >
-                                <asp:DropDownList ID="DropDownReportAttributes" runat="server" Width="129px" AutoPostBack="True">
+                                <asp:DropDownList ID="DropDownReportAttributes" runat="server" Width="129px" AutoPostBack="True">                                
                                        <asp:ListItem>sql</asp:ListItem>
                                        <asp:ListItem>sp</asp:ListItem>
                                      </asp:DropDownList>
                                 &nbsp;<asp:Label ID="LabelSP" runat="server" ForeColor="black">Stored Procedure:</asp:Label>
                                 <%--<asp:DropDownList ID="DropDownSPs" runat="server" Width="655px" OnSelectedIndexChanged="Page_Load" AutoPostBack="True"> </asp:DropDownList>--%>
-                                <asp:DropDownList ID="DropDownSPs" runat="server" Width="655px" AutoPostBack="True"> </asp:DropDownList>
+                                <asp:DropDownList ID="DropDownSPs" runat="server" Width="655px" AutoPostBack="True"> </asp:DropDownList>                                
                                 <asp:TextBox ID="TextBoxNewSPname" runat="server" Width="2%" Visible="False"></asp:TextBox>
                             </td>
                         </tr>
@@ -489,7 +490,7 @@
                                  <asp:Label ID="lblSelectFile" runat="server" Text="User rdl file to upload if needed:"  ToolTip="Browse RDL file to upload for the report."   Font-Names="Arial" Font-Size="Small" ForeColor="black"></asp:Label>
                                 &nbsp;&nbsp;<asp:Button ID="btnBrowse" runat="server" Text="Browse..." ToolTip="Browse RDL file to upload for the report." width="10%" CssClass="ticketbutton"  />
                                 &nbsp;<asp:Label ID="lblFileChosen" runat="server" Text=" "  Font-Names="Arial" Font-Size="Small" ForeColor="black"></asp:Label>&nbsp;&nbsp;
-
+                                    
                                 &nbsp;&nbsp;&nbsp;<asp:Button ID="ButtonUploadRDL" runat="server" Text="Upload the report definition file" ToolTip="Upload user customized RDL file" Width="24%" CssClass="ticketbutton" />
                                     &nbsp;&nbsp;&nbsp;<asp:Button ID="ButtonDownloadFile" runat="server" Text="Download report definition files" Width="24%"  ToolTip="Download report files to local directory" Visible="False" Enabled="False" />
                                  &nbsp;&nbsp;
@@ -506,13 +507,13 @@
                                   <asp:Label ID="LabelRPT" runat="server" ForeColor="White"></asp:Label>
                                   <asp:Button ID="ButtonRDL" runat="server" Text="Create/update RDL file" Visible="False" Width="9px" />
                                 </div>
-
+                                
                                 <asp:TextBox ID="txtURI" runat="server" Width="400px" AutoPostBack="True">https://</asp:TextBox>
                                 <br />
 
                                 <asp:Label ID="LabelTableName" runat="server" Text="Insert into new table:" CssClass="LabelStyle"></asp:Label>
                                 <asp:TextBox ID="txtTableName" runat="server" Width="200px" CssClass="LabelStyle" AutoPostBack="True"> </asp:TextBox>
-                                &nbsp;&nbsp;<asp:Label ID="LabelTables" runat="server" ForeColor="White" Text="or into existing table:" CssClass="LabelStyle"></asp:Label>
+                                &nbsp;&nbsp;<asp:Label ID="LabelTables" runat="server" ForeColor="White" Text="or into existing table:" CssClass="LabelStyle"></asp:Label>  
                                 <asp:DropDownList ID="DropDownTables" runat="server" AutoPostBack="True" Height="16px">  </asp:DropDownList>
                                 <br />
                                 &nbsp;<asp:CheckBox ID="chkboxClearTable" runat="server" Text="delete all records before upload" ToolTip="All records will be deteted from the selected table and saved in the table with DELETED attached to original table name." AutoPostBack="True" />
@@ -521,11 +522,11 @@
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="LabelDelimiter" runat="server" Text="csv file delimiter:" ></asp:Label>
                                 <asp:TextBox ID="TextboxDelimiter" runat="server" Width="16px" Height="18px">,</asp:TextBox>
-
-                               <br />
+                                
+                               <br />  
                                 <div id="divFileUpload" runat="server" style="margin:3px; display:flex">
                                 &nbsp;&nbsp;&nbsp;<asp:Button ID="ButtonUploadFile" runat="server" Text="Upload formatted file into table(s)." ToolTip="Upload CSV, XML, XLS, XLSX, JSON, TXT-JSON file or Access table. It might take a long time... Please be patient." Width="24%" />
-
+                                  
                                 </div>
                                  <div id="divRDL2" runat="server" style="display:none;">
                                     <asp:Button ID="ButtonCrystal" runat="server" Enabled="False" Text="Create new Crystal RPT file" Visible="False" Width="29px" />
@@ -549,18 +550,18 @@
                         </tr>
                         <tr>
                             <td align="right" class="auto-style9" bgcolor="#e5e5e5">
-                               &nbsp;
+                               &nbsp; 
                             </td>
                             <td align="left" bgcolor="#e5e5e5" style="color: black; font-family: Arial; height: 8px; background-color: #e5e5e5">
                                 <asp:CheckBox ID="chkRemoveReportFormating" runat="server" Text="delete previous report format: expressions, groups, lists, advanced designed items, etc..." ToolTip="All report format will be cleaned: expressions, groups, lists, advanced designed items, etc..." AutoPostBack="True" Font-Names="Arial" Font-Size="Small" ForeColor="black"/>
                                 <br />
                                 <%--&nbsp;&nbsp;&nbsp;&nbsp;--%>
-                                <asp:Button ID="ButtonSubmit" runat="server" Text="Save" ToolTip="Submit Report Info and update XSD and RDL. No dashboards with this report are updating." BackColor="#7CDC99" width="40px" CssClass="ticketbutton" />
-
+                                <asp:Button ID="ButtonSubmit" runat="server" Text="Save" ToolTip="Submit Report Info and update XSD and RDL. No dashboards with this report are updating." BackColor="#7CDC99" width="40px" CssClass="ticketbutton" />  
+                                
                                <asp:Label ID="Label2" runat="server" Text="&lt;--- !!!&nbsp; First save the report information then add parameters and users if needed." Font-Names="Arial" Font-Size="Small" ForeColor="black" ></asp:Label>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:Button ID="ButtonUpdateDashboards" runat="server" Text="Update the report in dashboards" ToolTip="Update dashboards which include this report if needed (data or definition changed). It might take a long time... " Width="24%" CssClass="ticketbutton" />
-
-
+                                
+                                
                             </td>
                         </tr>
                     </table>
@@ -579,14 +580,14 @@
                            <asp:Button ID="btnDefine" runat="server" width="100px" CssClass="ticketbutton" text="New Parameter" ToolTip="Define new parameter(s)" />
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="chkRelatedParameters" runat="server" Text="related parameters" AutoPostBack="True" Visible="True"></asp:CheckBox>
                         </div>
-
+                        
                        <%-- <div id="divParamList1" style="vertical-align: top; text-align: center; width: 75%; height:30px;" >
-
-                            &nbsp;&nbsp;
+                          
+                            &nbsp;&nbsp; 
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
+                             
                         </div>--%>
-
+                        
                     <%--</div>--%>
                     <table id="tblParameters" runat="server" rules="rows" visible="true">
                       <tr id="trParameters">
@@ -624,24 +625,24 @@
         <td align="left" valign="top" width="100%" style="height: 177px">
             <table id="TableParams" runat="server" bgcolor="#e5e5e5" border="1" rules="rows" style="font-size: small;
                 color: black; font-family: Arial; background-color: #ffffff" width="100%" class="auto-style15">
-
-
+                
+                
                 <tr>
                     <td align="left" valign="top" nowrap="nowrap" style="font-weight: bold; font-size: small; color: white;
                         font-family: Arial; height: 23px; background-color: #e5e5e5" width="40">
                         Field:<br />
                         <asp:TextBox ID="TextBoxID" runat="server" Width="40px"></asp:TextBox></td>
-
+                        
                     <td align="left" style="font-weight: bold; font-size: small; width: 70px; color: white;
                         font-family: Arial; height: 23px; background-color: #e5e5e5" valign="top">
                         Label:<br />
                         <asp:TextBox ID="TextBoxLabel" runat="server" Height="16px" Width="70px"></asp:TextBox></td>
-
+                     
                     <td align="left" style="font-weight: bold; font-size: small; width: 70px; color: white;
                         font-family: Arial; height: 23px; background-color: #e5e5e5" valign="top">
                         Parameter:<br />
                         <asp:TextBox ID="TextBoxField" runat="server" Width="70px"></asp:TextBox></td>
-
+                        
                     <td align="left" style="font-weight: bold; font-size: small; width: 50px; color: white;
                         font-family: Arial; height: 23px; background-color: #e5e5e5" valign="top">
                         Type:<br />
@@ -650,18 +651,18 @@
                             <asp:ListItem>int</asp:ListItem>
                             <asp:ListItem>datetime</asp:ListItem>
                         </asp:DropDownList>&nbsp;</td>
-
+                        
                     <td align="left" style="font-weight: bold; font-size: small; width: 400px; color: white;
                         font-family: Arial; height: 23px; background-color: #e5e5e5" valign="top">
                         SQL:<br />
                         <asp:TextBox ID="TextBoxSQL" runat="server" Height="53px"  TextMode="MultiLine" Width="400"></asp:TextBox></td>
-
+                        
                     <td align="left" style="font-weight: bold; font-size: small; color: white; font-family: Arial;
                         height: 23px; background-color: #e5e5e5; width: 206px;" valign="top">
                         Comments:<br />
                         <asp:TextBox ID="TextComments" runat="server" Height="53px" TextMode="MultiLine"
                             Width="204px"></asp:TextBox></td>
-
+                            
                     <td align="left" style="font-weight: bold; font-size: small; color: white; font-family: Arial;
                         height: 23px; background-color: #e5e5e5" valign="top">
                         <br />
@@ -669,7 +670,7 @@
                 </tr>
                 <tr>
                     <td colspan="7" style="font-weight:bold; color: #e5e5e5; font-family:Arial; height:10px;background-color: #e5e5e5; font-size: medium;">
-
+                        
                         Parameters:</td>
                 </tr>
                 <tr>
@@ -698,13 +699,13 @@
                 <tr>
                     <td colspan="7" style="font-weight: bold; color: black; font-family: Arial; background-color: #e5e5e5" class="auto-style17">
                     </td>
-
+                
                 </tr>
             </table>
         </td>
     </tr>
     </table>
-
+            
     </asp:View>
     <asp:View ID="Tab5" runat="server">
         <table width="100%" cellpadding=0 cellspacing=0 border="0">
@@ -727,7 +728,7 @@
                             <td align="left" valign="top" nowrap="nowrap" style="font-weight: bold; font-size: small; color: black;font-family: Arial; height: 23px; background-color: #e5e5e5; width: 90px;" bgcolor="#e5e5e5">
                         Logon:<br />
                               <asp:TextBox ID="TextBoxNetId" runat="server" Width="100px"></asp:TextBox>
-                            </td>
+                            </td>                       
                             <td align="left" style="font-weight: bold; font-size: small; width: 49px; color: black;font-family: Arial; height: 23px; background-color: #e5e5e5" valign="top">
                                Level:<br />
                                <asp:DropDownList ID="DropDownListAccessLevel" runat="server" Width="68px">
@@ -738,15 +739,15 @@
                            <td align="left" valign="top" nowrap="nowrap" style="font-weight: bold; font-size: small; color: black;font-family: Arial; height: 23px; background-color: #e5e5e5; width: 120px;">
                          Email:<br />
                             <asp:TextBox ID="TextBoxEmail" runat="server" Width="250px"></asp:TextBox>
-                           </td>
+                           </td>     
                            <td align="left" valign="top" nowrap="nowrap" style="font-weight: bold; font-size: small; color: black;font-family: Arial; height: 23px; background-color: #e5e5e5; width: 142px;">
                          From (mm/dd/yyyy):<br />
                              <asp:TextBox ID="TextBoxFrom" runat="server" Width="142px"></asp:TextBox>
-                           </td>
+                           </td> 
                            <td align="left" valign="top" nowrap="nowrap" style="font-weight: bold; font-size: small; color: black;font-family: Arial; height: 23px; background-color: #e5e5e5; width: 140px;">
                         To (mm/dd/yyyy):<br />
                              <asp:TextBox ID="TextBoxTo" runat="server" Width="140px"></asp:TextBox>
-                           </td>
+                           </td>    
                            <td align="left" style="font-weight: bold; font-size: small; color: black; font-family: Arial; height: 23px; background-color: #e5e5e5; width: 301px;" valign="top">
                              Comments:<br />
                              <asp:TextBox ID="TextBoxComm" runat="server" Height="26px" TextMode="MultiLine" Width="290px"></asp:TextBox>
@@ -796,28 +797,28 @@
                 </tr>
             </table>
         </asp:View>
-
+   
 </asp:MultiView>
-        <br/>
-
+        <br/>   
+     
          <asp:Label ID="LabelAlert" runat="server" Font-Bold="True" Font-Names="Arial" Font-Size="Large"
-            ForeColor="Gray" Text="Label"></asp:Label>
-
+            ForeColor="Gray" Text="Label"></asp:Label>           
+   
         &nbsp;
          <asp:HyperLink ID="HyperLinkImportData" runat="server" Enabled="False" Font-Names="Arial" Font-Size="Medium" ForeColor="Blue" NavigateUrl="~/DataImport.aspx" ToolTip="Import Report Data" Visible="False" Font-Italic="True">import data</asp:HyperLink>
-        <br/>
+        <br/>                           
 
             </td>
         </tr>
-    </table>
-         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </table> 
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
         <asp:Label ID="LabelRepID" runat="server" Font-Bold="False" Font-Names="Arial" Font-Size="XX-Small" ForeColor="Black" Text=" rrrrrr"></asp:Label>
 
         <ucmsgbox:msgbox id="MessageBox" runat ="server" > </ucmsgbox:msgbox>
         <ucdlgcheck:dlgcheck  ID="dlgChooseParams" runat ="server" ChecklistBackColor="#FFFFFB" FontName="Tahoma" PromptFontSize="14px" PromptForeColor="#660033" Width="600px" />
         <ucdlgparam:dlgparam  ID ="dlgEnterParams" runat="server" FontName="Tahoma" />
                 </ContentTemplate>
-            <Triggers>
+            <Triggers> 
             <asp:PostBackTrigger ControlID="ButtonUploadFile"/>
             <asp:PostBackTrigger ControlID="ButtonUploadRDL"/>
             <asp:PostBackTrigger ControlID="ButtonDownloadFile"/>
@@ -840,7 +841,9 @@
                 </div>
             </div>
             </ProgressTemplate>
-        </asp:UpdateProgress>
+        </asp:UpdateProgress> 
     </form>
 </body>
 </html>
+
+

@@ -80,6 +80,7 @@ Partial Class DataAdmin
         litPreviewABCPareto.Text = BuildABCParetoPreviewHtml(dv)
         litPreviewDataDrift.Text = BuildDataDriftPreviewHtml(dv)
         litPreviewAnomalyScoring.Text = BuildAnomalyScoringPreviewHtml(dv)
+        litPreviewRuleBasedAlerts.Text = BuildRuleBasedAlertsPreviewHtml(dv)
         litPreviewKPIBuilder.Text = BuildKPIBuilderPreviewHtml(dv)
         litPreviewDataDictionary.Text = BuildDataDictionaryPreviewHtml(dv)
         litPreviewMapReadiness.Text = BuildMapReadinessPreviewHtml(dv)
@@ -138,6 +139,7 @@ Partial Class DataAdmin
         tiles.Add(tileABCPareto)
         tiles.Add(tileDataDrift)
         tiles.Add(tileAnomalyScoring)
+        tiles.Add(tileRuleBasedAlerts)
         tiles.Add(tileKPIBuilder)
         tiles.Add(tileDataDictionary)
         tiles.Add(tileMapReadiness)
@@ -638,6 +640,42 @@ Partial Class DataAdmin
         If rows.Count > PreviewRows Then rows = rows.GetRange(0, PreviewRows)
         If rows.Count = 0 Then Return BuildOutlierPreviewHtml(dv)
         Return RenderPreviewTable(New String() {groupCol.ColumnName, "Avg " & valueCol.ColumnName, "Expected", "Difference"}, rows)
+    End Function
+
+    Private Function BuildRuleBasedAlertsPreviewHtml(dv As DataView) As String
+        If Not HasPreviewData(dv) Then Return EmptyPreview("No report data available.")
+
+        Dim rows As New List(Of String())()
+        For Each col As DataColumn In dv.Table.Columns
+            Dim blanks As Integer = BlankCount(dv, col)
+            If blanks > 0 Then
+                Dim pct As Double = blanks * 100.0 / Math.Max(1, dv.Count)
+                If pct > 10 Then rows.Add(New String() {"Missing", col.ColumnName, FormatPreviewNumber(pct) & "%"})
+            End If
+            If rows.Count >= PreviewRows Then Exit For
+        Next
+
+        If rows.Count < PreviewRows Then
+            For Each col As DataColumn In NumericColumns(dv.Table)
+                Dim stats As PreviewStats = NumericStats(dv, col)
+                If stats.Count > 1 AndAlso Math.Abs(stats.Average) > 0 Then
+                    Dim cv As Double = stats.StdDev / Math.Abs(stats.Average) * 100
+                    If cv > 20 Then rows.Add(New String() {"Variance", col.ColumnName, FormatPreviewNumber(cv) & "%"})
+                End If
+                If rows.Count >= PreviewRows Then Exit For
+            Next
+        End If
+
+        If rows.Count < PreviewRows Then
+            Dim latCol As DataColumn = FindMapColumn(dv.Table, True)
+            Dim lonCol As DataColumn = FindMapColumn(dv.Table, False)
+            If latCol Is Nothing OrElse lonCol Is Nothing Then
+                rows.Add(New String() {"Map", "Latitude / Longitude", "Missing"})
+            End If
+        End If
+
+        If rows.Count = 0 Then Return BuildQualityPreviewHtml(dv)
+        Return RenderPreviewTable(New String() {"Alert", "Field", "Actual"}, rows)
     End Function
 
     Private Function BuildKPIBuilderPreviewHtml(dv As DataView) As String
@@ -1347,6 +1385,24 @@ Partial Class DataAdmin
         Return (n * sumXY - sumX * sumY) / denominator
     End Function
 
+    Private Function NumericStats(dv As DataView, col As DataColumn) As PreviewStats
+        Dim stats As New PreviewStats()
+        For i As Integer = 0 To dv.Count - 1
+            stats.Add(NumericValue(dv(i)(col.ColumnName)))
+        Next
+        Return stats
+    End Function
+
+    Private Function FindMapColumn(dt As DataTable, latitude As Boolean) As DataColumn
+        If dt Is Nothing Then Return Nothing
+        For Each col As DataColumn In dt.Columns
+            Dim n As String = col.ColumnName.ToLowerInvariant()
+            If latitude AndAlso (n = "lat" OrElse n.Contains("latitude")) Then Return col
+            If Not latitude AndAlso (n = "lon" OrElse n = "lng" OrElse n.Contains("longitude")) Then Return col
+        Next
+        Return Nothing
+    End Function
+
     Private Function FriendlyType(col As DataColumn) As String
         If ColumnTypeIsNumeric(col) Then Return "Number"
         If col.DataType Is GetType(DateTime) Then Return "Date"
@@ -1365,6 +1421,32 @@ Partial Class DataAdmin
             Text = recordText
             Value = recordValue
         End Sub
+    End Class
+
+    Private Class PreviewStats
+        Public Count As Integer
+        Public Sum As Double
+        Public SumSquares As Double
+        Public Sub Add(value As Double)
+            Count += 1
+            Sum += value
+            SumSquares += value * value
+        End Sub
+        Public ReadOnly Property Average As Double
+            Get
+                If Count = 0 Then Return 0
+                Return Sum / Count
+            End Get
+        End Property
+        Public ReadOnly Property StdDev As Double
+            Get
+                If Count = 0 Then Return 0
+                Dim avg As Double = Average
+                Dim variance As Double = (SumSquares / Count) - (avg * avg)
+                If variance < 0 Then variance = 0
+                Return Math.Sqrt(variance)
+            End Get
+        End Property
     End Class
 
     Private Function CompareCountRecordsDescending(x As CountRecord, y As CountRecord) As Integer

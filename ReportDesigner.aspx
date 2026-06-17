@@ -97,6 +97,7 @@
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
+<asp:TreeNode Text="Rule-Based Alerts" Value="RuleBasedAlerts.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
@@ -348,7 +349,7 @@
                                                                        <tr>
                                                                           <td >
                                                                              <div id="divHeaderFooterShowBackColor" style="border: none; width: 22px; height: 18px; border-radius:3px; background-color: white; margin-bottom:3px;"></div>
-                                                                          </td>
+                                                                          </td>  
                                                                           <td >
                                                                              <div id="divHeaderFooterBackColorName"  style="font-size:smaller; border: none; height: 18px; width:125px; text-align:left; margin-bottom:3px;">white</div>
                                                                           </td>
@@ -376,7 +377,7 @@
                                                                 <option value="Dotted">Dotted</option>
                                                                 <option value="Dashed">Dashed</option>
                                                                 <option value="Double">Double</option>
-                                                            </select>
+                                                            </select>    
                                                         </div>
                                                         <div id="divHeaderFooterBorderWidth"  style="display:block; margin:5px;">
                                                             <label for="txtHeaderFooterBorderWidth">Border Width:</label>
@@ -480,7 +481,7 @@
                                                 <option value="Comic Sans MS">Comic Sans MS</option>
                                                 <option value="Courier">Courier</option>
                                                 <option value="Courier New">Courier New</option>
-                                            </select>
+                                            </select>    
                                         </div>
                                     </td>
                                     <td id="tdFontStyle">
@@ -494,7 +495,7 @@
                                                 <option value="Italic">Italic</option>
                                                 <option value="Bold">Bold</option>
                                                 <option value="Bold Italic">Bold Italic</option>
-                                            </select>
+                                            </select>    
                                         </div>
                                     </td>
                                     <td id="tdFontSize">
@@ -522,7 +523,7 @@
                                                 <option value="40">40</option>
                                                 <option value="48">48</option>
                                                 <option value="72">72</option>
-                                            </select>
+                                            </select>    
                                         </div>
                                     </td>
                                 </tr>
@@ -609,7 +610,7 @@
                                                         <option value="Dotted">Dotted</option>
                                                         <option value="Dashed">Dashed</option>
                                                         <option value="Double">Double</option>
-                                                    </select>
+                                                    </select>    
                                                 </div>
                                                     <div id="divBorderWidth"  style="display:block; margin:5px;">
                                                     <label for="txtBorderWidth">Border Width:</label>
@@ -653,17 +654,17 @@
                <%--***************************** Color lists ****************--%>
                <div id="divColorList" tabindex="0" class="ColorList overflowy" style="display:none; ">
                    <table id="tblColorList" style="width: 100%;">
-
+                   
                    </table>
                </div>
                <div id="divBackColorList" tabindex="0" class="ColorList overflowy" style="display:none; ">
                    <table id="tblBackColorList" style="width: 100%;">
-
+                   
                    </table>
                </div>
                <div id="divBorderColorList" tabindex="0" class="ColorList overflowy" style="display:none; ">
                    <table id="tblBorderColorList" style="width: 100%;">
-
+                   
                    </table>
                </div>
                <%--************************************ Message Box Dialog ************************--%>
@@ -707,7 +708,7 @@
 
                        <div id="divTabularWidthBody"  style=" margin:5px; border: 1px solid #000000; display: inline-block; background-color: #FFFFFF; width: 99%; height: 100px; overflow-y:auto; overflow-x: scroll; background-color: #FFFFFF; white-space:nowrap" >
                        </div>
-
+                       
                        <div id="divTip" class="tip">
                            Test
                        </div>
@@ -776,7 +777,7 @@
                                                        <table>
                                                            <tr>
                                                                <td>
-                                                                      <asp:RadioButton ID="rbCustom" runat="server" Text="Custom" Font-Size="Small" GroupName="size" />
+                                                                      <asp:RadioButton ID="rbCustom" runat="server" Text="Custom" Font-Size="Small" GroupName="size" />       
                                                                </td>
                                                                <td>
                                                                     <div id ="divSizeOptions" style="margin-left: 50px">
@@ -785,7 +786,7 @@
                                                                                <option value="Square">Square</option>
                                                                                <option value="KeepAspectRatio">Original Aspect Ratio</option>
                                                                                 <option value="FreeForm">Free Form</option>
-                                                                          </select>
+                                                                          </select>    
 
                                                                            <%--<asp:CheckBox id="ckbSquare" runat="server" Text="Square" Checked="True" Enabled="False" />--%>
                                                                    </div>
@@ -833,7 +834,7 @@
                                             <asp:Button ID="btnUploadImageFile" runat="server" CssClass="imagefilebutton" Text="Upload Image File" CausesValidation="false" UseSubmitBehavior="False" />
                                       </div>
                                       <div id="divSampleImage" >
-                                          <div id="divSampleImageText" style="float:left;">
+                                          <div id="divSampleImageText" style="float:left;"> 
                                               <br /><br />
                                                <div id="divText">&nbsp;&nbsp;&nbsp; Sample</div>
                                           </div>
@@ -843,7 +844,7 @@
                                                 <br />
                                                 Refresh Image
                                                    <%--<img id="imgRefresh" src="~/Controls/Images/WaitImage2.gif" style="width: 32px; height: 32px" />--%>
-                                          </div>
+                                          </div> 
                                           <hr id="hrImageLine1" style="border: thin solid #626262; width: 100%; height: auto; margin: 1px 3px 1px 3px" />
                                           <div id="divShowImage" style="height: 325px; text-align: center; vertical-align: middle;">
                                                 <div id="divImageSample" class="relative-middle" style="padding: 4px; border-style: none; border-color: black; border-width: 1px; width: 74px; height:74px;">
@@ -869,7 +870,7 @@
                                                                         <option value="Dotted">Dotted</option>
                                                                         <option value="Dashed">Dashed</option>
                                                                         <option value="Double">Double</option>
-                                                                   </select>
+                                                                   </select>    
                                                                  </div>
                                                           </td>
                                                           <td>
@@ -907,7 +908,7 @@
                                            </div>
 
 
-
+                                     
                                         </div>
                                      <div id="divImageFieldDlgBoxButtons" style="float:right;">
                                            <asp:Button ID="btnImageFieldDlgBoxOK" runat="server" CssClass="dlgboxbutton" Text="OK" CausesValidation="false" UseSubmitBehavior="False" />
@@ -924,8 +925,8 @@
 
           </ContentTemplate>
 
-         <Triggers>
-            <asp:PostBackTrigger ControlID="btnUploadImageFile"/>
+         <Triggers> 
+            <asp:PostBackTrigger ControlID="btnUploadImageFile"/>            
         </Triggers>
 
         </asp:UpdatePanel>
@@ -971,3 +972,5 @@
     </form>
 </body>
 </html>
+
+

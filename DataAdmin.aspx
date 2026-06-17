@@ -359,6 +359,7 @@
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
+<asp:TreeNode Text="Rule-Based Alerts" Value="RuleBasedAlerts.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
@@ -632,6 +633,16 @@
                                             <span class="openText">Open</span>
                                         </a>
 
+                                        <a id="tileRuleBasedAlerts" runat="server" class="analyticsTile" href="RuleBasedAlerts.aspx" title="Open Rule-Based Alerts">
+                                            <span class="tileCaption">
+                                                <span class="tileTitle">Rule-Based Alerts</span>
+                                                <span class="tileText">User-defined thresholds for data, statistics, maps, and market-risk signals.</span>
+                                            </span>
+                                            <span class="tileBody">Define alert rules for missing values, variance, correlations, outliers, map readiness, and churn scores.</span>
+                                            <span class="previewBox"><asp:Literal ID="litPreviewRuleBasedAlerts" runat="server"></asp:Literal></span>
+                                            <span class="openText">Open</span>
+                                        </a>
+
                                         <a id="tileKPIBuilder" runat="server" class="analyticsTile" href="KPIBuilder.aspx" title="Open KPI Builder">
                                             <span class="tileCaption">
                                                 <span class="tileTitle">KPI Builder</span>
@@ -692,3 +703,5 @@
     </form>
 </body>
 </html>
+
+

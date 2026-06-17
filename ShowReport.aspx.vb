@@ -413,7 +413,7 @@ Partial Class ShowReport
                             drvalue = DateToString(drvalue, Session("UserConnProvider"), bTimeStamp)
                         End If
                         If drvalue <> "" Then
-                            'option
+                            'option 
                             Dim li As New ListItem(drvalue)
                             If drvalue = ddrequest Then
                                 li.Selected = True
@@ -430,7 +430,7 @@ Partial Class ShowReport
                 End If
                 main.Rows(4).Cells(0).Controls.Add(ctldd)
 
-            Next   ' go to next draw dop-down
+            Next   ' go to next draw dop-down 
 
             Session("ParamNames") = ParamNames
             Session("ParamValues") = ParamValues
@@ -709,6 +709,20 @@ Partial Class ShowReport
                     Session("srch") = srch
                     Session("AnomalyScoringFilter") = srch
                     LabelAddWhere.Text = "Anomaly Scoring filter"
+                End If
+            End If
+            If Not Request("alertfilter") Is Nothing AndAlso Request("alertfilter").ToString.Trim() <> "" Then
+                Dim alertFilters As Dictionary(Of String, String) = TryCast(Session("RuleBasedAlertFilters"), Dictionary(Of String, String))
+                Dim alertId As String = Request("alertfilter").ToString.Trim()
+                If alertFilters IsNot Nothing AndAlso alertFilters.ContainsKey(alertId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & alertFilters(alertId) & ")"
+                    Else
+                        srch = alertFilters(alertId)
+                    End If
+                    Session("srch") = srch
+                    Session("RuleBasedAlertFilter") = srch
+                    LabelAddWhere.Text = "Rule-Based Alerts filter"
                 End If
             End If
             If Not Request("kpifilter") Is Nothing AndAlso Request("kpifilter").ToString.Trim() <> "" Then
@@ -1787,7 +1801,7 @@ Partial Class ShowReport
     End Sub
 
     ''' <summary>
-    '''
+    ''' 
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
@@ -2106,3 +2120,5 @@ Partial Class ShowReport
     End Sub
 
 End Class
+
+

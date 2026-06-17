@@ -1,8 +1,8 @@
-﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="AnomalyScoring.aspx.vb" Inherits="AnomalyScoring" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="RuleBasedAlerts.aspx.vb" Inherits="RuleBasedAlerts" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Anomaly Scoring</title>
+    <title>Rule-Based Alerts</title>
     <style type="text/css">
         .NodeStyle { color:#0066FF; font-size:12px; font-weight:normal; text-decoration:none; }
         .NodeStyle:hover { text-decoration:underline; color:darkblue; }
@@ -11,7 +11,7 @@
         .aiLinkButton:hover { color:#004DCC; text-decoration:none; }
         .analysisgrid { font-family:Arial; font-size:12px; border-collapse:collapse; background-color:white; }
         .analysisgrid th { background-color:#663300; color:white; border:1px solid white; padding:4px; white-space:nowrap; }
-        .analysisgrid td { border:1px solid #d0d0d0; padding:4px; white-space:nowrap; }
+        .analysisgrid td { border:1px solid #d0d0d0; padding:4px; white-space:normal; }
         .controlpanel { background-color:#e5e5e5; border:medium double #FFFFFF; color:black; font-family:Arial; font-size:small; width:auto; min-width:1120px; max-width:1280px; margin-left:0; margin-right:auto; }
         .analysisSubtitle { display:block; font-family:Arial; font-size:small; color:#333333; padding-top:4px; padding-bottom:8px; }
         .analysisExplanation { font-family:Arial; font-size:small; color:#333333; background-color:#f5fbf4; border:1px solid #d8ead4; padding:8px; margin-top:8px; max-width:1180px; }
@@ -25,16 +25,12 @@
         .explanationTitle { color:#2f4f1f; margin-bottom:3px; }
         .explanationBlock ul { margin:3px 0 0 18px; padding:0; }
         .explanationBlock li { margin:2px 0; white-space:normal; }
-        .suggestedFieldsBlock { margin-top:3px; }
-        .suggestedFieldsTitle { display:block; margin-bottom:2px; }
-        .suggestedFieldsBlock ul { margin:2px 0 0 18px; padding:0; }
-        .suggestedFieldsBlock li { margin:1px 0; white-space:normal; }
     </style>
 </head>
 <body>
 <form id="form1" runat="server">
 <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
-<asp:UpdatePanel ID="udpAnomaly" runat="server">
+<asp:UpdatePanel ID="udpAlerts" runat="server">
 <ContentTemplate>
 <table>
 <tr><td colspan="3" style="font-size:x-large; font-weight:bold; background-color:#e5e5e5; height:40px;"><asp:Label ID="LabelPageTtl" runat="server" Text="Online User Reporting"></asp:Label></td></tr>
@@ -89,29 +85,28 @@
 <td style="width:85%; text-align:left; vertical-align:top;">
 <asp:HyperLink ID="HyperLinkAnalytics" runat="server" NavigateUrl="~/Analytics.aspx" CssClass="NodeStyle" Font-Names="Arial">Detail Analytics</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkReport" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" CssClass="NodeStyle" Font-Names="Arial">Report and Charts</asp:HyperLink>
-&nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Anomaly%20Scoring" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>
+&nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Rule%20Based%20Alerts" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>
 &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkLogOff" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
 <br /><br />
-<div style="text-align:center;"><asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Anomaly Scoring</asp:Label><asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Score unusual field combinations, group values, period movement, and suspicious category/value patterns."></asp:Label></div>
-<span class="analysisRecommendation">Work Flow suggested: review the complete results in <a class="NodeStyle" href="OutlierFlagging.aspx">Outlier Flagging</a>, <a class="NodeStyle" href="DataDrift.aspx">Data Drift Analysis</a>, and <a class="NodeStyle" href="DataQuality.aspx">Data Quality</a>.</span>
+<div style="text-align:center;"><asp:Label ID="lblHeader" runat="server" Font-Size="22px" Font-Names="Arial">Rule-Based Alerts</asp:Label><asp:Label ID="LabelAnalysisSubtitle" runat="server" CssClass="analysisSubtitle" Text="Define practical alert thresholds for missing values, variance, correlations, outliers, map readiness, and churn-score rules, then review the triggered alerts."></asp:Label></div>
+<span class="analysisRecommendation">Work Flow suggested: review the complete results in <a class="NodeStyle" href="DataQuality.aspx">Data Quality</a>, <a class="NodeStyle" href="AnomalyScoring.aspx">Anomaly Scoring</a>, <a class="NodeStyle" href="CorrelationThreshold.aspx">Correlation Threshold</a>, and <a class="NodeStyle" href="MapReadines.aspx">Map Readiness</a>.</span>
 <br />
 <table class="controlpanel" cellpadding="4" cellspacing="0">
-<tr><td style="font-weight:bold;">Group field:</td><td><asp:DropDownList ID="DropDownGroupField" runat="server" Width="190px" ToolTip="Primary category, entity, customer, product, department, or location used to group anomaly scores."></asp:DropDownList></td><td style="font-weight:bold;">Category field:</td><td><asp:DropDownList ID="DropDownCategoryField" runat="server" Width="190px" ToolTip="Optional second category used to score unusual combinations with the group field."></asp:DropDownList></td></tr>
-<tr><td style="font-weight:bold;">Value field:</td><td><asp:DropDownList ID="DropDownValueField" runat="server" Width="190px" ToolTip="Numeric measure used to score unusual values inside each group."></asp:DropDownList></td><td style="font-weight:bold;">Date field:</td><td><asp:DropDownList ID="DropDownDateField" runat="server" Width="190px" ToolTip="Optional date field used to score unusual period movement."></asp:DropDownList></td></tr>
-<tr><td style="font-weight:bold;">Date aggregation:</td><td><asp:DropDownList ID="DropDownDateAggregation" runat="server" Width="120px" ToolTip="Period level used when Date field is selected."><asp:ListItem>Month</asp:ListItem><asp:ListItem>Day</asp:ListItem><asp:ListItem>Week</asp:ListItem><asp:ListItem>Quarter</asp:ListItem><asp:ListItem>Year</asp:ListItem></asp:DropDownList></td><td style="font-weight:bold;">Score threshold:</td><td><asp:TextBox ID="txtScoreThreshold" runat="server" Width="80px" Text="2" ToolTip="Minimum anomaly score shown in the grid. Higher values show stronger anomalies only."></asp:TextBox></td></tr>
-<tr><td style="font-weight:bold;">Search:</td><td colspan="3"><asp:TextBox ID="txtSearch" runat="server" Width="420px" ToolTip="Optional text used to filter records before anomaly scoring."></asp:TextBox><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" ToolTip="Build or refresh anomaly scores using the selected controls. The Build action also saves an Excel snapshot of the results in the session temporary folder so it can be included later in Export Packages if needed." /><asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" ToolTip="Clear search and rebuild the default anomaly scoring." /><asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" ToolTip="Export the anomaly scoring grid to CSV." /><asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" ToolTip="Export the anomaly scoring grid to Excel." /><asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkAnomalyAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret anomaly types, scores, suspicious patterns, and records that should be reviewed first.">AI</asp:LinkButton></td></tr>
+<tr><td style="font-weight:bold;">Missing values % &gt;</td><td><asp:TextBox ID="txtMissingPercent" runat="server" Width="80px" Text="10" ToolTip="Alert when blanks or nulls in a field are more than this percent of rows."></asp:TextBox></td><td style="font-weight:bold;">Variance % &gt;</td><td><asp:TextBox ID="txtVariancePercent" runat="server" Width="80px" Text="20" ToolTip="Alert when a numeric field coefficient of variation is more than this percent."></asp:TextBox></td><td style="font-weight:bold;">Correlation &gt;</td><td><asp:TextBox ID="txtCorrelationThreshold" runat="server" Width="80px" Text="0.8" ToolTip="Alert when absolute correlation between two numeric fields is above this value."></asp:TextBox></td></tr>
+<tr><td style="font-weight:bold;">Outlier stdev &gt;</td><td><asp:TextBox ID="txtOutlierThreshold" runat="server" Width="80px" Text="2" ToolTip="Alert when records are farther than this number of standard deviations from a numeric field average."></asp:TextBox></td><td style="font-weight:bold;">Churn score below</td><td><asp:TextBox ID="txtChurnScore" runat="server" Width="80px" Text="50" ToolTip="Alert when churn, retention, risk, or score-like numeric fields have values below this level."></asp:TextBox></td><td style="font-weight:bold;">Map readiness failed</td><td><asp:CheckBox ID="chkMapReadiness" runat="server" Checked="True" ToolTip="Alert when latitude/longitude fields are missing, invalid, or do not look map-ready." /></td></tr>
+<tr><td style="font-weight:bold;">Search:</td><td colspan="5"><asp:TextBox ID="txtSearch" runat="server" Width="420px" ToolTip="Optional text used to filter records before rule checks."></asp:TextBox><asp:Button ID="ButtonBuild" runat="server" CssClass="ticketbutton" Text="Build" OnClientClick="return showWaitingPanel();" ToolTip="Build or refresh alerts using the selected thresholds. The Build action also saves an Excel snapshot of the results in the session temporary folder so it can be included later in Export Packages if needed." /><asp:Button ID="ButtonReset" runat="server" CssClass="ticketbutton" Text="Reset" ToolTip="Clear search and restore default alert thresholds." /><asp:Button ID="ButtonExportCSV" runat="server" CssClass="ticketbutton" Text="CSV" ToolTip="Export the alerts grid to CSV." /><asp:Button ID="ButtonExportExcel" runat="server" CssClass="ticketbutton" Text="Excel" ToolTip="Export the alerts grid to Excel." /><asp:LinkButton OnClientClick="return showWaitingPanel();" ID="lnkAlertsAI" runat="server" CssClass="aiLinkButton" Font-Names="Arial" ToolTip="Ask AI to interpret triggered alert rules, affected fields, severity, and what should be reviewed first.">AI</asp:LinkButton></td></tr>
 </table>
 <asp:Label ID="LabelError" runat="server" ForeColor="Red" Font-Names="Arial" Font-Size="Medium"></asp:Label><br />
 <asp:Label ID="LabelBuildExportHint" runat="server" ForeColor="DarkGreen" Font-Names="Arial" Font-Size="Small" Text="Click Build to save results in temporary folder for future Export Packages if needed."></asp:Label><br />
 <asp:Label ID="LabelInfo" runat="server" ForeColor="Black" Font-Names="Arial" Font-Size="Small"></asp:Label><br /><br />
 <div style="font-family:Arial; font-size:small; padding-bottom:6px;"><asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small" OnClick="LinkButtonPrevious_Click">Previous</asp:LinkButton>&nbsp;&nbsp;<asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label><asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True" OnTextChanged="TextBoxPageNumber_TextChanged"></asp:TextBox><asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small" OnClick="LinkButtonNext_Click">Next</asp:LinkButton></div>
-<div style="overflow:auto; max-width:100%;"><asp:GridView ID="GridViewAnomaly" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView></div>
+<div style="overflow:auto; max-width:100%;"><asp:GridView ID="GridViewAlerts" runat="server" CssClass="analysisgrid" AutoGenerateColumns="True" GridLines="Both"></asp:GridView></div>
 <div class="analysisExplanation"><asp:Label ID="LabelModelExplanation" runat="server"></asp:Label><asp:Label ID="LabelAlgorithmExplanation" runat="server"></asp:Label><asp:Label ID="LabelOutputExplanation" runat="server"></asp:Label><asp:Label ID="LabelReadinessWhyUseful" runat="server" Visible="False"></asp:Label><asp:Label ID="LabelReadinessSuggestedFields" runat="server" Visible="False"></asp:Label></div>
 </td></tr></table>
 </ContentTemplate>
-<Triggers><asp:PostBackTrigger ControlID="ButtonExportCSV" /><asp:PostBackTrigger ControlID="ButtonExportExcel" /><asp:PostBackTrigger ControlID="lnkAnomalyAI" /></Triggers>
+<Triggers><asp:PostBackTrigger ControlID="ButtonExportCSV" /><asp:PostBackTrigger ControlID="ButtonExportExcel" /><asp:PostBackTrigger ControlID="lnkAlertsAI" /></Triggers>
 </asp:UpdatePanel>
-<asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="udpAnomaly"><ProgressTemplate><div class="modal"><div class="center"><asp:Image ID="imgProgress" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/Controls/Images/WaitImage2.gif" />Please Wait...</div></div></ProgressTemplate></asp:UpdateProgress>
+<asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="udpAlerts"><ProgressTemplate><div class="modal"><div class="center"><asp:Image ID="imgProgress" runat="server" ImageAlign="AbsMiddle" ImageUrl="~/Controls/Images/WaitImage2.gif" />Please Wait...</div></div></ProgressTemplate></asp:UpdateProgress>
 <div id="ManualWaitingPanel" class="modal" style="display:none;"><div class="center"><img src="Controls/Images/WaitImage2.gif" alt="Please Wait" />Please Wait...</div></div>
 </form>
 <script type="text/javascript">

@@ -65,7 +65,7 @@
     text-decoration:underline;
     color:darkblue;
 }
-.ticketbutton
+.ticketbutton 
 {
   width: 80px;
   height: 25px;
@@ -76,18 +76,18 @@
   color: black;
   border-width: 1px;
   /*background-color: ButtonFace;*/
-  background-image: linear-gradient(to bottom, rgba(211, 211, 211,0),rgba(211, 211, 250,3));
+  background-image: linear-gradient(to bottom, rgba(211, 211, 211,0),rgba(211, 211, 250,3));  
   /*rgba(158, 188, 250,0),rgba(158, 188, 250,1));*/
 
   padding: 3px;
   margin:5px;
-  z-index: 9999;
+  z-index: 9999; 
 }
         </style>
 </head>
 <body>
     <form id="form1" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
+    <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />      
     <asp:UpdatePanel ID="udpTablesList" runat ="server" >
        <ContentTemplate>
             <div>
@@ -96,7 +96,7 @@
           <td colspan="3" style="font-size:x-large; font-style:normal; font-weight:bold; background-color: #e5e5e5; vertical-align:middle; text-align: left; height: 40px;">
               <asp:Label ID="LabelPageTtl" runat="server" Text="Online User Reporting"></asp:Label>
           </td>
-      </tr>
+      </tr> 
         <tr>
             <td style="font-size: x-small; font-style: normal; font-weight: normal; background-color: #e5e5e5; vertical-align: top; text-align: left; width: 15%;">
                     <div id="tree" style="font-size: x-small; font-weight: normal; font-style: normal">
@@ -166,6 +166,7 @@
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
+<asp:TreeNode Text="Rule-Based Alerts" Value="RuleBasedAlerts.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
@@ -189,53 +190,53 @@
     </div>
             </td>
             <td width="5px"></td>
-   <td id="main" style="width: 85%; text-align: left; vertical-align: top">
+   <td id="main" style="width: 85%; text-align: left; vertical-align: top"> 
     <div style="text-align: center;width:100%;">
     <div style="text-align: center;">
       <%--  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
            <asp:HyperLink ID="HyperLinkListOfReports" runat="server" NavigateUrl="~/ListOfReports.aspx" Enabled="True" Visible="True" CssClass="NodeStyle" Font-Names="Arial">List of Reports</asp:HyperLink>
-          --%>
-       <%--    <asp:LinkButton ID="LinkButtonRefresh" runat="server" CssClass="NodeStyle" Font-Names="Arial" ToolTip="May take a long time...">Recalculate Analytics</asp:LinkButton>
+          --%>  
+       <%--    <asp:LinkButton ID="LinkButtonRefresh" runat="server" CssClass="NodeStyle" Font-Names="Arial" ToolTip="May take a long time...">Recalculate Analytics</asp:LinkButton> 
      --%>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLinkAnalyticsDashboard" runat="server" NavigateUrl="~/DataAdmin.aspx" CssClass="NodeStyle" Font-Names="Arial">Analytics Dashboard</asp:HyperLink>
 
         &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/DataReadinessScanner.aspx" CssClass="NodeStyle" Font-Names="Arial">Data Readiness</asp:HyperLink>
-
+        
         &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="~/ShowReport.aspx?srd=8" CssClass="NodeStyle" Font-Names="Arial">Data and Statistics</asp:HyperLink>
 
          &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLink5" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" CssClass="NodeStyle" Font-Names="Arial">Report and Charts</asp:HyperLink>
-
+              
          &nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkChartDashboards" runat="server" NavigateUrl="~/ListOfDashboards.aspx" CssClass="NodeStyle" Font-Names="Arial">Chart Dashboards</asp:HyperLink>
-
+        
          &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLinkAdvancedAnalytics" runat="server" NavigateUrl="~/AdvancedAnalytics.aspx" CssClass="NodeStyle" Font-Names="Arial">Matrix Balancing</asp:HyperLink>
-
+      
         &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLinkPivot" runat="server" NavigateUrl="~/Pivot.aspx" CssClass="NodeStyle" Font-Names="Arial">Pivot / Cross Tab</asp:HyperLink>
-
+      
         &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLinkVariance" runat="server" NavigateUrl="~/Variance.aspx" CssClass="NodeStyle" Font-Names="Arial">Variance Analysis</asp:HyperLink>
-
+      
         &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLinkProfiling" runat="server" NavigateUrl="~/Profiling.aspx" CssClass="NodeStyle" Font-Names="Arial">Data Profiling</asp:HyperLink>
-
+      
         &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/FriendlyNames.aspx" CssClass="NodeStyle" Font-Names="Arial" Enabled="False" Visible="False">FriendlyNames</asp:HyperLink>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; 
         <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Analytics" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>&nbsp;&nbsp;
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-       <%-- <asp:LinkButton ID="LinkButtonHelpDesk" runat="server" OnClientClick="target='_blank'" CssClass="NodeStyle" Font-Names="Arial">Report a problem</asp:LinkButton>
+       <%-- <asp:LinkButton ID="LinkButtonHelpDesk" runat="server" OnClientClick="target='_blank'" CssClass="NodeStyle" Font-Names="Arial">Report a problem</asp:LinkButton> 
          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         !! DO NOT DELETE, NEXT LINE IS FOR TESTING ON SITE ONLY !! Comment it for production: --%>
-        <%--<asp:HyperLink ID="HyperLinkTestHelp" runat="server" NavigateUrl="~/HelpDesk.aspx" visible="False" CssClass="NodeStyle" Font-Names="Arial">Test to report a problem </asp:HyperLink>--%>
+        <%--<asp:HyperLink ID="HyperLinkTestHelp" runat="server" NavigateUrl="~/HelpDesk.aspx" visible="False" CssClass="NodeStyle" Font-Names="Arial">Test to report a problem </asp:HyperLink>--%>  
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>
-
+        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Default.aspx" CssClass="NodeStyle" Font-Names="Arial">Log off</asp:HyperLink>            
+        
     <table border="0" cellpadding="1" cellspacing="0" width="100%">
      <%--<tr id="trDB" runat ="server" visible ="false">
        <td align="center" valign="top">
@@ -255,19 +256,19 @@
      <tr>
        <td align="center" valign="top">
         <table border="0" cellpadding="0" cellspacing="5" width="50%">
-
+            
         </table>
        </td>
      <tr>
        <td align="center" valign="top">
-
+         
          <asp:Label ID="lblHeader" runat="server"  Font-Size="22px" Font-Names="Arial" >Analytics:</asp:Label>
          <br />
          <asp:Label ID="LabelAnalyticsWhyUseful" runat="server" Font-Names="Arial" Font-Size="Small" ForeColor="#333333"></asp:Label>
 
        </td>
       </tr>
-
+      
         <tr>
             <td align="center">
              <table id="Table2" runat="server" bgcolor="#e5e5e5" rules="rows" width="100%" style="border:medium double #FFFFFF; font-size: small;
@@ -279,18 +280,18 @@
                                   </tr>
                                   <tr valign="top" runat ="server"  border="3" style="color: black; font-family: Arial; border:medium double #FFFFFF; background-color: #e5e5e5;border-width: 2px;width:100%;" >
                                     <td align="left" style="border:medium double #FFFFFF;" width="1%">
-
-
+  
+                                       
                                     </td>
 
                                     <td align="left" valign="top" style="border:medium double #FFFFFF; text-align: center;" width="60%">
-
+                                        
                                         &nbsp;<asp:Label ID="Label11" runat="server" Text="(!!! ATTENTION !!!)    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   SELECT: " ToolTip="Required (!) to calculate reports, statistics, analytics, and charts below." ForeColor="Red" Font-Bold="True" Font-Size="Medium"></asp:Label>
                                        <br /><br />
-
-
+                                        
+                                        
                                         &nbsp;<asp:Label ID="Label12" runat="server" Text="Category/Group 1: " ToolTip="Required (!) to calculate reports, statistics, analytics, and charts below (Axis X in Charts)."   Font-Bold="True" Font-Size="Medium"></asp:Label>
-                                        <asp:DropDownList ID="DropDownList2" runat="server" ToolTip="Category/Group1" AutoPostBack="True"></asp:DropDownList>
+                                        <asp:DropDownList ID="DropDownList2" runat="server" ToolTip="Category/Group1" AutoPostBack="True"></asp:DropDownList> 
                                         <%-- <br />--%>
                                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                          &nbsp;<asp:Label ID="Label13" runat="server" Text="Category/Group 2: " ToolTip="Required (!) to calculate reports, statistics, analytics, and charts below (Axis X in Charts)."   Font-Bold="True" Font-Size="Medium"></asp:Label>
@@ -298,50 +299,50 @@
                                         <br />
                                         <br />
                                         &nbsp;<asp:Label ID="Label3" runat="server" Text="The argument value: " ToolTip="Required field1 (!) to calculate reports, statistics, analytics, and charts below (Axis Y in Charts)."  Font-Bold="True" Font-Size="Medium"></asp:Label>
-                                        <asp:DropDownList ID="DropDownList3" runat="server" ToolTip="Axis Y" AutoPostBack="True"></asp:DropDownList>
-
+                                        <asp:DropDownList ID="DropDownList3" runat="server" ToolTip="Axis Y" AutoPostBack="True"></asp:DropDownList> 
+                                        
                                         <asp:Label ID="Label4" runat="server" Text="and the aggregation function "  ToolTip="Required! Function to aggregate the values of the argument field. For text field: Count and Count Distinct, for numeric field Sum, Max, Min, StDev, etc... as well. "   Font-Bold="True" Font-Size="Medium"></asp:Label>
                                         <asp:DropDownList ID="DropDownList4" runat="server"  ToolTip="Numeric or Text aggregation function"></asp:DropDownList>
-
+                                      
                                     </td>
-
+                                    
                                     <td align="left" style="border:medium double #FFFFFF;" width="40%">
-
+                                      
                                         &nbsp;&nbsp;<asp:Label ID="Label7" runat="server" Text=" " ToolTip="Correlation between the selected argument and Field2 when both fields are numeric." Font-Bold="True"></asp:Label>
                                         <br /><br />
                                        <%-- <br />--%>
                                         &nbsp;&nbsp;<asp:Label ID="Label8" runat="server" Text="Optional, used only for charts and matrix balancing if needed: " ToolTip="Optional - it needs only for checking correlation between fields and for matrix balancing."></asp:Label>
                                         <br /><%--<br />--%>
                                         &nbsp;&nbsp;<asp:Label ID="Label5" runat="server" Text="Select: the field2 " ToolTip="Optional - it needs only for checking correlation between fields and for matrix balancing."></asp:Label>
-                                        <asp:DropDownList ID="DropDownList5" runat="server" ToolTip="For Matrix balancing or for checking correlation between field1 and field2" AutoPostBack="True"></asp:DropDownList>
+                                        <asp:DropDownList ID="DropDownList5" runat="server" ToolTip="For Matrix balancing or for checking correlation between field1 and field2" AutoPostBack="True"></asp:DropDownList>  
                                         <br />
                                         &nbsp;&nbsp;<asp:Label ID="Label6" runat="server" Text="and the aggregation function "  ToolTip="aggregation function to aggrigate the values of argument field2"></asp:Label>
                                         <asp:DropDownList ID="DropDownList6" runat="server"  ToolTip="Numeric or Text aggrigate functions" AutoPostBack="True"></asp:DropDownList>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                        <br />&nbsp;
+                                       
+                                        <br />&nbsp; 
                                         <asp:Label ID="Label14" runat="server" Text="=================================================" ForeColor="White"></asp:Label>
                                         <br />
                                          &nbsp;&nbsp;<asp:Label ID="Label9" runat="server" Text="Optional, used to add Category/Group to Analytics: " ToolTip="Optional, used to add manually the Category/Group to Analytics if not included automatically"></asp:Label>
                                          <br /><%--<br />--%>
                                          &nbsp;&nbsp;<asp:Label ID="Label10" runat="server" Text="Select the Category/Group: " ToolTip="Optional, used to add manually the Category/Group to Analytics if not included automatically"></asp:Label>
-                                         <asp:DropDownList ID="DropDownList1" runat="server" ToolTip="List of fields to add as Category/Group to Analytics" AutoPostBack="True"></asp:DropDownList>
+                                         <asp:DropDownList ID="DropDownList1" runat="server" ToolTip="List of fields to add as Category/Group to Analytics" AutoPostBack="True"></asp:DropDownList>  
                                         <%-- <br /><br />--%>
-                                         &nbsp;<asp:LinkButton ID="LinkButtonAddCategory" runat="server" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Add custom Category/Group to Analytics">add</asp:LinkButton>
+                                         &nbsp;<asp:LinkButton ID="LinkButtonAddCategory" runat="server" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Add custom Category/Group to Analytics">add</asp:LinkButton> 
                                          <%--<br />&nbsp;--%>
                                     </td>
                                   </tr>
                                   <tr valign="top" runat ="server" colspan="3" border="3" style="color: black; font-family: Arial; border:medium double #FFFFFF; background-color: lightgreen;border-width: 2px;width:100%;" >
-
+   
                                      <td align="center" colspan="3">
-
+     
                                        <%--<asp:Label ID="Label15" runat="server" Text=" Reports: "  ToolTip="Click to see reports" Font-Bold="True"></asp:Label>--%>
                                        <table runat="server" id="listshort"  border="0" align="center" cellspacing="12" style="font-size: 12px; font-family: Arial; height: 12px" >
                                                <tr  height="12px" width="80%" >
-                                                   <%--<td class="auto-style3"  style="font-weight:bold">Reports:</td>
+                                                   <%--<td class="auto-style3"  style="font-weight:bold">Reports:</td>                                                   
                                                    <td class="auto-style1" style="font-weight:bold"> </td>
+                                                   <td class="auto-style1" style="font-weight:bold"> </td>                    
                                                    <td class="auto-style1" style="font-weight:bold"> </td>
-                                                   <td class="auto-style1" style="font-weight:bold"> </td>
-                                                   <td class="auto-style1" style="font-weight:bold"> </td>
+                                                   <td class="auto-style1" style="font-weight:bold"> </td>                    
                                                    <td class="auto-style1" style="font-weight:bold"> </td>
                                                    <td class="auto-style1" style="font-weight:bold"> </td>
                                                    <td class="auto-style1" style="font-weight:bold"> </td>--%>
@@ -354,15 +355,15 @@
                                                     <td width="110px" style="font-weight:bold"> </td>
                                                     <td width="75px" style="font-weight:bold"> </td>
                                                     <td width="120px" style="font-weight:bold"> </td>
-
-                                               </tr>
-                                        </table>
+                                                   
+                                               </tr>           
+                                        </table> 
                                      </td>
                                   </tr>
 
             </table>
-          </td>
-
+          </td>      
+             
         </tr>
         <tr>
             <td align="left" style="font-weight: normal; color: #ffffff; font-family: Arial; background-color: LightGray; font-size:small;" class="auto-style1">
@@ -372,12 +373,12 @@
                         <asp:Button ID="ButtonSearch" runat="server" CssClass="ticketbutton" Text="Search" Visible="true" valign="center"/>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <asp:Label ID="lblRecordsCount" runat="server" Text=" " ForeColor="Black"></asp:Label>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        
                         <asp:LinkButton ID="lnkGridAI" runat="server" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Ask AI to analyze the data. May take a long time..." Font-Bold="True" Visible="True" Font-Size="Medium">AI</asp:LinkButton>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <asp:LinkButton ID="LinkButtonRefresh" runat="server" CssClass="NodeStyle" Font-Names="Arial" ToolTip="May take a long time...">Recalculate Analytics</asp:LinkButton>
-
+                        <asp:LinkButton ID="LinkButtonRefresh" runat="server" CssClass="NodeStyle" Font-Names="Arial" ToolTip="May take a long time...">Recalculate Analytics</asp:LinkButton> 
+     
             </td>
         </tr>
         <tr>
@@ -387,24 +388,24 @@
                     <td class="auto-style3"  style="font-weight:bold">Category/Group 1</td>
                     <td class="auto-style3"  style="font-weight:bold">Category/Group 2</td>
                     <td class="auto-style1" style="font-weight:bold">Matrix/Pivot</td>
-                    <td class="auto-style1" style="font-weight:bold">Ranking</td>
+                    <td class="auto-style1" style="font-weight:bold">Ranking</td>                    
                     <td class="auto-style1" style="font-weight:bold">Importance</td>
-                    <td class="auto-style1" style="font-weight:bold">Interpretation</td>
+                    <td class="auto-style1" style="font-weight:bold">Interpretation</td>                    
                     <td class="auto-style1" style="font-weight:bold">Data records</td>
                     <td class="auto-style1" style="font-weight:bold">Dashboard</td>
                     <td class="auto-style1" style="font-weight:bold">Charts</td>
-                    <td class="auto-style1" style="font-weight:bold">Matrix Balancing</td>
-                </tr>
-             </table>
+                    <td class="auto-style1" style="font-weight:bold">Matrix Balancing</td>   
+                </tr>           
+             </table> 
             </td>
         </tr>
-    </table>
-
+    </table>       
+            
         <br />
          <div align="left" style="background-color: lightgray; font-family: Arial, Helvetica, sans-serif; font-size: medium; font-weight: bold; color: #FFFFFF;">
                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                  </div>
-
+        
         <asp:Label ID="Label1" runat="server" Font-Size="Larger" ForeColor="Red"> </asp:Label>
         <br />
         <br />
@@ -422,7 +423,7 @@
         <ucMsgBox:Msgbox id="MessageBox" runat ="server" > </ucMsgBox:Msgbox>
         <ucDlgTextbox:DlgTextbox id="dlgTextbox" runat="server" />
       </ContentTemplate>
-      </asp:UpdatePanel>
+      </asp:UpdatePanel>   
         <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="udpTablesList">
                 <ProgressTemplate >
                 <div class="modal">
@@ -432,7 +433,10 @@
                    </div>
                 </div>
                 </ProgressTemplate>
-        </asp:UpdateProgress>
+        </asp:UpdateProgress>     
     </form>
 </body>
 </html>
+
+
+

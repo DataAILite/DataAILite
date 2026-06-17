@@ -296,6 +296,7 @@
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=20">ABC Pareto Analysis</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=21">Data Drift Analysis</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=26">Anomaly Scoring</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=27">Rule-Based Alerts</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=22">KPI Builder</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=23">Data Dictionary</a>
                     <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=25">Data Readiness</a>
