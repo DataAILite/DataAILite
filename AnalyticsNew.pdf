@@ -8,8 +8,8 @@ endobj
 2 0 obj
 <<
 /Type /Pages
-/Count 27
-/Kids [ 4 0 R 115 0 R 116 0 R 117 0 R 118 0 R 119 0 R 120 0 R 121 0 R 122 0 R 123 0 R 124 0 R 125 0 R 126 0 R 127 0 R 128 0 R 129 0 R 130 0 R 131 0 R 132 0 R 133 0 R 134 0 R 135 0 R 136 0 R 137 0 R 138 0 R 139 0 R 140 0 R ]
+/Count 29
+/Kids [ 4 0 R 9 0 R 15 0 R 19 0 R 23 0 R 27 0 R 31 0 R 35 0 R 39 0 R 43 0 R 47 0 R 51 0 R 55 0 R 59 0 R 63 0 R 67 0 R 71 0 R 75 0 R 79 0 R 83 0 R 87 0 R 91 0 R 95 0 R 99 0 R 105 0 R 106 0 R 111 0 R 117 0 R 122 0 R ]
 >>
 endobj
 3 0 obj
@@ -30,167 +30,17 @@ endobj
 /Trans <<
 >>
 /Type /Page
-/Annots [ <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 635.7 566 650.85 ]
-/Border [ 0 0 0 ]
-/Dest [ 115 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 620.55 566 635.7 ]
-/Border [ 0 0 0 ]
-/Dest [ 116 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 605.4 566 620.55 ]
-/Border [ 0 0 0 ]
-/Dest [ 117 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 590.25 566 605.4 ]
-/Border [ 0 0 0 ]
-/Dest [ 118 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 575.1 566 590.25 ]
-/Border [ 0 0 0 ]
-/Dest [ 119 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 559.95 566 575.1 ]
-/Border [ 0 0 0 ]
-/Dest [ 120 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 544.8 566 559.95 ]
-/Border [ 0 0 0 ]
-/Dest [ 121 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 529.65 566 544.8 ]
-/Border [ 0 0 0 ]
-/Dest [ 122 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 514.5 566 529.65 ]
-/Border [ 0 0 0 ]
-/Dest [ 123 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 499.35 566 514.5 ]
-/Border [ 0 0 0 ]
-/Dest [ 124 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 484.2 566 499.35 ]
-/Border [ 0 0 0 ]
-/Dest [ 125 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 469.05 566 484.2 ]
-/Border [ 0 0 0 ]
-/Dest [ 126 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 453.9 566 469.05 ]
-/Border [ 0 0 0 ]
-/Dest [ 127 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 438.75 566 453.9 ]
-/Border [ 0 0 0 ]
-/Dest [ 128 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 423.6 566 438.75 ]
-/Border [ 0 0 0 ]
-/Dest [ 129 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 408.45 566 423.6 ]
-/Border [ 0 0 0 ]
-/Dest [ 130 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 393.3 566 408.45 ]
-/Border [ 0 0 0 ]
-/Dest [ 131 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 378.15 566 393.3 ]
-/Border [ 0 0 0 ]
-/Dest [ 132 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 363 566 378.15 ]
-/Border [ 0 0 0 ]
-/Dest [ 133 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 347.85 566 363 ]
-/Border [ 0 0 0 ]
-/Dest [ 134 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 332.7 566 347.85 ]
-/Border [ 0 0 0 ]
-/Dest [ 135 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 317.55 566 332.7 ]
-/Border [ 0 0 0 ]
-/Dest [ 136 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 302.4 566 317.55 ]
-/Border [ 0 0 0 ]
-/Dest [ 138 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 287.25 566 302.4 ]
-/Border [ 0 0 0 ]
-/Dest [ 139 0 R /Fit ]
->> <<
-/Type /Annot
-/Subtype /Link
-/Rect [ 48 272.1 566 287.25 ]
-/Border [ 0 0 0 ]
-/Dest [ 140 0 R /Fit ]
->> ]
 /Parent 2 0 R
+/Annots [ 127 0 R 128 0 R 129 0 R 130 0 R 131 0 R 132 0 R 133 0 R 134 0 R 135 0 R 136 0 R 137 0 R 138 0 R 139 0 R 140 0 R 141 0 R 142 0 R 143 0 R 144 0 R 145 0 R 146 0 R 147 0 R 148 0 R 149 0 R 150 0 R 151 0 R 152 0 R 153 0 R ]
 >>
 endobj
 5 0 obj
 <<
 /Filter [ /ASCII85Decode /FlateDecode ]
-/Length 2852
+/Length 2795
 >>
 stream
-Gat=n968iI&qKHM'fbVV3L':cO0P8"VIhUL[C'5F7uDsFX9h52LE6ElD*/*4/..P<WCe-h\cI4m1`G3@aV+UJlL0lLEjm6NY<MIYZJ#jSnfkC9SU=SrG^eSk8PZp;)/!);]I8bKT=!>lV%F8'Po@KeC;B:d@m%n))M(=Prq6SF,G1I"Id^FmOiLp(47Wncn,H-`s!+ROUuG9dNL#!U8]/***8?H?pb`m!11aZn,<iCi)Xr,k+q<\d(+baMC.Ci_he7pK\5t13Wf"%C';o*Bn"c&nNcekW>-_eEU@3!ACXKG^.HrF`MS:3_%7SP<pKQ&]bmS<qn,qLT[-O)mDFr/6-/H?s-rEeV6XMY'G.36ba(t=6?E@11mY\FXCSfsZ2D?"N";AaNYo_Z\`?%J`'l.4.>>g?LB]VQ>6dsC#IX!DIg'^g07Ft+bWb%ZkPWN'__#Jk1r'ni'/r+bC6%5uclWa4#FVQFgE3fa15O$=bBbZ>s&KLS^Da\Ai;3?%#l)/[Od>AVqKlq_&M0;8BGHcmXX=9N_A[",D/ZDnE!oqj#q*JKfSJ^(D.NiTi+IM6(+kY2>Q^XP]l,i1N4eMh>D`c[qIG*rdHcQu4[23McCm;>Pl")T+rJ^NVkJo8@g&,jm-\pVYOa?:8A`0FAmMg\E`4GC7b(Jg(Nr!(d#5iF)o^cQ[=OFren>jICE!5ef:@i"aB#Mm`aG8+2o]qJQ`oQOZLO1(<;rZoDr_0!p%XF3`5t\dPMaBYV"LP!Zp<k0X?3Z>/&ss\oLS0u*oiSBVPh%W]r&c\XY(,$GXHbK`Hn//\:I6$t0`+BE.pt4TpP5KtX[UW<Nm4eCpI!\-=)+`,(WZ>JqdS)VXHk"5*,i$O]#,J/%LkhYph4FO)_L(U'Oij*-VuER60ndOZolJ2kJ/g3HkL?QcI;r7A3?pu#_p;6U>Aq)&-n]H`dKAKmSdJo%98AL[$N@S@!f;J*G\f@9#NGa7+)>Q<>S44gc@:ka4q49Q?MU8KL3eDmib6ZP&2_(]j^3AB[uQq70@b-oW_:NIEU3ZLE/>Z-dJ'!94mE*)+UVP3`\56EmT[78;._fB(]S8-Q39hEpL?dTTIkPD4,paY8P0kIgsn4W\)oFUNROm1*_@6f5=!*Ok[i(OLa*4B!a*k-/oas!c*GpZ3tK;HR:7X"^lkMeq)9[rpiZ)_:^MGT88")RiT4hhpY"CL8J=ZCIiQY7E)j02.aP\XBG&Pa#,IckAiNDa_2P^Qk5Z_3+6ii8Koh8S,ONd[=@F7bs>u?Ge,0KU[d4Z,^_AfWJ5iGb+aZtbSiI\%.]d'kk;)g@d$?5%PNC^/f-s,rb@c]f!8\KLh"L3X:ZYt0!J2j'!*IOo/_ueU%c?5$VC"X*FBPdc:#37G9us@[HMtR(BsT9bl21^IEcmQ#J&WjGr/^E&LW6D'Mb0'BYm<;=5&AJB7L*12#L.'jM1O^\jG)Gncdkk1>7d<L.TK?F>.t2*N-;X0ck+5MFtfA;+/e;&Q'?55POe#EWpa?.2iPd*I.YFca1>sotE:HGSG[TV2-9lO0:)3/';qD/[JuHN$D"0)(V42\]?<HDeT]8Hs5C+QdkX%(j(:s'Hn=Al27)r33;qiGbanB_'.F_/V#gnT%_.F/_]GTHBIqj=l]`fHf'dJAZS9>o1"[u&FjotNj?mP-cF?\9m.HSTYeFbLYl34M7:r9-aiF&'k/RGO\J%W>#EJ4*$2;3;-t""U*Q);2:"h:3!+gONPZ!hMbtC=WHO/KlB2AI>/M#hGo7_NGX3=[i%<oph[-eHq]/)MST(DPaHi83:;P9c*F/,EJ`&:JN'l6OX8VNib;**BNd2kh7Yl<$(rr&2R#Dp>T=R-P<c0gQZW6p5i8D;F!N_)a_Ue"%AMkHH.N]JU$MFX=YB%`=P?To*9?T;(LN&6iM4G#U'REV=^5=%YHTJ6u3Hu^l0hVNn]!s:V,'>uD6m`_DR9*n'iBjFN68,n+.?CkfAL6?'3215BLq&@`OEmP&V5QH9"]s$Go$s9%NH2'0*VAcmJDc#rNTmaB//$CKRbCn@b=q?U4=MlB#TFsF$7BXB;LU$RlOr"p][9\L*M=a=7ff%<\u'H9+I99%?J/uin8L]mQrX^lg\9U''(&+O)!2u\^=EO%Zpq?)`%gA1lmP8d*G!&M1LX-]\oeIs@h,`<_O%-$V>:O+e9b1s30!UKCb>$g@hVS%3$(75cSA*KM.RflQ>o;$5oPFj0c-W:OC_:3lr54f&l+Y9Et=$uQ<#KhSukL+]n]YT5DdWs/4i-*oAL#:n@@U-4RSu)7@B+kB"0"GalmM2F:)N@HDupKGP>SpjT:TGm/_7K7Q5r`<(^F]Vcag[Mu/.\hUolZ`oWq:VT`s<Bc4D,&>rA^6?@.("'H_R`KgbZA%DZiUo3O1-I1j\j\:hsD?8[p)PMb:VInZ&WS>6%/p"ZZpke.PN0]0t6lZ:u=H*k8G(C*$dnZ!a]"<ODE$?;bm;V-2ND'G4?GK.8BHt%":W*PaMPrCQD]47iccGA&n%/@ANUQ]-aZbHAEPr8o)MJh\(T&;l3t'dB`qH4'hM62PAjWBC'`Cnu]sFM^Ug/asOIeL5+^1*>%c(]mk&;497#,8Ab;**BNd2kh7Yl<$(b\h:G#4!37RNbYce%EH<qA[/9sfRne!--:erDdPSs'nZBBpnXGrHi,8E\%t=aICP@:U?tSBtEt`6j,gaSi@En_(:gT64B91c2$"X)8<1k&k.:&tR*Kn>)PA?af'qp!ZRk-:&RJ6n;e;b<f5RNe&Fr7YlT,+K('1=$4TC)<ff,BD!hY#A't.muFiK._5YQ2IB3Emh5q0CLG\um8cB:oiE(HgkPeF^MAC:OIQ7PKOD"X~>
+Gat=->BejN&q9SYi%[=6VKKX9qNB'7B9IE(hEA3+Zp]*oQ@si849"tY>_M=nP3a0\Ud7Ea+&LGr+*mA=X8e(rTrTd!I.ECAT^<fr&WY63:\8XRLAeoKP8rQ.MmFs"3(fsu8)eKb3!//ROsBI9@Q<;XDhLUu8gBEsUCU_r'=r!Np"ZmJ6au,A47l<P[JrMH^X;a6anYhYiCgHf0GHBlp!d&+UMjQG3VK:[M)rPZ"HdKL+1=[s)YujU1LmIt,\;g7F&CDTMe>F'[::62F+INgaSYBF4VGS%;p]SbP+J?8"0#E&I#\>D*a!K6#!E7GFc89BW+RtVh,)_=7"La:IDr.8<cKCZ*uFZ;d"9k,D*TB9!LX?BlWqf)Zlkd$X9%"icAu4$3;]C`BEaB",&#;";3A#F%&IA/*i>XM"8)T&rJV(]'gjk(T[9%,OBk#)K>u,f\q2bu=qtar%D)XJ\1f!s,_h1_lpsW>6n/Og0Y4%8;"Yi&et=#eaH$aQ\i`ItCE?m=NYE!0E-?U?Kqs@6'&[l=l/hZ_cUtR`6@ZAH:geZ3;Bbe?eU?d4`]*ZS;2udiEMf!'7q!J6$,V7c-XNYbV1G6eLi@lR:sTM6`dS=md/LL1SB!o:q$?.t&4`DF3G<OP>:qSL?MorqD?f[P6"(hor8"*b1rJRXkTkh>oPW&RL8.br@>MhqMtSqeG"&e4I_e=9ibV>.O9R[m^Z[YrnZ(e$!-@[Jd6WYB<RH6q[ctK"6%<=]MJ,5<Rf@9Q8V3.+dBSa>)7(YN9Q7Kk)Vi7-n"T7slZY)XIc2cRnbPsR]O/1);>c/qkl&@Ue3iC&)eYZjmiB(#M,=D'$)k"K`mXfHp=1&Da2,m=08)4@1#&COI=)m/0?8\]4CrIp\FeBG0Kfq5$nZ;dhD_5lmPkg?!c!M\H4WF>)aU;V;6Fj=^;IHlQ&H?kosNM[Fg(C*.*Q-?NnZ!MLO!Fuco_4PSU36DN=7\E!TFN.J:QXPr:W6F=3.f-?$F\[SQXl%`mho?=kS:!=L/"V)1;ZP?fJ.kLcWi/61CR*GS_J`!j7T[3Dd,I"`J_'G/O7S!,3E_Dd8j%Q$'`j?pcPbjpVr9L[UN9`au*Bd),8GJXWN2TY3J?"mCsd\T[VtNN8\**9K4:X1]5f-@i=7!N@mQj!09AF3eMWUX':1_m"Q,l)*B+dr0CE`1c"aA6mNMU>OJ%g!o*'/4t_M;R<SH)%h>Hna$<RLZ@eSpW$k?_B:Oud:52D'e;fcb/5.E)[6m`2fpW%(`tdapqk:-&1f^I^XGLC!a97+2,&4E\:11e5j@-o`]DmZhJRMLms2SiE'@YQ<QIB4'<F'OlopCX_)tV>r*Kfds0N+aW27]/&MarDKgtB=6Ml%UBo[gcD.!h9k#'d$Yp]/@[C1]?kNA^tI03H0e,af_$,&Tl7$(i;`YXf;/!Xu,O,;6cAqq$VRni.[^9&cac^Q:S+#Z!DWT+0u&(u`j4B!H$oP>:+`8,_(TYIBTTH/b+FZYNmG[aChT,&P2N*l?)g^.Mu<4aZs.qsJU_s0fNNu(]EbUi\L3`SV@.e#Z\GKf.Ms7Kir+aKp_Oi%XsO)PPgI*&J#_UR(Sg-[Z<@$\fCE>C^5,0>)]3I#e>l_<e;XD/%Oldqhb;^r3#[@4S_FsMHE($GpgY&-MQ&glb7HQeCOlPdU:hOR[M(8/:@UP/e&\p:'V48a8"M-\!Fb:gp"C)4RVAN1[)10(o1_[UaV4rI)JX0(\-<U!6[TS8*0icGo%ef<mi-k!!&&-k*ID.1abh.$Jl_f?,^(>Dh'NZ$?02:BRImInk)RduTpk!-TX3L+i$0uk1*XHLaNO=k!bC^IMeoWdX\]rH2!9<2Ns"kYJ@'sr`-H?9;4XO"lq!#r6.I(\%1AG$_j%b#h:#:W$JP)@d\dq-0(]Y38#r>9=%<Le9O!#-(@FO]BPl`mPb#-\Tt%G:MH<rd`-iKlgA1N0ESf-c^N=P0+^m0>Pk;M!V_WrKa5\&5.3CSSl&ni_!Bd/tq40$IACh8pi2[%P#UJ=(tZV`(`AjiOQS<H,J>8=f:r"ujt8PFdD-PdKDW]SCl(MT"dN\MaUgY]^YpmTHFlF*P%,AlsA7a5Z>M[-[91'8NI;PPu\I]9m`R?nQ^ZaJ5+(0]?.#TprH38SU%7"l3?CF>#/W9=sVrrff<.g;I`)SWtWh7i.$_NYpBkkRtK6;O38SK]9eE@$d`-IBSRVoACX\hfXr_(`-n)VRD+qnF3X*08nf=T#6/0$ko,2h8u+rNaaYAc$U[[RCN7F;/oI]4WKoi[6#FM+b?%,C^#H!9%[%TK&+cqiu>g^<+WDFb5nmjF^;]o!I#"Tq5(l;@f-@T/"[ep:KVaW_nrh:_%?\+0,uh<cpn;l>X#nNlsr,u8Z(QEeO3*J3gC6loR:7,<`,pr3I7@EX4SffT?7>9AG\M0""_8W/Y=]q"onQc_eBm?IY=pVmfb`L-:&QhkjJ1$=Z_"O*\V8.nC-b3h(+@q^3V/6]TZ3]rYi7khCp52)/8qI6^)WH;Y8.d+mG#`W<Weu;Jf(SNtR2C4-lc#+q.&N/OdE5(m=;hRV-oYM8MG$BS,JNRX.1P,h9=;rC10c\moI>Bu#g0gJW.hhiMs#dT"cSOApS&R**,iR?",CK"`D-[\`2^]clX#V5[Y3+fVoHk^'lbl&MU>1;"d0[\`1c]-6Fa85g7H9i91*].TgnJo6V`<BA_7e[4$H:C<fMe&bAMi&TMaCYe#3-XH3dXl8j&eSrk]oj.PlhnQ/*=,YFnIHYi,GT9#0lDNo]gJl@Ymp'IHp4)d:kgB~>
 endstream
 endobj
 6 0 obj
@@ -235,6 +85,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 10 0 obj
@@ -601,6 +452,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 16 0 obj
@@ -1079,6 +931,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 20 0 obj
@@ -1595,6 +1448,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 24 0 obj
@@ -2089,6 +1943,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 28 0 obj
@@ -2576,6 +2431,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 32 0 obj
@@ -3069,6 +2925,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 36 0 obj
@@ -3556,6 +3413,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 40 0 obj
@@ -4045,6 +3903,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 44 0 obj
@@ -4425,6 +4284,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 48 0 obj
@@ -4913,6 +4773,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 52 0 obj
@@ -5400,6 +5261,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 56 0 obj
@@ -5888,6 +5750,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 60 0 obj
@@ -6372,6 +6235,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 64 0 obj
@@ -6787,6 +6651,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 68 0 obj
@@ -7269,6 +7134,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 72 0 obj
@@ -7667,6 +7533,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 76 0 obj
@@ -8169,6 +8036,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 80 0 obj
@@ -8670,6 +8538,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 84 0 obj
@@ -9177,6 +9046,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 88 0 obj
@@ -9687,6 +9557,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 92 0 obj
@@ -10199,6 +10070,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 96 0 obj
@@ -10691,6 +10563,7 @@ endobj
 >>
 /Type /Page
 /Annots [ ]
+/Parent 2 0 R
 >>
 endobj
 100 0 obj
@@ -11197,19 +11070,41 @@ endobj
 endobj
 105 0 obj
 <<
-/Contents 106 0 R
+/Contents 100 0 R
 /MediaBox [ 0 0 612 792 ]
 /Resources <<
-/Font 107 0 R
+/Font <<
+/F1 101 0 R
+/F1-0 102 0 R
+/F2 103 0 R
+/F2-0 104 0 R
+>>
+/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
+>>
+/Rotate 0
+/Trans <<
+>>
+/Type /Page
+/Annots [ ]
+/Parent 2 0 R
+>>
+endobj
+106 0 obj
+<<
+/Contents 107 0 R
+/MediaBox [ 0 0 612 792 ]
+/Resources <<
+/Font 108 0 R
 /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
 >>
 /Rotate 0
 /Trans <<
 >>
 /Type /Page
+/Parent 2 0 R
 >>
 endobj
-106 0 obj
+107 0 obj
 <<
 /Filter [ /ASCII85Decode /FlateDecode ]
 /Length 3424
@@ -11218,60 +11113,62 @@ stream
 Gatn)>BAQ-&qJm2/,&M?UG0>fP0&>tD.]5.)S>6,?XO5(GX@NB6/)"Uq=/)6!!,n4>"Ot2(<'P\9C0+q@*&Crr#a"pjVHe)%6StR5S1fW$A-ogiT>?/Hh0Xs%j=L*q8*O4GqTGU,V?fir$9TUnDYuo!pJ3W7A(T\F3'LIDRT&,X/=^Yq>mbB[]>ki06$Mi\G=\I&3r]*jJH9H:d<DEP:5pX0JUh$AnqlbHIuKjjjIVq92]8?7/pZpo?cVj2,:T#!CJZ!J^q!)GeJd9h;20Al`7H+$R<8nomj&B,H<&FFk7*b8%R_deLk:bhXN19q?=*8$"=IXWiXo?5fn>dDS([:ZC0t%\9<Q\h%a,%@su\87X0s]X@L?e7ttQXr?1`1g&B4uRYHQTZK&RueoBjGPUCpBK3&1Y)JAi5k%U2[:L7;eIY9VTBM+kJQ\A"9^mFdD8`9S>6f"P`N85b8<.Gd)GkLAIY*!rWisRM$@XA_T>52DHD1>?6&+?=#rWfY"d$bVTBo($C2^k8H\QZ0u^6\c;;\B,@fcUNh<[qBres.1:GVrIk`"t%NO.TJqW4VB!q"O0j-*QQtLAlU&.8=Vq.5'nl1eU?2nSX8h$GQ.mKnH"rnOpVM*"qT^9lq33r<PD501#4NDq=jkg(j6!DL#<.^;,<PnZq=NGQq5n]VAk_$+EUt\n\a^'io0A0stLs-!It"3:+$^[,V`aVBm[&$oI@J$9DouH;b(0/]VB(jbB,Z:t2siNcoT4%@]1L-nV/*+.D$4"%IN:EH,\G7'Z/K!Np;R7hQ&/aO/nNWhI_=raB55$6BYNDn!A`^ohI>6](&?a`4h;Q&9PUlaE%qm+K3VXg@+e!5hRS[TT2F6E&>oZGI@\`JsTUkWYF&1_Z#moSKIJnaJH*!KF3RfQ&<nNdE6,[6`H,r5ri?T!g.?FLoEff[%Bk$/lmm38SE-[C(NZHV]1$a:H2VRjF3(`PFs@n7P1V<B[SB%PttU1ND^#3oiK592$YXJCWkMWo%W$2)M/"I4bq1;FG"A5qhRQ<g=1MN)o>m6/Sq:+?4Q:Sc^Ki3W8IXV_d7@\<lU0oKmR@_t)K:j(/"60d_jC/kkh<a7i-DFJ@k*;mG]JKm)t7^4!T]lIuOQ(g=B'UZ[>Ab*^4KQ4c5)n^Gu8fbjDVkS?bX4T`R$#=^M$DX+N8,cM]BO.8)G,:;8jkV;C.)MTN+A:.VnE,olV3C_qd<]KN1!M*1<\`*m:mC``[5:qmBEjbK6XSa:k_W\#S5nITo`ZG/(s'As:i^ej3bT;Ze'9)599sn/E,dl^5S,3Z\iLU?hD[#Ut\4S(<Co%90_\!Bia*u5@#lQ]5r*\iX=D(<c`fSa"4L@1DLR=A(E^QuB(dk,>,/T\p(aJWfm,Z"s;A+^FC9H65LIbll)sYPL5.49LD1l02`<F6BA-n$<#B6f0'CuR_D/"H0_%oAsqg5@N@dNmZ"uO%`?h/>E0anCZnbf4O'Y2hDSQU[DJYRH\hl4#qgUuV4"@ot\[Yfk+761-7&E)2YXWM;f7S/][7RY;"%%V*CFR7/EaNE^k+tGE!_dca`kD<]koXZ<,N/WcEZIIT"a&])/efd&./HoLImDF-[?46;oEK^2tY>lZUKAa)&rP_3TR_>[A0)7_AVPCeD)EW:;OIp.1C1U_=S>ONq7:&i]L?q=3:2k.=:g:Y'OZ[etQ7:(F,I:'X^0I(79(V/c/5quj7qS1;I(?Q4g*r)BbU\j\L]cG:Wbgi5R+fn2"'4^e3*9n+#F8QNIV<+9?V.]MQ!\d^WY::68XIi;Ai1A\9Gtel`,mbePu3LXPBsdo@-#;C$s'gs"0/.9[W\/]WjG;<4#0HlVTP$(Ou-1Ab`JX"Eb(I]9pHs0,\a8`=_d>ga%!M(S8a2Q_[ON'*^b7MoMMf&B-8srIVNP74TghoPRq8`$N2Z45Je;.bU!Ej15D&j9P+u[\&HG[:S^.qPLYR%J<Cu+g-Kq5dNWu'a=K^t-q@kmdQk>u"-Ef1O]dJs:l`adUk*PtWO5YG)qh!#.SP=3Z"P]Y?/+r1B=0UhU!$[u5G(N]N:*T]ah'>U5]]5Wc,+&aU3MtUUDJ6u$*#:U7P?r!<mhji45(0K=sT.LRH7#HjiAuKROqTQGg^Cg1<YknbE5r!1g@+6[<B]&,Q%;]"\oclk$le_I<k@bBC$GGK0KNp^#oU8<f!d04MC!Z<DW:g:IAJjGkPF&)gbJohs^hf]9XUj(a4)<^P>EH_th_]*1\Rn.N"]2g*(?[X$<`E:WrHNb;\btBu_eM'cD",b8P%5WgBGW21O?%ofR*DakUUPW(?k<O"&Z?.%jAiQH@PEni66)_NrsJ.#>0"maY3<;b%Hfg*"?G@8bGi5rW?'#W5WW6'9Tp\F@oA\TC"ne,Z'LF':R!e=:D$%C""YooKu(TZTQqY1?iTrm>=J540rk;e'FM8eb>UhWQ+`W#:;C;aR>.PuW)1f<TEQ?(F4Z\,c9_'#;FYNbgp9*2ub[o^<pGN]TFcN7)O]e^TW+o;_YeX3S"C^0chC9q_>nEeY<0Dlu83e,&B4Mg%abYm#b442Vc-2Q>OC],_N4[!XB@;=QAAIV4Uq]]>R`Z$Lc)@Ag>b^0nE-5?7G@Bgc'63rR:V@+FrYaK)>\'ID\/ZYs@0=A[A*:J',C[@G89pP3MY*MFBX3)mf&E(\S9lrR\:qQ_goVJ!j2W:\ZlT'_.8?&*$:lQrUTTk:+*lIrA?)Gc:+X,d39n>8<qGiK^-S/8SnhH*^`Q<&rE7ThS!-"?O,\Au>mVhZSD=3CAl,57$rnQGBteNWGWKec=e3HVRDYN)KuHWCMcmZ+/B=ti]^F%2]:c]6lJl'+4mk8ql0;Q)P)pQj+Sp!LAJpIA>ISf_B=pS&8^WsJSJ9D]M8.fZ$3dRo_o58DUHNn9[=\tS9,SiAgf"iYcGionXOp2*r>Xh[p(e^#N_/(0V=q,q-8e](cVm]!t#MZ0E3Nsj3mgCjORqMA0pa/YS?TUuD8rsfV=$\K;7$H0\;%tL_NePKTg`ZRGI`_kt@cDAC+D8p+ASt=uhTT<l;\b&?%4fo<QqWNf`c]I?a9Wd/ieTt0SD_I-R[2*_/ZXC3J1WG+2;/4U0j7Q1*`)4s)JP<*27k:40<=S(fR3^mkkmt."^*$gm:lBr8e,m@'>Y#/E+5,TSmcoG]7f=UVZ!nT[OcQeAW`np:.-H^FH`V5<TX:He(RO5D9-8@^jugV/IdHG1>f"R&GMggc?dW!&3h[XKoSVRB3Hr[>mgRucE>I;0D4H=-4:J$?f4:GPitskOa#QGR+YB/I5!"I2UF"ChEtD<A>eiQ+)rG=CKcHUEhU(o1[^<K<GO2>98?5dVHC[L<Sb1R-,hZ=9'<=T,NT\qXjVN6$?pQG1<-P_,;d\Y`&PVUmobk/4U.ir+)gO)B:Td/3+#rSHfEb:P%lgbdEW~>
 endstream
 endobj
-107 0 obj
-<<
-/F1 108 0 R
-/F2 109 0 R
->>
-endobj
 108 0 obj
 <<
-/BaseFont /Helvetica
-/Encoding /WinAnsiEncoding
-/Name /F1
-/Subtype /Type1
-/Type /Font
+/F1 109 0 R
+/F2 110 0 R
 >>
 endobj
 109 0 obj
 <<
-/BaseFont /Helvetica-Bold
+/BaseFont /Helvetica
 /Encoding /WinAnsiEncoding
-/Name /F2
+/Name /F1
 /Subtype /Type1
 /Type /Font
 >>
 endobj
 110 0 obj
 <<
-/Contents 111 0 R
+/BaseFont /Helvetica-Bold
+/Encoding /WinAnsiEncoding
+/Name /F2
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+111 0 obj
+<<
+/Contents 112 0 R
 /MediaBox [ 0 0 612 792 ]
 /Resources <<
-/Font 112 0 R
+/Font 113 0 R
 /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
 >>
 /Rotate 0
 /Trans <<
 >>
 /Type /Page
+/Parent 2 0 R
 >>
-endobj
-111 0 obj
-<<
-/Filter [ /ASCII85Decode /FlateDecode ]
-/Length 3172
->>
-stream
-Gatm>gMYb:&q/)-e4Y>JJ].%QC5lLAf@^/Gc:mSmH#?J2WRjjB_^:o[aN&4!?V&>(Pa-%fY\AsMVn20C[1e(OrrW/*-ir2[_5e(I"<lR&+c*fKmQSJa],+cb#"cB+0Ck;h&&F113!l82][//q#]a)\#$u%Gi9,[I4O,+.EQ8^kp8*t#re;l9K%H/EXnk-7r>4mNU(tCkh/+#pmV+*c?613G1\C@3T6RE0h/_]nDd^Q9U>iCm=OE"X8c5IEC0Sjr1^L77<@bl"^Z(HC!5<>rV:QMhe*sAkL@=E)Kt7:^dLuu"@P%rC_Lnd5C\_*!7m[BnQYWk[D6:=ao\a3e79qNC18X_s^H*]1]:XXh=Y#^KFih*$&XjT%CklK('eN6</T\2aRd*lteGWX[Hc\PgFX*mqL^NF)T9dRM7R;n'H"#0XPrF$dLSi>09XDS0io>bao*#^0&ao?SI1TC8*0n\9#\OR9GtDHrllTk7R^nDB$`3'gIk]QL$=CYoHu&qd$EjDR>GLH018:r@Y@"kA$KT'@qi3nf\"l'p7=B0#_e&c]5PpBXro,aC+./.'k3m94=]9.qqakq-=l9HeVDk'-[,_TBApfBc*sq6+&,c8&>JVV6A/P"rWa*;p'!0USl99?<]AlVba9N3VHb%E8[itPsr)7smgj%@aE2FS!?*q[]@hF*jj@j\*^4J"[ZFrOu54Ab*No):-,.8c>[ch+gFpmtHH^n^/%K*bJ/_nmSFWQ<EU1JY_ji'C\LOX)ZgBR=RQFpBElFN9pf6Ohm?X[uYKRt6!n7O(o'RD*dIB7Tt$Q(E5JaWI^I>;^d$-,p-$rr/#XX9a]N$!P'@F2pt</lL0.oG[;L)[j5MaC6*6Z#'7>&k-llmntk*^njO9/T1*ApBB,lTc$MLo65>5\_>64"GYTUOS(,"70a<r5;&\)aU+J_T="l,%HUYKeE91.D!>LgMTYdG?$q$H^_X3g`a=C(hb<^!0WU3T[apV)Ra(K;XHb>'%OYUA_l]YDDFtAg9d@n!n>dT-I!:,!fY"+V=p*b"]A=olK4mSP:Y0l'r+T?\#RUlL@Up>4!kkgF-r`"-A8ebEeWuH`&1Vb'5#.iA/h)Rpfr^Re&G-\D(l[H6(:"l;%g9-6]+NCOP1t7)u7]g891&G33,TpkX_X`FT&+7+EmYIquE*AOTR*j[(u:$>)!aQ_$<"RP44)a[Ok_7CNJR2Q<f>h"<FIu!XCHJhB#Z](l_O>\o:5MhrZf:XZh7o%#JJp--p-WW->lm$.FuL\s-Z;-.sISM1SA19?`Ue1Ku22fHbU_b+7V=+3#EX?sM6*WUpff_Bgp#"Ym_$l^qL.R?cg[mk6mI?ZQ#F.q9D(RMnJ5cT`U$*\$W#lg08#7l"*V7)"@(c#]!*Zb-u%LnYL4+_qSW6EJ'FSpnB`08u),*msEV,td/<76b.7&gc45K-P7UTZ(p)UZpt-d,K:)51?<.lSm;JM"AT^FF(U\FqQfa7&P8A]BjW9.nh@&TZRk[jJ?f`W<)I)VqN%VnG<h3p4Q9QDID)8E5\^>nc"4si8oVq%W7rm`Ge5I!=g()m,`n!%VFYN`A#600hcbZ:K_]mT,oSpJkrrGm!H)dZt.TEjbR$jOf8T_'f.kjq".e20]f_>.A&0N^ocqtFR47n.4eu,S?e4Y^TQTr%lm.EGfhHC1[s]k:A$;ln,'"SPm/%glHtbF8<p'tMoV[nPZA^%*)Z&`>4lj,d(XA+,%c8'X,VS";TkdE1qScO#DX;!i3hucVX1Ue"4OD_=-"9\fFqZ9+BDEu=fd0lf26@;orPP?DXM8K/[dFR%uY.-9-<%@Ea/LF3)!qB=I`8,qMs]T6d'b5ASHi?fCk]k9HRt`f6uJk=%4c_`Mp^kFNhP+_p$E%:t1H'(3dZ.i++P_7rIHY<AJ,@7E%)X`]1D)e/d4kWFQb'bJQ5]Onr4@p$3gBNT`;Z6>8hk_3gD]$*&IeA8.QbQUa?+7750h-!^jTRX!P7hk8!pG*g9WjCiCC_/WVb0O+nT,9Dgqne9c]R'?m=)R^m$ea:ssesK>eU@$?k8(sZdLM2h'/oM5DICmquDsak07e9M6dI$*cUH,LE0T%H_2JDe1?gGN1%Hb=``mK%FSL2Ti134%RKXU:oi)Zem^H+YJXhHl4e-o2Y:.#&BcRYFgRfP*4C`Ck[i-FAr`+Y_u)\6N(DMM^;Pc8T9mA(3G_62Dl_r%C.Pi49b:1pf+"H.<OWhhrF[D:ZV3M$iKFlRm>_CW*Si;EASAl+V5)/7"V/*VX<J]PDVl.1%E-/53-4$C5)g$YAbYj#Lsr963*&\+F/MlMjEX3@@?:WcnI(24Bl^LTuG7dWYIqY45+H=V!5@Sc`c.!64[@jKm"]0XkD>U9\n^`uq>;!Qk6-fbp3V2ftmMV,3bRb:[-%8c-=44cb5RONh-1>i6Zg,Al!bJ\;`2Rpt`E>]Z''m3UBd?T<[ACWgl\*Bc2n#XH[THW]CDasnA?=;?T6&jZiAE57SI<BS?q%(&3WE-*'@FTNUT8h7O;Ur(jkfY@mDpEV/7e"d0E)\u8pk*:F)2Dq6pY1aABPus\"tOenZq`h+\QM@M7K,:"@4+-*RP%%ZWP`/3e&$L6"o>I]cV3uH&`XZj(OHLurN,bj@9PF51]s631d='hFNlL1ZF7[>grO6mVGo?q[fF=jJVgT!G`1NS!WTTl9N8fA)QTFiN1kX6cW'jb%)#Hi91#cg?EJ=\YDkj%#(n+tU-U6q/\<$9%CqrhK+fl35!tk[\"VHcKR&Vk^nB6e=.+1)@BuZBUgb/SV9i9t`W=Cnk@pQ]VRhCc/LiR#*u@^dO/ah#h!8(%$91Ri6WTg"Ae\a3c`F\?Xbl_sbK_e_PkoI5LYm72GQL7MbTFe,H^e5_Z5#3J/F,p8k!mqQG337WEoHk.e'r)9hd\<$AWeWN]CiRmXZe1@R35=9)5aGU%>S*E$p^!J3TK"%mV(&N"!Wms+QZDU7dE]\SL7'ITK/iE6S,TU-`PnLX@+sI8<%7??(BU#J(nh]KD91Bcb.n\fIo5aV2h6&mlnJ_^WJTC':(!Fc#lPu=oF9_U9JiSJt:D,XJA7/[Ve/TA<*!1=ur!(bl9aa/Q.u.?;;[b.H8?;5'#+nB($l2$V8uu>*WB:V"+DG]nAB>^IHGtb7Oe$;1e3T)IN9)GT;b,EU_t;p<J)<~>
-endstream
 endobj
 112 0 obj
 <<
-/F1 113 0 R
-/F2 114 0 R
+/Filter [ /ASCII85Decode /FlateDecode ]
+/Length 3610
 >>
+stream
+Gatm>D3NF>%fXbWd$Ll'UCuV]Q^bReJd$%kJif9dh>>uI3f.e/G&Z1<WT(sjeD5RFS:lI\ARR^+,H2tP:TGdgi8PhSrL9,RYO:Ag>7Wh<mPj'X:'gU_iQ_<Wa7HtmcG0bA-r#,/_Bb(&BXZ7:2gk+(oo72cbr>-5cNk%[8>6CX9=XfI$,1f+,[\G^_4+L)%IX6$pWo+b&G6"9<"BTSRLW@lA4AlMA:??@rlDMfr+%;&$g9f7rAdJGSQ$Ko3`1:]l9G`,br8)1@Ge<%/TN22h)/I*C9`Kt(F4Q3CV\iB!)nf-00<M!6QG["BmA/p_tS<&_IHFNf&@M">qNVdZ30Q!aQml#.O;)ub9i-,Z,[BsA@1QAa$e;r(*Hi4(/eAEi]Dl5RK\plO"/hO7*:3=0AgnH"a'oA+Wm#U4U;NQYFD9?3_*NR:8#Aj1s^ATA`WeuYO%Et_pKP7/XgEH,<&93ah/l/'Dr`GZ(I+)-d5II5T=/h-&o`4r$]eIe%bBI"CIa#UaAi(<"i]sH2&ZqYF[s%ij"^3N:PFR.2>1>\W3S(s%l7CY(8g*kV+R&^c/oB$<H7nrUO``J]1_,FbRU/Ve\`;)n9Zjo1-BmS:-1\7DlXN`:sNY0IEFgR(up,#R%t&\Ds[4GBiYX.g1:iM+c^bc^4)kd+t>hn!gL@(\#[aR,TCZ_o/$B6ALqMILn\\6om(N5,0;g'ldb`&FA?tUn_(q'q!PsL2Ps]hI8Za?fPWBB<l=B&U^5bm4J1uOZ/ZqGY]NBfF"H(Uga*E]XI4q(B1pU/_ntAHCd?k7hD(&`Pa*:d_GV0(?ICnTi^f"NTrF0^ecVp4T^@pK.Ng(AAhnEoSCZI<Vrp&,_i2Sd^Ib[ctJj/0Y3jL6]lh4138o3dp##mRcaA:T'N2t8\4Z*00A"A1eOL51YA);O&5RRUuW4kM*tK*G_8Q:EcBg\,jU53NG*Zi)7Dt[Cj.1A\gf('fFCoG"\.YoL)`J5!>H1A,6eQX\-BBQ74$\s)_%duaih7UoG\-S([*OdB]AjA`("Z=aLiolAU1Td;,e(sp0sPd1c4.3-dbG3m#ek*<*b>/b[JhT7c#3T1%XnMVVkpCc`)n:.94$g;&d?[C@C+S;*=?kp*;e-Zn1"j-s^LnQ!EgK4=$",K\]=X@dSgZS5nY#H:(Fr^tOft'IZ,E&-CW<1&,OCEe19VC6dj4#N!ng0d#:f-W$@b'usp]*K\mI.krhGE@b\:&Y#f#A>%Z"XptP4=Wl29:)`D?7d=h-k)QEZ:mjp($2'lk'4Vq99bfl$j"FT[_jj^D2d#&,eln)tn!eF4A*%%dhWCSrP3N4N.Xh41b#Y?+Qr0GF?=6B\c1>RMo&:am0[;k$BC:i#WEj$:M%cL3,^cCBf-#F!m_l784KLHJRSmE]SqkqW7oagK]0Y%gVB"jlZ(C7RdIg<#o>=t1O&GC:9+XUG(:sK:/HP"Q`.KP3O7\+a\/MsX8NgK=>tpsV8"*9FTS]h$;H)XF;nm&=9G@rQFT*T.BnBe'%/o',9huhBHVt#p4`SBHhia##LO&G?jlIbM`EtQSdWr4Xf1rb3mQ#2X/-4ndC^_.:gO]HjhfBV3'3XOcH(l5[`h^(O!2][.!1pui?fmbp'TXZHTU;s&XE]a-UNaY0"hfSJWSZ\k.Ur-DW&T(H$7b'7YV`>;kE&N/b6^:I6"3[j&IU:Q%0([pYY[=<.YS"8_h\k.W&WrA6j=\<k/]5GN$trbN5:;rl4)pt0T&AbfL!TNpdD1"K$cVg`"js0Xe+jiQ[s_,gJ`WBnsC/"KUK*lS-dMX'M<4&6&7*l%(\Y]oqlEc=>616>hHp1Ct/do+(W"GO)lul.n3q!!lJE"+3]jT[#V)hKnN*&<V@B6,:[LQiOm_T*;K&fE,bB8'c[@)e+9M`0aE?Z>u#oY$OhXgmua$mDTuP$YH+e:RKLH00nR=Z0TOqm;4X1:+H6"+*4>i%B_PCQW^eCnoc+f<qZmg=^mJf-"2edm6"13=kI(<^drjldrTSW02f3HGr=QW/;=KA%0H1E$gJIe*2/Cm@)0hLSWksg4F6@a1#LP\i6f#QpXG`aS3-?Pd<MM6VHGuV?dll^?)V=VMW8WL-<82'3<<l(CacH]EI*W_rD4,9CaXYdn%S*,4@Q-kGE3_;/4ShW*%-8A.=;!R8`fWb0GX2t@_+(Ng)TW7L*U#ir]XXSK(dT3l:Cfc_<9AL09HStVMr@B1GXk&Eb>7A1k)rC_./$JUKF_Qr-n@/rp<T0TM)@G+Hf/Kb)Ui?JQp-X-T,:Wk%k^$`pt;Ij9jK3s]t..%]Ar2PqoKO5YtCn7M9b$%6$N,SGV@nXZY+3`WcMW]M3%qTUmq6i`7OR`mAg.X_`9jbUt2&2WH%cIg0FH6<Em]+(#Pth2U-?6o1;GQHg&MkQJmJ#H/lY9o:8T'?pbSmrjaOm^,!&7)nEa![%&&k*3[uD?e9?d>.s1^?<IPC3O,uP?Ihh8Sle[a&_a8F#m@DJkY@W+OTaA!4(.gs6\T=OCedY3f[C]Ff3?FaI\G20Tr+OlUm:OE<+Z;oR5M%rojqe2=e^btJhmU62eRmi@pB`LMLOk-rROb4.I(.[ek?mnA-[5%?Hj!Q[_EGU5P#lP<dp(GDWW1:PD.@c"*a6>i"DiW+CL"M9Bf%tJ5KOU<M;q@3cli"$aj:Z$(OT?T-dJ9#Dgm=9Vd--9nlQG^#+mIlnYL]gL<u(#oSspWQ`BG&lUDaC4B<dd]c?l=K-%RJTfX4c`!3>HG\&?5k'@;"#]u`PPUD1-67dL9_t]U'FdOgkUJHZPHY\$HD$M'3[+?4f#;,be)]&qN'R#?7"=[J$:9(R3li3fPgDkJ3PO/\GsS2n/8lTo-3<E#oGU</B$D7'\AuH[IE-K7Q)mE0FUt6.BR>a9_O`'U/7Y@.C!T@&V5JYDF$5[cM)CY]*F\Y[$!a_sYfPM2XKaipAuL@4-<7c&N-h26??D?NW@TO3(^?LYA<t]cd"aWj6#L$,FE1=+=sZ*dlhuKJU1HN0XmqgF1n!DV:1gd>FaR=39jSW<S$9?=Hi72`d8*IQa"OIn]o&Q-Rb,3kNElVc\ehHH/f#[<2D>iC2[:%@?I!FA[DskOXC5F)oM2UO(p6\AC2'-=LgFr]>ir\&%nA)HdPYMd;TL9Qk1[nfW:Y*#%Jh*gLh;$cDbn_Z`P$R\Mdc%36G7oFao0@C&poiuaL[dP%d`MUdP&p?O2REF<F%A":j!Pbrht^/iHV[gIbdKVi<Rprn5_-t8dXUi5JT%WAX;l'bdd'@J#FR?0%5'=/Z(7cE47WAK9i'A$[T4SXK/'q@I/=OR'P6(fJ^^6ZH*D)Q:7RQS+dm9DUh=,(noRXL;U:\[87=82n6G7os%U:O7hEGF+&s/e]YQ"NJfrfQX`%.^b1^%ebS4[41+;'=`oTM'a0hE\BlLOB^#YjlkP-qF&WE/)rLuZ2T#+`fUtaZK3"Y-l8Ogm\h*uSfPpQHL]r/OZ)*Os6)n3MZnU@MIT#JuofYoQbV)uh21a9=KT%^6n/5c9"jFOjXJGI(eaCB'WV?=9=08g41A0tpQPUH?"'[EN/aZ4J@N'nUY74gH0hUf_!eW%8jh.S^@nrW0enEotS#c[_r?#Aa>]K~>
+endstream
 endobj
 113 0 obj
+<<
+/F1 114 0 R
+/F2 115 0 R
+/F3 116 0 R
+>>
+endobj
+114 0 obj
 <<
 /BaseFont /Helvetica
 /Encoding /WinAnsiEncoding
@@ -11280,7 +11177,7 @@ endobj
 /Type /Font
 >>
 endobj
-114 0 obj
+115 0 obj
 <<
 /BaseFont /Helvetica-Bold
 /Encoding /WinAnsiEncoding
@@ -11289,58 +11186,23 @@ endobj
 /Type /Font
 >>
 endobj
-115 0 obj
-<<
-/Contents 10 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 12 0 R
-/F2 13 0 R
-/F2-0 14 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
 116 0 obj
 <<
-/Contents 16 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 17 0 R
-/F2 13 0 R
-/F2-0 18 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
+/BaseFont /ZapfDingbats
+/Name /F3
+/Subtype /Type1
+/Type /Font
 >>
 endobj
 117 0 obj
 <<
-/Contents 20 0 R
+/Contents 118 0 R
 /MediaBox [ 0 0 612 792 ]
 /Resources <<
 /Font <<
-/F1 11 0 R
-/F1-0 21 0 R
-/F2 13 0 R
-/F2-0 22 0 R
+/F1 119 0 R
+/F1-0 120 0 R
+/F2 121 0 R
 >>
 /ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
 >>
@@ -11354,98 +11216,313 @@ endobj
 endobj
 118 0 obj
 <<
-/Contents 24 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 25 0 R
-/F2 13 0 R
-/F2-0 26 0 R
+/Length 8047
 >>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
+stream
+q
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+.121569 .305882 .47451 rg
+BT /F2 16 Tf 19.2 TL ET
+BT 1 0 0 1 48 755 Tm (Automated Analysis Narratives) Tj T* ET
+0 0 0 rg
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 537.925 755 Tm (Page 29) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 735 Tm (Generate structured narrative findings from current report data, including field behavior, quality notes, trends, and next actions.) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 712.6 Tm (Typical screen area) Tj T* ET
+.85098 .917647 .968627 rg
+.498039 .615686 .72549 RG
+.45 w
+n 48 684.6 516 17 re B*
+.2 .2 .2 rg
+BT /F1 6.9 Tf 8.28 TL ET
+BT 1 0 0 1 54 690.1 Tm (Narrative Focus | Detail Level | Primary Field | Value Field | Search | Build | CSV | Excel | AI) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 676.6 Tm (Terms used.) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.1 Tf 9.72 TL ET
+BT 1 0 0 1 58 665.6 Tm (Narrative = finding plus evidence; Focus = topic to emphasize; Recommended Action = next analytical page.) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 645.2 Tm (Input entries.) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.1 Tf 9.72 TL ET
+BT 1 0 0 1 58 634.2 Tm (Choose focus and detail level, optionally select Primary Field and Value Field, filter records with Search, then Build.) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 604.6 Tm (Model / algorithm functions.) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.1 Tf 9.72 TL ET
+BT 1 0 0 1 58 593.6 Tm (Rules scan records, missing values, numeric ranges, date-like fields, category counts, and selected field behavior.) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 564 Tm (Meaning of output.) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.1 Tf 9.72 TL ET
+BT 1 0 0 1 58 553 Tm (Rows show Narrative Section, Field\(s\), Finding, Evidence, Recommended Action, and linked Records where available.) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 522.4 Tm (Sample result.) Tj T* ET
+.5 w
+.4 .2 0 rg
+n 48 487 516 17 re f*
+1 1 1 rg
+BT /F2 6.4 Tf 7.68 TL ET
+BT 1 0 0 1 52 492.6 Tm (Section) Tj T* ET
+BT 1 0 0 1 158 492.6 Tm (Field\(s\)) Tj T* ET
+BT 1 0 0 1 248 492.6 Tm (Finding) Tj T* ET
+BT 1 0 0 1 374 492.6 Tm (Evidence) Tj T* ET
+BT 1 0 0 1 448 492.6 Tm (Records) Tj T* ET
+BT 1 0 0 1 510 492.6 Tm (Action) Tj T* ET
+BT /F1 6.4 Tf 7.68 TL ET
+1 1 1 rg
+n 48 470 516 17 re S
+0 0 0 rg
+BT 1 0 0 1 52 475.6 Tm (Summary) Tj T* ET
+BT 1 0 0 1 158 475.6 Tm (All fields) Tj T* ET
+BT 1 0 0 1 248 475.6 Tm (1000 records) Tj T* ET
+BT 1 0 0 1 374 475.6 Tm (18 fields) Tj T* ET
+BT 1 0 0 1 448 475.6 Tm (1000) Tj T* ET
+BT 1 0 0 1 510 475.6 Tm (Readiness) Tj T* ET
+1 1 1 rg
+n 48 453 516 17 re S
+0 0 0 rg
+BT 1 0 0 1 52 458.6 Tm (Quality) Tj T* ET
+BT 1 0 0 1 158 458.6 Tm (Email) Tj T* ET
+BT 1 0 0 1 248 458.6 Tm (Missing values) Tj T* ET
+BT 1 0 0 1 374 458.6 Tm (147 blanks) Tj T* ET
+BT 1 0 0 1 448 458.6 Tm (147) Tj T* ET
+BT 1 0 0 1 510 458.6 Tm (Quality) Tj T* ET
+1 1 1 rg
+n 48 436 516 17 re S
+0 0 0 rg
+BT 1 0 0 1 52 441.6 Tm (Behavior) Tj T* ET
+BT 1 0 0 1 158 441.6 Tm (Sales) Tj T* ET
+BT 1 0 0 1 248 441.6 Tm (Wide range) Tj T* ET
+BT 1 0 0 1 374 441.6 Tm (Avg 42.5) Tj T* ET
+BT 1 0 0 1 448 441.6 Tm (1000) Tj T* ET
+BT 1 0 0 1 510 441.6 Tm (Ranking) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 420.4 Tm (Shortcut.) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.1 Tf 9.72 TL ET
+BT 1 0 0 1 58 409.4 Tm (Use before AI when you want deterministic, readable findings from the data grid itself.) Tj T* ET
+.960784 .984314 .956863 rg
+.847059 .917647 .831373 RG
+.6 w
+n 54 28 504 316 re B*
+.901961 .94902 .87451 RG
+.984314 1 .972549 rg
+.6 w
+n 61 284 490 54 re B*
+.611765 .8 .396078 rg
+n 61 284 4 54 re f*
+.184314 .309804 .121569 rg
+BT /F2 5.8 Tf 6.96 TL ET
+BT 1 0 0 1 69 329 Tm (Input and Fields Selection) Tj T* ET
+BT /F1 4.65 Tf 5.58 TL ET
+.2 .2 .2 rg
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 322 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 322 Tm (Narrative Focus controls executive summary, quality, behavior, trends, or exceptions.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 315.9 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 315.9 Tm (Detail Level controls how much evidence is shown.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 309.8 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 309.8 Tm (Primary and Value fields emphasize selected business fields.) Tj T* ET
+.901961 .94902 .87451 RG
+.984314 1 .972549 rg
+.6 w
+n 61 224 490 54 re B*
+.611765 .8 .396078 rg
+n 61 224 4 54 re f*
+.184314 .309804 .121569 rg
+BT /F2 5.8 Tf 6.96 TL ET
+BT 1 0 0 1 69 269 Tm (Model and Algorithm) Tj T* ET
+BT /F1 4.65 Tf 5.58 TL ET
+.2 .2 .2 rg
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 262 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 262 Tm (The method is deterministic and transparent, not machine learning.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 255.9 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 255.9 Tm (It scans completeness, numeric summaries, dates, categories, and selected fields.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 249.8 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 249.8 Tm (Each row combines finding, evidence, and recommended action.) Tj T* ET
+.901961 .94902 .87451 RG
+.984314 1 .972549 rg
+.6 w
+n 61 164 490 54 re B*
+.611765 .8 .396078 rg
+n 61 164 4 54 re f*
+.184314 .309804 .121569 rg
+BT /F2 5.8 Tf 6.96 TL ET
+BT 1 0 0 1 69 209 Tm (Output) Tj T* ET
+BT /F1 4.65 Tf 5.58 TL ET
+.2 .2 .2 rg
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 202 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 202 Tm (Narrative Section groups findings.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 195.9 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 195.9 Tm (Finding and Evidence explain what was observed.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 189.8 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 189.8 Tm (Recommended Action points to next analysis pages and Records links open source rows.) Tj T* ET
+.901961 .94902 .87451 RG
+.984314 1 .972549 rg
+.6 w
+n 61 104 490 54 re B*
+.611765 .8 .396078 rg
+n 61 104 4 54 re f*
+.184314 .309804 .121569 rg
+BT /F2 5.8 Tf 6.96 TL ET
+BT 1 0 0 1 69 149 Tm (Why Useful) Tj T* ET
+BT /F1 4.65 Tf 5.58 TL ET
+.2 .2 .2 rg
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 142 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 142 Tm (Turns raw grid results into text a business user can read quickly.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 135.9 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 135.9 Tm (Helps decide what to export or ask AI to explain.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 129.8 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 129.8 Tm (Creates narrative evidence for reports and packages.) Tj T* ET
+.901961 .94902 .87451 RG
+.984314 1 .972549 rg
+.6 w
+n 61 44 490 48 re B*
+.611765 .8 .396078 rg
+n 61 44 4 48 re f*
+.184314 .309804 .121569 rg
+BT /F2 5.8 Tf 6.96 TL ET
+BT 1 0 0 1 69 83 Tm (Suggested Fields) Tj T* ET
+BT /F1 4.65 Tf 5.58 TL ET
+.2 .2 .2 rg
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 76 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 76 Tm (Primary Field: category, date, status, product, customer, location, or key business field.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 69.9 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 69.9 Tm (Value Field: sales, quantity, amount, score, cost, profit, or other numeric evidence.) Tj T* ET
+ 
+
+Q
+
+q
+0.0 0.0 612 792 re
+W
+n
+1 0 0 1 0 0 cm
+BT
+/F1-0 12 Tf
+14.4 TL
+ET
+1 1 1 rg
+n
+535 750 32 14 re
+f*
+0 0 0 rg
+BT
+/F1-0 7 Tf
+8.4 TL
+ET
+BT
+1 0 0 1 537.925 753.55 Tm
+(Page 28) Tj
+T*
+ET
+Q
+
+
+endstream
 endobj
 119 0 obj
 <<
-/Contents 28 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 29 0 R
-/F2 13 0 R
-/F2-0 30 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
 >>
 endobj
 120 0 obj
 <<
-/Contents 32 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 33 0 R
-/F2 13 0 R
-/F2-0 34 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
 >>
 endobj
 121 0 obj
 <<
-/Contents 36 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 37 0 R
-/F2 13 0 R
-/F2-0 38 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
+/BaseFont /Helvetica-Bold
+/Encoding /WinAnsiEncoding
+/Name /F2
+/Subtype /Type1
+/Type /Font
 >>
 endobj
 122 0 obj
 <<
-/Contents 40 0 R
+/Contents 123 0 R
 /MediaBox [ 0 0 612 792 ]
 /Resources <<
 /Font <<
-/F1 11 0 R
-/F1-0 41 0 R
-/F2 13 0 R
-/F2-0 42 0 R
+/F1 124 0 R
+/F1-0 125 0 R
+/F2 126 0 R
 >>
 /ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
 >>
@@ -11459,387 +11536,285 @@ endobj
 endobj
 123 0 obj
 <<
-/Contents 44 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 45 0 R
-/F2 13 0 R
-/F2-0 46 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-124 0 obj
-<<
-/Contents 48 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 49 0 R
-/F2 13 0 R
-/F2-0 50 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-125 0 obj
-<<
-/Contents 52 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 53 0 R
-/F2 13 0 R
-/F2-0 54 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-126 0 obj
-<<
-/Contents 56 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 57 0 R
-/F2 13 0 R
-/F2-0 58 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-127 0 obj
-<<
-/Contents 60 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 61 0 R
-/F2 13 0 R
-/F2-0 62 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-128 0 obj
-<<
-/Contents 64 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 65 0 R
-/F2 13 0 R
-/F2-0 66 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-129 0 obj
-<<
-/Contents 68 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 69 0 R
-/F2 13 0 R
-/F2-0 70 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-130 0 obj
-<<
-/Contents 72 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 73 0 R
-/F2 13 0 R
-/F2-0 74 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-131 0 obj
-<<
-/Contents 76 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 77 0 R
-/F2 13 0 R
-/F2-0 78 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-132 0 obj
-<<
-/Contents 80 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 81 0 R
-/F2 13 0 R
-/F2-0 82 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-133 0 obj
-<<
-/Contents 84 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 85 0 R
-/F2 13 0 R
-/F2-0 86 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-134 0 obj
-<<
-/Contents 88 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 89 0 R
-/F2 13 0 R
-/F2-0 90 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-135 0 obj
-<<
-/Contents 92 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 93 0 R
-/F2 13 0 R
-/F2-0 94 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-136 0 obj
-<<
-/Contents 96 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 11 0 R
-/F1-0 97 0 R
-/F2 13 0 R
-/F2-0 98 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-137 0 obj
-<<
-/Contents 100 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 101 0 R
-/F1-0 102 0 R
-/F2 103 0 R
-/F2-0 104 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-138 0 obj
-<<
-/Contents 100 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font <<
-/F1 101 0 R
-/F1-0 102 0 R
-/F2 103 0 R
-/F2-0 104 0 R
->>
-/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Annots [ ]
-/Parent 2 0 R
->>
-endobj
-139 0 obj
-<<
-/Contents 106 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font 107 0 R
-/ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Parent 2 0 R
->>
-endobj
-140 0 obj
-<<
-/Contents 141 0 R
-/MediaBox [ 0 0 612 792 ]
-/Resources <<
-/Font 142 0 R
-/ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
->>
-/Rotate 0
-/Trans <<
->>
-/Type /Page
-/Parent 2 0 R
->>
-endobj
-141 0 obj
-<<
-/Filter [ /ASCII85Decode /FlateDecode ]
-/Length 3610
+/Length 8164
 >>
 stream
-Gatm>D3NF>%fXbWd$Ll'UCuV]Q^bReJd$%kJif9dh>>uI3f.e/G&Z1<WT(sjeD5RFS:lI\ARR^+,H2tP:TGdgi8PhSrL9,RYO:Ag>7Wh<mPj'X:'gU_iQ_<Wa7HtmcG0bA-r#,/_Bb(&BXZ7:2gk+(oo72cbr>-5cNk%[8>6CX9=XfI$,1f+,[\G^_4+L)%IX6$pWo+b&G6"9<"BTSRLW@lA4AlMA:??@rlDMfr+%;&$g9f7rAdJGSQ$Ko3`1:]l9G`,br8)1@Ge<%/TN22h)/I*C9`Kt(F4Q3CV\iB!)nf-00<M!6QG["BmA/p_tS<&_IHFNf&@M">qNVdZ30Q!aQml#.O;)ub9i-,Z,[BsA@1QAa$e;r(*Hi4(/eAEi]Dl5RK\plO"/hO7*:3=0AgnH"a'oA+Wm#U4U;NQYFD9?3_*NR:8#Aj1s^ATA`WeuYO%Et_pKP7/XgEH,<&93ah/l/'Dr`GZ(I+)-d5II5T=/h-&o`4r$]eIe%bBI"CIa#UaAi(<"i]sH2&ZqYF[s%ij"^3N:PFR.2>1>\W3S(s%l7CY(8g*kV+R&^c/oB$<H7nrUO``J]1_,FbRU/Ve\`;)n9Zjo1-BmS:-1\7DlXN`:sNY0IEFgR(up,#R%t&\Ds[4GBiYX.g1:iM+c^bc^4)kd+t>hn!gL@(\#[aR,TCZ_o/$B6ALqMILn\\6om(N5,0;g'ldb`&FA?tUn_(q'q!PsL2Ps]hI8Za?fPWBB<l=B&U^5bm4J1uOZ/ZqGY]NBfF"H(Uga*E]XI4q(B1pU/_ntAHCd?k7hD(&`Pa*:d_GV0(?ICnTi^f"NTrF0^ecVp4T^@pK.Ng(AAhnEoSCZI<Vrp&,_i2Sd^Ib[ctJj/0Y3jL6]lh4138o3dp##mRcaA:T'N2t8\4Z*00A"A1eOL51YA);O&5RRUuW4kM*tK*G_8Q:EcBg\,jU53NG*Zi)7Dt[Cj.1A\gf('fFCoG"\.YoL)`J5!>H1A,6eQX\-BBQ74$\s)_%duaih7UoG\-S([*OdB]AjA`("Z=aLiolAU1Td;,e(sp0sPd1c4.3-dbG3m#ek*<*b>/b[JhT7c#3T1%XnMVVkpCc`)n:.94$g;&d?[C@C+S;*=?kp*;e-Zn1"j-s^LnQ!EgK4=$",K\]=X@dSgZS5nY#H:(Fr^tOft'IZ,E&-CW<1&,OCEe19VC6dj4#N!ng0d#:f-W$@b'usp]*K\mI.krhGE@b\:&Y#f#A>%Z"XptP4=Wl29:)`D?7d=h-k)QEZ:mjp($2'lk'4Vq99bfl$j"FT[_jj^D2d#&,eln)tn!eF4A*%%dhWCSrP3N4N.Xh41b#Y?+Qr0GF?=6B\c1>RMo&:am0[;k$BC:i#WEj$:M%cL3,^cCBf-#F!m_l784KLHJRSmE]SqkqW7oagK]0Y%gVB"jlZ(C7RdIg<#o>=t1O&GC:9+XUG(:sK:/HP"Q`.KP3O7\+a\/MsX8NgK=>tpsV8"*9FTS]h$;H)XF;nm&=9G@rQFT*T.BnBe'%/o',9huhBHVt#p4`SBHhia##LO&G?jlIbM`EtQSdWr4Xf1rb3mQ#2X/-4ndC^_.:gO]HjhfBV3'3XOcH(l5[`h^(O!2][.!1pui?fmbp'TXZHTU;s&XE]a-UNaY0"hfSJWSZ\k.Ur-DW&T(H$7b'7YV`>;kE&N/b6^:I6"3[j&IU:Q%0([pYY[=<.YS"8_h\k.W&WrA6j=\<k/]5GN$trbN5:;rl4)pt0T&AbfL!TNpdD1"K$cVg`"js0Xe+jiQ[s_,gJ`WBnsC/"KUK*lS-dMX'M<4&6&7*l%(\Y]oqlEc=>616>hHp1Ct/do+(W"GO)lul.n3q!!lJE"+3]jT[#V)hKnN*&<V@B6,:[LQiOm_T*;K&fE,bB8'c[@)e+9M`0aE?Z>u#oY$OhXgmua$mDTuP$YH+e:RKLH00nR=Z0TOqm;4X1:+H6"+*4>i%B_PCQW^eCnoc+f<qZmg=^mJf-"2edm6"13=kI(<^drjldrTSW02f3HGr=QW/;=KA%0H1E$gJIe*2/Cm@)0hLSWksg4F6@a1#LP\i6f#QpXG`aS3-?Pd<MM6VHGuV?dll^?)V=VMW8WL-<82'3<<l(CacH]EI*W_rD4,9CaXYdn%S*,4@Q-kGE3_;/4ShW*%-8A.=;!R8`fWb0GX2t@_+(Ng)TW7L*U#ir]XXSK(dT3l:Cfc_<9AL09HStVMr@B1GXk&Eb>7A1k)rC_./$JUKF_Qr-n@/rp<T0TM)@G+Hf/Kb)Ui?JQp-X-T,:Wk%k^$`pt;Ij9jK3s]t..%]Ar2PqoKO5YtCn7M9b$%6$N,SGV@nXZY+3`WcMW]M3%qTUmq6i`7OR`mAg.X_`9jbUt2&2WH%cIg0FH6<Em]+(#Pth2U-?6o1;GQHg&MkQJmJ#H/lY9o:8T'?pbSmrjaOm^,!&7)nEa![%&&k*3[uD?e9?d>.s1^?<IPC3O,uP?Ihh8Sle[a&_a8F#m@DJkY@W+OTaA!4(.gs6\T=OCedY3f[C]Ff3?FaI\G20Tr+OlUm:OE<+Z;oR5M%rojqe2=e^btJhmU62eRmi@pB`LMLOk-rROb4.I(.[ek?mnA-[5%?Hj!Q[_EGU5P#lP<dp(GDWW1:PD.@c"*a6>i"DiW+CL"M9Bf%tJ5KOU<M;q@3cli"$aj:Z$(OT?T-dJ9#Dgm=9Vd--9nlQG^#+mIlnYL]gL<u(#oSspWQ`BG&lUDaC4B<dd]c?l=K-%RJTfX4c`!3>HG\&?5k'@;"#]u`PPUD1-67dL9_t]U'FdOgkUJHZPHY\$HD$M'3[+?4f#;,be)]&qN'R#?7"=[J$:9(R3li3fPgDkJ3PO/\GsS2n/8lTo-3<E#oGU</B$D7'\AuH[IE-K7Q)mE0FUt6.BR>a9_O`'U/7Y@.C!T@&V5JYDF$5[cM)CY]*F\Y[$!a_sYfPM2XKaipAuL@4-<7c&N-h26??D?NW@TO3(^?LYA<t]cd"aWj6#L$,FE1=+=sZ*dlhuKJU1HN0XmqgF1n!DV:1gd>FaR=39jSW<S$9?=Hi72`d8*IQa"OIn]o&Q-Rb,3kNElVc\ehHH/f#[<2D>iC2[:%@?I!FA[DskOXC5F)oM2UO(p6\AC2'-=LgFr]>ir\&%nA)HdPYMd;TL9Qk1[nfW:Y*#%Jh*gLh;$cDbn_Z`P$R\Mdc%36G7oFao0@C&poiuaL[dP%d`MUdP&p?O2REF<F%A":j!Pbrht^/iHV[gIbdKVi<Rprn5_-t8dXUi5JT%WAX;l'bdd'@J#FR?0%5'=/Z(7cE47WAK9i'A$[T4SXK/'q@I/=OR'P6(fJ^^6ZH*D)Q:7RQS+dm9DUh=,(noRXL;U:\[87=82n6G7os%U:O7hEGF+&s/e]YQ"NJfrfQX`%.^b1^%ebS4[41+;'=`oTM'a0hE\BlLOB^#YjlkP-qF&WE/)rLuZ2T#+`fUtaZK3"Y-l8Ogm\h*uSfPpQHL]r/OZ)*Os6)n3MZnU@MIT#JuofYoQbV)uh21a9=KT%^6n/5c9"jFOjXJGI(eaCB'WV?=9=08g41A0tpQPUH?"'[EN/aZ4J@N'nUY74gH0hUf_!eW%8jh.S^@nrW0enEotS#c[_r?#Aa>]K~>
+q
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+.121569 .305882 .47451 rg
+BT /F2 16 Tf 19.2 TL ET
+BT 1 0 0 1 48 755 Tm (Cross-Report Comparison) Tj T* ET
+0 0 0 rg
+BT /F1 7 Tf 8.4 TL ET
+BT 1 0 0 1 537.925 755 Tm (Page 30) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 735 Tm (Compare the active report with another report by matching keys, aggregating values, and showing differences and percent) Tj T* ET
+BT 1 0 0 1 48 724.8 Tm (movement.) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 712.6 Tm (Typical screen area) Tj T* ET
+.85098 .917647 .968627 rg
+.498039 .615686 .72549 RG
+.45 w
+n 48 684.6 516 17 re B*
+.2 .2 .2 rg
+BT /F1 6.9 Tf 8.28 TL ET
+BT 1 0 0 1 54 690.1 Tm (Compare Report ID | Key Field | Value Field | Aggregation | Search | Build | CSV | Excel | AI) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 676.6 Tm (Terms used.) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.1 Tf 9.72 TL ET
+BT 1 0 0 1 58 665.6 Tm (Base = active report; Compare = second report; Key = shared matching field; Difference = compare value minus base value.) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 645.2 Tm (Input entries.) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.1 Tf 9.72 TL ET
+BT 1 0 0 1 58 634.2 Tm (Enter Compare Report ID, select common Key Field and optional Value Field, choose Aggregation, then click Build.) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 604.6 Tm (Model / algorithm functions.) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.1 Tf 9.72 TL ET
+BT 1 0 0 1 58 593.6 Tm (Both reports are read into memory, summarized by key with the same aggregation, and merged so missing or changed keys are visible.) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 564 Tm (Meaning of output.) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.1 Tf 9.72 TL ET
+BT 1 0 0 1 58 553 Tm (Rows show Key, Base Records, Compare Records, Base Value, Compare Value, Difference, Difference %, and Status.) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 522.4 Tm (Sample result.) Tj T* ET
+.5 w
+.4 .2 0 rg
+n 48 487 516 17 re f*
+1 1 1 rg
+BT /F2 6.4 Tf 7.68 TL ET
+BT 1 0 0 1 52 492.6 Tm (Key) Tj T* ET
+BT 1 0 0 1 158 492.6 Tm (Base Records) Tj T* ET
+BT 1 0 0 1 248 492.6 Tm (Compare Records) Tj T* ET
+BT 1 0 0 1 374 492.6 Tm (Base Value) Tj T* ET
+BT 1 0 0 1 448 492.6 Tm (Compare Value) Tj T* ET
+BT 1 0 0 1 510 492.6 Tm (Diff) Tj T* ET
+BT /F1 6.4 Tf 7.68 TL ET
+1 1 1 rg
+n 48 470 516 17 re S
+0 0 0 rg
+BT 1 0 0 1 52 475.6 Tm (West) Tj T* ET
+BT 1 0 0 1 158 475.6 Tm (120) Tj T* ET
+BT 1 0 0 1 248 475.6 Tm (130) Tj T* ET
+BT 1 0 0 1 374 475.6 Tm (5600) Tj T* ET
+BT 1 0 0 1 448 475.6 Tm (6200) Tj T* ET
+BT 1 0 0 1 510 475.6 Tm (600) Tj T* ET
+1 1 1 rg
+n 48 453 516 17 re S
+0 0 0 rg
+BT 1 0 0 1 52 458.6 Tm (East) Tj T* ET
+BT 1 0 0 1 158 458.6 Tm (98) Tj T* ET
+BT 1 0 0 1 248 458.6 Tm (90) Tj T* ET
+BT 1 0 0 1 374 458.6 Tm (4100) Tj T* ET
+BT 1 0 0 1 448 458.6 Tm (3900) Tj T* ET
+BT 1 0 0 1 510 458.6 Tm (-200) Tj T* ET
+1 1 1 rg
+n 48 436 516 17 re S
+0 0 0 rg
+BT 1 0 0 1 52 441.6 Tm (New) Tj T* ET
+BT 1 0 0 1 158 441.6 Tm (0) Tj T* ET
+BT 1 0 0 1 248 441.6 Tm (25) Tj T* ET
+BT 1 0 0 1 374 441.6 Tm (0) Tj T* ET
+BT 1 0 0 1 448 441.6 Tm (1400) Tj T* ET
+BT 1 0 0 1 510 441.6 Tm (1400) Tj T* ET
+.121569 .305882 .47451 rg
+BT /F2 8.8 Tf 10.56 TL ET
+BT 1 0 0 1 48 420.4 Tm (Shortcut.) Tj T* ET
+.2 .2 .2 rg
+BT /F1 8.1 Tf 9.72 TL ET
+BT 1 0 0 1 58 409.4 Tm (Use when two reports need a practical difference table before variance, drift, or narrative review.) Tj T* ET
+.960784 .984314 .956863 rg
+.847059 .917647 .831373 RG
+.6 w
+n 54 28 504 316 re B*
+.901961 .94902 .87451 RG
+.984314 1 .972549 rg
+.6 w
+n 61 284 490 54 re B*
+.611765 .8 .396078 rg
+n 61 284 4 54 re f*
+.184314 .309804 .121569 rg
+BT /F2 5.8 Tf 6.96 TL ET
+BT 1 0 0 1 69 329 Tm (Input and Fields Selection) Tj T* ET
+BT /F1 4.65 Tf 5.58 TL ET
+.2 .2 .2 rg
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 322 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 322 Tm (Compare Report ID loads the second report.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 315.9 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 315.9 Tm (Key Field should exist in both reports.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 309.8 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 309.8 Tm (Value Field selects the measure; leave as records for count comparison.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 303.7 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 303.7 Tm (Aggregation controls Count, Sum, Average, Min, or Max.) Tj T* ET
+.901961 .94902 .87451 RG
+.984314 1 .972549 rg
+.6 w
+n 61 224 490 54 re B*
+.611765 .8 .396078 rg
+n 61 224 4 54 re f*
+.184314 .309804 .121569 rg
+BT /F2 5.8 Tf 6.96 TL ET
+BT 1 0 0 1 69 269 Tm (Model and Algorithm) Tj T* ET
+BT /F1 4.65 Tf 5.58 TL ET
+.2 .2 .2 rg
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 262 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 262 Tm (The active report is the base side.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 255.9 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 255.9 Tm (The compare report is summarized with the same key and value settings.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 249.8 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 249.8 Tm (All keys from both reports are merged to show changed and missing keys.) Tj T* ET
+.901961 .94902 .87451 RG
+.984314 1 .972549 rg
+.6 w
+n 61 164 490 54 re B*
+.611765 .8 .396078 rg
+n 61 164 4 54 re f*
+.184314 .309804 .121569 rg
+BT /F2 5.8 Tf 6.96 TL ET
+BT 1 0 0 1 69 209 Tm (Output) Tj T* ET
+BT /F1 4.65 Tf 5.58 TL ET
+.2 .2 .2 rg
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 202 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 202 Tm (Base and Compare Records show row counts.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 195.9 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 195.9 Tm (Base Value and Compare Value show summarized measures.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 189.8 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 189.8 Tm (Difference %, Status, and Base Records links support drill-back.) Tj T* ET
+.901961 .94902 .87451 RG
+.984314 1 .972549 rg
+.6 w
+n 61 104 490 54 re B*
+.611765 .8 .396078 rg
+n 61 104 4 54 re f*
+.184314 .309804 .121569 rg
+BT /F2 5.8 Tf 6.96 TL ET
+BT 1 0 0 1 69 149 Tm (Why Useful) Tj T* ET
+BT /F1 4.65 Tf 5.58 TL ET
+.2 .2 .2 rg
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 142 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 142 Tm (Finds meaningful movement between two reports.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 135.9 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 135.9 Tm (Shows missing or new keys, not only changed totals.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 129.8 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 129.8 Tm (Feeds Variance Analysis, Data Drift, and Automated Narratives.) Tj T* ET
+.901961 .94902 .87451 RG
+.984314 1 .972549 rg
+.6 w
+n 61 44 490 48 re B*
+.611765 .8 .396078 rg
+n 61 44 4 48 re f*
+.184314 .309804 .121569 rg
+BT /F2 5.8 Tf 6.96 TL ET
+BT 1 0 0 1 69 83 Tm (Suggested Fields) Tj T* ET
+BT /F1 4.65 Tf 5.58 TL ET
+.2 .2 .2 rg
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 76 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 76 Tm (Key Field: product, customer, region, location, category, period, or status existing in both reports.) Tj T* ET
+.184314 .309804 .121569 rg
+BT 1 0 0 1 74 69.9 Tm (?) Tj T* ET
+.2 .2 .2 rg
+.2 .2 .2 rg
+BT /F1 4.65 Tf 5.58 TL ET
+BT 1 0 0 1 83 69.9 Tm (Value Field: sales, revenue, amount, quantity, cost, profit, score, or leave blank for counts.) Tj T* ET
+ 
+
+Q
+
+q
+0.0 0.0 612 792 re
+W
+n
+1 0 0 1 0 0 cm
+BT
+/F1-0 12 Tf
+14.4 TL
+ET
+1 1 1 rg
+n
+535 750 32 14 re
+f*
+0 0 0 rg
+BT
+/F1-0 7 Tf
+8.4 TL
+ET
+BT
+1 0 0 1 537.925 753.55 Tm
+(Page 29) Tj
+T*
+ET
+Q
+
+
 endstream
 endobj
-142 0 obj
-<<
-/F1 143 0 R
-/F2 144 0 R
-/F3 145 0 R
->>
-endobj
-143 0 obj
+124 0 obj
 <<
 /BaseFont /Helvetica
 /Encoding /WinAnsiEncoding
@@ -11848,7 +11823,16 @@ endobj
 /Type /Font
 >>
 endobj
-144 0 obj
+125 0 obj
+<<
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+126 0 obj
 <<
 /BaseFont /Helvetica-Bold
 /Encoding /WinAnsiEncoding
@@ -11857,168 +11841,438 @@ endobj
 /Type /Font
 >>
 endobj
+127 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 635.7 566 650.85 ]
+/Border [ 0 0 0 ]
+/Dest [ 1 /Fit ]
+/P 4 0 R
+>>
+endobj
+128 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 620.55 566 635.7 ]
+/Border [ 0 0 0 ]
+/Dest [ 2 /Fit ]
+/P 4 0 R
+>>
+endobj
+129 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 605.4 566 620.55 ]
+/Border [ 0 0 0 ]
+/Dest [ 3 /Fit ]
+/P 4 0 R
+>>
+endobj
+130 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 590.25 566 605.4 ]
+/Border [ 0 0 0 ]
+/Dest [ 4 /Fit ]
+/P 4 0 R
+>>
+endobj
+131 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 575.1 566 590.25 ]
+/Border [ 0 0 0 ]
+/Dest [ 5 /Fit ]
+/P 4 0 R
+>>
+endobj
+132 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 559.95 566 575.1 ]
+/Border [ 0 0 0 ]
+/Dest [ 6 /Fit ]
+/P 4 0 R
+>>
+endobj
+133 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 544.8 566 559.95 ]
+/Border [ 0 0 0 ]
+/Dest [ 7 /Fit ]
+/P 4 0 R
+>>
+endobj
+134 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 529.65 566 544.8 ]
+/Border [ 0 0 0 ]
+/Dest [ 8 /Fit ]
+/P 4 0 R
+>>
+endobj
+135 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 514.5 566 529.65 ]
+/Border [ 0 0 0 ]
+/Dest [ 9 /Fit ]
+/P 4 0 R
+>>
+endobj
+136 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 499.35 566 514.5 ]
+/Border [ 0 0 0 ]
+/Dest [ 10 /Fit ]
+/P 4 0 R
+>>
+endobj
+137 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 484.2 566 499.35 ]
+/Border [ 0 0 0 ]
+/Dest [ 11 /Fit ]
+/P 4 0 R
+>>
+endobj
+138 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 469.05 566 484.2 ]
+/Border [ 0 0 0 ]
+/Dest [ 12 /Fit ]
+/P 4 0 R
+>>
+endobj
+139 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 453.9 566 469.05 ]
+/Border [ 0 0 0 ]
+/Dest [ 13 /Fit ]
+/P 4 0 R
+>>
+endobj
+140 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 438.75 566 453.9 ]
+/Border [ 0 0 0 ]
+/Dest [ 14 /Fit ]
+/P 4 0 R
+>>
+endobj
+141 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 423.6 566 438.75 ]
+/Border [ 0 0 0 ]
+/Dest [ 15 /Fit ]
+/P 4 0 R
+>>
+endobj
+142 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 408.45 566 423.6 ]
+/Border [ 0 0 0 ]
+/Dest [ 16 /Fit ]
+/P 4 0 R
+>>
+endobj
+143 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 393.3 566 408.45 ]
+/Border [ 0 0 0 ]
+/Dest [ 17 /Fit ]
+/P 4 0 R
+>>
+endobj
+144 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 378.15 566 393.3 ]
+/Border [ 0 0 0 ]
+/Dest [ 18 /Fit ]
+/P 4 0 R
+>>
+endobj
 145 0 obj
 <<
-/BaseFont /ZapfDingbats
-/Name /F3
-/Subtype /Type1
-/Type /Font
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 363 566 378.15 ]
+/Border [ 0 0 0 ]
+/Dest [ 19 /Fit ]
+/P 4 0 R
+>>
+endobj
+146 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 347.85 566 363 ]
+/Border [ 0 0 0 ]
+/Dest [ 20 /Fit ]
+/P 4 0 R
+>>
+endobj
+147 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 332.7 566 347.85 ]
+/Border [ 0 0 0 ]
+/Dest [ 21 /Fit ]
+/P 4 0 R
+>>
+endobj
+148 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 317.55 566 332.7 ]
+/Border [ 0 0 0 ]
+/Dest [ 22 /Fit ]
+/P 4 0 R
+>>
+endobj
+149 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 302.4 566 317.55 ]
+/Border [ 0 0 0 ]
+/Dest [ 24 /Fit ]
+/P 4 0 R
+>>
+endobj
+150 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 287.25 566 302.4 ]
+/Border [ 0 0 0 ]
+/Dest [ 25 /Fit ]
+/P 4 0 R
+>>
+endobj
+151 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 272.1 566 287.25 ]
+/Border [ 0 0 0 ]
+/Dest [ 26 /Fit ]
+/P 4 0 R
+>>
+endobj
+152 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 256.95 566 272.1 ]
+/Border [ 0 0 0 ]
+/Dest [ 27 /Fit ]
+/P 4 0 R
+>>
+endobj
+153 0 obj
+<<
+/Type /Annot
+/Subtype /Link
+/Rect [ 48 241.8 566 256.95 ]
+/Border [ 0 0 0 ]
+/Dest [ 28 /Fit ]
+/P 4 0 R
 >>
 endobj
 xref
-0 146
+0 154
 0000000000 65535 f 
 0000000015 00000 n 
 0000000054 00000 n 
-0000000322 00000 n 
-0000000371 00000 n 
-0000003193 00000 n 
-0000006137 00000 n 
-0000006178 00000 n 
-0000006285 00000 n 
-0000006397 00000 n 
-0000006633 00000 n 
-0000013198 00000 n 
-0000013306 00000 n 
-0000013414 00000 n 
-0000013527 00000 n 
-0000013640 00000 n 
-0000013877 00000 n 
-0000022488 00000 n 
-0000022596 00000 n 
-0000022709 00000 n 
-0000022946 00000 n 
-0000032772 00000 n 
-0000032880 00000 n 
-0000032993 00000 n 
-0000033230 00000 n 
-0000042245 00000 n 
-0000042353 00000 n 
-0000042466 00000 n 
-0000042703 00000 n 
-0000051668 00000 n 
-0000051776 00000 n 
-0000051889 00000 n 
-0000052126 00000 n 
-0000061014 00000 n 
-0000061122 00000 n 
-0000061235 00000 n 
-0000061472 00000 n 
-0000070236 00000 n 
-0000070344 00000 n 
-0000070457 00000 n 
-0000070694 00000 n 
-0000079394 00000 n 
-0000079502 00000 n 
-0000079615 00000 n 
-0000079852 00000 n 
-0000086858 00000 n 
-0000086966 00000 n 
-0000087079 00000 n 
-0000087316 00000 n 
-0000095963 00000 n 
-0000096071 00000 n 
-0000096184 00000 n 
-0000096421 00000 n 
-0000104801 00000 n 
-0000104909 00000 n 
-0000105022 00000 n 
-0000105259 00000 n 
-0000113970 00000 n 
-0000114078 00000 n 
-0000114191 00000 n 
-0000114428 00000 n 
-0000122958 00000 n 
-0000123066 00000 n 
-0000123179 00000 n 
-0000123416 00000 n 
-0000131268 00000 n 
-0000131376 00000 n 
-0000131489 00000 n 
-0000131726 00000 n 
-0000140395 00000 n 
-0000140503 00000 n 
-0000140616 00000 n 
-0000140853 00000 n 
-0000148250 00000 n 
-0000148358 00000 n 
-0000148471 00000 n 
-0000148708 00000 n 
-0000157813 00000 n 
-0000157921 00000 n 
-0000158034 00000 n 
-0000158271 00000 n 
-0000167239 00000 n 
-0000167347 00000 n 
-0000167460 00000 n 
-0000167697 00000 n 
-0000176903 00000 n 
-0000177011 00000 n 
-0000177124 00000 n 
-0000177361 00000 n 
-0000186536 00000 n 
-0000186644 00000 n 
-0000186757 00000 n 
-0000186994 00000 n 
-0000196139 00000 n 
-0000196247 00000 n 
-0000196360 00000 n 
-0000196597 00000 n 
-0000205553 00000 n 
-0000205661 00000 n 
-0000205774 00000 n 
-0000206016 00000 n 
-0000216035 00000 n 
-0000216144 00000 n 
-0000216253 00000 n 
-0000216367 00000 n 
-0000216481 00000 n 
-0000216662 00000 n 
-0000220180 00000 n 
-0000220227 00000 n 
-0000220336 00000 n 
-0000220450 00000 n 
-0000220631 00000 n 
-0000223897 00000 n 
-0000223944 00000 n 
-0000224053 00000 n 
-0000224167 00000 n 
-0000224419 00000 n 
-0000224671 00000 n 
-0000224923 00000 n 
-0000225175 00000 n 
-0000225427 00000 n 
-0000225679 00000 n 
-0000225931 00000 n 
-0000226183 00000 n 
-0000226435 00000 n 
-0000226687 00000 n 
-0000226939 00000 n 
-0000227191 00000 n 
-0000227443 00000 n 
-0000227695 00000 n 
-0000227947 00000 n 
-0000228199 00000 n 
-0000228451 00000 n 
-0000228703 00000 n 
-0000228955 00000 n 
-0000229207 00000 n 
-0000229459 00000 n 
-0000229711 00000 n 
-0000229968 00000 n 
-0000230225 00000 n 
-0000230420 00000 n 
-0000230615 00000 n 
-0000234319 00000 n 
-0000234378 00000 n 
-0000234487 00000 n 
-0000234601 00000 n 
+0000000314 00000 n 
+0000000363 00000 n 
+0000000780 00000 n 
+0000003667 00000 n 
+0000003708 00000 n 
+0000003815 00000 n 
+0000003927 00000 n 
+0000004177 00000 n 
+0000010742 00000 n 
+0000010850 00000 n 
+0000010958 00000 n 
+0000011071 00000 n 
+0000011184 00000 n 
+0000011435 00000 n 
+0000020046 00000 n 
+0000020154 00000 n 
+0000020267 00000 n 
+0000020518 00000 n 
+0000030344 00000 n 
+0000030452 00000 n 
+0000030565 00000 n 
+0000030816 00000 n 
+0000039831 00000 n 
+0000039939 00000 n 
+0000040052 00000 n 
+0000040303 00000 n 
+0000049268 00000 n 
+0000049376 00000 n 
+0000049489 00000 n 
+0000049740 00000 n 
+0000058628 00000 n 
+0000058736 00000 n 
+0000058849 00000 n 
+0000059100 00000 n 
+0000067864 00000 n 
+0000067972 00000 n 
+0000068085 00000 n 
+0000068336 00000 n 
+0000077036 00000 n 
+0000077144 00000 n 
+0000077257 00000 n 
+0000077508 00000 n 
+0000084514 00000 n 
+0000084622 00000 n 
+0000084735 00000 n 
+0000084986 00000 n 
+0000093633 00000 n 
+0000093741 00000 n 
+0000093854 00000 n 
+0000094105 00000 n 
+0000102485 00000 n 
+0000102593 00000 n 
+0000102706 00000 n 
+0000102957 00000 n 
+0000111668 00000 n 
+0000111776 00000 n 
+0000111889 00000 n 
+0000112140 00000 n 
+0000120670 00000 n 
+0000120778 00000 n 
+0000120891 00000 n 
+0000121142 00000 n 
+0000128994 00000 n 
+0000129102 00000 n 
+0000129215 00000 n 
+0000129466 00000 n 
+0000138135 00000 n 
+0000138243 00000 n 
+0000138356 00000 n 
+0000138607 00000 n 
+0000146004 00000 n 
+0000146112 00000 n 
+0000146225 00000 n 
+0000146476 00000 n 
+0000155581 00000 n 
+0000155689 00000 n 
+0000155802 00000 n 
+0000156053 00000 n 
+0000165021 00000 n 
+0000165129 00000 n 
+0000165242 00000 n 
+0000165493 00000 n 
+0000174699 00000 n 
+0000174807 00000 n 
+0000174920 00000 n 
+0000175171 00000 n 
+0000184346 00000 n 
+0000184454 00000 n 
+0000184567 00000 n 
+0000184818 00000 n 
+0000193963 00000 n 
+0000194071 00000 n 
+0000194184 00000 n 
+0000194435 00000 n 
+0000203391 00000 n 
+0000203499 00000 n 
+0000203612 00000 n 
+0000203868 00000 n 
+0000213887 00000 n 
+0000213996 00000 n 
+0000214105 00000 n 
+0000214219 00000 n 
+0000214333 00000 n 
+0000214590 00000 n 
+0000214785 00000 n 
+0000218303 00000 n 
+0000218350 00000 n 
+0000218459 00000 n 
+0000218573 00000 n 
+0000218768 00000 n 
+0000222472 00000 n 
+0000222531 00000 n 
+0000222640 00000 n 
+0000222754 00000 n 
+0000222839 00000 n 
+0000223082 00000 n 
+0000231183 00000 n 
+0000231292 00000 n 
+0000231401 00000 n 
+0000231515 00000 n 
+0000231758 00000 n 
+0000239976 00000 n 
+0000240085 00000 n 
+0000240194 00000 n 
+0000240308 00000 n 
+0000240433 00000 n 
+0000240558 00000 n 
+0000240683 00000 n 
+0000240808 00000 n 
+0000240933 00000 n 
+0000241058 00000 n 
+0000241183 00000 n 
+0000241308 00000 n 
+0000241433 00000 n 
+0000241559 00000 n 
+0000241685 00000 n 
+0000241811 00000 n 
+0000241937 00000 n 
+0000242063 00000 n 
+0000242189 00000 n 
+0000242315 00000 n 
+0000242441 00000 n 
+0000242567 00000 n 
+0000242691 00000 n 
+0000242815 00000 n 
+0000242941 00000 n 
+0000243067 00000 n 
+0000243193 00000 n 
+0000243319 00000 n 
+0000243445 00000 n 
+0000243571 00000 n 
 trailer
 <<
-/Size 146
+/Size 154
 /Root 3 0 R
 /Info 1 0 R
 >>
 startxref
-234686
+243697
 %%EOF

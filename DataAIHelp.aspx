@@ -228,6 +228,7 @@
                     <div class="cell-title"><span class="dot" style="background:var(--accent)"></span> Analytics</div>
                     <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=2">Analytics Dashboard</a>
                     <a class="toc-link feat" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=68">Detail Analytics</a>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=25">Data Readiness</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=3">Pivot / Cross Tab</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=4">Variance Analysis</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=5">Comparison Reports</a>
@@ -242,6 +243,7 @@
                     <div class="cell-title"><span class="dot" style="background:#2563EB"></span> Data Review</div>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=6">Data Profiling</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=7">Data Quality</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=23">Data Dictionary</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=8">Ranking Analysis</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=16">Audit Summaries</a>
                 </div>
@@ -257,7 +259,6 @@
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=13">Outlier Flagging</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=73">Fields Correlation</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=14">Correlation Threshold</a>
-                    <a class="toc-link feat" href="https://oureports.net/oureports/AIandDataAI.pdf">AI and DataAI</a>
                 </div>
             </div>
         </div>
@@ -297,9 +298,9 @@
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=21">Data Drift Analysis</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=26">Anomaly Scoring</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=27">Rule-Based Alerts</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=29">Automated Analysis Narratives</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=30">Cross-Report Comparison</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=22">KPI Builder</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=23">Data Dictionary</a>
-                    <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=25">Data Readiness</a>
                 </div>
             </div>
         </div>
@@ -312,6 +313,7 @@
                     <div class="cell-title"><span class="dot" style="background:var(--accent)"></span> Data Exploration</div>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=58">Select Parameters in Data Explorer</a>
                     <a class="toc-link" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=45">Field Search</a>
+                    <a class="toc-link feat" href="https://oureports.net/oureports/AIandDataAI.pdf">AI and DataAI</a>
                     <a class="toc-link" href="https://oureports.net/OUReports/MatrixBalancing.pdf">Matrix Balancing</a>
                     <a class="toc-link" href="https://oureports.net/OUReports/MatrixBalancingWithAIOverview.pdf">Matrix Balancing Overview</a>
                 </div>

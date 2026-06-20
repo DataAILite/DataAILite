@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
@@ -682,6 +682,9 @@ Partial Class ListOfReports
         Dim reccount As Integer = 0
         Dim reports As String = "|"
         Dim htReport As New Hashtable
+        Dim reportsForComparison As New DataTable("ListOfReportsForComparison")
+        reportsForComparison.Columns.Add("ReportID", GetType(String))
+        reportsForComparison.Columns.Add("ReportTitle", GetType(String))
 
         If dv IsNot Nothing AndAlso dv.Count > 0 AndAlso dv.Table IsNot Nothing AndAlso dv.Table.Rows.Count > 0 Then
             Session("dvListOfReports") = dv
@@ -769,6 +772,10 @@ Partial Class ListOfReports
 
                     reccount = reccount + 1
                     reports = reports & rep & "|"
+                    Dim comparisonRow As DataRow = reportsForComparison.NewRow()
+                    comparisonRow("ReportID") = rep.Trim()
+                    comparisonRow("ReportTitle") = repttl.Trim()
+                    reportsForComparison.Rows.Add(comparisonRow)
 
                     'list.Rows(0).Cells(0).InnerText = "DataAI"
                     'list.Rows(0).Cells(0).Align = "center"
@@ -1021,6 +1028,8 @@ Partial Class ListOfReports
             'Response.Redirect("DataImport.aspx")
             'end if
         End If
+
+        Session("ListOfReportsForComparison") = reportsForComparison
 
         If Session("admin") = "admin" OrElse Session("admin") = "super" Then  'full admin to create new reports
             If Session("Permit") = "friendly" Then

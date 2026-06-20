@@ -81,6 +81,9 @@ Partial Class DataAdmin
         litPreviewDataDrift.Text = BuildDataDriftPreviewHtml(dv)
         litPreviewAnomalyScoring.Text = BuildAnomalyScoringPreviewHtml(dv)
         litPreviewRuleBasedAlerts.Text = BuildRuleBasedAlertsPreviewHtml(dv)
+        litPreviewSavedAnalysisTemplates.Text = BuildSavedAnalysisTemplatesPreviewHtml(dv)
+        litPreviewAutomatedAnalysisNarratives.Text = BuildAutomatedAnalysisNarrativesPreviewHtml(dv)
+        litPreviewCrossReportComparison.Text = BuildCrossReportComparisonPreviewHtml(dv)
         litPreviewKPIBuilder.Text = BuildKPIBuilderPreviewHtml(dv)
         litPreviewDataDictionary.Text = BuildDataDictionaryPreviewHtml(dv)
         litPreviewMapReadiness.Text = BuildMapReadinessPreviewHtml(dv)
@@ -140,6 +143,8 @@ Partial Class DataAdmin
         tiles.Add(tileDataDrift)
         tiles.Add(tileAnomalyScoring)
         tiles.Add(tileRuleBasedAlerts)
+        tiles.Add(tileAutomatedAnalysisNarratives)
+        tiles.Add(tileCrossReportComparison)
         tiles.Add(tileKPIBuilder)
         tiles.Add(tileDataDictionary)
         tiles.Add(tileMapReadiness)
@@ -676,6 +681,57 @@ Partial Class DataAdmin
 
         If rows.Count = 0 Then Return BuildQualityPreviewHtml(dv)
         Return RenderPreviewTable(New String() {"Alert", "Field", "Actual"}, rows)
+    End Function
+
+    Private Function BuildSavedAnalysisTemplatesPreviewHtml(dv As DataView) As String
+        If Not HasPreviewData(dv) Then Return EmptyPreview("No report data available.")
+
+        Dim rows As New List(Of String())()
+        Dim textCol As DataColumn = FirstTextColumn(dv.Table)
+        Dim valueCol As DataColumn = FirstNumericColumn(dv.Table)
+        rows.Add(New String() {"Readiness", "DataReadinessScanner", "All fields"})
+        rows.Add(New String() {"Quality", "DataQuality", If(textCol Is Nothing, "All fields", textCol.ColumnName)})
+        rows.Add(New String() {"Narrative", "AutomatedAnalysisNarratives", If(valueCol Is Nothing, "Records", valueCol.ColumnName)})
+        Return RenderPreviewTable(New String() {"Template", "Page", "Fields"}, rows)
+    End Function
+
+    Private Function BuildAutomatedAnalysisNarrativesPreviewHtml(dv As DataView) As String
+        If Not HasPreviewData(dv) Then Return EmptyPreview("No report data available.")
+
+        Dim rows As New List(Of String())()
+        rows.Add(New String() {"Dataset Summary", "Records", dv.Count.ToString()})
+        Dim valueCol As DataColumn = FirstNumericColumn(dv.Table)
+        If valueCol IsNot Nothing Then
+            Dim stats As PreviewStats = NumericStats(dv, valueCol)
+            rows.Add(New String() {"Field Behavior", valueCol.ColumnName, "Avg " & FormatPreviewNumber(stats.Average)})
+        End If
+        Dim textCol As DataColumn = FirstTextColumn(dv.Table)
+        If textCol IsNot Nothing Then rows.Add(New String() {"Field Behavior", textCol.ColumnName, "Distinct " & DistinctCount(dv, textCol).ToString()})
+        Return RenderPreviewTable(New String() {"Section", "Field", "Evidence"}, rows)
+    End Function
+
+    Private Function BuildCrossReportComparisonPreviewHtml(dv As DataView) As String
+        If Not HasPreviewData(dv) Then Return EmptyPreview("No report data available.")
+
+        Dim keyCol As DataColumn = FirstTextColumn(dv.Table)
+        Dim valueCol As DataColumn = FirstNumericColumn(dv.Table)
+        If keyCol Is Nothing Then Return EmptyPreview("Select a key field and compare report.")
+
+        Dim rows As New List(Of String())()
+        Dim groupValues As List(Of String) = TopValues(dv, keyCol, PreviewRows)
+        Dim counts As Dictionary(Of String, Integer) = GroupCounts(dv, keyCol)
+        Dim totals As Dictionary(Of String, Double) = Nothing
+        If valueCol IsNot Nothing Then totals = GroupTotals(dv, keyCol, valueCol)
+        For Each groupValue As String In groupValues
+            Dim countValue As Integer = If(counts.ContainsKey(groupValue), counts(groupValue), 0)
+            Dim valueText As String = countValue.ToString()
+            If valueCol IsNot Nothing AndAlso totals IsNot Nothing Then
+                If totals.ContainsKey(groupValue) Then valueText = FormatPreviewNumber(totals(groupValue))
+            End If
+            rows.Add(New String() {groupValue, valueText, "Compare"})
+        Next
+        If rows.Count = 0 Then Return EmptyPreview("Select a key field and compare report.")
+        Return RenderPreviewTable(New String() {keyCol.ColumnName, If(valueCol Is Nothing, "Records", valueCol.ColumnName), "Mode"}, rows)
     End Function
 
     Private Function BuildKPIBuilderPreviewHtml(dv As DataView) As String

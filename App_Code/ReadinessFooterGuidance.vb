@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Collections.Generic
 Imports System.Data
 Imports System.Web.UI
@@ -86,6 +86,15 @@ Public Module ReadinessFooterGuidance
             Case "Data Dictionary"
                 whyUseful = "Field-level documentation is useful for any unfamiliar dataset."
                 suggestedFields = FieldGuidance("Field Group / Search: use all fields, or narrow to fields whose meaning, type, examples, blanks, or distinct values need documentation", textFields, numericFields, dateFields)
+            Case "Saved Analysis Templates"
+                whyUseful = "Reusable templates help repeat useful analysis setups without reselecting the same fields, filters, thresholds, and aggregation options."
+                suggestedFields = FieldGuidance("Analysis Page: choose the page recommended by Data Readiness Scanner or used in the current workflow", textFields, numericFields, dateFields) & "; Field Set should list the category, date, value, and filter fields that make the template repeatable; Thresholds should record limits used by alerts, anomaly scoring, drift, regression, or market models"
+            Case "Automated Analysis Narratives"
+                whyUseful = "Narratives summarize what the current data is showing in readable finding/evidence/action rows."
+                suggestedFields = FieldGuidance("Primary Field: select category, group, date, status, product, customer, location, or another field to emphasize in the narrative", Prefer(Prefer(categoryFields, dateFields), textFields)) & "; " & FieldGuidance("Value Field: select a numeric measure for narrative evidence where useful", numericFields) & "; Narrative Focus controls whether the output emphasizes summary, quality, field behavior, trends, or exceptions"
+            Case "Cross-Report Comparison"
+                whyUseful = "Compare the active report with another report by matching common keys and measuring value or count differences."
+                suggestedFields = FieldGuidance("Key Field: use a field that exists in both reports, such as product, customer, region, category, location, status, or period", categoryFields, dateFields) & "; " & FieldGuidance("Value Field: use a numeric measure for Sum, Average, Min, or Max comparisons; leave as records for count-only comparison", numericFields) & "; Compare Report ID identifies the second report loaded into memory for comparison"
             Case "Data Profiling"
                 whyUseful = "Detect type, blanks, distinct values, min, max, average, and standard deviation."
                 suggestedFields = FieldGuidance("Automatic profiling: all fields are scanned; numeric fields receive min/max/average/stdev, date fields receive date ranges, and text/category fields receive blanks, distinct counts, and examples", textFields, numericFields, dateFields)

@@ -360,6 +360,8 @@
                                             <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
 <asp:TreeNode Text="Rule-Based Alerts" Value="RuleBasedAlerts.aspx"></asp:TreeNode>
+<asp:TreeNode Text="Automated Analysis Narratives" Value="AutomatedAnalysisNarratives.aspx"></asp:TreeNode>
+<asp:TreeNode Text="Cross-Report Comparison" Value="CrossReportComparison.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
@@ -640,6 +642,36 @@
                                             </span>
                                             <span class="tileBody">Define alert rules for missing values, variance, correlations, outliers, map readiness, and churn scores.</span>
                                             <span class="previewBox"><asp:Literal ID="litPreviewRuleBasedAlerts" runat="server"></asp:Literal></span>
+                                            <span class="openText">Open</span>
+                                        </a>
+
+                                        <a id="tileSavedAnalysisTemplates" runat="server" visible="false" class="analyticsTile" href="SavedAnalysisTemplates.aspx" title="Open Saved Analysis Templates">
+                                            <span class="tileCaption">
+                                                <span class="tileTitle">Saved Analysis Templates</span>
+                                                <span class="tileText">Reusable fields, filters, thresholds, aggregation, and notes.</span>
+                                            </span>
+                                            <span class="tileBody">Save analysis settings for repeated work and later Export Package documentation.</span>
+                                            <span class="previewBox"><asp:Literal ID="litPreviewSavedAnalysisTemplates" runat="server"></asp:Literal></span>
+                                            <span class="openText">Open</span>
+                                        </a>
+
+                                        <a id="tileAutomatedAnalysisNarratives" runat="server" class="analyticsTile" href="AutomatedAnalysisNarratives.aspx" title="Open Automated Analysis Narratives">
+                                            <span class="tileCaption">
+                                                <span class="tileTitle">Automated Analysis Narratives</span>
+                                                <span class="tileText">Finding, evidence, and recommended action rows.</span>
+                                            </span>
+                                            <span class="tileBody">Generate readable summaries from field behavior, quality, trends, and exceptions.</span>
+                                            <span class="previewBox"><asp:Literal ID="litPreviewAutomatedAnalysisNarratives" runat="server"></asp:Literal></span>
+                                            <span class="openText">Open</span>
+                                        </a>
+
+                                        <a id="tileCrossReportComparison" runat="server" class="analyticsTile" href="CrossReportComparison.aspx" title="Open Cross-Report Comparison">
+                                            <span class="tileCaption">
+                                                <span class="tileTitle">Cross-Report Comparison</span>
+                                                <span class="tileText">Compare active report with another report by keys and values.</span>
+                                            </span>
+                                            <span class="tileBody">Match reports by common fields and review differences, missing keys, and percent movement.</span>
+                                            <span class="previewBox"><asp:Literal ID="litPreviewCrossReportComparison" runat="server"></asp:Literal></span>
                                             <span class="openText">Open</span>
                                         </a>
 

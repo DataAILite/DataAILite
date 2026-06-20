@@ -725,6 +725,48 @@ Partial Class ShowReport
                     LabelAddWhere.Text = "Rule-Based Alerts filter"
                 End If
             End If
+            If Not Request("templatefilter") Is Nothing AndAlso Request("templatefilter").ToString.Trim() <> "" Then
+                Dim templateFilters As Dictionary(Of String, String) = TryCast(Session("SavedAnalysisTemplateFilters"), Dictionary(Of String, String))
+                Dim templateId As String = Request("templatefilter").ToString.Trim()
+                If templateFilters IsNot Nothing AndAlso templateFilters.ContainsKey(templateId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & templateFilters(templateId) & ")"
+                    Else
+                        srch = templateFilters(templateId)
+                    End If
+                    Session("srch") = srch
+                    Session("SavedAnalysisTemplateFilter") = srch
+                    LabelAddWhere.Text = "Saved Analysis Templates filter"
+                End If
+            End If
+            If Not Request("narrativefilter") Is Nothing AndAlso Request("narrativefilter").ToString.Trim() <> "" Then
+                Dim narrativeFilters As Dictionary(Of String, String) = TryCast(Session("AutomatedNarrativeFilters"), Dictionary(Of String, String))
+                Dim narrativeId As String = Request("narrativefilter").ToString.Trim()
+                If narrativeFilters IsNot Nothing AndAlso narrativeFilters.ContainsKey(narrativeId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & narrativeFilters(narrativeId) & ")"
+                    Else
+                        srch = narrativeFilters(narrativeId)
+                    End If
+                    Session("srch") = srch
+                    Session("AutomatedNarrativeFilter") = srch
+                    LabelAddWhere.Text = "Automated Analysis Narratives filter"
+                End If
+            End If
+            If Not Request("crossreportfilter") Is Nothing AndAlso Request("crossreportfilter").ToString.Trim() <> "" Then
+                Dim crossReportFilters As Dictionary(Of String, String) = TryCast(Session("CrossReportComparisonFilters"), Dictionary(Of String, String))
+                Dim crossReportId As String = Request("crossreportfilter").ToString.Trim()
+                If crossReportFilters IsNot Nothing AndAlso crossReportFilters.ContainsKey(crossReportId) Then
+                    If srch.Trim() <> "" Then
+                        srch = "(" & srch & ") AND (" & crossReportFilters(crossReportId) & ")"
+                    Else
+                        srch = crossReportFilters(crossReportId)
+                    End If
+                    Session("srch") = srch
+                    Session("CrossReportComparisonFilter") = srch
+                    LabelAddWhere.Text = "Cross-Report Comparison filter"
+                End If
+            End If
             If Not Request("kpifilter") Is Nothing AndAlso Request("kpifilter").ToString.Trim() <> "" Then
                 Dim kpiFilters As Dictionary(Of String, String) = TryCast(Session("KPIBuilderFilters"), Dictionary(Of String, String))
                 Dim kpiId As String = Request("kpifilter").ToString.Trim()
