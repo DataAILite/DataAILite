@@ -2777,6 +2777,7 @@ Public Module DatabaseUpdate
                     sqlq = sqlq & "`Prop4` VARCHAR( 250 ) NULL DEFAULT NULL ,"
                     sqlq = sqlq & "`Prop5` longtext NULL DEFAULT NULL ,"
                     sqlq = sqlq & "`Prop6` VARCHAR( 250 ) NULL DEFAULT NULL ,"
+                    sqlq = sqlq & "`Comments` VARCHAR( 2000 ) NULL DEFAULT NULL ,"
                     sqlq = sqlq & "`ARR` longtext NULL DEFAULT NULL ,"
                     sqlq = sqlq & "`Indx` INT( 11 ) NOT NULL AUTO_INCREMENT ,"
                     sqlq = sqlq & "PRIMARY KEY (  `Indx` )"
@@ -2803,6 +2804,7 @@ Public Module DatabaseUpdate
                     sqlq = sqlq & "Prop4 VARCHAR2(250 CHAR) DEFAULT NULL,"
                     sqlq = sqlq & "Prop5 VARCHAR2(250 CHAR) DEFAULT NULL,"
                     sqlq = sqlq & "Prop6 VARCHAR2(250 CHAR) DEFAULT NULL,"
+                    sqlq = sqlq & "Comments VARCHAR2(2000 CHAR) DEFAULT NULL,"
                     sqlq = sqlq & "ARR CLOB DEFAULT NULL,"
                     sqlq = sqlq & "Indx INTEGER GENERATED ALWAYS AS IDENTITY,"
                     sqlq = sqlq & "CONSTRAINT OURDASHBOARDS_PK PRIMARY KEY (Indx)"
@@ -2830,6 +2832,7 @@ Public Module DatabaseUpdate
                     sqlq = sqlq & "[Prop4] character varying(250) NULL,"
                     sqlq = sqlq & "[Prop5] character varying(250) NULL,"
                     sqlq = sqlq & "[Prop6] character varying(250) NULL,"
+                    sqlq = sqlq & "[Comments] character varying(2000) NULL,"
                     sqlq = sqlq & "[ARR] text NULL,"
                     sqlq = sqlq & "[Indx] integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),"
                     sqlq = sqlq & "CONSTRAINT [OURDashboards_pkey] PRIMARY KEY ([Indx]))"
@@ -2856,6 +2859,7 @@ Public Module DatabaseUpdate
                     sqlq = sqlq & "[Prop4] [nvarchar](250) NULL,"
                     sqlq = sqlq & "[Prop5] [nvarchar](250) NULL,"
                     sqlq = sqlq & "[Prop6] [nvarchar](250) NULL,"
+                    sqlq = sqlq & "[Comments] [nvarchar](2000) NULL,"
                     sqlq = sqlq & "[ARR] [text] NULL,"
                     sqlq = sqlq & " [Indx] INTEGER PRIMARY KEY AUTOINCREMENT)"
                 Else
@@ -2880,6 +2884,7 @@ Public Module DatabaseUpdate
                     sqlq = sqlq & "[Prop4] [nvarchar](250) NULL,"
                     sqlq = sqlq & "[Prop5] [nvarchar](250) NULL,"
                     sqlq = sqlq & "[Prop6] [nvarchar](250) NULL,"
+                    sqlq = sqlq & "[Comments] [nvarchar](2000) NULL,"
                     sqlq = sqlq & "[ARR] [text] NULL,"
                     sqlq = sqlq & "[Indx] [Int] IDENTITY(1, 1) NOT NULL"
                     sqlq = sqlq & ")"
@@ -3602,46 +3607,46 @@ Public Module DatabaseUpdate
             End If
             'Update column changes or additions
             If ret.StartsWith("Table exists") OrElse ret = "OURUnits created" Then
-            'for clons add initial unit OUR
-            'insert first record for super user
-            If myconprv = "MySql.Data.MySqlClient" Then
-                sqlq = "SELECT * FROM `" & db & "`.`OURUnits`"
-            ElseIf myconprv = "Npgsql" Then  'PostgreSQL  Npgsql
-                'sqlq = "SELECT * FROM `" & db & "`.`OURUnits`"
-                sqlq = "SELECT * FROM `OURUnits`"
-            Else
-                sqlq = "SELECT * FROM OURUnits"
-            End If
-            If clon OrElse CountOfRecords(sqlq, myconstr, myconprv) = "0" Then
-                If ret = "Query executed fine." OrElse (TableExists("OURUnits", myconstr, myconprv, err) AndAlso CountOfRecords(sqlq, myconstr, myconprv) = "0") Then
-                    ret = "OURUnits created"
-                    Dim adminemail As String = ConfigurationManager.AppSettings("supportemail").ToString
-                    Dim unit As String = ConfigurationManager.AppSettings("unit").ToString
-                    Dim DistrMode As String = ConfigurationManager.AppSettings("webinstall").ToString
-                    Dim UnitWeb As String = ConfigurationManager.AppSettings("weboureports").ToString
-                    Dim OURConnPrv As String = System.Configuration.ConfigurationManager.ConnectionStrings.Item("mySQLconnection").ProviderName.ToString
-                    Dim OURConnStr As String = System.Configuration.ConfigurationManager.ConnectionStrings.Item("mySQLconnection").ToString
-
-                    If myconprv = "MySql.Data.MySqlClient" Then
-                        sqlq = "INSERT INTO `" & db & "`.`OURUnits` ([Unit],[DistrMode],[UnitWeb],[OURConnStr],[OURConnPrv],[UserConnStr],[UserConnPrv],[Comments],[StartDate],[EndDate],[Email]) "
-                        sqlq = sqlq & " VALUES ('" & unit & "','" & DistrMode & "','" & UnitWeb & "','" & OURConnStr & "','" & OURConnPrv & "','" & myconstr & "','" & myconprv & "','Only for install','" & Format(DateTime.Now, "yyyy-MM-dd HH:mm:00") & "','2100-12-31 23:59:00','" & adminemail & "')"
-
-                    ElseIf myconprv = "Oracle.ManagedDataAccess.Client" Then
-                        sqlq = "INSERT INTO OURUNITS (Unit,DistrMode,UnitWeb,OURConnStr,OURConnPrv,UserConnStr,UserConnPrv,Comments,StartDate,EndDate,Email) "
-                        sqlq = sqlq & " VALUES ('" & unit & "','" & DistrMode & "','" & UnitWeb & "','" & OURConnStr & "','" & OURConnPrv & "','" & myconstr & "','" & myconprv & "','Only for install','" & DateToString(Now) & "','" & DateToString(CDate(DateAndTime.DateAdd(DateInterval.Day, 3650, Now()))) & "','" & adminemail & "')"
-
-                    ElseIf myconprv = "Npgsql" Then  'PostgreSQL  Npgsql
-                        sqlq = "INSERT INTO `OURUnits` ([Unit],[DistrMode],[UnitWeb],[OURConnStr],[OURConnPrv],[UserConnStr],[UserConnPrv],[Comments],[StartDate],[EndDate],[Email]) "
-                        sqlq = sqlq & " VALUES ('" & unit & "','" & DistrMode & "','" & UnitWeb & "','" & OURConnStr & "','" & OURConnPrv & "','" & myconstr & "','" & myconprv & "','Only for install','" & Format(DateTime.Now, "yyyy-MM-dd HH:mm:00") & "','2100-12-31 23:59:00','" & adminemail & "')"
-
-                    Else
-                        sqlq = "INSERT INTO [OURUNITS] ([Unit],[DistrMode],[UnitWeb],[OURConnStr],[OURConnPrv],[UserConnStr],[UserConnPrv],[Comments],[StartDate],[EndDate],[Email]) "
-                        sqlq = sqlq & " VALUES ('" & unit & "','" & DistrMode & "','" & UnitWeb & "','" & OURConnStr & "','" & OURConnPrv & "','" & myconstr & "','" & myconprv & "','Only for install','" & DateToString(Now) & "','" & DateToString(CDate(DateAndTime.DateAdd(DateInterval.Day, 33333, Now()))) & "','" & adminemail & "')"
-                    End If
-                    ret = ExequteSQLquery(sqlq, myconstr, myconprv)
-                    If ret = "Query executed fine." Then ret = "OURUnits created"
+                'for clons add initial unit OUR
+                'insert first record for super user
+                If myconprv = "MySql.Data.MySqlClient" Then
+                    sqlq = "SELECT * FROM `" & db & "`.`OURUnits`"
+                ElseIf myconprv = "Npgsql" Then  'PostgreSQL  Npgsql
+                    'sqlq = "SELECT * FROM `" & db & "`.`OURUnits`"
+                    sqlq = "SELECT * FROM `OURUnits`"
+                Else
+                    sqlq = "SELECT * FROM OURUnits"
                 End If
-            End If
+                If clon OrElse CountOfRecords(sqlq, myconstr, myconprv) = "0" Then
+                    If ret = "Query executed fine." OrElse (TableExists("OURUnits", myconstr, myconprv, err) AndAlso CountOfRecords(sqlq, myconstr, myconprv) = "0") Then
+                        ret = "OURUnits created"
+                        Dim adminemail As String = ConfigurationManager.AppSettings("supportemail").ToString
+                        Dim unit As String = ConfigurationManager.AppSettings("unit").ToString
+                        Dim DistrMode As String = ConfigurationManager.AppSettings("webinstall").ToString
+                        Dim UnitWeb As String = ConfigurationManager.AppSettings("weboureports").ToString
+                        Dim OURConnPrv As String = System.Configuration.ConfigurationManager.ConnectionStrings.Item("mySQLconnection").ProviderName.ToString
+                        Dim OURConnStr As String = System.Configuration.ConfigurationManager.ConnectionStrings.Item("mySQLconnection").ToString
+
+                        If myconprv = "MySql.Data.MySqlClient" Then
+                            sqlq = "INSERT INTO `" & db & "`.`OURUnits` ([Unit],[DistrMode],[UnitWeb],[OURConnStr],[OURConnPrv],[UserConnStr],[UserConnPrv],[Comments],[StartDate],[EndDate],[Email]) "
+                            sqlq = sqlq & " VALUES ('" & unit & "','" & DistrMode & "','" & UnitWeb & "','" & OURConnStr & "','" & OURConnPrv & "','" & myconstr & "','" & myconprv & "','Only for install','" & Format(DateTime.Now, "yyyy-MM-dd HH:mm:00") & "','2100-12-31 23:59:00','" & adminemail & "')"
+
+                        ElseIf myconprv = "Oracle.ManagedDataAccess.Client" Then
+                            sqlq = "INSERT INTO OURUNITS (Unit,DistrMode,UnitWeb,OURConnStr,OURConnPrv,UserConnStr,UserConnPrv,Comments,StartDate,EndDate,Email) "
+                            sqlq = sqlq & " VALUES ('" & unit & "','" & DistrMode & "','" & UnitWeb & "','" & OURConnStr & "','" & OURConnPrv & "','" & myconstr & "','" & myconprv & "','Only for install','" & DateToString(Now) & "','" & DateToString(CDate(DateAndTime.DateAdd(DateInterval.Day, 3650, Now()))) & "','" & adminemail & "')"
+
+                        ElseIf myconprv = "Npgsql" Then  'PostgreSQL  Npgsql
+                            sqlq = "INSERT INTO `OURUnits` ([Unit],[DistrMode],[UnitWeb],[OURConnStr],[OURConnPrv],[UserConnStr],[UserConnPrv],[Comments],[StartDate],[EndDate],[Email]) "
+                            sqlq = sqlq & " VALUES ('" & unit & "','" & DistrMode & "','" & UnitWeb & "','" & OURConnStr & "','" & OURConnPrv & "','" & myconstr & "','" & myconprv & "','Only for install','" & Format(DateTime.Now, "yyyy-MM-dd HH:mm:00") & "','2100-12-31 23:59:00','" & adminemail & "')"
+
+                        Else
+                            sqlq = "INSERT INTO [OURUNITS] ([Unit],[DistrMode],[UnitWeb],[OURConnStr],[OURConnPrv],[UserConnStr],[UserConnPrv],[Comments],[StartDate],[EndDate],[Email]) "
+                            sqlq = sqlq & " VALUES ('" & unit & "','" & DistrMode & "','" & UnitWeb & "','" & OURConnStr & "','" & OURConnPrv & "','" & myconstr & "','" & myconprv & "','Only for install','" & DateToString(Now) & "','" & DateToString(CDate(DateAndTime.DateAdd(DateInterval.Day, 33333, Now()))) & "','" & adminemail & "')"
+                        End If
+                        ret = ExequteSQLquery(sqlq, myconstr, myconprv)
+                        If ret = "Query executed fine." Then ret = "OURUnits created"
+                    End If
+                End If
             End If
 
         Catch ex As Exception
@@ -5227,7 +5232,7 @@ Public Module DatabaseUpdate
                 ret = ret & ExequteSQLquery(sqlq, myconstr, myconprv) '.Replace("Query executed fine.", "")
                 If ret.EndsWith("Query executed fine.") Then
                     ret = ret.Replace("Query executed fine.", "") & "<br/>&nbsp;&nbsp; Field 'ReportDetailAlign' added. "
-            End If
+                End If
             End If
 
             If Not ColumnExists("OurReportView", "DataBackColor", myconstr, myconprv) Then
@@ -5568,6 +5573,20 @@ Public Module DatabaseUpdate
                 myconstr = System.Configuration.ConfigurationManager.ConnectionStrings.Item("mySQLconnection").ToString
             End If
             Dim db As String = GetDataBase(myconstr, myconprv)
+
+            If Not ColumnExists("OURDashboards", "Comments", myconstr, myconprv) Then
+                If myconprv = "MySql.Data.MySqlClient" Then
+                    db = db.ToLower
+                    sqlq = "ALTER TABLE `" & db & "`.`ourdashboards` ADD COLUMN `Comments` VARCHAR(2000) NULL DEFAULT NULL AFTER `Prop6`;"
+                ElseIf myconprv = "Oracle.ManagedDataAccess.Client" Then
+                    sqlq = "ALTER TABLE OURDashboards ADD Comments VARCHAR2(2000 CHAR) DEFAULT NULL"
+                ElseIf myconprv = "Npgsql" Then
+                    sqlq = "ALTER TABLE `OURDashboards` ADD COLUMN `Comments` character varying(2000) NULL DEFAULT NULL;"
+                Else
+                    sqlq = "ALTER TABLE [OURDashboards] ADD [Comments] NVARCHAR(2000) NULL DEFAULT NULL"
+                End If
+                ret = ret & ExequteSQLquery(sqlq, myconstr, myconprv).Replace("Query executed fine.", "") & "<br/>&nbsp;&nbsp; Field 'Comments' added. "
+            End If
 
             If ret = "" Then ret = "No Updates"
         Catch ex As Exception

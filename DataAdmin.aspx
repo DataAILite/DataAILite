@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAdmin.aspx.vb" Inherits="DataAdmin" %>
+<%@ Page Language="VB" AutoEventWireup="false" CodeFile="DataAdmin.aspx.vb" Inherits="DataAdmin" %>
 
 <!DOCTYPE html>
 
@@ -323,6 +323,16 @@
                                             <asp:TreeNode Text="Export Data to XML" Value="datatoXML" NavigateUrl="ShowReport.aspx?srd=14"></asp:TreeNode>
                                         </asp:TreeNode>
                                         <asp:TreeNode Text="&lt;b&gt;Data Readiness Scanner&lt;/b&gt;" Value="DataReadinessScanner.aspx" NavigateUrl="DataReadinessScanner.aspx" Expanded="True"></asp:TreeNode>
+                                        <asp:TreeNode Text="&lt;b&gt;Data Quality Dashboard&lt;/b&gt;" Value="DataCheck.aspx" NavigateUrl="DataCheck.aspx" Expanded="True">
+                                            <asp:TreeNode Text="Data Quality" Value="DataQuality.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Data Profiling" Value="Profiling.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Data Drift" Value="DataDrift.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Outlier Flagging" Value="OutlierFlagging.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Rule-Based Alerts" Value="RuleBasedAlerts.aspx"></asp:TreeNode>
+                                            <asp:TreeNode Text="Map Readiness" Value="MapReadines.aspx"></asp:TreeNode>
+                                        </asp:TreeNode>
                                         <asp:TreeNode Text="Show Report" Value="ShowReport.aspx?srd=3" Expanded="True">
                                             <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
                                             <asp:TreeNode Text="Show Report Charts" Value="ShowReport.aspx?srd=17"></asp:TreeNode>
@@ -346,24 +356,17 @@
                                             <asp:TreeNode Text="Pivot / Cross Tab" Value="Pivot.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Variance Analysis" Value="Variance.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Comparison Reports" Value="ComparisonReports.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Profiling" Value="Profiling.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Quality" Value="DataQuality.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Ranking Analysis" Value="Ranking.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Regression Analysis" Value="Regression.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Time Based Summaries" Value="TimeBasedSummaries.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Time Series" Value="TimeSeries.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Outlier Flagging" Value="OutlierFlagging.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Audit Summaries" Value="AuditSummaries.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Cohort Analysis" Value="Cohort.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Funnel Analysis" Value="Funnel.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="ABC Pareto Analysis" Value="ABCPareto.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Drift Analysis" Value="DataDrift.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Anomaly Scoring" Value="AnomalyScoring.aspx"></asp:TreeNode>
-<asp:TreeNode Text="Rule-Based Alerts" Value="RuleBasedAlerts.aspx"></asp:TreeNode>
 <asp:TreeNode Text="Automated Analysis Narratives" Value="AutomatedAnalysisNarratives.aspx"></asp:TreeNode>
 <asp:TreeNode Text="Cross-Report Comparison" Value="CrossReportComparison.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
-                                            <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
                                         <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="True">
 
@@ -402,7 +405,7 @@
                                 <div class="dashboard">
                                     <div class="dashboardHeader">
                                         <asp:Label ID="lblHeader" runat="server" CssClass="dashboardTitle" Text="Data Analytics Dashboard"></asp:Label>
-                                        <asp:Label ID="LabelDescription" runat="server" CssClass="dashboardSubTitle" Text="Analytics reports included for the current report data."></asp:Label>
+                                        <asp:Label ID="LabelDescription" runat="server" CssClass="dashboardSubTitle" Text="General Analytics asks: &quot;What patterns, trends, rankings, comparisons, or predictions are in this data?&quot;"></asp:Label>
                                     </div>
                                     <div class="dashboardPager">
                                         <asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small">Previous</asp:LinkButton>
@@ -525,26 +528,6 @@
                                             <span class="openText">Open</span>
                                         </a>
 
-                                        <a id="tileProfiling" runat="server" class="analyticsTile" href="Profiling.aspx" title="Open Data Profiling">
-                                            <span class="tileCaption">
-                                                <span class="tileTitle">Data Profiling</span>
-                                                <span class="tileText">Field type, count, blanks, distinct values, min, max, average, and deviation.</span>
-                                            </span>
-                                            <span class="tileBody">Automatic profiling of fields in the report or imported dataset.</span>
-                                            <span class="previewBox"><asp:Literal ID="litPreviewProfiling" runat="server"></asp:Literal></span>
-                                            <span class="openText">Open</span>
-                                        </a>
-
-                                        <a id="tileQuality" runat="server" class="analyticsTile" href="DataQuality.aspx" title="Open Data Quality">
-                                            <span class="tileCaption">
-                                                <span class="tileTitle">Data Quality</span>
-                                                <span class="tileText">Missing values, duplicate records, invalid dates, ranges, categories, and text checks.</span>
-                                            </span>
-                                            <span class="tileBody">Data quality checks with links from findings to matching records in Data Explorer.</span>
-                                            <span class="previewBox"><asp:Literal ID="litPreviewQuality" runat="server"></asp:Literal></span>
-                                            <span class="openText">Open</span>
-                                        </a>
-
                                         <a id="tileRanking" runat="server" class="analyticsTile" href="Ranking.aspx" title="Open Ranking Analysis">
                                             <span class="tileCaption">
                                                 <span class="tileTitle">Ranking Analysis</span>
@@ -575,16 +558,6 @@
                                             <span class="openText">Open</span>
                                         </a>
 
-                                        <a id="tileOutliers" runat="server" class="analyticsTile" href="OutlierFlagging.aspx" title="Open Outlier Flagging">
-                                            <span class="tileCaption">
-                                                <span class="tileTitle">Outlier Flagging</span>
-                                                <span class="tileText">Standard deviation, percentage difference, and business-rule outlier checks.</span>
-                                            </span>
-                                            <span class="tileBody">Find unusual values and review the source records behind flagged rows.</span>
-                                            <span class="previewBox"><asp:Literal ID="litPreviewOutliers" runat="server"></asp:Literal></span>
-                                            <span class="openText">Open</span>
-                                        </a>
-
                                         <a id="tileCohort" runat="server" class="analyticsTile" href="Cohort.aspx" title="Open Cohort Analysis">
                                             <span class="tileCaption">
                                                 <span class="tileTitle">Cohort Analysis</span>
@@ -612,36 +585,6 @@
                                             </span>
                                             <span class="tileBody">Rank categories, products, customers, or groups by value share and cumulative business impact.</span>
                                             <span class="previewBox"><asp:Literal ID="litPreviewABCPareto" runat="server"></asp:Literal></span>
-                                            <span class="openText">Open</span>
-                                        </a>
-
-                                        <a id="tileDataDrift" runat="server" class="analyticsTile" href="DataDrift.aspx" title="Open Data Drift Analysis">
-                                            <span class="tileCaption">
-                                                <span class="tileTitle">Data Drift Analysis</span>
-                                                <span class="tileText">Distribution shifts between two selected groups, periods, or segments.</span>
-                                            </span>
-                                            <span class="tileBody">Compare base and comparison segments to find which values changed share the most.</span>
-                                            <span class="previewBox"><asp:Literal ID="litPreviewDataDrift" runat="server"></asp:Literal></span>
-                                            <span class="openText">Open</span>
-                                        </a>
-
-                                        <a id="tileAnomalyScoring" runat="server" class="analyticsTile" href="AnomalyScoring.aspx" title="Open Anomaly Scoring">
-                                            <span class="tileCaption">
-                                                <span class="tileTitle">Anomaly Scoring</span>
-                                                <span class="tileText">Unusual combinations, group values, period movement, and suspicious patterns.</span>
-                                            </span>
-                                            <span class="tileBody">Score broader anomalies that go beyond simple row-level outliers.</span>
-                                            <span class="previewBox"><asp:Literal ID="litPreviewAnomalyScoring" runat="server"></asp:Literal></span>
-                                            <span class="openText">Open</span>
-                                        </a>
-
-                                        <a id="tileRuleBasedAlerts" runat="server" class="analyticsTile" href="RuleBasedAlerts.aspx" title="Open Rule-Based Alerts">
-                                            <span class="tileCaption">
-                                                <span class="tileTitle">Rule-Based Alerts</span>
-                                                <span class="tileText">User-defined thresholds for data, statistics, maps, and market-risk signals.</span>
-                                            </span>
-                                            <span class="tileBody">Define alert rules for missing values, variance, correlations, outliers, map readiness, and churn scores.</span>
-                                            <span class="previewBox"><asp:Literal ID="litPreviewRuleBasedAlerts" runat="server"></asp:Literal></span>
                                             <span class="openText">Open</span>
                                         </a>
 
@@ -682,26 +625,6 @@
                                             </span>
                                             <span class="tileBody">Build simple business indicators by group from numerator and denominator fields.</span>
                                             <span class="previewBox"><asp:Literal ID="litPreviewKPIBuilder" runat="server"></asp:Literal></span>
-                                            <span class="openText">Open</span>
-                                        </a>
-
-                                        <a id="tileDataDictionary" runat="server" class="analyticsTile" href="DataDictionary.aspx" title="Open Data Dictionary">
-                                            <span class="tileCaption">
-                                                <span class="tileTitle">Data Dictionary</span>
-                                                <span class="tileText">Field type, blanks, distinct values, examples, summaries, and recommended use.</span>
-                                            </span>
-                                            <span class="tileBody">Document available report fields and identify how each field can be used in analytics.</span>
-                                            <span class="previewBox"><asp:Literal ID="litPreviewDataDictionary" runat="server"></asp:Literal></span>
-                                            <span class="openText">Open</span>
-                                        </a>
-
-                                        <a id="tileMapReadiness" runat="server" class="analyticsTile" href="MapReadines.aspx" title="Open Map Readiness">
-                                            <span class="tileCaption">
-                                                <span class="tileTitle">Map Readiness</span>
-                                                <span class="tileText">Latitude, longitude, missing coordinates, duplicate locations, and KML-ready checks.</span>
-                                            </span>
-                                            <span class="tileBody">Review whether report data is ready for map reports and location exports.</span>
-                                            <span class="previewBox"><asp:Literal ID="litPreviewMapReadiness" runat="server"></asp:Literal></span>
                                             <span class="openText">Open</span>
                                         </a>
 

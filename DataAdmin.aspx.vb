@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Collections.Generic
 Imports System.Data
 Imports System.Globalization
@@ -68,25 +68,17 @@ Partial Class DataAdmin
         litPreviewPivot.Text = BuildPivotPreviewHtml(dv)
         litPreviewVariance.Text = BuildVariancePreviewHtml(dv)
         litPreviewComparison.Text = BuildComparisonPreviewHtml(dv)
-        litPreviewProfiling.Text = BuildProfilingPreviewHtml(dv)
-        litPreviewQuality.Text = BuildQualityPreviewHtml(dv)
         litPreviewRanking.Text = BuildRankingPreviewHtml(dv)
         litPreviewRegression.Text = BuildRegressionPreviewHtml(dv)
         litPreviewTimeBased.Text = BuildTimeBasedPreviewHtml(dv)
         litPreviewTimeSeries.Text = BuildTimeSeriesPreviewHtml(dv)
-        litPreviewOutliers.Text = BuildOutlierPreviewHtml(dv)
         litPreviewCohort.Text = BuildCohortPreviewHtml(dv)
         litPreviewFunnel.Text = BuildFunnelPreviewHtml(dv)
         litPreviewABCPareto.Text = BuildABCParetoPreviewHtml(dv)
-        litPreviewDataDrift.Text = BuildDataDriftPreviewHtml(dv)
-        litPreviewAnomalyScoring.Text = BuildAnomalyScoringPreviewHtml(dv)
-        litPreviewRuleBasedAlerts.Text = BuildRuleBasedAlertsPreviewHtml(dv)
         litPreviewSavedAnalysisTemplates.Text = BuildSavedAnalysisTemplatesPreviewHtml(dv)
         litPreviewAutomatedAnalysisNarratives.Text = BuildAutomatedAnalysisNarrativesPreviewHtml(dv)
         litPreviewCrossReportComparison.Text = BuildCrossReportComparisonPreviewHtml(dv)
         litPreviewKPIBuilder.Text = BuildKPIBuilderPreviewHtml(dv)
-        litPreviewDataDictionary.Text = BuildDataDictionaryPreviewHtml(dv)
-        litPreviewMapReadiness.Text = BuildMapReadinessPreviewHtml(dv)
         litPreviewDataAI.Text = BuildDataAIPreviewHtml(dv)
     End Sub
 
@@ -131,23 +123,15 @@ Partial Class DataAdmin
         tiles.Add(tileVariance)
         tiles.Add(tileCorrelation)
         tiles.Add(tileComparison)
-        tiles.Add(tileQuality)
         tiles.Add(tileRanking)
-        tiles.Add(tileProfiling)
         tiles.Add(tileTimeBased)
         tiles.Add(tileTimeSeries)
-        tiles.Add(tileOutliers)
         tiles.Add(tileCohort)
         tiles.Add(tileFunnel)
         tiles.Add(tileABCPareto)
-        tiles.Add(tileDataDrift)
-        tiles.Add(tileAnomalyScoring)
-        tiles.Add(tileRuleBasedAlerts)
         tiles.Add(tileAutomatedAnalysisNarratives)
         tiles.Add(tileCrossReportComparison)
         tiles.Add(tileKPIBuilder)
-        tiles.Add(tileDataDictionary)
-        tiles.Add(tileMapReadiness)
         tiles.Add(tileMatrix)
         Return tiles
     End Function

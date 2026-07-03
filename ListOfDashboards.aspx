@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>List Of Dashboards</title>
+    <title>List Of Chart Dashboards</title>
     <style type="text/css">
         .auto-style1 {
             width: 107px;
@@ -16,6 +16,10 @@
         }
         .auto-style3 {
             width: 247px;
+            height: 26px;
+        }
+        .auto-style5 {
+            width: 360px;
             height: 26px;
         }
         .auto-style4 {
@@ -113,7 +117,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
        <%-- <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="~/FriendlyNames.aspx" CssClass="NodeStyle" Font-Names="Arial">FriendlyNames</asp:HyperLink>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         --%>        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; 
-        <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Google_Charts_and_Dashboards" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>&nbsp;&nbsp;
+        <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Google%20Charts%20and%20Dashboards" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>&nbsp;&nbsp;
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
      <%--   <asp:LinkButton ID="LinkButtonHelpDesk" runat="server" OnClientClick="target='_blank'" CssClass="NodeStyle" Font-Names="Arial">Report a problem</asp:LinkButton> 
          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
@@ -147,7 +151,7 @@
      <tr>
        <td align="center" valign="top">
          
-         <asp:Label ID="lblHeader" runat="server" Font-Bold="True" Font-Size="22px" Font-Names="Arial" >User Dashboards:</asp:Label>
+         <asp:Label ID="lblHeader" runat="server" Font-Bold="True" Font-Size="22px" Font-Names="Arial" >Chart Dashboards:</asp:Label>
 
        </td>
       </tr>
@@ -168,13 +172,27 @@
         <table runat="server" id="list"  border=0 style="font-size: 12px; font-family: Arial">
                 <tr>
                     <td class="auto-style3"  style="font-weight:bold">Link to Dashboard</td>
+                    <td class="auto-style1"  style="font-weight:bold; text-align:center;">Delete Dashboard</td>
+                    <td class="auto-style5"  style="font-weight:bold; text-align:center;">Description</td>
                    <%-- <td class="auto-style3"  style="font-weight:bold">Table Name</td>                    
                     <td class="auto-style1" style="font-weight:bold">Delete</td>
                     <td class="auto-style2" style="font-weight:bold">Reports</td>
                     <td class="auto-style1" style="font-weight:bold">Correct field types</td>--%>
                   
-                </tr>           
+                </tr>
         </table>
+        <table border="0" cellpadding="0" cellspacing="0" style="font-size: 12px; font-family: Arial">
+            <tr>
+                <td class="auto-style3"></td>
+                <td class="auto-style1" style="text-align:center;">
+                    <asp:Button ID="ButtonDelete" runat="server" Text="Delete" Font-Names="Arial" Font-Size="Small" />
+                </td>
+                <td class="auto-style5" style="text-align:center;">
+                    <asp:Button ID="ButtonUpdate" runat="server" Text="Update" Font-Names="Arial" Font-Size="Small" />
+                </td>
+            </tr>
+        </table>
+        <br />
        
     
     
