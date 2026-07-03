@@ -1,1454 +1,363 @@
 ﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="ShowBusinessProposal.aspx.vb" Inherits="ShowBusinessProposal" %>
 
 <!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head runat="server">
-    <title></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataAI Business Proposal</title>
     <style type="text/css">
+        :root {
+            --ink: #1d2522;
+            --muted: #5b6762;
+            --line: #d8dfdc;
+            --panel: #ffffff;
+            --soft: #eef5f2;
+            --accent: #17624a;
+            --accent2: #245f9d;
+            --gold: #a06b12;
+        }
 
-p.MsoTitle
-	{border-style: none;
-            border-color: inherit;
-            border-width: medium;
-            margin-bottom:.0001pt;
-	        line-height:21.0pt;
-	        padding:0in;
-	        font-size:19.0pt;
-	        font-family:"Arial Black",sans-serif;
-	        color:#1F4E79;
-	        text-transform:uppercase;
-	        margin-left: 0in;
-            margin-right: 0in;
-            margin-top: 0in;
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f7f7f4;
+            color: var(--ink);
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            line-height: 1.55;
         }
-p.MsoSubtitle
-	{border-style: none;
-            border-color: inherit;
-            border-width: medium;
-            margin-top:4.0pt;
-	        margin-right:0in;
-	        margin-bottom:8.0pt;
-	        margin-left:0in;
-	        line-height:14.0pt;
-	        padding:0in;
-	        font-size:12.0pt;
-	        font-family:"Arial",sans-serif;
-	        color:#2E74B5;
-	        font-weight:bold;
+        a { color: var(--accent2); font-weight: bold; }
+        .page {
+            width: min(980px, calc(100% - 32px));
+            margin: 24px auto 40px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
         }
-h1
-	{margin-top:30.0pt;
-	margin-right:0in;
-	margin-bottom:12.0pt;
-	margin-left:0in;
-	page-break-after:avoid;
-	font-size:14.0pt;
-	font-family:"Arial",sans-serif;
-	color:#1F4E79;
-	text-transform:uppercase;
-	}
-p.MsoNoSpacing
-	{margin-bottom:.0001pt;
-	font-size:9.0pt;
-	font-family:"Arial",sans-serif;
-	color:#404040;
-	        margin-left: 0in;
-            margin-right: 0in;
-            margin-top: 0in;
+        .header {
+            border-left: 8px solid var(--accent);
+            padding: 28px 34px 24px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--soft) 100%);
         }
- p.MsoNormal
-	{margin-top:0in;
-	margin-right:0in;
-	margin-bottom:9.0pt;
-	margin-left:0in;
-	line-height:120%;
-	font-size:9.0pt;
-	font-family:"Arial",sans-serif;
-	color:#404040;
-	}
-h2
-	{margin-top:.25in;
-	margin-right:0in;
-	margin-bottom:6.0pt;
-	margin-left:0in;
-	page-break-after:avoid;
-	font-size:12.0pt;
-	font-family:"Arial",sans-serif;
-	color:#2E74B5;
-	}
-p.MsoListBullet
-	{margin-top:0in;
-	margin-right:0in;
-	margin-bottom:3.0pt;
-	margin-left:.3in;
-	text-indent:-.2in;
-	line-height:120%;
-	tab-stops:list .25in;
-	font-size:9.0pt;
-	font-family:"Arial",sans-serif;
-	color:#404040;
-	}
-p.MsoListParagraphCxSpFirst
-	{margin-top:0in;
-	margin-right:0in;
-	margin-bottom:0in;
-	margin-left:.5in;
-	margin-bottom:.0001pt;
-	line-height:107%;
-	font-size:11.0pt;
-	font-family:"Arial",sans-serif;
-	}
-p.MsoListParagraphCxSpMiddle
-	{margin-top:0in;
-	margin-right:0in;
-	margin-bottom:0in;
-	margin-left:.5in;
-	margin-bottom:.0001pt;
-	line-height:107%;
-	font-size:11.0pt;
-	font-family:"Arial",sans-serif;
-	}
-p.MsoListParagraphCxSpLast
-	{margin-top:0in;
-	margin-right:0in;
-	margin-bottom:8.0pt;
-	margin-left:.5in;
-	line-height:107%;
-	font-size:11.0pt;
-	font-family:"Arial",sans-serif;
-	}
-a:link
-	{color:#40ACD1;
-	text-decoration:underline;
-	text-underline:single;
+        .kicker {
+            color: var(--accent2);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
-    table.ProposalTable
-	{border:solid #5B9BD5 1.0pt;
-	font-size:9.0pt;
-	font-family:"Arial",sans-serif;
-	color:#404040;
-	}
-        .auto-style12 {
-            width: 100.0%;
+        h1, h2, h3 { margin: 0; line-height: 1.2; }
+        h1 {
+            color: var(--accent);
+            font-size: 30px;
+        }
+        .subtitle {
+            color: var(--muted);
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+        .content { padding: 28px 34px 34px; }
+        section { margin-bottom: 26px; }
+        h2 {
+            color: var(--accent);
+            font-size: 20px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        h3 {
+            color: var(--ink);
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+        p { margin: 0 0 10px; }
+        ul { margin: 8px 0 0 20px; padding: 0; }
+        li { margin-bottom: 6px; }
+        .notice {
+            background: var(--soft);
+            border-left: 4px solid var(--accent);
+            padding: 14px 16px;
+            margin: 14px 0;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .card {
+            border: 1px solid var(--line);
+            background: #fff;
+            padding: 14px;
+        }
+        .tag {
+            display: inline-block;
+            color: var(--gold);
+            background: #f5ead6;
+            border-radius: 999px;
+            padding: 3px 9px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        table {
+            width: 100%;
             border-collapse: collapse;
-            line-height: 107%;
-            font-size: 11.0pt;
-            font-family: Calibri, sans-serif;
+            margin-top: 10px;
+            font-size: 13px;
         }
-        .auto-style13 {
-            width: 100.0%;
-            line-height: 107%;
-            font-size: 11.0pt;
-            font-family: Calibri, sans-serif;
-            border: 1.0pt solid #5B9BD5;
+        th, td {
+            border: 1px solid var(--line);
+            padding: 10px;
+            vertical-align: top;
+            text-align: left;
+        }
+        th {
+            background: var(--accent);
+            color: #fff;
+            font-weight: bold;
+        }
+        tr.total td {
+            background: var(--soft);
+            font-weight: bold;
+        }
+        .price {
+            white-space: nowrap;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        .small {
+            color: var(--muted);
+            font-size: 12px;
+        }
+        .signature {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 18px;
+        }
+        .sig-line {
+            border-top: 1px solid var(--line);
+            padding-top: 8px;
+            min-height: 46px;
+            color: var(--muted);
+        }
+        @media print {
+            body { background: #fff; }
+            .page { width: auto; margin: 0; box-shadow: none; border: none; }
+        }
+        @media (max-width: 760px) {
+            .grid, .signature { grid-template-columns: 1fr; }
+            .header, .content { padding-left: 18px; padding-right: 18px; }
+            table { font-size: 12px; }
         }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-            <div style="mso-element:para-border-div;border:none;border-left:double #1F4E79 6.75pt;
-mso-border-left-themecolor:accent1;mso-border-left-themeshade:128;padding:0in 0in 0in 4.0pt">
-                <p class="MsoTitle">
-                    <w:sdt
- PrefixMappings="xmlns:ns0='http://schemas.openxmlformats.org/officeDocument/2006/extended-properties' "
- Xpath="/ns0:Properties[1]/ns0:Company[1]"
- DocPart="570A3D9232864329A1F8F435B2EED8BF" Text="t" MultiLine="t"
- StoreItemID="X_6668398D-A668-4E3E-A5EB-62B293D839F1"
- Title="Enter your company name:" SdtTag="Enter your company name:"
- ID="1501239775">YANBOR LLC</w:Sdt><br />
-                    PROPOSAL FOR SALE<o:p> OF OUReports SERVICE or/and </o:p>
-                    Software</p>
-                <p class="MsoSubtitle">
-                    For 
-                    <asp:Label ID="Label1" runat="server" Text="Client Company"></asp:Label>
-&nbsp;(Client)</p>
+        <div class="page">
+            <div class="header">
+                <div class="kicker">Yanbor LLC</div>
+                <h1>DataAI Business Proposal</h1>
+                <div class="subtitle">
+                    Prepared for <asp:Label ID="Label1" runat="server" Text="Client Company"></asp:Label>
+                </div>
             </div>
-            <h1><w:sdt ShowingPlcHdr="t" Temporary="t"
- DocPart="E55DD1CDE19B4E7BACE336364113CC2A" Title="Overview:" SdtTag="Overview:"
- ID="-1324508684"></h1>
+
+            <div class="content">
+                <section>
+                    <h2>Overview</h2>
+                    <p>
+                        Yanbor LLC proposes DataAI as a practical reporting and analytics solution for organizations that need faster access to useful information from existing databases and files.
+                        DataAI helps users create reports, charts, maps, dashboards, statistical summaries, market analysis, and AI-assisted explanations without building a custom analytics platform from the beginning.
+                    </p>
+                    <div class="notice">
+                        <strong>Open-source position:</strong> DataAI is open source and licensed under the GNU General Public License v3.0 (GPL v3).
+                        The software license fee is therefore proposed as $0. Client may use, study, modify, and redistribute the software subject to the GPL v3 license terms.
+                        Yanbor LLC pricing in this proposal is for installation, configuration, hosting, training, support, and custom development services.
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Business Need</h2>
+                    <div class="grid">
+                        <div class="card">
+                            <span class="tag">Speed</span>
+                            <h3>Initial reports and analytics</h3>
+                            <p>DataAI analyzes database structure and creates initial reports and analytics so Client can begin reviewing useful outputs quickly.</p>
+                        </div>
+                        <div class="card">
+                            <span class="tag">Access</span>
+                            <h3>Self-service reporting</h3>
+                            <p>End users and administrators can work with reports, dashboards, charts, maps, and statistics without routine programming support.</p>
+                        </div>
+                        <div class="card">
+                            <span class="tag">Security</span>
+                            <h3>DataAILite option</h3>
+                            <p>DataAILite version works in memory only for more security and is useful when Client wants analysis without storing working data in the application database.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2>Recommended Scope</h2>
+                    <ul>
+                        <li>Install DataAI on Windows 10/11 or Windows Server with IIS, or configure a hosted DataAI service for the Client.</li>
+                        <li>Connect DataAI to the Client database or file source using read-only credentials when possible.</li>
+                        <li>Generate and review initial reports, charts, maps, dashboards, statistical summaries, and market-analysis outputs.</li>
+                        <li>Configure security, user access, report categories, sample dashboards, and export options.</li>
+                        <li>Train Client administrators and selected users on report creation, analytics review, and maintenance.</li>
+                    </ul>
+                    <p class="small">
+                        Windows 10/11 or Windows Server with IIS is required for self-hosted DataAI. Database engines may include SQL Server, MySQL, Oracle, PostgreSQL, InterSystems Cache/IRIS, ODBC, OleDb, CSV, Excel, or Access depending on the selected DataAI configuration.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Pricing Basis</h2>
+                    <p>
+                        Current BI and analytics products commonly use per-user or annual subscription pricing. For example, Microsoft lists Power BI Pro at $14 per user/month and Premium Per User at $24 per user/month; Tableau lists Standard at $15 per user/month and Enterprise at $35 per user/month, with Creator licenses higher; Metabase lists an open-source plan as free and enterprise pricing starting at $20,000 per year.
+                    </p>
+                    <p>
+                        Because DataAI is GPL v3 open-source software, the recommended DataAI pricing below avoids a software license charge and instead prices professional services. This makes the proposal easier to explain: Client pays for expert help, not for permission to use GPL v3 software.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Suggested Pricing</h2>
+                    <table summary="Suggested DataAI pricing">
+                        <tr>
+                            <th>Item</th>
+                            <th>Scope</th>
+                            <th>Suggested Price</th>
+                        </tr>
+                        <tr>
+                            <td>DataAI open-source software license</td>
+                            <td>Use of DataAI source code under GNU General Public License v3.0 (GPL v3).</td>
+                            <td class="price">$0</td>
+                        </tr>
+                        <tr>
+                            <td>DataAILite secure in-memory pilot</td>
+                            <td>Remote setup of DataAILite, one sample data source, basic walkthrough, and validation that in-memory analysis workflow is working.</td>
+                            <td class="price">$2,500</td>
+                        </tr>
+                        <tr>
+                            <td>Quick Start implementation</td>
+                            <td>DataAI installation, one database connection, initial report and analytics generation, and one administrator training session.</td>
+                            <td class="price">$4,500</td>
+                        </tr>
+                        <tr>
+                            <td>Standard implementation</td>
+                            <td>Production setup, up to three data sources, initial dashboards, report categories, security setup, exports, and two training sessions.</td>
+                            <td class="price">$9,500</td>
+                        </tr>
+                        <tr>
+                            <td>Enterprise implementation</td>
+                            <td>Dedicated server setup, multiple environments, up to eight data sources, dashboard/report package, security review, documentation, and four training sessions.</td>
+                            <td class="price">$18,500</td>
+                        </tr>
+                        <tr>
+                            <td>Custom development and integration</td>
+                            <td>New connectors, custom reports, embedded workflows, application integration, branding, import/export automation, or special analytics.</td>
+                            <td class="price">$125/hour or $5,000 per 40-hour block</td>
+                        </tr>
+                        <tr>
+                            <td>Training</td>
+                            <td>Remote training for administrators, report designers, or business users.</td>
+                            <td class="price">$1,500 half-day / $2,800 full-day</td>
+                        </tr>
+                        <tr>
+                            <td>Standard support</td>
+                            <td>Email support, minor configuration help, and scheduled maintenance guidance.</td>
+                            <td class="price">$750/month or $7,500/year</td>
+                        </tr>
+                        <tr>
+                            <td>Priority support</td>
+                            <td>Faster response, monthly review call, bug triage, update assistance, and up to four support hours per month.</td>
+                            <td class="price">$1,500/month or $15,000/year</td>
+                        </tr>
+                        <tr>
+                            <td>Managed hosting and maintenance</td>
+                            <td>Yanbor-managed DataAI web hosting, backups, application updates, uptime review, and operational monitoring. Cloud or server infrastructure costs are billed separately if applicable.</td>
+                            <td class="price">$1,200/month plus infrastructure</td>
+                        </tr>
+                        <tr class="total">
+                            <td>Recommended first-year budget</td>
+                            <td>Standard implementation plus annual standard support. Custom development and hosting are optional.</td>
+                            <td class="price">$17,000</td>
+                        </tr>
+                    </table>
+                    <p class="small">
+                        Prices are suggested estimates for proposal planning. Final pricing should be confirmed after Client data sources, security requirements, hosting model, number of users, and custom-development scope are reviewed.
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Project Timeline</h2>
+                    <table summary="DataAI implementation timeline">
+                        <tr>
+                            <th>Phase</th>
+                            <th>Activities</th>
+                            <th>Typical Duration</th>
+                        </tr>
+                        <tr>
+                            <td>Discovery</td>
+                            <td>Confirm data sources, users, security requirements, hosting model, and sample reports.</td>
+                            <td>1 week</td>
+                        </tr>
+                        <tr>
+                            <td>Installation</td>
+                            <td>Install DataAI or DataAILite, configure IIS, establish database/file access, and validate connection security.</td>
+                            <td>1-2 weeks</td>
+                        </tr>
+                        <tr>
+                            <td>Initial analytics</td>
+                            <td>Generate initial reports, dashboards, statistics, maps, and market-analysis outputs; review with Client stakeholders.</td>
+                            <td>1-2 weeks</td>
+                        </tr>
+                        <tr>
+                            <td>Training and handoff</td>
+                            <td>Train administrators and users, document configuration, and define support process.</td>
+                            <td>1 week</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Client Responsibilities</h2>
+                    <ul>
+                        <li>Provide a Windows 10/11 or Windows Server with IIS environment for self-hosted installation, unless managed hosting is selected.</li>
+                        <li>Provide database or file access, preferably read-only for analytical sources.</li>
+                        <li>Identify initial users, administrators, and sample reports or decisions that should guide configuration.</li>
+                        <li>Review GPL v3 obligations with Client legal counsel when modifying or redistributing DataAI.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Assumptions and Notes</h2>
+                    <ul>
+                        <li>No proprietary software license fee is included for DataAI itself because DataAI is open source under GPL v3.</li>
+                        <li>Third-party database licenses, Windows Server licenses, cloud infrastructure, domain names, SSL certificates, OpenAI/API usage, and other external costs are not included unless specifically added to a final agreement.</li>
+                        <li>This proposal is not legal advice. GPL v3 compliance questions should be reviewed by Client legal counsel.</li>
+                        <li>Estimates are valid for 60 days and may change if the requested scope, data volume, hosting model, or integration requirements change.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Acceptance</h2>
+                    <p>
+                        If Client would like to proceed, Yanbor LLC recommends selecting a service package, confirming the hosting model, and scheduling a discovery meeting.
+                        Questions may be sent through the <a href="ContactUs.aspx">Contact page</a>.
+                    </p>
+                    <div class="signature">
+                        <div class="sig-line">Yanbor LLC representative / date</div>
+                        <div class="sig-line">Client representative / date</div>
+                    </div>
+                </section>
+            </div>
         </div>
     </form>
-    <p class="MsoNormal">
-        <b><span style="font-size:14.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#1F4E79;text-transform:uppercase;mso-font-kerning:18.0pt">OVERVIEW</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040"><br />
-        &nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">YANBOR LLC&nbsp;is pleased to submit this proposal for the sale of the OUReports service and/or software for use and licensing to the Client.&nbsp;<br />
-        <o:p>
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">OUReports is a web-based simple report designer and data analysis for non-programmers that allows end users to define user-customized reports and provide technic for automatic data analysis. OUReports can be incorporated into existing client applications or works as a standalone reporting system.</span><br />
-        </o:p></span>
-    </p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">The Objective</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040"><br />
-        &nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Need #1:&nbsp;Provide an online solution for user reporting<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Need #2:&nbsp;Analyze database structure and automatically design initial reports<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Need #3:&nbsp;Facilitate rapid training for usability by non-technical staff<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <o:p></o:p>
-    </p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">The Opportunity</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040"><br />
-        &nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Goal #1:&nbsp;Immediately serve customers using our cloud-hosted OUReports solution<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Goal #2:&nbsp;Integrate OUReports into existing Client reporting systems<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Goal #3:&nbsp;Provide out-of-the-box data analysis and data statistics in the first moments of using OUReports<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <o:p></o:p>
-    </p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">The Solution<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">
-        <br />
-        ·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Recommendation #1:&nbsp;Set up the online user-reporting system OUReports<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Recommendation #2:&nbsp;Install Client-dedicated version of OUReports&nbsp;on dedicated web server<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Recommendation #3:&nbsp;Train initial Client personnel and testers to effectively use OUReports<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <o:p></o:p>
-    </p>
-    <p class="MsoNormal">
-        <b><span style="font-size:14.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#1F4E79;text-transform:uppercase;mso-font-kerning:18.0pt">OUR PROPOSAL</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">&nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Client may&nbsp;have a well-deserved reputation for quality customer service. However, the current climate is characterized by ongoing changes in service distribution and logistics, limitations that prevent taking full advantage of improvements in technology and in delivering data reporting services on the Internet, and movement from workstations to mobile devices. In the face of these changes,&nbsp;Client may experience decreasing sales revenues due to customer perceptions of the slowness and immobility of provided services.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">We have developed a solution to help businesses stay ahead of customer requirement trends. We propose that&nbsp;Client implements a logistics solution focused on online reporting and the automation of data analysis and statistics. Our solution can be integrated with existing Client reporting systems&nbsp;to fully realize the benefits of improved productivity throughout the entire reporting cycle.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Most importantly, if Client wants to buy OUReports and install it on Client’s own web server we provide the complete source code for this new solution. This ensures that your staff can ramp up quickly and integrate OUReports into your existing solutions, resulting in concrete improvements in customer satisfaction and sales metrics. Moreover, for one year after Client’s purchase of OUReports, we will provide free consultations for fixing bugs so long as the code is not altered by Client.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <o:p></o:p>
-    </p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">Rationale</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">&nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;Example: </span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:black">Half of the hospitals in the United States use a local workstation system (like Midas+ Report Track Reports) to create customized reports for Care Management, Case Management, Provider Credentialing, Lab Data, etc. This represents a management load, requires specialized workstation maintenance, and complicates the generation of comparable reports at different phases in the patient care pipeline.</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">It is time to put the Internet to work on providing a modern service to increase mobility and to make the creation and processing of reports convenient, simple, and accessible for end users and administrators alike.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Our Online User Reporting system (OUReports) will enable end users to create their own customized reports transparently and based on data in existing databases hosted by Client organization. It makes the creation of reports a fast and simple task that can be done by technical personnel after minimal training.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">Execution Strategy<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Our execution strategy incorporates proven methodologies, qualified personnel, and a highly responsive approach to managing deliverables.&nbsp;The following is a description of our project methods, including how the project will be developed, a proposed timeline of stages, as well as reasons for why we suggest developing the project as described.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">The idea is to create a universal reporting system independent from the database and easily operated by end users without any programming or database knowledge. As soon as Client is registered and a connection to Client database is established, OUReports analyzes the structure of the database and generates a variety of tabular, graphical, and statistical reports, giving customers a powerful and convenient interface for data exploration and analysis.&nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#500050">Our Online User Reporting system enables end users to create their own customized reports transparently and based on data in existing databases hosted by Client organization. It makes the creation of reports a fast and simple task that can be done by technical personnel after only a few hours of training.</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">&nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#500050">It can serve any kind of organization and&nbsp;business&nbsp;with data in SQL or non-SQL databases.&nbsp;</span><span style="font-size: 9.0pt; font-family: &quot;Arial&quot;,sans-serif; mso-fareast-font-family: &quot;Times New Roman&quot;; color: #222222; background: white">It is applicable in a wide range of organizations including medical hospitals, county and government offices, industrial headquarters, etc.</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040"><o:p>&nbsp;</o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size: 9.0pt; font-family: &quot;Arial&quot;,sans-serif; mso-fareast-font-family: &quot;Times New Roman&quot;; color: #222222; background: white">Any organization with SQL Server, MySQL, Oracle, PostGrade, InterSystems Cache or IRIS databases can use it for quickly generating highly informational and formatted tabular, graphical, and statistical reports.</span><span style="font-size:9.0pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p>&nbsp;</o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">All that is required for OUReports to connect to the customer database is the connection string with reading permissions.</span><o:p></o:p></p>
-    <p class="MsoNormal">
-        <o:p></o:p>
-    </p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">Technical/Project Approach<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Helvetica&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">The system consists of two parts:</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:black">1.</span><span style="font-size:7.0pt;
-font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:
-9.0pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:black">The WEB interface written in ASP.NET which we host on the cloud or, if the product OUReports is purchased, on Client’s web server. It can be incorporated into Client’s existing web-based solutions.</span><span style="font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:black"><o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:black">2.</span><span style="font-size:7.0pt;
-font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:
-9.0pt;font-family:&quot;Helvetica&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:black">The MySql database including OUReports’ system of special tables/classes houses the definition data of the reports. This set of tables/classes can be installed on Client database (SQL Server, MySql, or InterSystems Cache or IRIS)&nbsp;if OUReports software is purchased&nbsp;during the initial system installation.&nbsp;&nbsp;</span><span style="font-family:&quot;Arial&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:black"><o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">&nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">Resources<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#500050">We are a small software development company,&nbsp;</span><span style="font-size: 9.0pt; font-family: &quot;Arial&quot;,sans-serif; mso-fareast-font-family: &quot;Times New Roman&quot;; color: black; background: white">Yanbor LLC,&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#500050">developing the Online User Reporting software OUReports (working demo at</span><span style="font-size:12.0pt;color:#500050"> </span><a href="http://OUReports.com"><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;">http://OUReports.com</span></a><span style="font-size:9.0pt;
-font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#500050">).</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040"><o:p>&nbsp;</o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#500050">Given a connection string, our system automatically analyzes the structure of Client database and creates reports and statistics which can be customized or directly used by Client.</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">&nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">Project Deliverables<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Following is a complete list of all project deliverables:<o:p></o:p></span></p>
-    <table border="0" cellpadding="0" cellspacing="0" class="auto-style12" style="mso-yfti-tbllook: 1184; mso-padding-alt: 0in 0in 0in 0in" summary="Project deliverables" width="100%">
-        <tr style="mso-yfti-irow:0;mso-yfti-firstrow:yes">
-            <td style="width: 29.0%; border: solid #5B9BD5 1.0pt; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="29%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Deliverable</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-            </td>
-            <td style="width: 70.0%; border: solid #5B9BD5 1.0pt; border-left: none; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="70%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Description</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:1">
-            <td style="width:29.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="29%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Deliverable #1<o:p></o:p></span></p>
-            </td>
-            <td style="width:70.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="70%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">OUReports web site&nbsp;(set up on OUReports web server, or if purchased on Client web server)<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:2">
-            <td style="width:29.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="29%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Deliverable #2<o:p></o:p></span></p>
-            </td>
-            <td style="width:70.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="70%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">OURdata database&nbsp;(set up on OUReports data server, or if purchased on Client data server)<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:3;mso-yfti-lastrow:yes">
-            <td style="width:29.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="29%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Deliverable #3<o:p></o:p></span></p>
-            </td>
-            <td style="width:70.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="70%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Source code of systems named above&nbsp;(if OUReports software purchased by Client)<o:p></o:p></span></p>
-            </td>
-        </tr>
-    </table>
-    <p class="MsoNormal">
-        &nbsp;</p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">Timeline for Execution</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">&nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Key project dates are outlined below. Dates are best-guess estimates and are subject to change until a contract is executed.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">&nbsp;<o:p></o:p></span></p>
-    <table border="1" cellpadding="0" cellspacing="0" class="auto-style13" style="mso-cellspacing: 0in; mso-yfti-tbllook: 1184; mso-padding-alt: 0in 0in 0in 0in" summary="Project timeline" width="100%">
-        <tr style="mso-yfti-irow:0;mso-yfti-firstrow:yes">
-            <td style="width: 42.0%; border: solid #5B9BD5 1.0pt; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="42%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Description</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-            </td>
-            <td style="width: 19.0%; border: solid #5B9BD5 1.0pt; border-left: none; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="19%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Start Date</span></b><span style="font-size:
-  9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-            </td>
-            <td style="width: 19.0%; border: solid #5B9BD5 1.0pt; border-left: none; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="19%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">End Date</span></b><span style="font-size:
-  9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-            </td>
-            <td style="width: 19.0%; border: solid #5B9BD5 1.0pt; border-left: none; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="19%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Duration</span></b><span style="font-size:
-  9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:1">
-            <td style="width:42.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="42%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Project Start.&nbsp;<b>Free Trial for 30 days.</b><o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of registration<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of registration + 30 days<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">30 days<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:2">
-            <td style="width:42.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="42%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Installation of OUReports web site on Yanbor LLC web server with connection to Client database<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of registration<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of registration + 1-2 days if needed<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">2 days<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:3">
-            <td style="width:42.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="42%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Installation of OURdata database on Yanbor LLC Data server<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of registration<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of registration<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">1 day<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:4">
-            <td style="width:42.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="42%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Client tests the system installed on Yanbor LLC with reading permissions for connection to Client&nbsp;database<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of registration<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">End of trial period<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">30 days<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:5;height:26.25pt">
-            <td style="width:42.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in;height:26.25pt" valign="top" width="42%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Reporting any problems, adjusting and fine-tuning, fixing problems if needed<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in;height:26.25pt" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of registration<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in;height:26.25pt" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">End of trial period<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in;height:26.25pt" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">30 days<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:6;height:39.75pt">
-            <td style="width:42.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in;height:39.75pt" valign="top" width="42%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">To continue using OUReports service the&nbsp;</span><a href="https://oureports.net/OUReports/SaleOfOUReportsService.pdf" target="_blank"><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;
-  mso-fareast-font-family:&quot;Times New Roman&quot;;color:#40ACD1">Sale of OUReports Service</span></a><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;
-  mso-fareast-font-family:&quot;Times New Roman&quot;;color:#404040">&nbsp;agreement should be signed by both parties and the payment of $30,000 for the next licensed period (1 year) should be received by Yanbor LLC before the end of the trial period.<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in;height:39.75pt" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">End of trial period - 7 days<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in;height:39.75pt" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">End of trial period<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in;height:39.75pt" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">1 week<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:7">
-            <td style="width:42.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="42%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Below is the timeline for Clients who are interested in buying the OUReports Software:&nbsp;</span></b><span style="font-size:
-  9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">To purchase the OUReports Software the&nbsp;</span><a href="https://oureports.net/OUReports/SaleOfOUReportsSoftware.pdf" target="_blank"><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#40ACD1">Sale of OUReports Software</span></a><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">&nbsp;agreement should be signed by both parties and the first payment of $59,500 should be distributed to Yanbor LLC.<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of first payment received<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of first payment received + 30 days<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">30 days<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:8">
-            <td style="width:42.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="42%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Installation of OURdata database on Client data server and OUReports web site on Client web server with connection to Client database<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of first payment received<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of first payment received + 7 days<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">7 days<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:9">
-            <td style="width:42.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="42%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Reporting any problems, adjusting and fine-tuning, fixing problems if needed<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of first payment received<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of first&nbsp;payment received + 30 days<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">30 days<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:10;mso-yfti-lastrow:yes">
-            <td style="width:42.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="42%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Second (final) payment of $59,500 distributed to Yanbor LLC<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of first&nbsp;payment received + 23 days<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of first&nbsp;payment received + 30 days<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">7 days<o:p></o:p></span></p>
-            </td>
-        </tr>
-    </table>
-    <p class="MsoNormal">
-        &nbsp;</p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">Supplied Material<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:13.5pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:black">To use the OUReports service&nbsp;Client shall provide the connection string with reading access to Client database reachable from the web server hosting the OUReports site. If the trial goes fine, nothing more is needed.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">The following materials are to be provided by&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#595959">Client</span><span style="font-size:9.0pt;
-font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#404040">&nbsp;for purchase of the OUReports software. For&nbsp;YANBOR LLC&nbsp;to meet project milestones, these materials must be provided on schedule. The due dates given in the following table represent our best guesses based on current proposed project dates:<o:p></o:p></span></p>
-    <table border="1" cellpadding="0" cellspacing="0" class="auto-style13" style="mso-cellspacing: 0in; mso-yfti-tbllook: 1184; mso-padding-alt: 0in 0in 0in 0in" summary="Materials to be supplied" width="100%">
-        <tr style="mso-yfti-irow:0;mso-yfti-firstrow:yes">
-            <td style="width: 80.0%; border: solid #5B9BD5 1.0pt; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="80%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Materials to be supplied by&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#595959">Client</span></b><span style="font-size:
-  9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-            </td>
-            <td style="width: 19.0%; border: solid #5B9BD5 1.0pt; border-left: none; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="19%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Due Date*</span></b><span style="font-size:
-  9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:1">
-            <td style="width:80.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="80%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Windows Web Server 2012+ with IIS 8 or 10 and .Net Framework 4.5+ on Client network to host OUReports web site. The remote access to the server shall be provided to YANBOR LLC&nbsp;in order to install OUReports web site.<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of first payment received<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:2">
-            <td style="width:80.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="80%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Client data server with empty OURdata database to set up as part of OUReports product and connection string with full access to OURdata database reachable from the web server hosting OUReports site. The remote access to the server shall be provided to YANBOR LLC&nbsp;in order to install OURdata database.<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of first payment received<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:3;mso-yfti-lastrow:yes">
-            <td style="width:80.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="80%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Connection string with reading access to Client database reachable from the web server hosting OUReports site<o:p></o:p></span></p>
-            </td>
-            <td style="width:19.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="19%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Date of first payment received<o:p></o:p></span></p>
-            </td>
-        </tr>
-    </table>
-    <p class="MsoNormal">
-        <i><span style="font-size:7.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">*We cannot be responsible for cost overruns caused by Client’s failure to deliver materials by agreed-upon due dates.<o:p></o:p></span></i></p>
-    <p class="MsoNormal">
-        <b><span style="font-size:14.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#1F4E79;text-transform:uppercase;mso-font-kerning:18.0pt">EXPECTED RESULTS<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">&nbsp;We expect our proposed solution to&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#595959">Client</span><span style="font-size:9.0pt;
-font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#404040">&nbsp;to provide the following results:<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">Financial Benefits<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Result #1:&nbsp;OUReports can supply customized user data reporting and analysis for customers<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Result #2:&nbsp;OUReports can be used with Client databases to improve customer experience with report creation and provide customers with a large set of new graphical and statistical reports<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Result #3:&nbsp;OUReports can be used with Client customers’ own databases to provide them with the same technology for online reporting (license fee for each database may apply)<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">Technical Benefits<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Result #1:&nbsp;OUReports can be incorporated into existing solutions and improve user reporting experience<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Result #2:&nbsp;Our simple and powerful web interface runs on any mobile device<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Result #3:&nbsp;Many predefined tabular, graphic, and statistical reports come with the system from the start<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <b><span style="font-size:12.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#2E74B5">Other Benefits<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Improved customer satisfaction.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <b><span style="font-size:14.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#1F4E79;text-transform:uppercase;mso-font-kerning:18.0pt">PRICING&nbsp;FOR OUREPORTS&nbsp;SERVICE<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">The following table details the pricing for delivery of the services outlined in this proposal. This pricing is valid for&nbsp;60&nbsp;days&nbsp;from the date of this proposal:<o:p></o:p></span></p>
-    <table border="1" cellpadding="0" cellspacing="0" class="auto-style13" style="mso-cellspacing: 0in; mso-yfti-tbllook: 1184; mso-padding-alt: 0in 0in 0in 0in" summary="Pricing summary" width="100%">
-        <tr style="mso-yfti-irow:0;mso-yfti-firstrow:yes">
-            <td style="width: 77.0%; border: solid #5B9BD5 1.0pt; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="77%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Services Cost&nbsp;Category #1 - OUReports&nbsp;as service</span></b><span style="font-size:9.0pt;font-family:
-  &quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-            </td>
-            <td style="width: 22.0%; border: solid #5B9BD5 1.0pt; border-left: none; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="22%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Price</span></b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:1">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">OUReports Client web site&nbsp;set up and maintenance<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$10,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:2">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">OURdata Client database (MySql) set up and maintenance<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$10,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:3">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Customer Support<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$5,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:4">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Total Services&nbsp;<b>Category #1</b>&nbsp;Costs<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$24,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:5">
-            <td style="width: 77.0%; border: solid #5B9BD5 1.0pt; border-top: none; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Services Cost&nbsp;Category #2 - License, Training, additional service</span></b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-            </td>
-            <td style="width: 22.0%; border-top: none; border-left: none; border-bottom: solid #5B9BD5 1.0pt; border-right: solid #5B9BD5 1.0pt; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">&nbsp;</span></b><span style="font-size:9.0pt;font-family:
-  &quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:6">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;
-  mso-fareast-font-family:&quot;Times New Roman&quot;;color:#404040">&nbsp;<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;
-  mso-fareast-font-family:&quot;Times New Roman&quot;;color:#404040">&nbsp;<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:7">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">License Fee&nbsp;for one-year period<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$4,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:8">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Equipment Rental<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$0<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:9">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Training (10 hours)<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$1,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:10">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Installation&nbsp;Travel<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$0<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:11">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Marketing<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$0<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:12">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Shipping/Handling<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$0<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:13;mso-yfti-lastrow:yes">
-            <td style="width: 77.0%; border: solid #5B9BD5 1.0pt; border-top: none; background: #2E74B5; padding: 0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:white">Total</span></b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-            </td>
-            <td style="width: 22.0%; border-top: none; border-left: none; border-bottom: solid #5B9BD5 1.0pt; border-right: solid #5B9BD5 1.0pt; background: #2E74B5; padding: 0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:white">$30,000.00 for one Client with one&nbsp;database/namespace</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:white">+$10,000 for any additional&nbsp;Client database/namespace</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-            </td>
-        </tr>
-    </table>
-    <p class="MsoNormal">
-        <b><span style="font-size:14.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#1F4E79;text-transform:uppercase;mso-font-kerning:18.0pt">PRICING&nbsp;FOR OUREPORTS SOFTWARE<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">The following table details the pricing for delivery of the services outlined in this proposal. This pricing is valid for&nbsp;60&nbsp;days&nbsp;from the date of this proposal:<o:p></o:p></span></p>
-    <table border="1" cellpadding="0" cellspacing="0" class="auto-style13" style="mso-cellspacing: 0in; mso-yfti-tbllook: 1184; mso-padding-alt: 0in 0in 0in 0in" summary="Pricing summary" width="100%">
-        <tr style="mso-yfti-irow:0;mso-yfti-firstrow:yes">
-            <td style="width: 77.0%; border: solid #5B9BD5 1.0pt; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="77%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Services Cost&nbsp;Category #1 - OUReports&nbsp;Software</span></b><span style="font-size:9.0pt;font-family:
-  &quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-            </td>
-            <td style="width: 22.0%; border: solid #5B9BD5 1.0pt; border-left: none; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="bottom" width="22%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Price</span></b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:1">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">OUReports web application including initial installation on Client web server<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$50,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:2">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">OURdata database (MySql) installation on Client data server<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$20,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:3">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Source code for OUReports .Net application with rights to modify and incorporate into existing Client products<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$30,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:4">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Total Services&nbsp;<b>Category #1</b>&nbsp;Costs<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$100,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:5">
-            <td style="width: 77.0%; border: solid #5B9BD5 1.0pt; border-top: none; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Services Cost&nbsp;Category #2 - License, Training, additional service</span></b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-            </td>
-            <td style="width: 22.0%; border-top: none; border-left: none; border-bottom: solid #5B9BD5 1.0pt; border-right: solid #5B9BD5 1.0pt; background: #DEEAF6; padding: 0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">&nbsp;</span></b><span style="font-size:9.0pt;font-family:
-  &quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:6">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Additional OUReports installations, including license fee of $1,000 per user database<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$10,000.00 for installation of OUReports by Yanbor per additional user database<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:7">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">License Fees<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$18,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:8">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Equipment Rental<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$0<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:9">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Training (10 hours)<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$1,000.00<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:10">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Installation&nbsp;Travel<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$0<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:11">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Marketing<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$0<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:12">
-            <td style="width:77.0%;border:solid #5B9BD5 1.0pt;
-  border-top:none;padding:0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040">Shipping/Handling<o:p></o:p></span></p>
-            </td>
-            <td style="width:22.0%;border-top:none;border-left:
-  none;border-bottom:solid #5B9BD5 1.0pt;border-right:solid #5B9BD5 1.0pt;
-  padding:0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040">$0<o:p></o:p></span></p>
-            </td>
-        </tr>
-        <tr style="mso-yfti-irow:13;mso-yfti-lastrow:yes">
-            <td style="width: 77.0%; border: solid #5B9BD5 1.0pt; border-top: none; background: #2E74B5; padding: 0in .1in 0in .1in" valign="top" width="77%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:white">Total</span></b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:#404040"><o:p></o:p></span></p>
-            </td>
-            <td style="width: 22.0%; border-top: none; border-left: none; border-bottom: solid #5B9BD5 1.0pt; border-right: solid #5B9BD5 1.0pt; background: #2E74B5; padding: 0in .1in 0in .1in" valign="top" width="22%">
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:white">$119,000.00 for one facility with one server</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-                <p class="MsoNormal">
-                    <b><span style="font-size:9.0pt;
-  font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-  color:white">+$10,000 for any additional Yanbor OUReports installation</span></b><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-  &quot;Times New Roman&quot;;color:#404040"><o:p></o:p></span></p>
-            </td>
-        </tr>
-    </table>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Disclaimer: The prices listed in the preceding table are an estimate for the services discussed. This summary is not a warranty of final price.&nbsp;Estimates are subject to change if project specifications are changed or costs for outsourced services change before a contract is executed.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <b><span style="font-size:14.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#1F4E79;text-transform:uppercase;mso-font-kerning:18.0pt">QUALIFICATIONS<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">YANBOR LLC&nbsp;produces a&nbsp;high quality/guaranteed&nbsp;product/service&nbsp;in the following ways:<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">OUReports works with SQL Server, MySql, Oracle, and InterSystems Cache database to provide non-programmers with a simple and effective web interface for producing different user reports needed in Health Care Management, Government, etc.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:Symbol;mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
-Arial;color:#2E74B5">·</span><span style="font-size:7.0pt;font-family:&quot;Times New Roman&quot;,serif;
-mso-fareast-font-family:&quot;Times New Roman&quot;;color:#2E74B5">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">OUReports can easily be incorporated into existing solutions to add flexibility and mobility to the reporting process.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:
-9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:&quot;Times New Roman&quot;;
-color:#404040">&nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Yanbor LLC developers have extensive knowledge of Midas+, TCEtools, a variety of reporting systems, ReporTrack Reports, and are very experienced in Cache’, SQL, and .Net programming.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Having the programming code that we developed will allow Client to use our ideas and methods for its own future development.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Yanbor LLC devoted 100% of their time to this project from start to finish.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <b><span style="font-size:14.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#1F4E79;text-transform:uppercase;mso-font-kerning:18.0pt">CONCLUSION<o:p></o:p></span></b></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">We look forward to working with </span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#595959">Client on your&nbsp;</span><span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">user reporting services.&nbsp;We are confident that we can meet the challenges ahead and stand ready to partner with you and deliver an effective reporting solution.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">If you have questions on this proposal, please contact&nbsp;Yanbor LLC&nbsp;at your convenience by email at&nbsp;support@yanbor.com.<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Thank you for your consideration,<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">
-        <br />
-        Principal Product Manager<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">Yanbor LLC<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;mso-fareast-font-family:
-&quot;Times New Roman&quot;;color:#404040">&nbsp;<o:p></o:p></span></p>
-    <p class="MsoNormal">
-        <o:p>&nbsp;</o:p></p>
 </body>
 </html>
