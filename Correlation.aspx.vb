@@ -9,6 +9,7 @@ Imports System.Text
 Partial Class Correlation
     Inherits System.Web.UI.Page
     Private Sub Correlation_Init(sender As Object, e As EventArgs) Handles Me.Init
+        MenuExpansionHelper.Attach(Me)
         lblHeader.Text = Session("REPTITLE") & " - Correlations"
         HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Correlation"
         repid = Session("REPORTID")

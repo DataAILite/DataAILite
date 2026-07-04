@@ -10,6 +10,7 @@ Partial Class DataCheck
     Private Const PreviewRows As Integer = 5
 
     Private Sub DataCheck_Init(sender As Object, e As EventArgs) Handles Me.Init
+        MenuExpansionHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If

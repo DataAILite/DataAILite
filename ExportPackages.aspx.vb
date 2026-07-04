@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Collections
 Imports System.Collections.Generic
 Imports System.Configuration
@@ -15,6 +15,7 @@ Partial Class ExportPackages
     Inherits System.Web.UI.Page
 
     Private Sub ExportPackages_Init(sender As Object, e As EventArgs) Handles Me.Init
+        MenuExpansionHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()

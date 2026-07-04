@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Configuration
 Imports System.Collections.Generic
 Imports System.Data
@@ -26,6 +26,7 @@ Partial Class ShowReport
     Public dirsort As String
 
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+        MenuExpansionHelper.Attach(Me)
        If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = ""  Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If

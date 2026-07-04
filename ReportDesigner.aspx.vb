@@ -12,6 +12,7 @@ Partial Class ReportDesigner
 
     Private Sub ReportDesigner_Init(sender As Object, e As EventArgs) Handles Me.Init
 
+        MenuExpansionHelper.Attach(Me)
         If Not Session("PAGETTL") Is Nothing AndAlso Session("PAGETTL").ToString.Length > 0 Then
             lblPageTitle.Text = Session("PAGETTL")
         End If

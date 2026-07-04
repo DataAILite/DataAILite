@@ -18,6 +18,7 @@ Partial Class DataAdmin
     Private dashboardTotalTiles As Integer = 0
 
     Private Sub DataAdmin_Init(sender As Object, e As EventArgs) Handles Me.Init
+        MenuExpansionHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If
@@ -58,6 +59,7 @@ Partial Class DataAdmin
     Private Sub BindDataPreviews()
         Dim dv As DataView = CurrentDataView()
 
+        litAnalyticsSuitability.Text = RenderAnalyticsSuitabilityTable(dv)
         litPreviewAnalytics.Text = BuildAnalyticsPreviewHtml(dv)
         litPreviewDataReadiness.Text = BuildDataReadinessPreviewHtml(dv)
         litPreviewStatistics.Text = BuildStatisticsPreviewHtml(dv)
@@ -81,6 +83,105 @@ Partial Class DataAdmin
         litPreviewKPIBuilder.Text = BuildKPIBuilderPreviewHtml(dv)
         litPreviewDataAI.Text = BuildDataAIPreviewHtml(dv)
     End Sub
+
+    Private Function RenderAnalyticsSuitabilityTable(dv As DataView) As String
+        Dim items As List(Of AnalyticsGuideItem) = BuildAnalyticsGuideItems(dv)
+        Dim sb As New StringBuilder()
+        sb.Append("<table class=""suitabilityTable""><tr><th>Analytics Page</th><th>Why Useful</th><th>Suggested Fields / Inputs</th><th>Link</th></tr>")
+        For Each item As AnalyticsGuideItem In items
+            sb.Append("<tr>")
+            sb.Append("<td>").Append(PageLink(item.PageName, item.PageUrl)).Append("</td>")
+            sb.Append("<td>").Append(HttpUtility.HtmlEncode(item.WhyUseful)).Append("</td>")
+            sb.Append("<td>").Append(HttpUtility.HtmlEncode(item.SuggestedFields)).Append("</td>")
+            sb.Append("<td>").Append(PageLink("open", item.PageUrl)).Append("</td>")
+            sb.Append("</tr>")
+        Next
+        sb.Append("</table>")
+        Return sb.ToString()
+    End Function
+
+    Private Function BuildAnalyticsGuideItems(dv As DataView) As List(Of AnalyticsGuideItem)
+        Dim items As New List(Of AnalyticsGuideItem)()
+        Dim textFields As String = "Category/group fields"
+        Dim numericFields As String = "Numeric value fields"
+        Dim dateFields As String = "Date fields"
+        Dim firstText As String = ""
+        Dim secondText As String = ""
+        Dim firstNumber As String = ""
+        Dim secondNumber As String = ""
+        Dim firstDate As String = ""
+
+        If HasPreviewData(dv) Then
+            Dim textCols As List(Of DataColumn) = TextColumns(dv.Table)
+            Dim numericCols As List(Of DataColumn) = NumericColumns(dv.Table)
+            Dim dateCol As DataColumn = FirstDateColumn(dv.Table)
+
+            If textCols.Count > 0 Then
+                firstText = textCols(0).ColumnName
+                textFields = FieldList(textCols, 4)
+            End If
+            If textCols.Count > 1 Then secondText = textCols(1).ColumnName
+            If numericCols.Count > 0 Then
+                firstNumber = numericCols(0).ColumnName
+                numericFields = FieldList(numericCols, 4)
+            End If
+            If numericCols.Count > 1 Then secondNumber = numericCols(1).ColumnName
+            If dateCol IsNot Nothing Then
+                firstDate = dateCol.ColumnName
+                dateFields = dateCol.ColumnName
+            End If
+        End If
+
+        items.Add(New AnalyticsGuideItem("Detail Analytics", "Analytics.aspx", "Main place to choose category, comparison, value, aggregation, charts, matrix/pivot, statistics dashboard, and balancing links.", "Category fields: " & textFields & "; value fields: " & numericFields & "."))
+        items.Add(New AnalyticsGuideItem("Data Readiness Scanner", "DataReadinessScanner.aspx", "Scores which analytics, market models, charts, maps, and quality checks fit the current data best.", "Uses all report fields and recommends pages with suggested dropdown/input choices."))
+        items.Add(New AnalyticsGuideItem("Data Overall Statistics", "ShowReport.aspx?srd=8", "Shows count, blanks, distinct counts, min, max, average, and standard deviation where applicable.", "Numeric fields for min/max/average/stdev: " & numericFields & "; text fields for count/distinct count: " & textFields & "."))
+        items.Add(New AnalyticsGuideItem("Groups Statistics", "ReportViews.aspx?grpstats=yes", "Summarizes measures by groups defined in Report Format Definition.", "Report group/category fields" & FieldExample(firstText) & "; numeric measures" & FieldExample(firstNumber) & "."))
+        items.Add(New AnalyticsGuideItem("Chart Recommendations", "ChartRecommendationHelpers.aspx", "Recommends chart types and dashboard candidates from category/date/value fields.", "Categories: " & textFields & "; dates: " & dateFields & "; values: " & numericFields & "."))
+        items.Add(New AnalyticsGuideItem("Correlation", "ShowReport.aspx?srd=12", "Compares relationships between numeric fields.", "Use at least two numeric fields" & FieldPairExample(firstNumber, secondNumber) & "."))
+        items.Add(New AnalyticsGuideItem("Matrix Balancing", "ShowReport.aspx?srd=13", "Builds matrix-style row/column comparisons and balancing views.", "Two category fields" & FieldPairExample(firstText, secondText) & "; optional value field" & FieldExample(firstNumber) & "."))
+        items.Add(New AnalyticsGuideItem("Pivot / Cross Tab", "Pivot.aspx", "Creates pivot-style cross-tab reports with row fields, column fields, value fields, and aggregation.", "Row/column fields: " & textFields & "; value fields: " & numericFields & "."))
+        items.Add(New AnalyticsGuideItem("Variance Analysis", "Variance.aspx", "Runs percentage-change, variance, or contribution analysis between base and comparison values.", "Group/category field" & FieldExample(firstText) & "; base and compare values; numeric value field" & FieldExample(firstNumber) & "."))
+        items.Add(New AnalyticsGuideItem("Comparison Reports", "ComparisonReports.aspx", "Compares two periods, groups, locations, SQL queries, or imported files.", "Base and compare selectors plus shared group/value fields" & FieldPairExample(firstText, firstNumber) & "."))
+        items.Add(New AnalyticsGuideItem("Ranking Analysis", "Ranking.aspx", "Ranks categories, customers, products, departments, locations, or other groups by top, bottom, or average value.", "Group field" & FieldExample(firstText) & "; numeric value field" & FieldExample(firstNumber) & "."))
+        items.Add(New AnalyticsGuideItem("Regression Analysis", "Regression.aspx", "Models how one numeric column changes when another changes and opens Trends for prediction views.", "X numeric field" & FieldExample(firstNumber) & "; Y numeric field" & FieldExample(secondNumber) & "."))
+        items.Add(New AnalyticsGuideItem("Time Based Summaries", "TimeBasedSummaries.aspx", "Summarizes values by day, week, month, quarter, or year.", "Date field: " & dateFields & "; value field" & FieldExample(firstNumber) & "; optional group" & FieldExample(firstText) & "."))
+        items.Add(New AnalyticsGuideItem("Time Series", "TimeSeries.aspx", "Calculates moving averages and rolling totals across time periods.", "Date field: " & dateFields & "; value field" & FieldExample(firstNumber) & "; number of time periods."))
+        items.Add(New AnalyticsGuideItem("Cohort Analysis", "Cohort.aspx", "Tracks entities from first activity period into later activity periods.", "Entity/category field" & FieldExample(firstText) & "; date field: " & dateFields & "; optional value" & FieldExample(firstNumber) & "."))
+        items.Add(New AnalyticsGuideItem("Funnel Analysis", "Funnel.aspx", "Shows stage counts, conversion, drop-off, and optional value by stage.", "Stage/status/category field" & FieldExample(firstText) & "; optional value field" & FieldExample(firstNumber) & "."))
+        items.Add(New AnalyticsGuideItem("ABC Pareto Analysis", "ABCPareto.aspx", "Classifies groups into A/B/C classes by cumulative contribution to total value.", "Group field" & FieldExample(firstText) & "; value field" & FieldExample(firstNumber) & "."))
+        items.Add(New AnalyticsGuideItem("Automated Analysis Narratives", "AutomatedAnalysisNarratives.aspx", "Builds readable narrative findings from field behavior, values, quality, and trends.", "Text, numeric, and date fields from the current report."))
+        items.Add(New AnalyticsGuideItem("Cross-Report Comparison", "CrossReportComparison.aspx", "Compares the current report with another report by shared keys and values.", "Current report key/value fields plus compare report selected from the report list."))
+        items.Add(New AnalyticsGuideItem("KPI Builder", "KPIBuilder.aspx", "Builds simple business indicators from numeric fields by group.", "Group field" & FieldExample(firstText) & "; numerator/denominator numeric fields" & FieldPairExample(firstNumber, secondNumber) & "."))
+        items.Add(New AnalyticsGuideItem("DataAI", "DataAI.aspx?pg=expl&srd=0", "Uses AI to explain focused analytical outputs and current report data.", "Use after building a focused grid or analytical result."))
+        Return items
+    End Function
+
+    Private Function PageLink(text As String, pageUrl As String) As String
+        Return "<a href=""" & HttpUtility.HtmlAttributeEncode(pageUrl) & """ class=""NodeStyle"">" & HttpUtility.HtmlEncode(text) & "</a>"
+    End Function
+
+    Private Function FieldList(cols As List(Of DataColumn), maxCount As Integer) As String
+        If cols Is Nothing OrElse cols.Count = 0 Then Return "not found"
+        Dim values As New List(Of String)()
+        For i As Integer = 0 To Math.Min(maxCount, cols.Count) - 1
+            values.Add(cols(i).ColumnName)
+        Next
+        If cols.Count > maxCount Then values.Add("...")
+        Return String.Join(", ", values.ToArray())
+    End Function
+
+    Private Function FieldExample(fieldName As String) As String
+        If fieldName.Trim() = "" Then Return ""
+        Return " such as " & fieldName
+    End Function
+
+    Private Function FieldPairExample(firstField As String, secondField As String) As String
+        Dim values As New List(Of String)()
+        If firstField.Trim() <> "" Then values.Add(firstField)
+        If secondField.Trim() <> "" AndAlso Not secondField.Equals(firstField, StringComparison.OrdinalIgnoreCase) Then values.Add(secondField)
+        If values.Count = 0 Then Return ""
+        Return " such as " & String.Join(" and ", values.ToArray())
+    End Function
 
     Private Sub SetDashboardPagingControls()
         Dim tiles As List(Of Control) = DashboardTiles()
@@ -1487,6 +1588,20 @@ Partial Class DataAdmin
                 Return Math.Sqrt(variance)
             End Get
         End Property
+    End Class
+
+    Private Class AnalyticsGuideItem
+        Public PageName As String
+        Public PageUrl As String
+        Public WhyUseful As String
+        Public SuggestedFields As String
+
+        Public Sub New(pageName As String, pageUrl As String, whyUseful As String, suggestedFields As String)
+            Me.PageName = pageName
+            Me.PageUrl = pageUrl
+            Me.WhyUseful = whyUseful
+            Me.SuggestedFields = suggestedFields
+        End Sub
     End Class
 
     Private Function CompareCountRecordsDescending(x As CountRecord, y As CountRecord) As Integer

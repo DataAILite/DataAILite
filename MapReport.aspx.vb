@@ -66,6 +66,7 @@ Partial Class MapReport
 
     End Sub
     Private Sub MapReport_Init(sender As Object, e As EventArgs) Handles Me.Init
+        MenuExpansionHelper.Attach(Me)
        If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = ""  Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If

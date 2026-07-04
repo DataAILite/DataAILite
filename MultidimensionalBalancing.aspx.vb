@@ -1,4 +1,4 @@
-﻿Imports System.Data
+Imports System.Data
 Imports System.Drawing
 Imports System.Math
 Partial Class MultidimensionalBalancing
@@ -6,6 +6,7 @@ Partial Class MultidimensionalBalancing
     Public dv3 As DataView
 
     Private Sub MultidimensionalBalancing_Init(sender As Object, e As EventArgs) Handles Me.Init
+        MenuExpansionHelper.Attach(Me)
         btnBalanceFlds2a.OnClientClick = "showSpinner();"
         btnBalanceMatrixColumns3b.OnClientClick = "showSpinner();"
         btnBalanceMatrixSumsRowsCols1b.OnClientClick = "showSpinner();"
@@ -1413,7 +1414,7 @@ Partial Class MultidimensionalBalancing
                 For i = 0 To n - 1 'loop through selected fields
                     ssm = 0
                     row(2 * i) = "Total:"
-                    For j = 0 To lensums(i) - 1 'loop through table dtstrt column i  rows j
+                    For j = 0 To lensums(i) - 1 'loop through table dtstrt column i  rows j  
                         ssm = ssm + dtstrt.Rows(j)(2 * i + 1)
                     Next
                     row(2 * i + 1) = Round(ssm, 2)
@@ -1436,7 +1437,7 @@ Partial Class MultidimensionalBalancing
                 For i = 0 To n - 1 'loop through selected fields
                     ssm = 0
                     row(2 * i) = "Total:"
-                    For j = 0 To lensums(i) - 1 'loop through table dtstrt column i  rows j
+                    For j = 0 To lensums(i) - 1 'loop through table dtstrt column i  rows j  
                         ssm = ssm + dttrgt.Rows(j)(2 * i + 1)
                     Next
                     row(2 * i + 1) = Round(ssm, 2)
@@ -1465,7 +1466,7 @@ Partial Class MultidimensionalBalancing
                 For i = 0 To n - 1 'loop through selected fields
                     ssm = 0
                     row(2 * i) = "Total:"
-                    For j = 0 To lensums(i) - 1 'loop through table dtstrt column i  rows j
+                    For j = 0 To lensums(i) - 1 'loop through table dtstrt column i  rows j  
                         ssm = ssm + dtbal.Rows(j)(2 * i + 1)
                         dtbal.Rows(j)(2 * i + 1) = Round(dtbal.Rows(j)(2 * i + 1), 2)
                     Next
@@ -4613,7 +4614,7 @@ Partial Class MultidimensionalBalancing
             DropDownColumns.ForeColor = Color.Black
             scen = DropDownListScenarios.Text.Substring(0, 2).ToString
             If scen = "1a" Then
-                '<asp:Label ID="Label28" runat="server" Text="1a: Starting Matrix of aggregated field1 values to balance by manually entered sums by rows and sums by columns "
+                '<asp:Label ID="Label28" runat="server" Text="1a: Starting Matrix of aggregated field1 values to balance by manually entered sums by rows and sums by columns " 
                 'ToolTip = "Scenario 1a: Select both group fields (for rows and columns) and the field1 with aggregation function. Starting matrix of aggregated field1 balances by manually entered sums by rows and columns" ></asp:Label>
                 tr1a.Visible = True
                 tr1b.Visible = False
@@ -4642,7 +4643,7 @@ Partial Class MultidimensionalBalancing
                 trField2.Visible = False
                 divMultiCols.Style("display") = "none"
             ElseIf scen = "1b" Then
-                '<asp:Label ID="Label29" runat="server" Text="1b: Starting Matrix of rows by matrix group field for rows and columns from selected multiple fields to balance by manually entered sums by rows and sums by columns "
+                '<asp:Label ID="Label29" runat="server" Text="1b: Starting Matrix of rows by matrix group field for rows and columns from selected multiple fields to balance by manually entered sums by rows and sums by columns " 
                 'ToolTip = "Scenario 1b: Select the group field for rows and multiple matrix columns. Starting matrix of rows by matrix group field for rows and columns from selected multiple fields balances by manually entered sums by rows and columns.  For Scenarios 1b, 3b, and 3c the selected columns are columns in the matrix." ></asp:Label>
                 tr1a.Visible = False
                 tr1b.Visible = True
@@ -4671,7 +4672,7 @@ Partial Class MultidimensionalBalancing
                 DropDownList10.Visible = False
                 divMultiCols.Style("display") = ""
             ElseIf scen = "2a" Or scen = "4a" Then
-                '<asp:Label ID="Label22" runat="server" Text="2a: Starting Matrix of aggregated field1 to balance for sums of rows and columns of the Target Matrix of the aggregated field2: "
+                '<asp:Label ID="Label22" runat="server" Text="2a: Starting Matrix of aggregated field1 to balance for sums of rows and columns of the Target Matrix of the aggregated field2: " 
                 'ToolTip = "Scenario 2a. Select both group fields for rows and columns, field1 with aggregation function for items of Starting Matrix, field2 with aggregation function for items in Target Matrix. Starting Matrix of aggregated field1 to balance for sums of rows and columns of the Target Matrix of the aggregated field2" ></asp:Label>
                 tr1a.Visible = False
                 tr1b.Visible = False
@@ -4710,7 +4711,7 @@ Partial Class MultidimensionalBalancing
                 DropDownList7.Visible = False
                 divMultiCols.Style("display") = "none"
             ElseIf scen = "2b" Or scen = "4b" Then
-                '<asp:Label ID="Label6" runat="server" Text="2b: The starting value of field2 to get starting matrix of field1 values: "
+                '<asp:Label ID="Label6" runat="server" Text="2b: The starting value of field2 to get starting matrix of field1 values: " 
                 'ToolTip = "Starting field2 value as restriction to get the field1 values for starting matrix, values of field2 used to get each itteration Matrix in Scenarios 2b, 2c, 3b, 3c where values of the field2 used as restrictions on data to get itterations of Matrix. Not used in Scenario 3a, the multiple selected fields aggregation function used there instead." ></asp:Label>
                 tr1a.Visible = False
                 tr1b.Visible = False
@@ -4749,7 +4750,7 @@ Partial Class MultidimensionalBalancing
                 DropDownList7.Visible = True
                 divMultiCols.Style("display") = "none"
             ElseIf scen = "4c" Then
-                '<asp:Label ID="Label22" runat="server" Text="2a: Starting Matrix of aggregated field1 to balance for sums of rows and columns of the Target Matrix of the aggregated field2: "
+                '<asp:Label ID="Label22" runat="server" Text="2a: Starting Matrix of aggregated field1 to balance for sums of rows and columns of the Target Matrix of the aggregated field2: " 
                 'ToolTip = "Scenario 4c. Select fields for balancing sums, field1 with aggregation function for items of Starting Matrix, entry sums for items in Target Matrix. Starting Matrix of aggregated field1 to balance for sums of selected fields of the Target Matrix" ></asp:Label>
                 trEntryTbl.Visible = True
                 trEntryTbl.BgColor = "#FFFFFF"
@@ -4791,7 +4792,7 @@ Partial Class MultidimensionalBalancing
                 DropDownList7.Visible = False
                 divMultiCols.Style("display") = "none"
             ElseIf scen = "2c" Then
-                '<asp:Label ID="Label26" runat="server" Text=" 2c: Get balancing coefficients for Starting Matrix of field1 for all itterations between starting and target values of the field2"
+                '<asp:Label ID="Label26" runat="server" Text=" 2c: Get balancing coefficients for Starting Matrix of field1 for all itterations between starting and target values of the field2" 
                 'ToolTip = "Scenario 2c. Select both group fields for rows and columns, field1 with aggregation function for matrix items, and field2 with starting and target values. Get balancing coefficients for Starting Matrix of aggregated field1 for all itterations between starting and target values of the field2" ></asp:Label>
                 Label13.Text = ""
                 Label14.Text = ""
@@ -4836,7 +4837,7 @@ Partial Class MultidimensionalBalancing
                 'tr1MultiCols.Visible = False
                 divMultiCols.Style("display") = "none"
             ElseIf scen = "3a" Then
-                '<asp:Label ID="Label23" runat="server" Text=" 3a: Get balancing coefficients for Starting Matrix of aggregated values of field1 and multiple Target Matrix of aggregated selected fields: "
+                '<asp:Label ID="Label23" runat="server" Text=" 3a: Get balancing coefficients for Starting Matrix of aggregated values of field1 and multiple Target Matrix of aggregated selected fields: " 
                 'ToolTip = "Scenario 3a. Select both group fields, field1 with aggregation function, and multiple fields with aggregation function. Matrix balancing for itterations for multiple fields values. Field2 is not used." ></asp:Label>
                 Label13.Text = ""
                 Label14.Text = ""
@@ -4877,7 +4878,7 @@ Partial Class MultidimensionalBalancing
                 Label18.Visible = True
                 DropDownList10.Visible = True
             ElseIf scen = "3b" Then
-                '<asp:Label ID="Label25" runat="server" Text=" 3b: Starting Matrix as rows by matrix group field for rows and selected multiple columns to balance itterations from starting to target values of the field2"
+                '<asp:Label ID="Label25" runat="server" Text=" 3b: Starting Matrix as rows by matrix group field for rows and selected multiple columns to balance itterations from starting to target values of the field2" 
                 'ToolTip = "Scenario 3b. Select group field for rows, multiple fields for columns, and field2 with starting and target values. Matrix balancing for itterations by starting and target values of the field2. For Scenarios 1b, 3b, and 3c the selected multiple columns are columns in the matrix, and itterations are done using field2 values as restrictions for itterations." ></asp:Label>
                 tr1a.Visible = False
                 tr1b.Visible = False
@@ -4914,7 +4915,7 @@ Partial Class MultidimensionalBalancing
                 Label18.Visible = False
                 DropDownList10.Visible = False
             ElseIf scen = "3c" Then
-                '<asp:Label ID="Label24" runat="server" Text=" 3c: Get balancing coefficients for Starting Matrix as rows by matrix group field for rows and columns from selected multiple fields, for all itterations between starting and target of the field2 values:"
+                '<asp:Label ID="Label24" runat="server" Text=" 3c: Get balancing coefficients for Starting Matrix as rows by matrix group field for rows and columns from selected multiple fields, for all itterations between starting and target of the field2 values:" 
                 'ToolTip = "Scenario 3c. Select group field for rows, multiple fields for columns, and field2 with starting and target values. Get balancing coefficients for Starting Matriix as rows by matrix group field for rows and the selected multiple columns, and all itterations between starting and target of the field2 values. For Scenarios 1b, 3b, and 3c the selected columns are columns in the matrix, and itterations are done using field2 values as restrictions for itterations. " ></asp:Label>
                 Label13.Text = ""
                 Label14.Text = ""
@@ -5245,3 +5246,6 @@ Partial Class MultidimensionalBalancing
         Response.Redirect("~/ChatAI.aspx?pg=expl&srd=0&qu=yes")
     End Sub
 End Class
+
+
+

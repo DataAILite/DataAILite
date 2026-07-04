@@ -96,7 +96,7 @@
                                         </asp:TreeNode>
 
                                         <asp:TreeNode Text="&lt;b&gt;Data Readiness Scanner&lt;/b&gt;" Value="DataReadinessScanner.aspx" NavigateUrl="DataReadinessScanner.aspx" Expanded="True"></asp:TreeNode>
-                                        <asp:TreeNode Text="&lt;b&gt;Data Quality Dashboard&lt;/b&gt;" Value="DataCheck.aspx" NavigateUrl="DataCheck.aspx" Expanded="True">
+                                        <asp:TreeNode Text="&lt;b&gt;Data Quality Dashboard&lt;/b&gt;" Value="DataCheck.aspx" NavigateUrl="DataCheck.aspx" Expanded="False">
                                             <asp:TreeNode Text="Data Quality" Value="DataQuality.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Profiling" Value="Profiling.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
@@ -106,7 +106,8 @@
                                             <asp:TreeNode Text="Rule-Based Alerts" Value="RuleBasedAlerts.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Map Readiness" Value="MapReadines.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
-                                        <asp:TreeNode Text="Show Report" Value="ShowReport.aspx?srd=3" Expanded="True">
+                                        <asp:TreeNode Text="Reports" Value="ShowReport.aspx?srd=3" Expanded="False">
+                                            <asp:TreeNode Text="Show formatted report" Value="ShowReport.aspx?srd=3"></asp:TreeNode>
 
                                             <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
 
@@ -130,7 +131,7 @@
 
                                         </asp:TreeNode>
 
-                                        <asp:TreeNode Text="Analytics Dashboard" Value="DataAdmin.aspx" NavigateUrl="DataAdmin.aspx" Expanded="True">
+                                        <asp:TreeNode Text="Analytics Dashboard" Value="DataAdmin.aspx" NavigateUrl="DataAdmin.aspx" Expanded="False">
 
                                             <asp:TreeNode Text="Detail Analytics" Value="Analytics.aspx" NavigateUrl="Analytics.aspx"></asp:TreeNode>
 

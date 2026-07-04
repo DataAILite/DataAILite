@@ -141,7 +141,7 @@
                                             <asp:TreeNode Text="Export Data to XML" Value="datatoXML" NavigateUrl="ShowReport.aspx?srd=14"></asp:TreeNode>
                                         </asp:TreeNode>
                                         <asp:TreeNode Text="&lt;b&gt;Data Readiness Scanner&lt;/b&gt;" Value="DataReadinessScanner.aspx" NavigateUrl="DataReadinessScanner.aspx" Expanded="True"></asp:TreeNode>
-                                        <asp:TreeNode Text="&lt;b&gt;Data Quality Dashboard&lt;/b&gt;" Value="DataCheck.aspx" NavigateUrl="DataCheck.aspx" Expanded="True">
+                                        <asp:TreeNode Text="&lt;b&gt;Data Quality Dashboard&lt;/b&gt;" Value="DataCheck.aspx" NavigateUrl="DataCheck.aspx" Expanded="False">
                                             <asp:TreeNode Text="Data Quality" Value="DataQuality.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Profiling" Value="Profiling.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Data Dictionary" Value="DataDictionary.aspx"></asp:TreeNode>
@@ -151,7 +151,8 @@
                                             <asp:TreeNode Text="Rule-Based Alerts" Value="RuleBasedAlerts.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Map Readiness" Value="MapReadines.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
-                                        <asp:TreeNode Text="Show Report" Value="ShowReport.aspx?srd=3" Expanded="True">
+                                        <asp:TreeNode Text="Reports" Value="ShowReport.aspx?srd=3" Expanded="False">
+                                            <asp:TreeNode Text="Show formatted report" Value="ShowReport.aspx?srd=3"></asp:TreeNode>
                                             <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
                                             <asp:TreeNode Text="Show Report Charts" Value="ShowReport.aspx?srd=17"></asp:TreeNode>
                                             <asp:TreeNode Text="Chart Recommendations" Value="ChartRecommendationHelpers.aspx"></asp:TreeNode>
@@ -163,7 +164,7 @@
                                             <asp:TreeNode Text="Export Report to PDF" Value="reptoPDF" NavigateUrl="ShowReport.aspx?srd=6"></asp:TreeNode>
                                             <asp:TreeNode Text="Export Packages" Value="ExportPackages.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
-                                        <asp:TreeNode Text="Analytics Dashboard" Value="DataAdmin.aspx" NavigateUrl="DataAdmin.aspx" Expanded="True">
+                                        <asp:TreeNode Text="Analytics Dashboard" Value="DataAdmin.aspx" NavigateUrl="DataAdmin.aspx" Expanded="False">
                                             <asp:TreeNode Text="Detail Analytics" Value="Analytics.aspx" NavigateUrl="Analytics.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="See Data Overall Statistics" Value="ShowReport.aspx?srd=8"></asp:TreeNode>
                                             <asp:TreeNode Text="Export Overall Statistics to Excel" Value="reptoExcel" NavigateUrl="ShowReport.aspx?srd=9"></asp:TreeNode>
@@ -186,7 +187,7 @@
 <asp:TreeNode Text="Cross-Report Comparison" Value="CrossReportComparison.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="KPI Builder" Value="KPIBuilder.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
-                                        <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="True">
+                                        <asp:TreeNode Text="Market Dashboard" Value="MarketAdmin.aspx" NavigateUrl="MarketAdmin.aspx" Expanded="False">
 
                                             <asp:TreeNode Text="Market Demand" Value="MarketDemand.aspx" NavigateUrl="MarketDemand.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Market Pricing" Value="MarketPricing.aspx" NavigateUrl="MarketPricing.aspx"></asp:TreeNode>

@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
@@ -30,6 +30,7 @@ Partial Class ReportViews
     Public pageheight As String
 
     Private Sub ReportViews_Init(sender As Object, e As EventArgs) Handles Me.Init
+        MenuExpansionHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If

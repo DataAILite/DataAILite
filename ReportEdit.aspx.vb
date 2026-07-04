@@ -13,6 +13,7 @@ Partial Class ReportEdit
     Inherits System.Web.UI.Page
     Dim dvp As DataView
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+        MenuExpansionHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If
@@ -969,7 +970,7 @@ Partial Class ReportEdit
         End If
         Select Case Session("TabN")
             Case "2"
-                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report_Info"
+                HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report%20Info"
             Case "3"
                 HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Parameters"
             Case "4"
@@ -1848,7 +1849,7 @@ Partial Class ReportEdit
             lblView.Text = MenuMain.Items(Session("TabN")).Text
             Select Case Session("TabN")
                 Case "2"
-                    HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report_Info"
+                    HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Report%20Info"
                 Case "3"
                     HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Parameters"
                 Case "4"
