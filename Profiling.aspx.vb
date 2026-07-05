@@ -115,6 +115,7 @@ Partial Class Profiling
 
     Private Sub Profiling_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If
@@ -145,6 +146,7 @@ Partial Class Profiling
             LabelError.Text = ""
             LabelInfo.Text = ""
             LoadReportData()
+            ApplyUrlParameters()
             BuildAndBindProfile()
         ElseIf Session("ProfilingTable") IsNot Nothing Then
             BindProfile(CType(Session("ProfilingTable"), DataTable))
@@ -482,4 +484,8 @@ Partial Class Profiling
         LabelOutputExplanation.Text = ExplanationBlock("Output", "Each grid row represents one field in the dataset.", "Data Type explains how the field is interpreted.", "Count, Blanks, and Distinct Values show completeness and uniqueness.", "Min, Max, Average, and Standard Deviation are populated where applicable.", "Blank statistic cells mean the field does not support that calculation.")
         ReadinessFooterGuidance.SetFooter(Me, "Data Profiling", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

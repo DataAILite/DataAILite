@@ -76,6 +76,7 @@ Partial Class Ranking
 
     Private Sub Ranking_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If

@@ -11,6 +11,7 @@ Partial Class DataDictionary
 
     Private Sub DataDictionary_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
@@ -23,6 +24,7 @@ Partial Class DataDictionary
         If Not IsPostBack Then
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             BuildAndBindAnalysis()
         ElseIf Session("DataDictionaryTable") IsNot Nothing Then
             BindAnalysisGrid(CType(Session("DataDictionaryTable"), DataTable))
@@ -435,5 +437,11 @@ Partial Class DataDictionary
         Session("DataDictionaryFilters") = filters
         Return filterId
     End Function
+
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownFieldGroup", "fieldgroup")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownExamples", "examples")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
 
 End Class

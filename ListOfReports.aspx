@@ -192,7 +192,7 @@
         <asp:LinkButton ID="btnListOfJoins" runat="server" Text="Joins" CssClass="NodeStyle" Visible="False" Enabled="False" Font-Names="Arial"></asp:LinkButton>
        --%>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:HyperLink ID="HyperLinkListOfDashboards" runat="server" NavigateUrl="~/ListOfDashboards.aspx" CssClass="NodeStyle" Font-Names="Arial" Target="_blank">Chart Dashboards</asp:HyperLink>
+        <asp:HyperLink ID="HyperLinkListOfDashboards" runat="server" NavigateUrl="~/ListOfDashboards.aspx" CssClass="NodeStyle" Font-Names="Arial" Target="_blank" ToolTip="User multiple reports dashboards">User Dashboards</asp:HyperLink>
           
         &nbsp;&nbsp;&nbsp;
         <asp:HyperLink ID="HyperLinkScheduledReports" runat="server" NavigateUrl="~/ScheduledReports.aspx" CssClass="NodeStyle" Font-Names="Arial">Scheduled Reports</asp:HyperLink>

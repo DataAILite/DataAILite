@@ -365,7 +365,7 @@
                     <div class="cell-title"><span class="dot" style="background:#D97706"></span> Chart</div>
                     <a class="toc-link feat" href="https://oureports.net/oureports/GoogleChartsAndDashboards.pdf">Google Charts</a>
                     <a class="toc-link" href="https://oureports.net/OUReports/AnalyticsNew.pdf#page=15">Chart Recommendations</a>
-                    <a class="toc-link" href="https://oureports.net/oureports/GoogleChartsAndDashboards.pdf">Chart Dashboards</a>
+                    <a class="toc-link" href="https://oureports.net/oureports/GoogleChartsAndDashboards.pdf">Dashboards</a>
                 </div>
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:var(--red)"></span> Map</div>

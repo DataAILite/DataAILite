@@ -9,9 +9,11 @@ Partial Class Analytics
     Private ddtv As DataView
     Private Sub Analytics_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         lblHeader.Text = Session("REPTITLE") & " - Analytics"
         LabelAnalyticsWhyUseful.Text = "Why Useful: Overall field combinations and report exploration help identify suitable grouped analyses, reports, and charts."
         HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Analytics"
+        SetDashboardListLink()
         repid = Session("REPORTID")
         If Session("dataGroups") Is Nothing Then
             Session("dataGroups") = ""
@@ -44,6 +46,24 @@ Partial Class Analytics
 
         Return url
     End Function
+
+    Private Sub ApplyAnalyticsUrlParameters()
+        UrlInputHelper.ApplySession(Me, "cat1", "cat1")
+        UrlInputHelper.ApplySession(Me, "cat2", "cat2")
+        UrlInputHelper.ApplySession(Me, "y1", "AxisY")
+        UrlInputHelper.ApplySession(Me, "fn", "Aggregate")
+        UrlInputHelper.ApplySession(Me, "y2", "AxisY2")
+        UrlInputHelper.ApplySession(Me, "fn2", "Aggregate2")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
+    Private Sub SetDashboardListLink()
+        HyperLinkChartDashboards.NavigateUrl = "ListOfDashboards.aspx"
+        If Session("REPORTID") IsNot Nothing AndAlso Session("REPORTID").ToString().Trim() <> "" Then
+            HyperLinkChartDashboards.NavigateUrl = "ListOfDashboards.aspx?Report=" & Server.UrlEncode(Session("REPORTID").ToString().Trim())
+        End If
+    End Sub
+
     Private Sub Analytics_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
@@ -145,6 +165,7 @@ Partial Class Analytics
 
         'dropdowns
         If Not IsPostBack Then
+            ApplyAnalyticsUrlParameters()
 
             If Session("Aggregate") Is Nothing OrElse Session("Aggregate").ToString.Trim = "" Then
                 DropDownList4.Items.Clear()

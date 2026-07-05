@@ -104,6 +104,7 @@ Partial Class ComparisonReports
 
     Private Sub ComparisonReports_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If
@@ -135,6 +136,7 @@ Partial Class ComparisonReports
             LabelInfo.Text = ""
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             UpdateModePanels()
             BuildAndBindComparison()
         ElseIf Session("ComparisonReportsTable") IsNot Nothing Then
@@ -984,4 +986,20 @@ Partial Class ComparisonReports
         LabelOutputExplanation.Text = ExplanationBlock("Output", "Comparison Type identifies the selected comparison method.", "The row-dimension column is named from the selected Row Field and shows the value used to match base and compare rows.", "Base and Compare columns include the selected base and compare values in their captions.", "Variance and Percent Change show the comparison result.", "Base Records and Compare Records link to the exact records used for each side.")
         ReadinessFooterGuidance.SetFooter(Me, "Comparison Reports", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownComparisonType", "comparison")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownRowField", "cat1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownRowField", "row")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownValueField", "y1")
+        FillAggregates(GetSourceTable())
+        UrlInputHelper.ApplyDropDown(Me, "DropDownAggregate", "fn")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownCompareField", "cat2")
+        FillCompareValues()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownBaseValue", "base")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownCompareValue", "compare")
+        UrlInputHelper.ApplyTextBox(Me, "txtBaseQuery", "basequery")
+        UrlInputHelper.ApplyTextBox(Me, "txtCompareQuery", "comparequery")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

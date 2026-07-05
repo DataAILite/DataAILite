@@ -11,6 +11,7 @@ Partial Class Cohort
 
     Private Sub Cohort_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
@@ -23,6 +24,7 @@ Partial Class Cohort
         If Not IsPostBack Then
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             BuildAndBindAnalysis()
         ElseIf Session("CohortTable") IsNot Nothing Then
             BindAnalysisGrid(CType(Session("CohortTable"), DataTable))
@@ -494,5 +496,14 @@ Partial Class Cohort
         Session("CohortFilters") = filters
         Return filterId
     End Function
+
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownPrimaryField", "entity")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownPrimaryField", "cat1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownDateField", "date")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownValueField", "y1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownPeriod", "period")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
 
 End Class

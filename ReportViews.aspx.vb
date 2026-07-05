@@ -135,6 +135,11 @@ Partial Class ReportViews
             Session("SeeGraph") = "no"
             Session("SeeReport") = "no"
         End If
+        If Request("Report") IsNot Nothing AndAlso Request("Report").ToString.Trim <> "" Then
+            Session("REPORTID") = Request("Report").ToString.Trim
+        ElseIf Request("ReportID") IsNot Nothing AndAlso Request("ReportID").ToString.Trim <> "" Then
+            Session("REPORTID") = Request("ReportID").ToString.Trim
+        End If
         LabelReportID.Text = Session("REPORTID")
         If Not Session("PAGETTL") Is Nothing AndAlso Session("PAGETTL").ToString.Length > 0 Then
             LabelPageTtl.Text = Session("PAGETTL")
@@ -280,6 +285,7 @@ Partial Class ReportViews
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If
+        SetDashboardListLink()
         lnkExpandAll.Visible = False
         lnkExpandAll.Enabled = False
         If Session("OurConnProvider").ToString.Trim = "Sqlite" Then
@@ -1900,6 +1906,13 @@ Partial Class ReportViews
             rt = AddGroupBy(Session("REPORTID"), DropDownList1.SelectedValue, DropDownList2.SelectedValue, "custom", Session("UserConnString").ToString, Session("UserConnProvider").ToString, er)
         End If
     End Sub
+
+    Private Sub SetDashboardListLink()
+        HyperLinkChartDashboards.NavigateUrl = "ListOfDashboards.aspx"
+        If Session("REPORTID") IsNot Nothing AndAlso Session("REPORTID").ToString().Trim() <> "" Then
+            HyperLinkChartDashboards.NavigateUrl = "ListOfDashboards.aspx?Report=" & Server.UrlEncode(Session("REPORTID").ToString().Trim())
+        End If
+    End Sub
     Private Sub ButtonPie_Click(sender As Object, e As EventArgs) Handles ButtonPie.Click
         'If DropDownList4.SelectedValue = "Value" Then
         '    MessageBox.Show("Pie graph does not support the selection Value", "Primary and Secondary Categories", "Categories", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Error)
@@ -2858,6 +2871,136 @@ Partial Class ReportViews
     Private Sub DropDownList4_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DropDownList4.SelectedIndexChanged
         Session("Aggregate") = DropDownList4.SelectedValue
     End Sub
+
+    Private Sub lnkAddToAnalyticsDashboard_Click(sender As Object, e As EventArgs) Handles lnkAddToAnalyticsDashboard.Click
+        Session("PendingAnalyticsDashboardUrl") = BuildReportViewsDashboardUrl()
+        Session("PendingAnalyticsDashboardTitle") = CurrentReportViewsDashboardTitle()
+        Session("PendingAnalyticsDashboardReportID") = FieldTextLocal(Session("REPORTID"))
+        Response.Redirect("AddAnalyticsDashboard.aspx")
+    End Sub
+
+    Private Function BuildReportViewsDashboardUrl() As String
+        Dim values As New System.Collections.Generic.Dictionary(Of String, String)(StringComparer.OrdinalIgnoreCase)
+        values("Report") = FieldTextLocal(Session("REPORTID"))
+        values("srd") = CurrentSrdValue()
+
+        For Each key As String In Request.QueryString.AllKeys
+            If key IsNot Nothing AndAlso Request.QueryString(key) IsNot Nothing AndAlso Request.QueryString(key).ToString().Trim() <> "" Then
+                values(key) = Request.QueryString(key)
+            End If
+        Next
+
+        values("Report") = FieldTextLocal(Session("REPORTID"))
+        values("srd") = CurrentSrdValue()
+        If DropDownList1.SelectedValue.Trim() <> "" Then values("cat1") = DropDownList1.SelectedValue
+        If DropDownList2.SelectedValue.Trim() <> "" Then values("cat2") = DropDownList2.SelectedValue
+        If DropDownList3.SelectedValue.Trim() <> "" Then values("y1") = DropDownList3.SelectedValue
+        If DropDownList4.SelectedValue.Trim() <> "" Then values("fn") = DropDownList4.SelectedValue
+        ApplyReportViewModeParameters(values)
+
+        Dim sb As New StringBuilder("ReportViews.aspx")
+        Dim first As Boolean = True
+        For Each item As System.Collections.Generic.KeyValuePair(Of String, String) In values
+            If item.Value Is Nothing OrElse item.Value.Trim() = "" Then Continue For
+            If first Then
+                sb.Append("?")
+                first = False
+            Else
+                sb.Append("&")
+            End If
+            sb.Append(Server.UrlEncode(item.Key))
+            sb.Append("=")
+            sb.Append(Server.UrlEncode(item.Value))
+        Next
+        Return sb.ToString()
+    End Function
+
+    Private Sub ApplyReportViewModeParameters(values As System.Collections.Generic.Dictionary(Of String, String))
+        Dim graphType As String = CurrentGraphTypeValue()
+        Select Case graphType
+            Case "matrix", "bar", "pie", "line"
+                values("graph") = "yes"
+                values("grtype") = graphType
+                values("srd") = "11"
+                values.Remove("det")
+                values.Remove("grpstats")
+            Case "details"
+                values("det") = "yes"
+                values("srd") = "11"
+                values.Remove("graph")
+                values.Remove("grtype")
+                values.Remove("grpstats")
+            Case "groupsstats"
+                values("grpstats") = "yes"
+                values.Remove("graph")
+                values.Remove("grtype")
+                values.Remove("det")
+        End Select
+    End Sub
+
+    Private Function CurrentSrdValue() As String
+        If Request("srd") IsNot Nothing AndAlso Request("srd").ToString().Trim() <> "" Then Return Request("srd").ToString().Trim()
+        If Session("srd") IsNot Nothing AndAlso Session("srd").ToString().Trim() <> "" Then Return Session("srd").ToString().Trim()
+        Return "3"
+    End Function
+
+    Private Function CurrentGraphTypeValue() As String
+        If Request("det") IsNot Nothing AndAlso Request("det").ToString().Trim().Equals("yes", StringComparison.OrdinalIgnoreCase) Then Return "details"
+        If Request("grpstats") IsNot Nothing AndAlso Request("grpstats").ToString().Trim().Equals("yes", StringComparison.OrdinalIgnoreCase) Then Return "groupsstats"
+        If Request("grtype") IsNot Nothing AndAlso Request("grtype").ToString().Trim() <> "" Then Return Request("grtype").ToString().Trim().ToLowerInvariant()
+        If Session("GraphType") IsNot Nothing AndAlso Session("GraphType").ToString().Trim() <> "" Then Return Session("GraphType").ToString().Trim().ToLowerInvariant()
+        If Session("See") IsNot Nothing Then
+            Select Case Session("See").ToString().Trim().ToLowerInvariant()
+                Case "matrix"
+                    Return "matrix"
+                Case "graph"
+                    Return "bar"
+                Case "pie"
+                    Return "pie"
+                Case "line"
+                    Return "line"
+                Case "details"
+                    Return "details"
+                Case "groupsstats"
+                    Return "groupsstats"
+            End Select
+        End If
+        Return ""
+    End Function
+
+    Private Function CurrentReportViewsDashboardTitle() As String
+        If Request("grpstats") IsNot Nothing AndAlso Request("grpstats").ToString().Trim().Equals("yes", StringComparison.OrdinalIgnoreCase) Then Return "See Groups Statistics"
+        If Request("gen") IsNot Nothing AndAlso Request("gen").ToString().Trim().Equals("yes", StringComparison.OrdinalIgnoreCase) Then Return "Show Generic Report"
+        If Request("det") IsNot Nothing AndAlso Request("det").ToString().Trim().Equals("yes", StringComparison.OrdinalIgnoreCase) Then Return "DrillDown Groups"
+
+        Dim graphType As String = CurrentGraphTypeValue()
+
+        Select Case graphType
+            Case "matrix"
+                Return "Matrix / Pivot Report"
+            Case "bar"
+                Return "Bar Report"
+            Case "pie"
+                Return "Pie Report"
+            Case "line"
+                Return "Line Report"
+            Case "details"
+                Return "DrillDown Groups"
+            Case "groupsstats"
+                Return "See Groups Statistics"
+        End Select
+
+        Select Case CurrentSrdValue()
+            Case "4"
+                Return "Export Report to Excel"
+            Case "5"
+                Return "Export Report to Word"
+            Case "6"
+                Return "Export Report to PDF"
+            Case Else
+                Return "Show Formatted Report"
+        End Select
+    End Function
 
     Private Sub viewer_Load(sender As Object, e As EventArgs) Handles viewer.Load
         Try

@@ -11,6 +11,7 @@ Partial Class AnomalyScoring
 
     Private Sub AnomalyScoring_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
@@ -23,6 +24,7 @@ Partial Class AnomalyScoring
         If Not IsPostBack Then
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             BuildAndBindAnalysis()
         ElseIf Session("AnomalyScoringTable") IsNot Nothing Then
             BindAnalysisGrid(CType(Session("AnomalyScoringTable"), DataTable))
@@ -614,4 +616,15 @@ Partial Class AnomalyScoring
             End If
         Next
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownGroupField", "group")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownGroupField", "cat1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownCategoryField", "cat2")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownValueField", "y1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownDateField", "date")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownDateAggregation", "dateagg")
+        UrlInputHelper.ApplyTextBox(Me, "txtScoreThreshold", "threshold")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

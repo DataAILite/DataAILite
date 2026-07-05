@@ -37,30 +37,21 @@ Partial Class ListOfDashboards
             Label1.Text = updateRet
             Exit Sub
         End If
-        Dim analyticsMode As Boolean = IsAnalyticsMode()
-
-        ' Check for ReportID from request or session
+        ' Check for ReportID from request only. A plain ListOfDashboards link shows all user dashboards.
         Dim reportId As String = ""
         If Request("ReportID") IsNot Nothing AndAlso Request("ReportID").ToString().Trim() <> "" Then
             reportId = Request("ReportID").ToString().Trim()
         ElseIf Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then
             reportId = Request("Report").ToString().Trim()
-        ElseIf Session("REPORTID") IsNot Nothing AndAlso Session("REPORTID").ToString().Trim() <> "" Then
-            reportId = Session("REPORTID").ToString().Trim()
         End If
 
         Dim sqlQuery As String
-        Dim modeFilter As String = DashboardModeWhereClause(analyticsMode)
         If reportId <> "" Then
-            sqlQuery = "SELECT Dashboard, MAX(Comments) AS Comments FROM ourdashboards WHERE UserId='" & SqlText(Session("logon")) & "' AND ReportID='" & SqlText(reportId) & "'" & modeFilter & " GROUP BY Dashboard ORDER BY Dashboard"
-            If analyticsMode Then
-                lblHeader.Text = "Custom Analytics for Report:"
-            Else
-                lblHeader.Text = "Chart Dashboards for Report:"
-            End If
+            sqlQuery = "SELECT Dashboard, MAX(Comments) AS Comments FROM ourdashboards WHERE UserId='" & SqlText(Session("logon")) & "' AND ReportID='" & SqlText(reportId) & "' GROUP BY Dashboard ORDER BY Dashboard"
+            lblHeader.Text = "Dashboards for Report:"
         Else
-            sqlQuery = "SELECT Dashboard, MAX(Comments) AS Comments FROM ourdashboards WHERE UserId='" & SqlText(Session("logon")) & "'" & modeFilter & " GROUP BY Dashboard ORDER BY Dashboard"
-            If analyticsMode Then lblHeader.Text = "Custom Analytics:"
+            sqlQuery = "SELECT Dashboard, MAX(Comments) AS Comments FROM ourdashboards WHERE UserId='" & SqlText(Session("logon")) & "' GROUP BY Dashboard ORDER BY Dashboard"
+            lblHeader.Text = "Dashboards:"
         End If
 
         Dim ddtv As DataView = mRecords(sqlQuery, ret)
@@ -69,18 +60,10 @@ Partial Class ListOfDashboards
             Exit Sub
         End If
         If ddtv Is Nothing OrElse ddtv.Count = 0 OrElse ddtv.Table.Rows.Count = 0 Then
-            If analyticsMode Then
-                Label1.Text = "There are no custom analytics for this user."
-            Else
-                Label1.Text = "There are no dashboards for this user."
-            End If
+            Label1.Text = "There are no dashboards for this user."
             Exit Sub
         Else
-            If analyticsMode Then
-                lblTablesCount.Text = ddtv.Table.Rows.Count.ToString & " custom analytics"
-            Else
-                lblTablesCount.Text = ddtv.Table.Rows.Count.ToString & " dashboards"
-            End If
+            lblTablesCount.Text = ddtv.Table.Rows.Count.ToString & " dashboards"
         End If
         Dim dashboardname As String = String.Empty
 
@@ -89,12 +72,13 @@ Partial Class ListOfDashboards
 
         For i = 0 To ddtv.Table.Rows.Count - 1
             dashboardname = ddtv.Table.Rows(i)("Dashboard").ToString
-            urlc = "Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname
-            If Page.FindControl(urlc) Is Nothing Then
+            urlc = DashboardOpenUrl(dashboardname, reportId)
+            If Page.FindControl("ctlDashboard_" & i.ToString()) Is Nothing Then
                 AddRowIntoHTMLtable(ddtv.Table.Rows(i), list)
             ctlLnk = New LinkButton
             ctlLnk.Text = dashboardname
-            ctlLnk.ID = urlc
+            ctlLnk.ID = "ctlDashboard_" & i.ToString()
+            ctlLnk.CommandArgument = urlc
             ctlLnk.ToolTip = "Show '" & dashboardname & "' dashboard"
             'ctlLnk.OnClientClick = "showSpinner();return true;"
             AddHandler ctlLnk.Click, AddressOf ctlLnk_Click
@@ -109,7 +93,8 @@ Partial Class ListOfDashboards
     End Sub
     Protected Sub ctlLnk_Click(sender As Object, e As EventArgs)
         Dim btnLnk As LinkButton = CType(sender, LinkButton)
-        Dim link As String = btnLnk.ID
+        Dim link As String = btnLnk.CommandArgument
+        If link.Trim() = "" Then link = btnLnk.ID
 
         Response.Redirect(link)
     End Sub
@@ -181,10 +166,8 @@ Partial Class ListOfDashboards
         End If
 
         Dim ret As String = String.Empty
-        Dim analyticsMode As Boolean = IsAnalyticsMode()
-        Dim modeFilter As String = DashboardModeWhereClause(analyticsMode)
         For Each dashboardName As String In selectedDashboards
-            ret = ExequteSQLquery("DELETE FROM ourdashboards WHERE UserID='" & SqlText(Session("logon")) & "' AND Dashboard='" & SqlText(dashboardName) & "'" & modeFilter)
+            ret = ExequteSQLquery("DELETE FROM ourdashboards WHERE UserID='" & SqlText(Session("logon")) & "' AND Dashboard='" & SqlText(dashboardName) & "'")
             If Not IsSqlSuccess(ret) Then
                 MessageBox.Show("Dashboard '" & dashboardName & "' was not deleted. " & ret, "Dashboards", "DashboardDeleteError", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
                 Exit Sub
@@ -197,8 +180,6 @@ Partial Class ListOfDashboards
     Private Sub ButtonUpdate_Click(sender As Object, e As EventArgs) Handles ButtonUpdate.Click
         Dim ret As String = String.Empty
         Dim updatedCount As Integer = 0
-        Dim analyticsMode As Boolean = IsAnalyticsMode()
-        Dim modeFilter As String = DashboardModeWhereClause(analyticsMode)
 
         For i As Integer = 1 To list.Rows.Count - 1
             If list.Rows(i).Cells.Count < 3 Then Continue For
@@ -218,7 +199,7 @@ Partial Class ListOfDashboards
             End If
             description = TrimDescription(description)
 
-            ret = ExequteSQLquery("UPDATE ourdashboards SET Comments='" & SqlText(description) & "' WHERE UserID='" & SqlText(Session("logon")) & "' AND Dashboard='" & SqlText(dashboardName) & "'" & modeFilter)
+            ret = ExequteSQLquery("UPDATE ourdashboards SET Comments='" & SqlText(description) & "' WHERE UserID='" & SqlText(Session("logon")) & "' AND Dashboard='" & SqlText(dashboardName) & "'")
             If Not IsSqlSuccess(ret) Then
                 MessageBox.Show("Description for dashboard '" & dashboardName & "' was not updated. " & ret, "Dashboards", "DashboardDescriptionUpdateError", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
                 Exit Sub
@@ -231,9 +212,21 @@ Partial Class ListOfDashboards
 
     Private Sub MessageBox_MessageResulted(sender As Object, e As Controls_Msgbox.MsgBoxEventArgs) Handles MessageBox.MessageResulted
         If e.Tag = "DashboardsDeleted" AndAlso e.Result = Controls_Msgbox.MessageResult.OK Then
-            Response.Redirect("ListOfDashboards.aspx")
+            Response.Redirect(CurrentListUrl())
         End If
     End Sub
+
+    Private Function CurrentListUrl() As String
+        Dim reportId As String = RequestedReportId()
+        If reportId.Trim() = "" Then Return "ListOfDashboards.aspx"
+        Return "ListOfDashboards.aspx?Report=" & Server.UrlEncode(reportId)
+    End Function
+
+    Private Function RequestedReportId() As String
+        If Request("ReportID") IsNot Nothing AndAlso Request("ReportID").ToString().Trim() <> "" Then Return Request("ReportID").ToString().Trim()
+        If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Return Request("Report").ToString().Trim()
+        Return String.Empty
+    End Function
 
     Private Function SqlText(value As Object) As String
         If value Is Nothing Then Return String.Empty
@@ -257,26 +250,31 @@ Partial Class ListOfDashboards
         Return value
     End Function
 
-    Private Function IsAnalyticsMode() As Boolean
-        Dim requestTyp As String = String.Empty
-        If Request("typ") IsNot Nothing Then requestTyp = Request("typ").ToString().Trim()
+    Private Function DashboardOpenUrl(dashboardName As String, reportId As String) As String
+        Dim ret As String = String.Empty
+        Dim safeUser As String = SqlText(Session("logon"))
+        Dim safeDashboard As String = SqlText(dashboardName)
+        Dim reportFilter As String = ""
+        If reportId.Trim() <> "" Then reportFilter = " AND ReportID='" & SqlText(reportId) & "'"
+        Dim analyticsCount As Integer = DashboardRowCount("SELECT COUNT(*) AS Cnt FROM ourdashboards WHERE UserID='" & safeUser & "' AND Dashboard='" & safeDashboard & "' AND UPPER(ChartType)='ANALYTICS'" & reportFilter, ret)
+        Dim chartCount As Integer = DashboardRowCount("SELECT COUNT(*) AS Cnt FROM ourdashboards WHERE UserID='" & safeUser & "' AND Dashboard='" & safeDashboard & "' AND (ChartType IS NULL OR UPPER(ChartType)<>'ANALYTICS')" & reportFilter, ret)
+        Dim reportParameter As String = ""
+        If reportId.Trim() <> "" Then reportParameter = "&Report=" & Server.UrlEncode(reportId)
 
-        If requestTyp <> "" Then
-            If requestTyp.Equals("analytics", StringComparison.OrdinalIgnoreCase) Then
-                Session("typ") = "analytics"
-            Else
-                Session("typ") = String.Empty
-            End If
+        If analyticsCount > 0 AndAlso chartCount > 0 Then
+            Return "MixDashboard.aspx?dashboard=" & Server.UrlEncode(dashboardName) & reportParameter
         End If
-
-        If Session("typ") Is Nothing Then Return False
-        Return Session("typ").ToString().Trim().Equals("analytics", StringComparison.OrdinalIgnoreCase)
+        If analyticsCount > 0 Then
+            Return "CustomDashboard.aspx?dashboard=" & Server.UrlEncode(dashboardName) & reportParameter
+        End If
+        Return "Dashboard.aspx?user=" & Server.UrlEncode(Session("logon").ToString()) & "&dashboard=" & Server.UrlEncode(dashboardName) & reportParameter
     End Function
 
-    Private Function DashboardModeWhereClause(analyticsMode As Boolean) As String
-        If analyticsMode Then
-            Return " AND UPPER(ChartType)='ANALYTICS'"
-        End If
-        Return " AND (ChartType IS NULL OR UPPER(ChartType)<>'ANALYTICS')"
+    Private Function DashboardRowCount(sql As String, ByRef ret As String) As Integer
+        Dim dv As DataView = mRecords(sql, ret)
+        If ret.Trim() <> "" OrElse dv Is Nothing OrElse dv.Table Is Nothing OrElse dv.Table.Rows.Count = 0 Then Return 0
+        Dim countValue As Integer = 0
+        Integer.TryParse(dv.Table.Rows(0)(0).ToString(), countValue)
+        Return countValue
     End Function
 End Class

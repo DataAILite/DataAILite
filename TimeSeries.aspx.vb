@@ -9,6 +9,7 @@ Partial Class TimeSeries
 
     Private Sub TimeSeries_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
@@ -21,6 +22,7 @@ Partial Class TimeSeries
         If Not IsPostBack Then
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             BuildAndBindSeries()
         ElseIf Session("TimeSeriesTable") IsNot Nothing Then
             BindSeries(CType(Session("TimeSeriesTable"), DataTable))
@@ -430,4 +432,13 @@ Partial Class TimeSeries
         LabelOutputExplanation.Text = ExplanationBlock("Output", "Date shows the ordered time bucket.", "Records links open source rows in that period.", "Value shows the summarized value for the period before rolling calculations.", "Moving Average and Rolling Total show the rolling results for the selected number of time periods.", "This helps smooth noisy values and reveal trend direction over time.")
         ReadinessFooterGuidance.SetFooter(Me, "Time Series", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownDateField", "date")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownValueField", "y1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownDateRollup", "rollup")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownDateRollup", "dateagg")
+        UrlInputHelper.ApplyTextBox(Me, "txtWindow", "window")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

@@ -10,6 +10,7 @@ Partial Class MapReadines
 
     Private Sub MapReadines_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
@@ -22,6 +23,7 @@ Partial Class MapReadines
         If Not IsPostBack Then
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             BuildAndBindReadiness()
         ElseIf Session("MapReadinesTable") IsNot Nothing Then
             BuildAutomaticMapSuitability()
@@ -613,4 +615,11 @@ Partial Class MapReadines
         End If
         Response.End()
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownLatitude", "lat")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownLongitude", "lon")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownNameField", "name")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

@@ -54,6 +54,7 @@ Partial Class TimeBasedSummaries
 
     Private Sub TimeBasedSummaries_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
@@ -67,6 +68,7 @@ Partial Class TimeBasedSummaries
             LabelError.Text = ""
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             BuildAndBindSummary()
         ElseIf Session("TimeBasedSummariesTable") IsNot Nothing Then
             BindSummary(CType(Session("TimeBasedSummariesTable"), DataTable))
@@ -509,4 +511,12 @@ Partial Class TimeBasedSummaries
         LabelOutputExplanation.Text = ExplanationBlock("Output", "Period shows the calculated day, week, month, quarter, or year bucket.", "Period Start shows the normalized beginning date for that bucket.", "Records shows how many rows are included in that period and links to them.", "The calculated value column is named from the selected Aggregation and Value Field, such as Sum of Sales or Average of Amount.", "The grid is useful for seasonality, monthly summaries, annual rollups, and period comparisons.")
         ReadinessFooterGuidance.SetFooter(Me, "Time Based Summaries", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownDateField", "date")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownPeriod", "period")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownValueField", "y1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownAggregate", "fn")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

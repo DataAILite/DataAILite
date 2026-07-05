@@ -92,6 +92,7 @@ Partial Class Regression
 
     Private Sub Regression_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If
@@ -124,6 +125,7 @@ Partial Class Regression
             LoadReportData()
             FillFieldLists()
             RestoreRegressionSelections()
+            ApplyUrlParameters()
             BuildAndBindRegression()
         ElseIf Session("RegressionTable") IsNot Nothing Then
             BindRegression(CType(Session("RegressionTable"), DataTable))
@@ -1187,4 +1189,20 @@ Partial Class Regression
         LabelOutputExplanation.Text = ExplanationBlock("Output", "Group identifies the combined segment when grouping is used.", "Equation shows the fitted relationship between X and Y.", "Predicted Y shows the forecast for the requested X value when provided.", "Records links open the rows used to fit each equation.", "Trends links open an interactive chart where the equation can be explored and exported.")
         ReadinessFooterGuidance.SetFooter(Me, "Regression Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownXField", "x1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownYField", "y1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownGroupField", "cat1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownEquationType", "eq")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownEquationType", "equation")
+        UrlInputHelper.ApplyTextBox(Me, "txtPredictX", "predictx")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+        If UrlInputHelper.HasParam(Me, "x1") Then Session(RegressionSessionKey("XField")) = DropDownXField.SelectedValue
+        If UrlInputHelper.HasParam(Me, "y1") Then Session(RegressionSessionKey("YField")) = DropDownYField.SelectedValue
+        If UrlInputHelper.HasParam(Me, "cat1") Then Session(RegressionSessionKey("GroupField")) = DropDownGroupField.SelectedValue
+        If UrlInputHelper.HasParam(Me, "eq") OrElse UrlInputHelper.HasParam(Me, "equation") Then Session(RegressionSessionKey("EquationType")) = DropDownEquationType.SelectedValue
+        If UrlInputHelper.HasParam(Me, "predictx") Then Session(RegressionSessionKey("PredictX")) = txtPredictX.Text.Trim()
+        If UrlInputHelper.HasParam(Me, "search") Then Session(RegressionSessionKey("Search")) = txtSearch.Text.Trim()
+    End Sub
+
 End Class

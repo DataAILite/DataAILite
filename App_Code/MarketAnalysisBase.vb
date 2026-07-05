@@ -25,6 +25,7 @@ Public MustInherit Class MarketAnalysisBase
 
     Protected Sub Market_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If
@@ -373,18 +374,28 @@ Public MustInherit Class MarketAnalysisBase
         Dim dimensionMulti As ListBox = ListBoxControl("ListBoxDimension")
         Dim valueField As DropDownList = DropDownControl("DropDownValueField")
         Dim secondary As DropDownList = DropDownControl("DropDownSecondaryField")
+        Dim dateField As DropDownList = DropDownControl("DropDownDateField")
+        Dim dateAggregationField As DropDownList = DropDownControl("DropDownDateAggregation")
+        Dim inventoryField As DropDownList = DropDownControl("DropDownInventoryField")
+        Dim searchBox As TextBox = TextBoxControl("txtSearch")
+        Dim assumptionBox As TextBox = TextBoxControl("txtAssumption")
 
         SelectDropDownValue(dimension, Request("cat1"))
         SelectDropDownValue(valueField, Request("y1"))
         SelectDropDownValue(secondary, Request("y2"))
+        SelectDropDownValue(dateField, Request("date"))
+        SelectDropDownValue(dateAggregationField, Request("dateagg"))
+        SelectDropDownValue(inventoryField, Request("inventory"))
 
         If dimensionMulti IsNot Nothing Then
             SelectListBoxValues(dimensionMulti, Request("cat1"), Request("cat2"))
         End If
+        If searchBox IsNot Nothing AndAlso Request("search") IsNot Nothing Then searchBox.Text = Request("search").ToString().Trim()
+        If assumptionBox IsNot Nothing AndAlso Request("assumption") IsNot Nothing Then assumptionBox.Text = Request("assumption").ToString().Trim()
     End Sub
 
     Private Sub SelectDropDownValue(dropDown As DropDownList, valueText As String)
-        If dropDown Is Nothing OrElse valueText Is Nothing OrElse valueText.Trim() = "" Then Exit Sub
+        If dropDown Is Nothing OrElse valueText Is Nothing Then Exit Sub
         Dim item As ListItem = dropDown.Items.FindByValue(valueText.Trim())
         If item Is Nothing Then item = dropDown.Items.FindByText(valueText.Trim())
         If item Is Nothing Then Exit Sub

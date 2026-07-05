@@ -17,12 +17,14 @@ Partial Class ChartRecommendationHelpers
 
     Private Sub ChartRecommendationHelpers_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
         If Session("REPTITLE") IsNot Nothing AndAlso Session("REPTITLE").ToString().Trim() <> "" Then lblHeader.Text = Session("REPTITLE").ToString() & " - Chart Recommendations"
         HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Chart%20Recommendations"
         SetChartsLink()
+        SetDashboardListLink()
 
         ' Handle Open Chart link click - set sessions and redirect to ChartGoogleOne
         If Request("openchart") IsNot Nothing AndAlso Request("openchart").ToString().Trim() <> "" Then
@@ -72,11 +74,19 @@ Partial Class ChartRecommendationHelpers
         If reportId <> "" Then HyperLinkCharts.NavigateUrl = "ChartGoogleOne.aspx?Report=" & Server.UrlEncode(reportId)
     End Sub
 
+    Private Sub SetDashboardListLink()
+        HyperLinkChartDashboards.NavigateUrl = "ListOfDashboards.aspx"
+        If Session("REPORTID") IsNot Nothing AndAlso Session("REPORTID").ToString().Trim() <> "" Then
+            HyperLinkChartDashboards.NavigateUrl = "ListOfDashboards.aspx?Report=" & Server.UrlEncode(Session("REPORTID").ToString().Trim())
+        End If
+    End Sub
+
     Private Sub ChartRecommendationHelpers_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Not IsPostBack Then
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             BuildAndBindRecommendations()
         ElseIf Session("ChartRecommendationTable") IsNot Nothing Then
             BindRecommendations(CType(Session("ChartRecommendationTable"), DataTable))
@@ -126,6 +136,31 @@ Partial Class ChartRecommendationHelpers
         DropDownCategoryField.Text = "Please select..."
         DropDownValueField.Text = "Please select..."
         RestoreSelections()
+    End Sub
+
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyMultiSelectControl(Me, "DropDownCategoryField", "cat1")
+        UrlInputHelper.ApplyMultiSelectControl(Me, "DropDownValueField", "y1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownDateField", "date")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+        If UrlInputHelper.HasParam(Me, "cat2") Then
+            Dim existingCategories As String = DropDownCategoryField.SelectedItemsString
+            Dim category2 As String = UrlInputHelper.Param(Me, "cat2")
+            If existingCategories.Trim() = "" OrElse existingCategories.Trim() = "Please select..." Then
+                DropDownCategoryField.SelectedItemsString = category2
+            ElseIf category2.Trim() <> "" AndAlso existingCategories.IndexOf(category2, StringComparison.OrdinalIgnoreCase) < 0 Then
+                DropDownCategoryField.SelectedItemsString = existingCategories & "," & category2
+            End If
+        End If
+        If UrlInputHelper.HasParam(Me, "y2") Then
+            Dim existingValues As String = DropDownValueField.SelectedItemsString
+            Dim value2 As String = UrlInputHelper.Param(Me, "y2")
+            If existingValues.Trim() = "" OrElse existingValues.Trim() = "Please select..." Then
+                DropDownValueField.SelectedItemsString = value2
+            ElseIf value2.Trim() <> "" AndAlso existingValues.IndexOf(value2, StringComparison.OrdinalIgnoreCase) < 0 Then
+                DropDownValueField.SelectedItemsString = existingValues & "," & value2
+            End If
+        End If
     End Sub
 
     Private Function IsIndexFieldName(columnName As String) As Boolean

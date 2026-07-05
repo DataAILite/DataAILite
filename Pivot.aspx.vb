@@ -79,6 +79,7 @@ Partial Class Pivot
 
     Private Sub Pivot_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If
@@ -110,6 +111,7 @@ Partial Class Pivot
             LabelInfo.Text = ""
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             BuildAndBindPivot()
         ElseIf Session("PivotTable") IsNot Nothing Then
             BindPivot(CType(Session("PivotTable"), DataTable))
@@ -592,4 +594,14 @@ Partial Class Pivot
         LabelOutputExplanation.Text = ExplanationBlock("Output", "The first column shows the selected row-field value.", "Generated pivot columns represent distinct values from the selected column field.", "Each cell is the calculated aggregate for that row/column intersection.", "Total shows the row total across generated pivot columns.", "Blank or zero cells mean no matching records or no usable value for that intersection.")
         ReadinessFooterGuidance.SetFooter(Me, "Pivot / Cross Tab", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownRowField", "cat1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownRowField", "row")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownColumnField", "cat2")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownColumnField", "col")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownValueField", "y1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownAggregate", "fn")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

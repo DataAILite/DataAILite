@@ -51,6 +51,7 @@ Partial Class Dashboard
     Private dashboardPageNumber As Integer = 1
     Private dashboardPageCount As Integer = 1
     Private dashboardTotalCharts As Integer = 0
+    Private currentReportId As String = String.Empty
     Private Sub Dashboard_Init(sender As Object, e As EventArgs) Handles Me.Init
        If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = ""  Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
@@ -128,6 +129,7 @@ Partial Class Dashboard
     Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles Me.Load
         Session("newarr") = "yes"
         LabelError.Text = ""
+        currentReportId = RequestedReportId()
             Dim ret As String = String.Empty
             If Request("Dashboard") Is Nothing OrElse Request("Dashboard").ToString.Trim = "" Then
                 LabelError.Text = "No dashboard"
@@ -135,11 +137,11 @@ Partial Class Dashboard
             End If
         Dim ddb As DataView = Nothing
         If Request("dash") Is Nothing OrElse Request("dash").ToString.Trim <> "yes" Then
-            ddb = mRecords("SELECT * FROM ourdashboards WHERE UserId='" & Session("logon") & "' AND Dashboard='" & Request("Dashboard") & "' ORDER BY Indx", ret)
+            ddb = mRecords("SELECT * FROM ourdashboards WHERE UserId='" & SafeSql(Session("logon")) & "' AND Dashboard='" & SafeSql(Request("Dashboard")) & "'" & ReportSqlFilter() & " ORDER BY Indx", ret)
             dashboardname = Request("Dashboard")
             Session("dash") = ""
         ElseIf Not Request("dash") Is Nothing AndAlso Request("dash").ToString.Trim = "yes" Then
-            ddb = mRecords("SELECT * FROM ourdashboards WHERE Prop6='" & Session("logon") & "' AND Dashboard='" & Request("dashboard") & "' ORDER BY Indx", ret)
+            ddb = mRecords("SELECT * FROM ourdashboards WHERE Prop6='" & SafeSql(Session("logon")) & "' AND Dashboard='" & SafeSql(Request("dashboard")) & "'" & ReportSqlFilter() & " ORDER BY Indx", ret)
             dashboardname = Request("dashboard")
             Session("dash") = Request("dash")
         End If
@@ -517,7 +519,24 @@ Partial Class Dashboard
     Private Function DashboardPageUrl(pageNumber As Integer) As String
         Dim url As String = "Dashboard.aspx?user=" & Server.UrlEncode(Session("logon").ToString()) & "&dashboard=" & Server.UrlEncode(dashboardname) & "&page=" & pageNumber.ToString()
         If Session("dash") IsNot Nothing AndAlso Session("dash").ToString().Trim() = "yes" Then url &= "&dash=yes"
+        If currentReportId.Trim() <> "" Then url &= "&Report=" & Server.UrlEncode(currentReportId)
         Return url
+    End Function
+
+    Private Function RequestedReportId() As String
+        If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Return Request("Report").ToString().Trim()
+        If Request("ReportID") IsNot Nothing AndAlso Request("ReportID").ToString().Trim() <> "" Then Return Request("ReportID").ToString().Trim()
+        Return String.Empty
+    End Function
+
+    Private Function ReportSqlFilter() As String
+        If currentReportId.Trim() = "" Then Return String.Empty
+        Return " AND ReportID='" & SafeSql(currentReportId) & "'"
+    End Function
+
+    Private Function SafeSql(value As Object) As String
+        If value Is Nothing Then Return String.Empty
+        Return value.ToString().Replace("'", "''")
     End Function
 
     Private Sub LinkButtonPrevious_Click(sender As Object, e As EventArgs) Handles LinkButtonPrevious.Click
@@ -544,7 +563,11 @@ Partial Class Dashboard
 
     Private Sub LinkButtonBack_Click(sender As Object, e As EventArgs) Handles LinkButtonBack.Click
         'TODO from Analytics, from ListOfReports
-        Response.Redirect("ListOfDashboards.aspx")
+        If currentReportId.Trim() <> "" Then
+            Response.Redirect("ListOfDashboards.aspx?Report=" & Server.UrlEncode(currentReportId))
+        Else
+            Response.Redirect("ListOfDashboards.aspx")
+        End If
 
     End Sub
 
@@ -697,7 +720,7 @@ Partial Class Dashboard
         Else
             MessageBox.Show("Report has been deleted from the dashboard.", "Dashboards", "Dashboards", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
         End If
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Sub lnkbtn_del_1_Click(sender As Object, e As EventArgs) Handles lnkbtn_del_1.Click
         Dim ret As String = DeleteDashboard(inds(1))
@@ -706,7 +729,7 @@ Partial Class Dashboard
         Else
             MessageBox.Show("Report has been deleted from the dashboard.", "Dashboards", "Dashboards", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
         End If
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Sub lnkbtn_del_2_Click(sender As Object, e As EventArgs) Handles lnkbtn_del_2.Click
         Dim ret As String = DeleteDashboard(inds(2))
@@ -715,7 +738,7 @@ Partial Class Dashboard
         Else
             MessageBox.Show("Report has been deleted from the dashboard.", "Dashboards", "Dashboards", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
         End If
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Sub lnkbtn_del_3_Click(sender As Object, e As EventArgs) Handles lnkbtn_del_3.Click
         Dim ret As String = DeleteDashboard(inds(3))
@@ -724,7 +747,7 @@ Partial Class Dashboard
         Else
             MessageBox.Show("Report has been deleted from the dashboard.", "Dashboards", "Dashboards", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
         End If
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Sub lnkbtn_del_4_Click(sender As Object, e As EventArgs) Handles lnkbtn_del_4.Click
         Dim ret As String = DeleteDashboard(inds(4))
@@ -733,7 +756,7 @@ Partial Class Dashboard
         Else
             MessageBox.Show("Report has been deleted from the dashboard.", "Dashboards", "Dashboards", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
         End If
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Sub lnkbtn_del_5_Click(sender As Object, e As EventArgs) Handles lnkbtn_del_5.Click
         Dim ret As String = DeleteDashboard(inds(5))
@@ -742,7 +765,7 @@ Partial Class Dashboard
         Else
             MessageBox.Show("Report has been deleted from the dashboard.", "Dashboards", "Dashboards", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
         End If
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Sub lnkbtn_del_6_Click(sender As Object, e As EventArgs) Handles lnkbtn_del_6.Click
         Dim ret As String = DeleteDashboard(inds(6))
@@ -751,7 +774,7 @@ Partial Class Dashboard
         Else
             MessageBox.Show("Report has been deleted from the dashboard.", "Dashboards", "Dashboards", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
         End If
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Sub lnkbtn_del_7_Click(sender As Object, e As EventArgs) Handles lnkbtn_del_7.Click
         Dim ret As String = DeleteDashboard(inds(7))
@@ -760,11 +783,11 @@ Partial Class Dashboard
         Else
             MessageBox.Show("Report has been deleted from the dashboard.", "Dashboards", "Dashboards", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
         End If
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Sub lnkbtn_del_8_Click(sender As Object, e As EventArgs) Handles lnkbtn_del_8.Click
         Dim ret As String = DeleteDashboard(inds(8))
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Sub lnkbtn_del_9_Click(sender As Object, e As EventArgs) Handles lnkbtn_del_9.Click
         Dim ret As String = DeleteDashboard(inds(9))
@@ -773,7 +796,7 @@ Partial Class Dashboard
         Else
             MessageBox.Show("Report has been deleted from the dashboard.", "Dashboards", "Dashboards", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
         End If
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Sub lnkbtn_del_10_Click(sender As Object, e As EventArgs) Handles lnkbtn_del_10.Click
         Dim ret As String = DeleteDashboard(inds(10))
@@ -782,7 +805,7 @@ Partial Class Dashboard
         Else
             MessageBox.Show("Report has been deleted from the dashboard.", "Dashboards", "Dashboards", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
         End If
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Sub lnkbtn_del_11_Click(sender As Object, e As EventArgs) Handles lnkbtn_del_11.Click
         Dim ret As String = DeleteDashboard(inds(11))
@@ -791,7 +814,7 @@ Partial Class Dashboard
         Else
             MessageBox.Show("Report has been deleted from the dashboard.", "Dashboards", "Dashboards", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
         End If
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
     Private Function DeleteDashboard(ByVal ind As Integer) As String
         Dim sqld As String = "DELETE FROM ourdashboards WHERE Indx=" & ind.ToString
@@ -820,7 +843,7 @@ Partial Class Dashboard
         ret = SendHTMLEmail("", "Dashboard is shared with you", emailbody, txtShareEmail.Text, Session("SupportEmail"))
         WriteToAccessLog(Session("logon"), "Sent Email to " & txtShareEmail.Text & " with body " & emailbody & ". Result: " & ret, 1)
         MessageBox.Show(ret, "Dashboard share", "DashboardShared", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Warning, Controls_Msgbox.MessageDefaultButton.PostOK)
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
 
     Private Sub LinkButtonRefresh_Click(sender As Object, e As EventArgs) Handles LinkButtonRefresh.Click
@@ -830,6 +853,6 @@ Partial Class Dashboard
         ret = UpdateDashboard(dashboardname, n, Session("UserConnString"), Session("UserConnProvider"), er)
 
         'MessageBox.Show("Dashboard updated with result: " & ret, "Dashboards", "", Controls_Msgbox.Buttons.OK, Controls_Msgbox.MessageIcon.Information)
-        Response.Redirect("Dashboard.aspx?user=" & Session("logon") & "&dashboard=" & dashboardname)
+        Response.Redirect(DashboardPageUrl(dashboardPageNumber))
     End Sub
 End Class

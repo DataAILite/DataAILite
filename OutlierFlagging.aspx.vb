@@ -9,6 +9,7 @@ Partial Class OutlierFlagging
 
     Private Sub OutlierFlagging_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
@@ -21,6 +22,7 @@ Partial Class OutlierFlagging
         If Not IsPostBack Then
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             BuildAndBindOutliers()
         ElseIf Session("OutlierFlaggingTable") IsNot Nothing Then
             BindOutliers(CType(Session("OutlierFlaggingTable"), DataTable))
@@ -438,4 +440,14 @@ Partial Class OutlierFlagging
         LabelOutputExplanation.Text = ExplanationBlock("Output", "Row is the source-record number and is linked to the matching record in Data Explorer.", "Field shows the selected numeric field being checked.", "Value shows the flagged value from that row.", "Method and Reason explain which outlier rule was applied and why the row was flagged.", "Average and Std Dev show the baseline statistics used by standard-deviation and percent-difference methods.")
         ReadinessFooterGuidance.SetFooter(Me, "Outlier Flagging", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownValueField", "y1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownMethod", "method")
+        UrlInputHelper.ApplyTextBox(Me, "txtStdDev", "stdev")
+        UrlInputHelper.ApplyTextBox(Me, "txtPercent", "percent")
+        UrlInputHelper.ApplyTextBox(Me, "txtMin", "min")
+        UrlInputHelper.ApplyTextBox(Me, "txtMax", "max")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

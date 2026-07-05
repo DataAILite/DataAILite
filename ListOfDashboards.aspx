@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>List Of Chart Dashboards</title>
+    <title>List Of Dashboards</title>
     <style type="text/css">
         .auto-style1 {
             width: 107px;
@@ -151,7 +151,7 @@
      <tr>
        <td align="center" valign="top">
          
-         <asp:Label ID="lblHeader" runat="server" Font-Bold="True" Font-Size="22px" Font-Names="Arial" >Chart Dashboards:</asp:Label>
+         <asp:Label ID="lblHeader" runat="server" Font-Bold="True" Font-Size="22px" Font-Names="Arial" >Dashboards:</asp:Label>
 
        </td>
       </tr>

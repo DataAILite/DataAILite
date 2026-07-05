@@ -11,6 +11,7 @@ Partial Class CrossReportComparison
 
     Private Sub CrossReportComparison_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
@@ -25,6 +26,7 @@ Partial Class CrossReportComparison
             FillCompareReports()
             FillFieldLists()
             RestoreSelections()
+            ApplyUrlParameters()
             BuildAndBindAnalysis()
         ElseIf Session("CrossReportComparisonTable") IsNot Nothing Then
             BindAnalysisGrid(CType(Session("CrossReportComparisonTable"), DataTable))
@@ -495,4 +497,13 @@ Partial Class CrossReportComparison
     Private Function FilterEquals(columnName As String, valueText As String) As String
         Return "[" & columnName.Replace("]", "]]" ) & "] = '" & valueText.Replace("'", "''") & "'"
     End Function
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownCompareReport", "compareReport")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownKeyField", "key")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownKeyField", "cat1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownValueField", "y1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownAggregation", "fn")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

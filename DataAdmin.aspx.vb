@@ -38,6 +38,14 @@ Partial Class DataAdmin
         End If
 
         HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Analytics%20Dashboard"
+        SetDashboardListLink()
+    End Sub
+
+    Private Sub SetDashboardListLink()
+        HyperLinkChartDashboards.NavigateUrl = "ListOfDashboards.aspx"
+        If Session("REPORTID") IsNot Nothing AndAlso Session("REPORTID").ToString().Trim() <> "" Then
+            HyperLinkChartDashboards.NavigateUrl = "ListOfDashboards.aspx?Report=" & Server.UrlEncode(Session("REPORTID").ToString().Trim())
+        End If
     End Sub
 
     Private Sub DataAdmin_Load(sender As Object, e As EventArgs) Handles Me.Load

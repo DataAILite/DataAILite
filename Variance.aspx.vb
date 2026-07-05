@@ -41,6 +41,7 @@ Partial Class Variance
 
     Private Sub Variance_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If
@@ -72,6 +73,7 @@ Partial Class Variance
             LabelInfo.Text = ""
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             BuildAndBindAnalysis()
         ElseIf Session("VarianceTable") IsNot Nothing Then
             BindAnalysis(CType(Session("VarianceTable"), DataTable))
@@ -660,4 +662,17 @@ Partial Class Variance
         LabelOutputExplanation.Text = ExplanationBlock("Output", "For Variance and Percent Change analysis, the grid shows the selected group field, Base value, Compare value, Variance, and Percent Change.", "Base and Compare column captions include the selected base and compare values.", "Variance is Compare minus Base; positive values mean compare is higher and negative values mean compare is lower.", "Percent Change shows the relative movement from Base when Base is not zero.", "For Contribution analysis, the grid instead shows the selected group field, Value, and Contribution to Total.")
         ReadinessFooterGuidance.SetFooter(Me, "Variance Analysis", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownAnalysisType", "analysis")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownGroupField", "cat1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownValueField", "y1")
+        FillAggregates()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownAggregate", "fn")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownCompareField", "cat2")
+        FillCompareValues()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownBaseValue", "base")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownCompareValue", "compare")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

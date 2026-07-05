@@ -45,6 +45,7 @@ Partial Class DataQuality
 
     Private Sub DataQuality_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString = "" Then
             Response.Redirect("~/Default.aspx?msg=SessionExpired")
         End If
@@ -75,6 +76,7 @@ Partial Class DataQuality
             LabelError.Text = ""
             LabelInfo.Text = ""
             LoadReportData()
+            ApplyUrlParameters()
             BuildAndBindQuality()
         ElseIf Session("DataQualityTable") IsNot Nothing Then
             BindQuality(CType(Session("DataQualityTable"), DataTable))
@@ -779,4 +781,9 @@ Partial Class DataQuality
         LabelOutputExplanation.Text = ExplanationBlock("Output", "Check names the quality check that found the issue.", "Field identifies the affected column when the issue is field-specific.", "Issue describes the problem found in the data.", "Count shows how many records are affected and links to those records when a record filter is available.", "Details gives the extra context needed to review or correct the issue.")
         ReadinessFooterGuidance.SetFooter(Me, "Data Quality", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, GetSourceTable())
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyTextBox(Me, "txtStdDevLimit", "stdev")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

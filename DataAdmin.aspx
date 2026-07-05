@@ -360,7 +360,7 @@
                                             <asp:TreeNode Text="Rule-Based Alerts" Value="RuleBasedAlerts.aspx"></asp:TreeNode>
                                             <asp:TreeNode Text="Map Readiness" Value="MapReadines.aspx"></asp:TreeNode>
                                         </asp:TreeNode>
-                                        <asp:TreeNode Text="Reports" Value="ShowReport.aspx?srd=3" Expanded="False">
+                                        <asp:TreeNode Text="Reports and Charts" Value="ShowReport.aspx?srd=3" Expanded="False">
                                             <asp:TreeNode Text="Show formatted report" Value="ShowReport.aspx?srd=3"></asp:TreeNode>
                                             <asp:TreeNode Text="Show Generic Report" Value="ReportViews.aspx?gen=yes"></asp:TreeNode>
                                             <asp:TreeNode Text="Show Report Charts" Value="ShowReport.aspx?srd=17"></asp:TreeNode>
@@ -424,7 +424,7 @@
                                 <asp:HyperLink ID="HyperLinkDataExplorer" runat="server" NavigateUrl="~/ShowReport.aspx?srd=0" CssClass="NodeStyle" Font-Names="Arial">Data Explorer</asp:HyperLink>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <asp:HyperLink ID="HyperLinkReport" runat="server" NavigateUrl="~/ShowReport.aspx?srd=3" CssClass="NodeStyle" Font-Names="Arial">Report and Charts</asp:HyperLink>
-                                &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkChartDashboards" runat="server" NavigateUrl="~/ListOfDashboards.aspx" CssClass="NodeStyle" Font-Names="Arial">Chart Dashboards</asp:HyperLink>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<asp:HyperLink ID="HyperLinkChartDashboards" runat="server" NavigateUrl="~/ListOfDashboards.aspx" CssClass="NodeStyle" Font-Names="Arial" ToolTip="Report subset of user dashboards">Dashboards</asp:HyperLink>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <asp:HyperLink ID="HyperLinkHelp" runat="server" NavigateUrl="DataAIHelp.aspx?hilt=Analytics%20Dashboard" Target="_blank" CssClass="NodeStyle" Font-Names="Arial">Help</asp:HyperLink>
                                 &nbsp;&nbsp;&nbsp;&nbsp;

@@ -11,6 +11,7 @@ Partial Class KPIBuilder
 
     Private Sub KPIBuilder_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
@@ -23,6 +24,7 @@ Partial Class KPIBuilder
         If Not IsPostBack Then
             LoadReportData()
             FillFieldLists()
+            ApplyUrlParameters()
             BuildAndBindAnalysis()
         ElseIf Session("KPIBuilderTable") IsNot Nothing Then
             BindAnalysisGrid(CType(Session("KPIBuilderTable"), DataTable))
@@ -418,5 +420,13 @@ Partial Class KPIBuilder
         Session("KPIBuilderFilters") = filters
         Return filterId
     End Function
+
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyDropDown(Me, "DropDownPrimaryField", "cat1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownOperation", "operation")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownValueField", "y1")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownSecondaryValueField", "y2")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
 
 End Class

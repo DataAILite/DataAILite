@@ -17,6 +17,7 @@ Partial Class CorrelationThreshold
     Private Sub CorrelationThreshold_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Not IsPostBack Then
+            ApplyUrlParameters()
             BuildAndBindCorrelation()
         ElseIf Session("CorrelationThresholdTable") IsNot Nothing Then
             BindCorrelation(CType(Session("CorrelationThresholdTable"), DataTable))
@@ -335,4 +336,10 @@ Partial Class CorrelationThreshold
         LabelOutputExplanation.Text = ExplanationBlock("Output", "Field 1 and Field 2 identify the numeric pair being compared.", "Correlation ranges from -1 to 1.", "Strength shows Moderate or Strong based on the absolute correlation value.", "View shows Positive when the fields move together and Negative when they move in opposite directions.", "Only field pairs that pass the selected threshold and view filter are displayed.")
         ReadinessFooterGuidance.SetFooter(Me, "Correlation Threshold", LabelReadinessWhyUseful, LabelReadinessSuggestedFields, CurrentReportData())
     End Sub
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyTextBox(Me, "txtThreshold", "threshold")
+        UrlInputHelper.ApplyDropDown(Me, "DropDownView", "view")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class

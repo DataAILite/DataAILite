@@ -11,6 +11,7 @@ Partial Class DataReadinessScanner
 
     Private Sub DataReadinessScanner_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
@@ -21,6 +22,7 @@ Partial Class DataReadinessScanner
     Private Sub DataReadinessScanner_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Not IsPostBack Then
+            ApplyUrlParameters()
             BuildAndBindAnalysis()
         ElseIf Session("DataReadinessScannerTable") IsNot Nothing Then
             BindAnalysisGrid(CType(Session("DataReadinessScannerTable"), DataTable))
@@ -843,5 +845,9 @@ Partial Class DataReadinessScanner
         Session("DataReadinessScannerFilters") = filters
         Return filterId
     End Function
+
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
 
 End Class

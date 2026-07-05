@@ -1,4 +1,4 @@
-﻿Imports System
+Imports System
 Imports System.Configuration
 Imports System.Data
 Imports System.Data.SqlClient
@@ -2455,7 +2455,7 @@ Partial Class ChartGoogleOne
         For i As Integer = 0 To dashnames.Length - 1
             ret = AddToDashboard(dashnames(i))
         Next
-        Response.Redirect("ListOfDashboards.aspx")
+        Response.Redirect(DashboardListUrlForCurrentReport())
     End Sub
     Private Sub lnkbtnAddToDashboard_Click(sender As Object, e As EventArgs) Handles lnkbtnAddToDashboard.Click
         'No longer used. See DoAddToDashboards
@@ -2467,8 +2467,22 @@ Partial Class ChartGoogleOne
         For i = 0 To dashnames.Length - 1
             ret = AddToDashboard(dashnames(i))
         Next
-        Response.Redirect("ListOfDashboards.aspx")
+        Response.Redirect(DashboardListUrlForCurrentReport())
     End Sub
+
+    Private Function DashboardListUrlForCurrentReport() As String
+        Dim reportId As String = String.Empty
+        If Session("REPORTID") IsNot Nothing AndAlso Session("REPORTID").ToString().Trim() <> "" Then
+            reportId = Session("REPORTID").ToString().Trim()
+        ElseIf Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then
+            reportId = Request("Report").ToString().Trim()
+        ElseIf Request("ReportID") IsNot Nothing AndAlso Request("ReportID").ToString().Trim() <> "" Then
+            reportId = Request("ReportID").ToString().Trim()
+        End If
+
+        If reportId = "" Then Return "ListOfDashboards.aspx"
+        Return "ListOfDashboards.aspx?Report=" & Server.UrlEncode(reportId)
+    End Function
 
     Private Sub lnkbtnReverse_Click(sender As Object, e As EventArgs) Handles lnkbtnReverse.Click
         Response.Redirect("ChartGoogleOne.aspx?Report=" & Session("REPORTID") & "&x1=" & Session("cat2") & "&x2=" & Session("cat1") & "&y1=" & Session("AxisY") & "&fn=" & Session("Aggregate") & "&charttype=" & charttype)

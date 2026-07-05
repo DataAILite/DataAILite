@@ -12,6 +12,7 @@ Partial Class RuleBasedAlerts
 
     Private Sub RuleBasedAlerts_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
+        AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
@@ -24,6 +25,7 @@ Partial Class RuleBasedAlerts
         If Not IsPostBack Then
             LoadReportData()
             RestoreSelections()
+            ApplyUrlParameters()
             BuildAndBindAnalysis()
         ElseIf Session("RuleBasedAlertsTable") IsNot Nothing Then
             BindAnalysisGrid(CType(Session("RuleBasedAlertsTable"), DataTable))
@@ -663,4 +665,14 @@ Partial Class RuleBasedAlerts
         If Session("REPORTID") IsNot Nothing AndAlso Session("REPORTID").ToString().Trim() <> "" Then Return Session("REPORTID").ToString().Trim()
         Return "CurrentData"
     End Function
+    Private Sub ApplyUrlParameters()
+        UrlInputHelper.ApplyTextBox(Me, "txtMissingPercent", "missing")
+        UrlInputHelper.ApplyTextBox(Me, "txtVariancePercent", "variance")
+        UrlInputHelper.ApplyTextBox(Me, "txtCorrelationThreshold", "corr")
+        UrlInputHelper.ApplyTextBox(Me, "txtOutlierThreshold", "outlier")
+        UrlInputHelper.ApplyTextBox(Me, "txtChurnScore", "churn")
+        UrlInputHelper.ApplyCheckBox(Me, "chkMapReadiness", "mapfailed")
+        UrlInputHelper.ApplyTextBox(Me, "txtSearch", "search")
+    End Sub
+
 End Class
