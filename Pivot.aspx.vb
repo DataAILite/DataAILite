@@ -88,9 +88,7 @@ Partial Class Pivot
             LabelPageTtl.Text = Session("PAGETTL").ToString()
         End If
 
-        If Request("Report") IsNot Nothing AndAlso Request("Report").ToString.Trim() <> "" Then
-            Session("REPORTID") = Request("Report").ToString.Trim()
-        End If
+        UrlInputHelper.ApplyReportSession(Me)
 
         If Not Session("REPTITLE") Is Nothing AndAlso Session("REPTITLE").ToString.Trim() <> "" Then
             lblHeader.Text = Session("REPTITLE").ToString() & " - Pivot / Cross Tab"

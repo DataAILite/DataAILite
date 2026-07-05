@@ -21,6 +21,17 @@ Public NotInheritable Class UrlInputHelper
         page.Session(sessionName) = Param(page, paramName)
     End Sub
 
+    Public Shared Sub ApplyReportSession(page As Page)
+        If page Is Nothing OrElse page.Session Is Nothing OrElse page.Request Is Nothing Then Exit Sub
+        Dim reportKeys() As String = {"Report", "REPORT", "ReportID", "REPORTID", "repid"}
+        For Each key As String In reportKeys
+            If HasParam(page, key) AndAlso Param(page, key) <> "" Then
+                page.Session("REPORTID") = Param(page, key)
+                Exit Sub
+            End If
+        Next
+    End Sub
+
     Public Shared Sub ApplyDropDown(page As Page, controlId As String, paramName As String)
         If Not HasParam(page, paramName) Then Exit Sub
         Dim ddl As DropDownList = TryCast(FindControlRecursive(page, controlId), DropDownList)

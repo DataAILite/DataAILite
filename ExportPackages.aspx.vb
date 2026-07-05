@@ -26,8 +26,50 @@ Partial Class ExportPackages
     Private Sub ExportPackages_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Not IsPostBack Then
+            If IsDashboardExportRequest() AndAlso BindPreparedDashboardPackage() Then
+                RunPreparedDashboardExportAction()
+            Else
+                SetDefaultNotes()
+                BuildAndBindPackage()
+            End If
+        End If
+    End Sub
+
+    Private Function IsDashboardExportRequest() As Boolean
+        Return Request("dashboardexport") IsNot Nothing AndAlso Request("dashboardexport").ToString().Trim().Equals("1", StringComparison.OrdinalIgnoreCase)
+    End Function
+
+    Private Function BindPreparedDashboardPackage() As Boolean
+        Dim manifest As DataTable = TryCast(Session("ExportPackageTable"), DataTable)
+        If manifest Is Nothing OrElse manifest.Rows.Count = 0 Then Return False
+
+        If Session("DashboardExportPackageNotes") IsNot Nothing Then
+            txtNotes.Text = Session("DashboardExportPackageNotes").ToString()
+        Else
             SetDefaultNotes()
-            BuildAndBindPackage()
+        End If
+
+        For Each row As DataRow In manifest.Rows
+            row("Included") = True
+        Next
+
+        Session("ExportPackageTable") = manifest
+        GridViewPackage.DataSource = manifest
+        GridViewPackage.DataBind()
+        LabelInfo.Text = "Dashboard export package manifest (" & manifest.Rows.Count.ToString() & " rows)"
+        Return True
+    End Function
+
+    Private Sub RunPreparedDashboardExportAction()
+        Dim action As String = ""
+        If Request("action") IsNot Nothing Then action = Request("action").ToString().Trim().ToLowerInvariant()
+        If action = "" AndAlso Session("DashboardExportPackageAction") IsNot Nothing Then action = Session("DashboardExportPackageAction").ToString().Trim().ToLowerInvariant()
+        Session("DashboardExportPackageAction") = Nothing
+
+        If action = "zip" Then
+            ExportPackage()
+        ElseIf action = "pdf" Then
+            ExportPackagePdf()
         End If
     End Sub
 

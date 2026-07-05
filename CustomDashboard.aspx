@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Custom Analytics Dashboard</title>
+    <script type="text/javascript" src="Scripts/html2canvas.min.js"></script>
     <style type="text/css">
         .NodeStyle {
             color: #0066FF;
@@ -177,8 +178,213 @@
             font-size: 12px;
             font-weight: bold;
         }
+        .exportPanel {
+            background-color: #e5e5e5;
+            border: medium double #ffffff;
+            color: black;
+            font-family: Arial;
+            font-size: small;
+            width: 100%;
+            max-width: 980px;
+            margin: 0 auto 10px auto;
+            text-align: left;
+        }
+        .ticketbutton {
+            width: 180px;
+            height: 25px;
+            font-size: 12px;
+            border-radius: 5px;
+            border: 1px solid #4e4747;
+            color: black;
+            background-image: linear-gradient(to bottom, rgba(211,211,211,0), rgba(211,211,250,3));
+            padding: 3px;
+            margin: 5px;
+        }
     </style>
     <script type="text/javascript">
+        function dashboardExportPageCount() {
+            var label = document.getElementById('<%= LabelPageCount.ClientID %>');
+            if (!label) { return 1; }
+            var match = (label.innerText || label.textContent || '').match(/of\s+(\d+)/i);
+            return match ? Math.max(1, parseInt(match[1], 10)) : 1;
+        }
+        function dashboardExportUrlForPage(pageNumber) {
+            var url = new URL(window.location.href);
+            url.searchParams.set('page', pageNumber);
+            return url.toString();
+        }
+        function collectReportViewLinksFromWindow(win, output) {
+            if (!win || !win.document) { return; }
+            var runField = document.getElementById('DashboardExportRunId');
+            var runId = runField ? runField.value : '';
+            var links = win.document.getElementsByTagName('a');
+            for (var i = 0; i < links.length; i++) {
+                var href = links[i].href || '';
+                if (href.toLowerCase().indexOf('reportviews.aspx') < 0) { continue; }
+                var url = new URL(href, window.location.href);
+                url.searchParams.set('srd', '6');
+                url.searchParams.set('dashboardpdfsnapshot', '1');
+                url.searchParams.set('dashboardexportrunid', runId);
+                var text = url.toString();
+                if (output.indexOf(text) < 0) { output.push(text); }
+            }
+        }
+        function collectAnalyticsTileLinksFromWindow(win, output) {
+            if (!win || !win.document) { return; }
+            var tiles = win.document.querySelectorAll('.analyticsTile');
+            for (var i = 0; i < tiles.length; i++) {
+                var openLink = tiles[i].querySelector('.openText a');
+                if (!openLink || !openLink.href) { continue; }
+                var href = openLink.href;
+                var lower = href.toLowerCase();
+                if (lower.indexOf('reportviews.aspx') >= 0 || lower.indexOf('showreport.aspx') >= 0) { continue; }
+                var titleElement = tiles[i].querySelector('.tileTitle');
+                var titleText = titleElement ? (titleElement.innerText || titleElement.textContent || '') : '';
+                var text = new URL(href, window.location.href).toString();
+                var exists = false;
+                for (var j = 0; j < output.length; j++) {
+                    if (output[j].url === text) { exists = true; break; }
+                }
+                var reportId = '';
+                try {
+                    var parsedUrl = new URL(text, window.location.href);
+                    reportId = parsedUrl.searchParams.get('Report') || parsedUrl.searchParams.get('ReportID') || parsedUrl.searchParams.get('REPORTID') || parsedUrl.searchParams.get('repid') || '';
+                } catch (ex) {
+                }
+                if (!exists) { output.push({ url: text, title: titleText, reportId: reportId }); }
+            }
+        }
+        function captureAnalyticsTilePage(win, title, reportId, output, callback) {
+            if (!win || !win.document || typeof html2canvas !== 'function') {
+                callback();
+                return;
+            }
+            window.setTimeout(function () {
+                try {
+                    var doc = win.document;
+                    var body = doc.body;
+                    var root = doc.documentElement;
+                    var width = Math.max(root.scrollWidth || 0, body.scrollWidth || 0, 1200);
+                    var height = Math.max(root.scrollHeight || 0, body.scrollHeight || 0, 900);
+                    height = Math.min(height, 2200);
+                    html2canvas(body, {
+                        backgroundColor: '#ffffff',
+                        windowWidth: width,
+                        windowHeight: height,
+                        width: width,
+                        height: height,
+                        scrollX: 0,
+                        scrollY: 0,
+                        useCORS: true
+                    }).then(function (canvas) {
+                        try {
+                            output.push({
+                                title: title || (doc.title || 'Analytics Tile'),
+                                chartType: 'Analytics Tile',
+                                reportId: reportId || '',
+                                section: title || (doc.title || 'Analytics Tile'),
+                                image: canvas.toDataURL('image/png')
+                            });
+                        } catch (ex) {
+                        }
+                        callback();
+                    }).catch(function () {
+                        callback();
+                    });
+                } catch (ex) {
+                    callback();
+                }
+            }, 1400);
+        }
+        function prepareDashboardReportViewsAndSubmit(button) {
+            var ready = document.getElementById('DashboardExportReady');
+            if (ready && ready.value === 'yes') {
+                ready.value = '';
+                return true;
+            }
+            var runField = document.getElementById('DashboardExportRunId');
+            if (runField && !runField.value) {
+                runField.value = (new Date().getTime()).toString() + '_' + Math.floor(Math.random() * 1000000).toString();
+            }
+
+            var reportViewLinks = [];
+            var analyticsTileLinks = [];
+            var images = [];
+            collectReportViewLinksFromWindow(window, reportViewLinks);
+            collectAnalyticsTileLinksFromWindow(window, analyticsTileLinks);
+            var pageCount = dashboardExportPageCount();
+            var currentPage = 1;
+            var pageBox = document.getElementById('<%= TextBoxPageNumber.ClientID %>');
+            if (pageBox && pageBox.value) {
+                var parsed = parseInt(pageBox.value, 10);
+                if (!isNaN(parsed)) { currentPage = parsed; }
+            }
+
+            var pages = [];
+            for (var p = 1; p <= pageCount; p++) {
+                if (p !== currentPage) { pages.push(p); }
+            }
+
+            var iframe = document.getElementById('DashboardExportFrame');
+            if (!iframe) {
+                iframe = document.createElement('iframe');
+                iframe.id = 'DashboardExportFrame';
+                iframe.style.position = 'absolute';
+                iframe.style.left = '-10000px';
+                iframe.style.top = '-10000px';
+                iframe.style.width = '1400px';
+                iframe.style.height = '1000px';
+                iframe.style.visibility = 'hidden';
+                document.body.appendChild(iframe);
+            }
+
+            function submitExport() {
+                var field = document.getElementById('DashboardExportImages');
+                if (field) { field.value = JSON.stringify(images); }
+                if (ready) { ready.value = 'yes'; }
+                window.setTimeout(function () { button.click(); }, 50);
+            }
+            function loadAnalyticsTileLinks() {
+                if (analyticsTileLinks.length === 0) {
+                    submitExport();
+                    return;
+                }
+                var nextTile = analyticsTileLinks.shift();
+                iframe.onload = function () {
+                    captureAnalyticsTilePage(iframe.contentWindow, nextTile.title, nextTile.reportId, images, loadAnalyticsTileLinks);
+                };
+                iframe.src = nextTile.url;
+            }
+            function loadReportViewLinks() {
+                if (reportViewLinks.length === 0) {
+                    loadAnalyticsTileLinks();
+                    return;
+                }
+                var nextUrl = reportViewLinks.shift();
+                iframe.onload = function () {
+                    window.setTimeout(loadReportViewLinks, 1600);
+                };
+                iframe.src = nextUrl;
+            }
+            function loadNextPage() {
+                if (pages.length === 0) {
+                    loadReportViewLinks();
+                    return;
+                }
+                var nextPage = pages.shift();
+                iframe.onload = function () {
+                    window.setTimeout(function () {
+                        try { collectReportViewLinksFromWindow(iframe.contentWindow, reportViewLinks); } catch (ex) { }
+                        try { collectAnalyticsTileLinksFromWindow(iframe.contentWindow, analyticsTileLinks); } catch (ex) { }
+                        loadNextPage();
+                    }, 900);
+                };
+                iframe.src = dashboardExportUrlForPage(nextPage);
+            }
+
+            loadNextPage();
+            return false;
+        }
         function customDashboardTilePageSize() {
             var grid = document.querySelector(".tileGrid");
             if (!grid) {
@@ -230,6 +436,9 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <input type="hidden" id="DashboardExportImages" name="DashboardExportImages" value="" />
+        <input type="hidden" id="DashboardExportReady" name="DashboardExportReady" value="" />
+        <input type="hidden" id="DashboardExportRunId" name="DashboardExportRunId" value="" />
         <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
         <asp:HiddenField ID="HiddenDashboardPageSize" runat="server" />
         <asp:UpdatePanel ID="udpCustomDashboard" runat="server">
@@ -271,6 +480,19 @@
                                         <asp:Label ID="lblHeader" runat="server" CssClass="dashboardTitle" Text="Custom Analytics Dashboard"></asp:Label>
                                         <asp:Label ID="LabelDescription" runat="server" CssClass="dashboardSubTitle" Text="Saved analytical views from report pages, opened with their selected fields and options."></asp:Label>
                                     </div>
+                                    <table class="exportPanel" cellpadding="4" cellspacing="0">
+                                        <tr>
+                                            <td style="font-weight:bold;">Export notes:<br />
+                                                <asp:TextBox ID="TextBoxExportNotes" runat="server" TextMode="MultiLine" Rows="4" Width="96%"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:Button ID="ButtonExportZip" runat="server" CssClass="ticketbutton" Text="Export as zipped folder" ToolTip="Export dashboard notes, file manifest, and report-view PDF files into one ZIP file." OnClientClick="return prepareDashboardReportViewsAndSubmit(this);" />
+                                                <asp:Button ID="ButtonExportPdf" runat="server" CssClass="ticketbutton" Text="Export as PDF document(s)" Width="190px" ToolTip="Export dashboard notes, manifest, and available report-view PDF files as PDF document package." OnClientClick="return prepareDashboardReportViewsAndSubmit(this);" />
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <div class="dashboardPager">
                                         <asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small">Previous</asp:LinkButton>
                                         &nbsp;&nbsp;
@@ -291,6 +513,10 @@
                     </tr>
                 </table>
             </ContentTemplate>
+            <Triggers>
+                <asp:PostBackTrigger ControlID="ButtonExportZip" />
+                <asp:PostBackTrigger ControlID="ButtonExportPdf" />
+            </Triggers>
         </asp:UpdatePanel>
         <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="udpCustomDashboard">
             <ProgressTemplate>

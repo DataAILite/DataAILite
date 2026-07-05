@@ -145,6 +145,7 @@ Partial Class Dashboard
             dashboardname = Request("dashboard")
             Session("dash") = Request("dash")
         End If
+        If Not IsPostBack Then SetDefaultExportNotes()
         If ret.Trim <> "" OrElse ddb Is Nothing OrElse ddb.Table.Rows.Count = 0 Then
             LabelError.Text = ret & " - no data"
             Exit Sub
@@ -525,7 +526,10 @@ Partial Class Dashboard
 
     Private Function RequestedReportId() As String
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Return Request("Report").ToString().Trim()
+        If Request("REPORT") IsNot Nothing AndAlso Request("REPORT").ToString().Trim() <> "" Then Return Request("REPORT").ToString().Trim()
         If Request("ReportID") IsNot Nothing AndAlso Request("ReportID").ToString().Trim() <> "" Then Return Request("ReportID").ToString().Trim()
+        If Request("REPORTID") IsNot Nothing AndAlso Request("REPORTID").ToString().Trim() <> "" Then Return Request("REPORTID").ToString().Trim()
+        If Request("repid") IsNot Nothing AndAlso Request("repid").ToString().Trim() <> "" Then Return Request("repid").ToString().Trim()
         Return String.Empty
     End Function
 
@@ -549,6 +553,29 @@ Partial Class Dashboard
 
     Private Sub TextBoxPageNumber_TextChanged(sender As Object, e As EventArgs) Handles TextBoxPageNumber.TextChanged
         GoToRequestedDashboardPage()
+    End Sub
+
+    Private Sub ButtonExportZip_Click(sender As Object, e As EventArgs) Handles ButtonExportZip.Click
+        PrepareDashboardExportManifest("zip")
+        Response.Redirect("ExportPackages.aspx?dashboardexport=1&action=zip")
+    End Sub
+
+    Private Sub ButtonExportPdf_Click(sender As Object, e As EventArgs) Handles ButtonExportPdf.Click
+        PrepareDashboardExportManifest("pdf")
+        Response.Redirect("ExportPackages.aspx?dashboardexport=1&action=pdf")
+    End Sub
+
+    Private Sub PrepareDashboardExportManifest(action As String)
+        If dashboardname.Trim() = "" Then Exit Sub
+        DashboardExportHelper.PrepareExportPackageSession(Me, dashboardname, currentReportId, "chart", TextBoxExportNotes.Text, action)
+    End Sub
+
+    Private Sub SetDefaultExportNotes()
+        If TextBoxExportNotes.Text.Trim() <> "" Then Exit Sub
+        TextBoxExportNotes.Text = "DataAI chart dashboard export created on " & DateTime.Now.ToString() & vbCrLf &
+            "Dashboard: " & dashboardname & vbCrLf &
+            "Report: " & If(currentReportId.Trim() = "", "all reports in this dashboard", currentReportId) & vbCrLf &
+            "This export includes dashboard notes, file manifest, and PNG chart pictures captured from the visible dashboard."
     End Sub
 
     Private Sub GoToRequestedDashboardPage()

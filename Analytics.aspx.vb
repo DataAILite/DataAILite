@@ -10,6 +10,7 @@ Partial Class Analytics
     Private Sub Analytics_Init(sender As Object, e As EventArgs) Handles Me.Init
         MenuExpansionHelper.Attach(Me)
         AnalyticsDashboardTileHelper.Attach(Me)
+        UrlInputHelper.ApplyReportSession(Me)
         lblHeader.Text = Session("REPTITLE") & " - Analytics"
         LabelAnalyticsWhyUseful.Text = "Why Useful: Overall field combinations and report exploration help identify suitable grouped analyses, reports, and charts."
         HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Analytics"

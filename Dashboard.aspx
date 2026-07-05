@@ -10,6 +10,152 @@
    
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+        window.dashboardCharts = window.dashboardCharts || [];
+        function registerDashboardChart(index, chart, title, chartType, reportId) {
+            window.dashboardCharts[index] = { chart: chart, title: title, chartType: chartType, reportId: reportId, section: title };
+        }
+        function prepareDashboardExportImages() {
+            var images = [];
+            if (window.dashboardCharts) {
+                for (var i = 0; i < window.dashboardCharts.length; i++) {
+                    var item = window.dashboardCharts[i];
+                    if (!item || !item.chart || typeof item.chart.getImageURI !== 'function') { continue; }
+                    try {
+                        var image = item.chart.getImageURI();
+                        if (image && image.indexOf('data:image') === 0) {
+                            images.push({
+                                title: item.title || '',
+                                chartType: item.chartType || '',
+                                reportId: item.reportId || '',
+                                section: item.section || ('chart ' + i),
+                                image: image
+                            });
+                        }
+                    } catch (ex) {
+                    }
+                }
+            }
+            var field = document.getElementById('DashboardExportImages');
+            if (field) { field.value = JSON.stringify(images); }
+            return true;
+        }
+        function dashboardExportPageCount() {
+            var label = document.getElementById('<%= LabelPageCount.ClientID %>');
+            if (!label) { return 1; }
+            var match = (label.innerText || label.textContent || '').match(/of\s+(\d+)/i);
+            return match ? Math.max(1, parseInt(match[1], 10)) : 1;
+        }
+        function dashboardExportUrlForPage(pageNumber) {
+            var url = new URL(window.location.href);
+            url.searchParams.set('page', pageNumber);
+            return url.toString();
+        }
+        function collectDashboardImagesFromWindow(win, output) {
+            if (!win || !win.dashboardCharts) { return; }
+            for (var i = 0; i < win.dashboardCharts.length; i++) {
+                var item = win.dashboardCharts[i];
+                if (!item || !item.chart || typeof item.chart.getImageURI !== 'function') { continue; }
+                try {
+                    var image = item.chart.getImageURI();
+                    if (image && image.indexOf('data:image') === 0) {
+                        output.push({
+                            title: item.title || '',
+                            chartType: item.chartType || '',
+                            reportId: item.reportId || '',
+                            section: item.section || ('chart ' + i),
+                            image: image
+                        });
+                    }
+                } catch (ex) {
+                }
+            }
+        }
+        function waitForDashboardCharts(win, callback) {
+            var start = new Date().getTime();
+            function hasCharts() {
+                try {
+                    if (!win || !win.dashboardCharts) { return false; }
+                    for (var i = 0; i < win.dashboardCharts.length; i++) {
+                        var item = win.dashboardCharts[i];
+                        if (item && item.chart && typeof item.chart.getImageURI === 'function') { return true; }
+                    }
+                } catch (ex) {
+                }
+                return false;
+            }
+            function check() {
+                if (hasCharts() || (new Date().getTime() - start) > 8000) {
+                    callback();
+                    return;
+                }
+                window.setTimeout(check, 250);
+            }
+            check();
+        }
+        function prepareDashboardExportImagesAndSubmit(button) {
+            var ready = document.getElementById('DashboardExportReady');
+            if (ready && ready.value === 'yes') {
+                ready.value = '';
+                return true;
+            }
+            var runField = document.getElementById('DashboardExportRunId');
+            if (runField && !runField.value) {
+                runField.value = (new Date().getTime()).toString() + '_' + Math.floor(Math.random() * 1000000).toString();
+            }
+
+            var images = [];
+            collectDashboardImagesFromWindow(window, images);
+            var pageCount = dashboardExportPageCount();
+            var currentPage = 1;
+            var pageBox = document.getElementById('<%= TextBoxPageNumber.ClientID %>');
+            if (pageBox && pageBox.value) {
+                var parsed = parseInt(pageBox.value, 10);
+                if (!isNaN(parsed)) { currentPage = parsed; }
+            }
+
+            var pages = [];
+            for (var p = 1; p <= pageCount; p++) {
+                if (p !== currentPage) { pages.push(p); }
+            }
+
+            var iframe = document.getElementById('DashboardExportFrame');
+            if (!iframe) {
+                iframe = document.createElement('iframe');
+                iframe.id = 'DashboardExportFrame';
+                iframe.style.position = 'absolute';
+                iframe.style.left = '-10000px';
+                iframe.style.top = '-10000px';
+                iframe.style.width = '1400px';
+                iframe.style.height = '1000px';
+                iframe.style.visibility = 'hidden';
+                document.body.appendChild(iframe);
+            }
+
+            function finishExport() {
+                var field = document.getElementById('DashboardExportImages');
+                if (field) { field.value = JSON.stringify(images); }
+                if (ready) { ready.value = 'yes'; }
+                window.setTimeout(function () { button.click(); }, 50);
+            }
+
+            function loadNextPage() {
+                if (pages.length === 0) {
+                    finishExport();
+                    return;
+                }
+                var nextPage = pages.shift();
+                iframe.onload = function () {
+                    waitForDashboardCharts(iframe.contentWindow, function () {
+                        try { collectDashboardImagesFromWindow(iframe.contentWindow, images); } catch (ex) { }
+                        loadNextPage();
+                    });
+                };
+                iframe.src = dashboardExportUrlForPage(nextPage);
+            }
+
+            loadNextPage();
+            return false;
+        }
         function options(chrt) {                             
                                 if (chrt == 'Map')
                                 {
@@ -165,6 +311,7 @@
                         // Instantiate and draw the charts.     
                         var chart = new google.visualization.<%=charttypes(0)%>(document.getElementById('chart_div_0'));                
                         chart.draw(data, options); 
+                        registerDashboardChart(0, chart, '<%=ttls(0)%>', '<%=charttypes(0)%>', '<%=repids(0)%>');
         }
 
     // ----------------------------------- 1    ------------------------------------------------------- 
@@ -187,6 +334,7 @@
                         // Instantiate and draw the charts.     
                         var chart = new google.visualization.<%=charttypes(1)%>(document.getElementById('chart_div_1'));                
                         chart.draw(data, options); 
+                        registerDashboardChart(1, chart, '<%=ttls(1)%>', '<%=charttypes(1)%>', '<%=repids(1)%>');
         }
     }
         // ----------------------------------- 2    -------------------------------------------------------
@@ -208,6 +356,7 @@
                 // Instantiate and draw the charts.     
                 var chart = new google.visualization.<%=charttypes(2)%>(document.getElementById('chart_div_2'));
                 chart.draw(data, options);
+                registerDashboardChart(2, chart, '<%=ttls(2)%>', '<%=charttypes(2)%>', '<%=repids(2)%>');
             }
         }
         // ----------------------------------- 3    -------------------------------------------------------
@@ -229,6 +378,7 @@
                 // Instantiate and draw the charts.     
                 var chart = new google.visualization.<%=charttypes(3)%>(document.getElementById('chart_div_3'));
                 chart.draw(data, options);
+                registerDashboardChart(3, chart, '<%=ttls(3)%>', '<%=charttypes(3)%>', '<%=repids(3)%>');
             }
         }
          // ----------------------------------- 4    -------------------------------------------------------
@@ -251,6 +401,7 @@
                 // Instantiate and draw the charts.     
                 var chart = new google.visualization.<%=charttypes(4)%>(document.getElementById('chart_div_4'));
                 chart.draw(data, options);
+                registerDashboardChart(4, chart, '<%=ttls(4)%>', '<%=charttypes(4)%>', '<%=repids(4)%>');
             }
         }
          // ----------------------------------- 5    -------------------------------------------------------
@@ -273,6 +424,7 @@
                 // Instantiate and draw the charts.     
                 var chart = new google.visualization.<%=charttypes(5)%>(document.getElementById('chart_div_5'));
                 chart.draw(data, options);
+                registerDashboardChart(5, chart, '<%=ttls(5)%>', '<%=charttypes(5)%>', '<%=repids(5)%>');
             }
         }
          // ----------------------------------- 6    -------------------------------------------------------
@@ -295,6 +447,7 @@
                 // Instantiate and draw the charts.     
                 var chart = new google.visualization.<%=charttypes(6)%>(document.getElementById('chart_div_6'));
                 chart.draw(data, options);
+                registerDashboardChart(6, chart, '<%=ttls(6)%>', '<%=charttypes(6)%>', '<%=repids(6)%>');
             }
         }
          // ----------------------------------- 7    -------------------------------------------------------
@@ -317,6 +470,7 @@
                 // Instantiate and draw the charts.     
                 var chart = new google.visualization.<%=charttypes(7)%>(document.getElementById('chart_div_7'));
                 chart.draw(data, options);
+                registerDashboardChart(7, chart, '<%=ttls(7)%>', '<%=charttypes(7)%>', '<%=repids(7)%>');
             }
         }
          // ----------------------------------- 8    -------------------------------------------------------
@@ -339,6 +493,7 @@
                 // Instantiate and draw the charts.     
                 var chart = new google.visualization.<%=charttypes(8)%>(document.getElementById('chart_div_8'));
                 chart.draw(data, options);
+                registerDashboardChart(8, chart, '<%=ttls(8)%>', '<%=charttypes(8)%>', '<%=repids(8)%>');
             }
         }
          // ----------------------------------- 9    -------------------------------------------------------
@@ -361,6 +516,7 @@
                 // Instantiate and draw the charts.     
                 var chart = new google.visualization.<%=charttypes(9)%>(document.getElementById('chart_div_9'));
                 chart.draw(data, options);
+                registerDashboardChart(9, chart, '<%=ttls(9)%>', '<%=charttypes(9)%>', '<%=repids(9)%>');
             }
         }
          // ----------------------------------- 10    -------------------------------------------------------
@@ -382,6 +538,7 @@
                 // Instantiate and draw the charts.     
                 var chart = new google.visualization.<%=charttypes(10)%>(document.getElementById('chart_div_10'));
                 chart.draw(data, options);
+                registerDashboardChart(10, chart, '<%=ttls(10)%>', '<%=charttypes(10)%>', '<%=repids(10)%>');
             }
         }
          // ----------------------------------- 11    -------------------------------------------------------
@@ -404,6 +561,7 @@
                 // Instantiate and draw the charts.     
                 var chart = new google.visualization.<%=charttypes(11)%>(document.getElementById('chart_div_11'));
                 chart.draw(data, options);
+                registerDashboardChart(11, chart, '<%=ttls(11)%>', '<%=charttypes(11)%>', '<%=repids(11)%>');
             }
         }
        </script>    
@@ -412,6 +570,9 @@
   </head>
   <body>  
       <form id="form1" runat="server" width="100%" height="100%">
+                <input type="hidden" id="DashboardExportImages" name="DashboardExportImages" value="" />
+                <input type="hidden" id="DashboardExportReady" name="DashboardExportReady" value="" />
+                <input type="hidden" id="DashboardExportRunId" name="DashboardExportRunId" value="" />
                 <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />      
                 <asp:UpdatePanel ID="udpDashboard" runat ="server" >
                  <ContentTemplate>
@@ -447,9 +608,31 @@
                      <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/ListOfReports.aspx" Font-Names="Arial" Font-Size="Small">List of Reports</asp:HyperLink>
                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
                <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/Default.aspx" Font-Names="Arial" Font-Size="Small">Log off</asp:HyperLink>                              &nbsp;
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small">Previous</asp:LinkButton>
+               &nbsp;&nbsp;
+               <asp:Label ID="LabelPageNumberCaption" runat="server" Font-Names="Arial" Font-Size="Small" Text="Page Number"></asp:Label>
+               <asp:TextBox ID="TextBoxPageNumber" runat="server" Width="35px" Font-Names="Arial" Font-Size="Small" AutoPostBack="True"></asp:TextBox>
+               <asp:Label ID="LabelPageCount" runat="server" Font-Names="Arial" Font-Size="Small"></asp:Label>
+               &nbsp;&nbsp;
+               <asp:LinkButton ID="LinkButtonNext" runat="server" Font-Size="Small">Next</asp:LinkButton>
          
       <!--Table and divs that hold the chart-->
   
+    <br />
+    <table cellpadding="4" cellspacing="0" style="background-color:#e5e5e5; border:medium double #ffffff; color:black; font-family:Arial; font-size:small; width:980px; max-width:100%; margin-left:0; margin-right:auto;">
+        <tr>
+            <td style="font-weight:bold;">Export notes:<br />
+                <asp:TextBox ID="TextBoxExportNotes" runat="server" TextMode="MultiLine" Rows="4" Width="96%"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <asp:Button ID="ButtonExportZip" runat="server" Text="Export as zipped folder" Width="180px" Height="25px" Font-Size="12px" ToolTip="Export dashboard notes, file manifest, PNG chart pictures, and report-view PDF files into one ZIP file." OnClientClick="return prepareDashboardExportImagesAndSubmit(this);" />
+                <asp:Button ID="ButtonExportPdf" runat="server" Text="Export as PDF document(s)" Width="190px" Height="25px" Font-Size="12px" ToolTip="Export dashboard notes, manifest, and available visual files as PDF document package." OnClientClick="return prepareDashboardExportImagesAndSubmit(this);" />
+            </td>
+        </tr>
+    </table>
     <br />
     <table  runat="server" id="list"  border=0 style="font-size: 12px; font-family: Arial">
       <tr  id="tr1" runat ="server" >
@@ -506,6 +689,10 @@
       <ucMsgBox:Msgbox id="MessageBox" runat ="server" > </ucMsgBox:Msgbox>
         
       </ContentTemplate>
+          <Triggers>
+              <asp:PostBackTrigger ControlID="ButtonExportZip" />
+              <asp:PostBackTrigger ControlID="ButtonExportPdf" />
+          </Triggers>
       </asp:UpdatePanel>   
         <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="udpDashboard">
                 <ProgressTemplate >

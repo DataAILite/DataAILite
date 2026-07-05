@@ -34,6 +34,7 @@ Partial Class ShowReport
         If Not Session("PAGETTL") Is Nothing AndAlso Session("PAGETTL").ToString.Length > 0 Then
             LabelPageTtl.Text = Session("PAGETTL")
         End If
+        UrlInputHelper.ApplyReportSession(Me)
         Session("Stats") = 0
         Session("graph") = ""
         Session("matrix") = ""

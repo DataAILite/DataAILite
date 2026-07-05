@@ -221,6 +221,7 @@ Public NotInheritable Class AnalyticsDashboardTileHelper
 
         Dim userId As String = page.Session("logon").ToString()
         Dim reportId As String = CurrentReportId(page)
+        If userId.Trim() = "" OrElse reportId.Trim() = "" Then Exit Sub
         Dim url As String = BuildCurrentPageUrl(page)
         Dim title As String = CurrentPageTitle(page)
         Dim safeUser As String = SqlText(userId)
@@ -448,11 +449,19 @@ Public NotInheritable Class AnalyticsDashboardTileHelper
 
         Dim requestKeys() As String = {"Report", "REPORT", "ReportID", "REPORTID", "repid"}
         For Each key As String In requestKeys
-            If page.Request(key) IsNot Nothing AndAlso page.Request(key).ToString().Trim() <> "" Then Return page.Request(key).ToString().Trim()
+            If page.Request(key) IsNot Nothing AndAlso page.Request(key).ToString().Trim() <> "" Then
+                If page.Session IsNot Nothing Then page.Session("REPORTID") = page.Request(key).ToString().Trim()
+                Return page.Request(key).ToString().Trim()
+            End If
         Next
 
         If page.Session IsNot Nothing AndAlso page.Session("REPORTID") IsNot Nothing AndAlso page.Session("REPORTID").ToString().Trim() <> "" Then
             Return page.Session("REPORTID").ToString().Trim()
+        End If
+
+        If page.Session IsNot Nothing AndAlso page.Session("DataReadinessScannerReportID") IsNot Nothing AndAlso page.Session("DataReadinessScannerReportID").ToString().Trim() <> "" Then
+            page.Session("REPORTID") = page.Session("DataReadinessScannerReportID").ToString().Trim()
+            Return page.Session("DataReadinessScannerReportID").ToString().Trim()
         End If
 
         Dim labelIds() As String = {"LabelReportID", "lblReportID"}

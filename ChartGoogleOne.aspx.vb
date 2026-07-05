@@ -553,11 +553,11 @@ Partial Class ChartGoogleOne
         '-----------------------------------------End Matrix------------------------------------------------------------------------------------
 
         'Retrieve Report Data
-        If Request("Report") Is Nothing OrElse Request("Report").ToString.Trim = "" Then
+        UrlInputHelper.ApplyReportSession(Me)
+        If Session("REPORTID") Is Nothing OrElse Session("REPORTID").ToString.Trim = "" Then
             Exit Sub
         Else
-            repid = Request("Report").ToString
-            Session("REPORTID") = repid
+            repid = Session("REPORTID").ToString
         End If
 
         If Request("wherestm") IsNot Nothing Then
@@ -2471,13 +2471,10 @@ Partial Class ChartGoogleOne
     End Sub
 
     Private Function DashboardListUrlForCurrentReport() As String
+        UrlInputHelper.ApplyReportSession(Me)
         Dim reportId As String = String.Empty
         If Session("REPORTID") IsNot Nothing AndAlso Session("REPORTID").ToString().Trim() <> "" Then
             reportId = Session("REPORTID").ToString().Trim()
-        ElseIf Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then
-            reportId = Request("Report").ToString().Trim()
-        ElseIf Request("ReportID") IsNot Nothing AndAlso Request("ReportID").ToString().Trim() <> "" Then
-            reportId = Request("ReportID").ToString().Trim()
         End If
 
         If reportId = "" Then Return "ListOfDashboards.aspx"
@@ -2496,6 +2493,9 @@ Partial Class ChartGoogleOne
         Dim ret As String = String.Empty
         Dim sqld As String = String.Empty
         Try
+            If Session("logon") Is Nothing OrElse Session("logon").ToString().Trim() = "" Then Return "User is not assigned."
+            UrlInputHelper.ApplyReportSession(Me)
+            If Session("REPORTID") Is Nothing OrElse Session("REPORTID").ToString().Trim() = "" Then Return "Report is not assigned."
             sqld = "SELECT * FROM ourdashboards WHERE "
             sqld = sqld & " UserID ='" & Session("logon") & "' "
             sqld = sqld & " AND Dashboard='" & DashBoardName & "' "

@@ -26,6 +26,9 @@ Partial Class MixDashboard
 
         dashboardName = RequestedDashboardName()
         currentReportId = RequestedReportId()
+        ApplyListOfReportsMenuWhenNoReport()
+        If Not IsPostBack Then SetDefaultExportNotes()
+        PrepareDashboardExportManifest("")
         If dashboardName = "" Then
             LabelMessage.Text = "No dashboard was selected."
             LiteralTiles.Text = ""
@@ -73,7 +76,10 @@ Partial Class MixDashboard
 
     Private Function RequestedReportId() As String
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Return Request("Report").ToString().Trim()
+        If Request("REPORT") IsNot Nothing AndAlso Request("REPORT").ToString().Trim() <> "" Then Return Request("REPORT").ToString().Trim()
         If Request("ReportID") IsNot Nothing AndAlso Request("ReportID").ToString().Trim() <> "" Then Return Request("ReportID").ToString().Trim()
+        If Request("REPORTID") IsNot Nothing AndAlso Request("REPORTID").ToString().Trim() <> "" Then Return Request("REPORTID").ToString().Trim()
+        If Request("repid") IsNot Nothing AndAlso Request("repid").ToString().Trim() <> "" Then Return Request("repid").ToString().Trim()
         Return String.Empty
     End Function
 
@@ -267,6 +273,15 @@ Partial Class MixDashboard
         sb.Append(JavaScriptText(info.DivId))
         sb.Append("'));")
         sb.Append("chart.draw(data,options);")
+        sb.Append("registerDashboardChart(")
+        sb.Append(Val(info.IndexValue).ToString(System.Globalization.CultureInfo.InvariantCulture))
+        sb.Append(",chart,'")
+        sb.Append(JavaScriptText(info.Title))
+        sb.Append("','")
+        sb.Append(JavaScriptText(info.ChartType))
+        sb.Append("','")
+        sb.Append(JavaScriptText(info.ReportId))
+        sb.Append("');")
         sb.Append("}")
         sb.Append("</script>")
         Return sb.ToString()
@@ -809,8 +824,38 @@ Partial Class MixDashboard
     End Sub
 
     Private Function DashboardPageUrl(pageNumber As Integer) As String
-        Return "MixDashboard.aspx?dashboard=" & Server.UrlEncode(dashboardName) & "&page=" & pageNumber.ToString() & "&ps=" & dashboardPageSize.ToString()
+        Dim url As String = "MixDashboard.aspx?dashboard=" & Server.UrlEncode(dashboardName) & "&page=" & pageNumber.ToString() & "&ps=" & dashboardPageSize.ToString()
+        If currentReportId.Trim() <> "" Then url &= "&Report=" & Server.UrlEncode(currentReportId)
+        Return url
     End Function
+
+    Private Sub ButtonExportZip_Click(sender As Object, e As EventArgs) Handles ButtonExportZip.Click
+        PrepareDashboardExportManifest("zip")
+        Response.Redirect("ExportPackages.aspx?dashboardexport=1&action=zip")
+    End Sub
+
+    Private Sub ButtonExportPdf_Click(sender As Object, e As EventArgs) Handles ButtonExportPdf.Click
+        PrepareDashboardExportManifest("pdf")
+        Response.Redirect("ExportPackages.aspx?dashboardexport=1&action=pdf")
+    End Sub
+
+    Private Sub PrepareDashboardExportManifest(action As String)
+        If dashboardName.Trim() = "" Then Exit Sub
+        DashboardExportHelper.PrepareExportPackageSession(Me, dashboardName, currentReportId, "mixed", TextBoxExportNotes.Text, action)
+    End Sub
+
+    Private Sub SetDefaultExportNotes()
+        If TextBoxExportNotes.Text.Trim() <> "" Then Exit Sub
+        TextBoxExportNotes.Text = "DataAI mixed dashboard export created on " & DateTime.Now.ToString() & vbCrLf &
+            "Dashboard: " & dashboardName & vbCrLf &
+            "Report: " & If(currentReportId.Trim() = "", "all reports in this dashboard", currentReportId) & vbCrLf &
+            "This export includes dashboard notes, file manifest, PNG chart pictures, and available ReportViews PDF files for dashboard report-view tiles."
+    End Sub
+
+    Private Sub ApplyListOfReportsMenuWhenNoReport()
+        If currentReportId.Trim() <> "" Then Exit Sub
+        DashboardMenuHelper.ApplyListOfReportsMenu(TreeView1)
+    End Sub
 
     Private Sub LinkButtonPrevious_Click(sender As Object, e As EventArgs) Handles LinkButtonPrevious.Click
         Response.Redirect(DashboardPageUrl(Math.Max(1, dashboardPageNumber - 1)))

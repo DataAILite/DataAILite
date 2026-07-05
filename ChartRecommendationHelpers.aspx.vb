@@ -20,7 +20,7 @@ Partial Class ChartRecommendationHelpers
         AnalyticsDashboardTileHelper.Attach(Me)
         If Session Is Nothing OrElse Session("admin") Is Nothing OrElse Session("admin").ToString() = "" Then Response.Redirect("~/Default.aspx?msg=SessionExpired")
         If Session("PAGETTL") IsNot Nothing AndAlso Session("PAGETTL").ToString().Trim() <> "" Then LabelPageTtl.Text = Session("PAGETTL").ToString()
-        If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Session("REPORTID") = Request("Report").ToString().Trim()
+        UrlInputHelper.ApplyReportSession(Me)
         If Session("REPTITLE") IsNot Nothing AndAlso Session("REPTITLE").ToString().Trim() <> "" Then lblHeader.Text = Session("REPTITLE").ToString() & " - Chart Recommendations"
         HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Chart%20Recommendations"
         SetChartsLink()

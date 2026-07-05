@@ -28,6 +28,12 @@ Partial Class DataCheck
         End If
 
         HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Data%20Quality"
+        SetReportContextLinks()
+    End Sub
+
+    Private Sub SetReportContextLinks()
+        HyperLinkReadiness.NavigateUrl = AddReportParameter("DataReadinessScanner.aspx")
+        tileDataReadiness.HRef = AddReportParameter("DataReadinessScanner.aspx")
     End Sub
 
     Private Sub DataCheck_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -97,7 +103,7 @@ Partial Class DataCheck
         For Each item As QualityItem In items
             Dim statusClass As String = If(item.Status = "Good", "statusGood", If(item.Status = "Partial", "statusPartial", "statusMissing"))
             sb.Append("<tr>")
-            sb.Append("<td><a href=""").Append(HttpUtility.HtmlAttributeEncode(item.PageUrl)).Append(""">").Append(HttpUtility.HtmlEncode(item.Name)).Append("</a></td>")
+            sb.Append("<td><a href=""").Append(HttpUtility.HtmlAttributeEncode(AddReportParameter(item.PageUrl))).Append(""">").Append(HttpUtility.HtmlEncode(item.Name)).Append("</a></td>")
             sb.Append("<td class=""").Append(statusClass).Append(""">").Append(HttpUtility.HtmlEncode(item.Status)).Append("</td>")
             sb.Append("<td>").Append(HttpUtility.HtmlEncode(item.UsefulFor)).Append("</td>")
             sb.Append("<td>").Append(HttpUtility.HtmlEncode(item.SuggestedFields)).Append("</td>")
@@ -106,6 +112,13 @@ Partial Class DataCheck
         Next
         sb.Append("</table>")
         Return sb.ToString()
+    End Function
+
+    Private Function AddReportParameter(pageUrl As String) As String
+        If Session("REPORTID") Is Nothing OrElse Session("REPORTID").ToString().Trim() = "" Then Return pageUrl
+        If pageUrl.IndexOf("Report=", StringComparison.OrdinalIgnoreCase) >= 0 OrElse pageUrl.IndexOf("ReportID=", StringComparison.OrdinalIgnoreCase) >= 0 Then Return pageUrl
+        If pageUrl.Contains("?") Then Return pageUrl & "&Report=" & Server.UrlEncode(Session("REPORTID").ToString().Trim())
+        Return pageUrl & "?Report=" & Server.UrlEncode(Session("REPORTID").ToString().Trim())
     End Function
 
     Private Function BuildQualityItems(source As DataTable) As List(Of QualityItem)

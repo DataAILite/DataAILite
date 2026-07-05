@@ -1408,6 +1408,7 @@ Partial Class ReportViews
                     Bytes = viewer.LocalReport.Render("PDF", deviceInf, mimeType, encoding, fileNameExtension, streams, warnings)
 
                 End If
+                If RegisterDashboardPdfSnapshotIfNeeded(Bytes) Then Return ret
                 If Not Bytes Is Nothing AndAlso Bytes.Length > 0 Then
                     Session("myfile") = myfile
                     Dim filepath As String = String.Empty
@@ -1600,6 +1601,7 @@ Partial Class ReportViews
                     Bytes = viewer.LocalReport.Render("PDF", deviceInf, mimeType, encoding, fileNameExtension, streams, warnings)
 
                 End If
+                If RegisterDashboardPdfSnapshotIfNeeded(Bytes) Then Return ret
                 If Not Bytes Is Nothing AndAlso Bytes.Length > 0 Then
                     Session("myfile") = myfile
                     Dim filepath As String = String.Empty
@@ -1805,6 +1807,7 @@ Partial Class ReportViews
                     Bytes = viewer.LocalReport.Render("PDF", deviceInf, mimeType, encoding, fileNameExtension, streams, warnings)
 
                 End If
+                If RegisterDashboardPdfSnapshotIfNeeded(Bytes) Then Return ret
                 If Not Bytes Is Nothing AndAlso Bytes.Length > 0 Then
                     Session("myfile") = myfile
                     Dim filepath As String = String.Empty
@@ -2578,6 +2581,7 @@ Partial Class ReportViews
                     Bytes = viewer.LocalReport.Render("PDF", deviceInf, mimeType, encoding, fileNameExtension, streams, warnings)
 
                 End If
+                If RegisterDashboardPdfSnapshotIfNeeded(Bytes) Then Return ret
                 If Not Bytes Is Nothing AndAlso Bytes.Length > 0 Then
                     Session("myfile") = myfile
                     Dim filepath As String = String.Empty
@@ -2774,6 +2778,7 @@ Partial Class ReportViews
                     Bytes = viewer.LocalReport.Render("PDF", deviceInf, mimeType, encoding, fileNameExtension, streams, warnings)
 
                 End If
+                If RegisterDashboardPdfSnapshotIfNeeded(Bytes) Then Return ret
                 If Not Bytes Is Nothing AndAlso Bytes.Length > 0 Then
                     Session("myfile") = myfile
                     Dim filepath As String = String.Empty
@@ -3227,6 +3232,11 @@ Partial Class ReportViews
         If pdfBytes Is Nothing OrElse pdfBytes.Length = 0 Then Exit Sub
         Try
             If signature.Trim() = "" Then signature = ReportViewSnapshotSignature(viewType, labelText)
+            Dim dashboardRunId As String = DashboardExportRunId()
+            If dashboardRunId.Trim() <> "" Then
+                signature &= "|DashboardExportRunId=" & dashboardRunId
+                labelText &= " Dashboard export run id: " & dashboardRunId & "."
+            End If
             If snapshots Is Nothing Then snapshots = AnalysisExportSnapshot.SnapshotTable(Session)
             For Each row As DataRow In snapshots.Rows
                 If snapshots.Columns.Contains("Signature") AndAlso String.Equals(row("Signature").ToString(), signature, StringComparison.OrdinalIgnoreCase) Then Exit Sub
@@ -3242,12 +3252,12 @@ Partial Class ReportViews
             File.WriteAllBytes(filePath, pdfBytes)
 
             Dim snapshotRow As DataRow = snapshots.NewRow()
-            snapshotRow("Key") = "ReportViews_" & viewType & "_" & stamp
+            snapshotRow("Key") = "ReportViews_" & viewType & "_" & If(dashboardRunId.Trim() = "", "", SafeFilePartLocal(dashboardRunId) & "_") & stamp
             snapshotRow("Included") = True
             snapshotRow("Package Item") = viewType & " PDF Report - " & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
             snapshotRow("Label Above Grid") = labelText
             snapshotRow("File") = fileName
-            snapshotRow("Description") = "PDF created from the Report Views " & viewType & " report using the same export logic as the Export report to PDF link."
+            snapshotRow("Description") = "PDF created from the Report Views " & viewType & " report using the same export logic as the Export report to PDF link." & If(dashboardRunId.Trim() = "", "", " DashboardExportRunId=" & dashboardRunId & ".")
             snapshotRow("FullPath") = filePath
             If snapshots.Columns.Contains("Signature") Then snapshotRow("Signature") = signature
             snapshots.Rows.Add(snapshotRow)
@@ -3264,6 +3274,32 @@ Partial Class ReportViews
         Dim warnings As Warning() = Nothing
         Dim deviceInf As String = ReportPdfDeviceInfo()
         Return viewer.LocalReport.Render("PDF", deviceInf, mimeType, encoding, fileNameExtension, streams, warnings)
+    End Function
+
+    Private Function IsDashboardPdfSnapshotRequest() As Boolean
+        Return Request("dashboardpdfsnapshot") IsNot Nothing AndAlso Request("dashboardpdfsnapshot").ToString().Trim().Equals("1", StringComparison.OrdinalIgnoreCase)
+    End Function
+
+    Private Function DashboardExportRunId() As String
+        If Request("dashboardexportrunid") IsNot Nothing Then Return Request("dashboardexportrunid").ToString().Trim()
+        If Session IsNot Nothing AndAlso Session("DashboardExportRunId") IsNot Nothing Then Return Session("DashboardExportRunId").ToString().Trim()
+        Return ""
+    End Function
+
+    Private Function DashboardSnapshotViewType() As String
+        If Request("grtype") IsNot Nothing AndAlso Request("grtype").ToString().Trim() <> "" Then Return Request("grtype").ToString().Trim()
+        If Request("det") IsNot Nothing AndAlso Request("det").ToString().Trim().Equals("yes", StringComparison.OrdinalIgnoreCase) Then Return "DrillDown"
+        If Request("grpstats") IsNot Nothing AndAlso Request("grpstats").ToString().Trim().Equals("yes", StringComparison.OrdinalIgnoreCase) Then Return "Group Statistics"
+        Return "Export Report to PDF"
+    End Function
+
+    Private Function RegisterDashboardPdfSnapshotIfNeeded(pdfBytes() As Byte) As Boolean
+        If Not IsDashboardPdfSnapshotRequest() Then Return False
+        RegisterReportViewPdfSnapshotBytes(DashboardSnapshotViewType(), ReportPdfExportLabelText(), pdfBytes)
+        Response.Clear()
+        Response.ContentType = "text/plain"
+        Response.Write("dashboard pdf snapshot saved")
+        Return True
     End Function
 
     Private Function ReportPdfExportLabelText() As String

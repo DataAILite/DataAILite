@@ -39,6 +39,7 @@ Partial Class DataAdmin
 
         HyperLinkHelp.NavigateUrl = "DataAIHelp.aspx?hilt=Analytics%20Dashboard"
         SetDashboardListLink()
+        SetReportContextLinks()
     End Sub
 
     Private Sub SetDashboardListLink()
@@ -46,6 +47,10 @@ Partial Class DataAdmin
         If Session("REPORTID") IsNot Nothing AndAlso Session("REPORTID").ToString().Trim() <> "" Then
             HyperLinkChartDashboards.NavigateUrl = "ListOfDashboards.aspx?Report=" & Server.UrlEncode(Session("REPORTID").ToString().Trim())
         End If
+    End Sub
+
+    Private Sub SetReportContextLinks()
+        tileDataReadiness.HRef = AddReportParameter("DataReadinessScanner.aspx")
     End Sub
 
     Private Sub DataAdmin_Load(sender As Object, e As EventArgs) Handles Me.Load
@@ -165,7 +170,15 @@ Partial Class DataAdmin
     End Function
 
     Private Function PageLink(text As String, pageUrl As String) As String
+        pageUrl = AddReportParameter(pageUrl)
         Return "<a href=""" & HttpUtility.HtmlAttributeEncode(pageUrl) & """ class=""NodeStyle"">" & HttpUtility.HtmlEncode(text) & "</a>"
+    End Function
+
+    Private Function AddReportParameter(pageUrl As String) As String
+        If Session("REPORTID") Is Nothing OrElse Session("REPORTID").ToString().Trim() = "" Then Return pageUrl
+        If pageUrl.IndexOf("Report=", StringComparison.OrdinalIgnoreCase) >= 0 OrElse pageUrl.IndexOf("ReportID=", StringComparison.OrdinalIgnoreCase) >= 0 Then Return pageUrl
+        If pageUrl.Contains("?") Then Return pageUrl & "&Report=" & Server.UrlEncode(Session("REPORTID").ToString().Trim())
+        Return pageUrl & "?Report=" & Server.UrlEncode(Session("REPORTID").ToString().Trim())
     End Function
 
     Private Function FieldList(cols As List(Of DataColumn), maxCount As Integer) As String
