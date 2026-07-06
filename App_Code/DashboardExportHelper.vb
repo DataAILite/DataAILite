@@ -19,7 +19,7 @@ Public NotInheritable Class DashboardExportHelper
         page.Session("DashboardExportRunId") = runId
         SavePostedDashboardImages(page)
         Dim folder As String = BuildDashboardExportFolder(page)
-        Dim manifest As DataTable = BuildDashboardManifest(page, folder, dashboardName, reportId, dashboardKind, notes)
+        Dim manifest As DataTable = BuildDashboardManifest(page, folder, dashboardName, reportId, dashboardKind, notes, action)
         AddDashboardSpecificationManifest(page, manifest, folder, dashboardName, reportId, dashboardKind)
         page.Session("ExportPackageTable") = manifest
         page.Session("DashboardExportPackageNotes") = DefaultNotes(page, dashboardName, reportId, notes)
@@ -111,7 +111,7 @@ Public NotInheritable Class DashboardExportHelper
 
     Public Shared Sub ExportZip(page As Page, dashboardName As String, reportId As String, dashboardKind As String, notes As String)
         Dim folder As String = BuildDashboardExportFolder(page)
-        Dim manifest As DataTable = BuildDashboardManifest(page, folder, dashboardName, reportId, dashboardKind, notes)
+        Dim manifest As DataTable = BuildDashboardManifest(page, folder, dashboardName, reportId, dashboardKind, notes, "")
         WritePackageFiles(folder, manifest)
         Dim zipPath As String = Path.Combine(Path.GetDirectoryName(folder), SafeFilePart("DashboardExport_" & dashboardName & "_" & DateTime.Now.ToString("yyyyMMddHHmmss")) & ".zip")
         If File.Exists(zipPath) Then File.Delete(zipPath)
@@ -121,7 +121,7 @@ Public NotInheritable Class DashboardExportHelper
 
     Public Shared Sub ExportPdf(page As Page, dashboardName As String, reportId As String, dashboardKind As String, notes As String)
         Dim folder As String = BuildDashboardExportFolder(page)
-        Dim manifest As DataTable = BuildDashboardManifest(page, folder, dashboardName, reportId, dashboardKind, notes)
+        Dim manifest As DataTable = BuildDashboardManifest(page, folder, dashboardName, reportId, dashboardKind, notes, "pdf")
         WritePackageFiles(folder, manifest)
         Dim pdfPath As String = Path.Combine(folder, SafeFilePart("DashboardExport_" & dashboardName) & ".pdf")
         File.WriteAllBytes(pdfPath, SimplePdf(BuildDashboardPdfLines(page, dashboardName, reportId, dashboardKind, notes, manifest)))
@@ -152,7 +152,7 @@ Public NotInheritable Class DashboardExportHelper
         Return folder
     End Function
 
-    Private Shared Function BuildDashboardManifest(page As Page, folder As String, dashboardName As String, reportId As String, dashboardKind As String, notes As String) As DataTable
+    Private Shared Function BuildDashboardManifest(page As Page, folder As String, dashboardName As String, reportId As String, dashboardKind As String, notes As String, action As String) As DataTable
         Directory.CreateDirectory(folder)
         Dim manifest As DataTable = EmptyManifestTable()
         Dim rows As DataTable = DashboardRows(page, dashboardName, reportId, dashboardKind)
@@ -162,8 +162,147 @@ Public NotInheritable Class DashboardExportHelper
         AddPackageRow(manifest, "Notes", "Dashboard Notes", True, "User notes and export context.", "DashboardNotes.txt", "Notes entered for this dashboard export.", notesPath)
 
         AddVisualSnapshotRows(page, manifest, dashboardName, reportId, dashboardKind, rows)
+        If action.Trim().Equals("pdf", StringComparison.OrdinalIgnoreCase) Then AddOverallStatisticsPdfGridRow(page, manifest, folder, dashboardName, reportId, rows)
         If manifest.Rows.Count = 1 Then AddNoVisualRowsMessage(manifest, folder, dashboardName, reportId)
         Return manifest
+    End Function
+
+    Private Shared Sub AddOverallStatisticsPdfGridRow(page As Page, manifest As DataTable, folder As String, dashboardName As String, reportId As String, dashboardRows As DataTable)
+        If page Is Nothing OrElse page.Session Is Nothing OrElse manifest Is Nothing Then Exit Sub
+        If Not DashboardHasOverallStatisticsTile(dashboardRows) Then Exit Sub
+
+        Dim statsTable As DataTable = OverallStatisticsTable(page)
+        If statsTable Is Nothing OrElse statsTable.Rows.Count = 0 Then Exit Sub
+
+        Dim fileName As String = SafeFilePart("OverallStatistics_" & dashboardName & "_" & If(reportId.Trim() = "", "AllReports", reportId)) & ".html"
+        Dim filePath As String = Path.Combine(folder, fileName)
+        File.WriteAllText(filePath, OverallStatisticsHtml(page, statsTable, dashboardName, reportId), Encoding.UTF8)
+        AddPackageRow(manifest,
+            "DashboardOverallStatistics",
+            "Data Overall Statistics",
+            True,
+            "Top grid from Data Overall Statistics for dashboard: " & dashboardName & ". Report: " & If(reportId.Trim() = "", FieldText(page.Session("REPORTID")), reportId) & ".",
+            fileName,
+            "Overall Statistics top grid included only in Export as PDF document(s).",
+            filePath)
+    End Sub
+
+    Private Shared Function DashboardHasOverallStatisticsTile(dashboardRows As DataTable) As Boolean
+        If dashboardRows Is Nothing Then Return False
+        For Each row As DataRow In dashboardRows.Rows
+            Dim rowText As String = (TileTitle(row) & " " & DecodeArr(FieldText(row, "ARR"))).ToLowerInvariant()
+            If rowText.Contains("showreport.aspx") AndAlso (rowText.Contains("srd=8") OrElse rowText.Contains("overall statistics") OrElse rowText.Contains("data overall statistics")) Then Return True
+        Next
+        Return False
+    End Function
+
+    Private Shared Function OverallStatisticsTable(page As Page) As DataTable
+        Dim existingGrid As DataTable = TryCast(page.Session("GridView2DataSource"), DataTable)
+        If existingGrid IsNot Nothing AndAlso existingGrid.Rows.Count > 0 Then Return existingGrid
+
+        Dim existingStats As DataTable = TryCast(page.Session("dbstats"), DataTable)
+        If existingStats IsNot Nothing AndAlso existingStats.Rows.Count > 0 Then Return existingStats
+
+        Dim dv As DataView = Nothing
+        If page.Session("SortedView") IsNot Nothing Then dv = TryCast(page.Session("SortedView"), DataView)
+        If dv Is Nothing Then dv = TryCast(page.Session("dv3"), DataView)
+        If dv Is Nothing OrElse dv.Table Is Nothing OrElse dv.Count = 0 Then Return Nothing
+
+        Dim source As DataTable = dv.Table.Clone()
+        For Each viewRow As DataRowView In dv
+            source.ImportRow(viewRow.Row)
+        Next
+
+        Dim statsTable As DataTable = CreateStatsTable()
+        Dim err As String = String.Empty
+        For Each column As DataColumn In source.Columns
+            Dim row As DataRow = statsTable.NewRow()
+            If statsTable.Columns.Contains("Field") Then row("Field") = column.ColumnName
+            If statsTable.Columns.Contains("Friendly Name") Then row("Friendly Name") = column.Caption
+            statsTable.Rows.Add(row)
+        Next
+        Return CalcStats(source, statsTable, err)
+    End Function
+
+    Private Shared Function OverallStatisticsHtml(page As Page, statsTable As DataTable, dashboardName As String, reportId As String) As String
+        Dim sb As New StringBuilder()
+        sb.AppendLine("<html><head><style>")
+        sb.AppendLine("body{font-family:Arial;font-size:12px;color:#222222;} h2{font-size:18px;margin:0 0 8px 0;} h3{font-size:13px;margin:12px 0 4px 0;color:#333333;} table{border-collapse:collapse;width:100%;margin-bottom:10px;} th{background:#4f6b32;color:white;font-weight:bold;} th,td{border:1px solid #b7c7a0;padding:4px;vertical-align:top;word-break:break-word;} tr:nth-child(even){background:#f7fbf2;}")
+        sb.AppendLine("</style></head><body>")
+        sb.AppendLine("<h2>Data Overall Statistics</h2>")
+        sb.AppendLine("<p><b>Dashboard:</b> " & Html(dashboardName) & "<br/><b>Report:</b> " & Html(If(reportId.Trim() = "", FieldText(page.Session("REPORTID")), reportId)) & "<br/><b>Title:</b> " & Html(FieldText(page.Session("REPTITLE"))) & "</p>")
+        AppendOverallStatisticsTables(sb, statsTable)
+        sb.AppendLine("</body></html>")
+        Return sb.ToString()
+    End Function
+
+    Private Shared Sub AppendOverallStatisticsTables(sb As StringBuilder, statsTable As DataTable)
+        If sb Is Nothing OrElse statsTable Is Nothing OrElse statsTable.Columns.Count = 0 Then Exit Sub
+
+        Dim identityColumns As New List(Of DataColumn)()
+        AddColumnIfExists(identityColumns, statsTable, "Friendly Name")
+        AddColumnIfExists(identityColumns, statsTable, "Field")
+        If identityColumns.Count = 0 Then identityColumns.Add(statsTable.Columns(0))
+
+        Dim metricColumns As New List(Of DataColumn)()
+        For Each column As DataColumn In statsTable.Columns
+            If Not ContainsColumn(identityColumns, column.ColumnName) Then metricColumns.Add(column)
+        Next
+
+        Dim maxColumnsPerTable As Integer = 8
+        Dim metricsPerTable As Integer = Math.Max(1, maxColumnsPerTable - identityColumns.Count)
+        If metricColumns.Count = 0 Then
+            AppendOverallStatisticsTableSection(sb, statsTable, identityColumns, "Top grid")
+            Exit Sub
+        End If
+
+        Dim startIndex As Integer = 0
+        Dim sectionNumber As Integer = 1
+        While startIndex < metricColumns.Count
+            Dim sectionColumns As New List(Of DataColumn)(identityColumns)
+            Dim takeCount As Integer = Math.Min(metricsPerTable, metricColumns.Count - startIndex)
+            For i As Integer = 0 To takeCount - 1
+                sectionColumns.Add(metricColumns(startIndex + i))
+            Next
+            Dim title As String = "Top grid"
+            If metricColumns.Count > metricsPerTable Then title &= " - section " & sectionNumber.ToString()
+            AppendOverallStatisticsTableSection(sb, statsTable, sectionColumns, title)
+            startIndex += takeCount
+            sectionNumber += 1
+        End While
+    End Sub
+
+    Private Shared Sub AppendOverallStatisticsTableSection(sb As StringBuilder, statsTable As DataTable, columns As List(Of DataColumn), title As String)
+        If columns Is Nothing OrElse columns.Count = 0 Then Exit Sub
+
+        sb.AppendLine("<h3>" & Html(title) & "</h3>")
+        sb.AppendLine("<table>")
+        sb.Append("<tr>")
+        For Each column As DataColumn In columns
+            sb.Append("<th>" & Html(column.ColumnName) & "</th>")
+        Next
+        sb.AppendLine("</tr>")
+        For Each row As DataRow In statsTable.Rows
+            sb.Append("<tr>")
+            For Each column As DataColumn In columns
+                sb.Append("<td>" & Html(FieldText(row, column.ColumnName)) & "</td>")
+            Next
+            sb.AppendLine("</tr>")
+        Next
+        sb.AppendLine("</table>")
+    End Sub
+
+    Private Shared Sub AddColumnIfExists(columns As List(Of DataColumn), table As DataTable, columnName As String)
+        If columns Is Nothing OrElse table Is Nothing OrElse Not table.Columns.Contains(columnName) Then Exit Sub
+        columns.Add(table.Columns(columnName))
+    End Sub
+
+    Private Shared Function ContainsColumn(columns As List(Of DataColumn), columnName As String) As Boolean
+        If columns Is Nothing Then Return False
+        For Each column As DataColumn In columns
+            If column.ColumnName.Equals(columnName, StringComparison.OrdinalIgnoreCase) Then Return True
+        Next
+        Return False
     End Function
 
     Private Shared Sub AddDashboardSpecificationManifest(page As Page, manifest As DataTable, folder As String, dashboardName As String, reportId As String, dashboardKind As String)
@@ -635,6 +774,11 @@ Public NotInheritable Class DashboardExportHelper
         If row Is Nothing OrElse row.Table Is Nothing OrElse Not row.Table.Columns.Contains(columnName) Then Return ""
         If row(columnName) Is Nothing OrElse Convert.IsDBNull(row(columnName)) Then Return ""
         Return row(columnName).ToString()
+    End Function
+
+    Private Shared Function FieldText(value As Object) As String
+        If value Is Nothing OrElse Convert.IsDBNull(value) Then Return ""
+        Return value.ToString()
     End Function
 
     Private Shared Function DecodeArr(value As String) As String

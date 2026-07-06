@@ -48,10 +48,10 @@ Partial Class ListOfDashboards
         Dim sqlQuery As String
         If reportId <> "" Then
             sqlQuery = "SELECT Dashboard, MAX(Comments) AS Comments FROM ourdashboards WHERE UserId='" & SqlText(Session("logon")) & "' AND ReportID='" & SqlText(reportId) & "' GROUP BY Dashboard ORDER BY Dashboard"
-            lblHeader.Text = "Dashboards for Report:"
+            lblHeader.Text = "Dashboards for report " & ReportTitleText(reportId)
         Else
             sqlQuery = "SELECT Dashboard, MAX(Comments) AS Comments FROM ourdashboards WHERE UserId='" & SqlText(Session("logon")) & "' GROUP BY Dashboard ORDER BY Dashboard"
-            lblHeader.Text = "Dashboards:"
+            lblHeader.Text = "User Dashboards across all reports"
         End If
 
         Dim ddtv As DataView = mRecords(sqlQuery, ret)
@@ -226,6 +226,21 @@ Partial Class ListOfDashboards
         If Request("ReportID") IsNot Nothing AndAlso Request("ReportID").ToString().Trim() <> "" Then Return Request("ReportID").ToString().Trim()
         If Request("Report") IsNot Nothing AndAlso Request("Report").ToString().Trim() <> "" Then Return Request("Report").ToString().Trim()
         Return String.Empty
+    End Function
+
+    Private Function ReportTitleText(reportId As String) As String
+        If reportId Is Nothing OrElse reportId.Trim() = "" Then Return String.Empty
+        Dim reportInfo As DataTable = GetReportInfo(reportId.Trim())
+        If reportInfo IsNot Nothing AndAlso reportInfo.Rows.Count > 0 AndAlso reportInfo.Columns.Contains("ReportTtl") Then
+            Dim title As String = FieldText(reportInfo.Rows(0)("ReportTtl")).Trim()
+            If title <> "" Then Return title
+        End If
+        Return reportId.Trim()
+    End Function
+
+    Private Function FieldText(value As Object) As String
+        If value Is Nothing OrElse Convert.IsDBNull(value) Then Return String.Empty
+        Return value.ToString()
     End Function
 
     Private Function SqlText(value As Object) As String

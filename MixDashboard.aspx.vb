@@ -32,6 +32,7 @@ Partial Class MixDashboard
         If dashboardName = "" Then
             LabelMessage.Text = "No dashboard was selected."
             LiteralTiles.Text = ""
+            LiteralDashboardExplanation.Text = ""
             SetDashboardPagingControls()
             Exit Sub
         End If
@@ -39,13 +40,15 @@ Partial Class MixDashboard
         HandleChartTileActions()
         HyperLinkListOfDashboards.NavigateUrl = DashboardListUrl()
 
-        lblHeader.Text = dashboardName
+        lblHeader.Text = DashboardHeaderText()
+        Page.Title = lblHeader.Text
         Dim ret As String = String.Empty
         Dim sql As String = "SELECT Indx, Dashboard, GraphTitle, ARR, ReportID, ChartType, Comments, MapName, MapYesNo, WhereStm, y1, x1, x2, fn1, y2, Prop2, Prop3, Prop4, Prop5 FROM ourdashboards WHERE UserID='" & SqlText(Session("logon")) & "' AND Dashboard='" & SqlText(dashboardName) & "'" & ReportSqlFilter() & " ORDER BY Indx"
         Dim dv As DataView = mRecords(sql, ret)
         If ret.Trim() <> "" Then
             LabelMessage.Text = ret
             LiteralTiles.Text = ""
+            LiteralDashboardExplanation.Text = ""
             SetDashboardPagingControls()
             Exit Sub
         End If
@@ -53,6 +56,7 @@ Partial Class MixDashboard
         If dv Is Nothing OrElse dv.Table Is Nothing OrElse dv.Table.Rows.Count = 0 Then
             LabelMessage.Text = "This dashboard does not have saved tiles."
             LiteralTiles.Text = ""
+            LiteralDashboardExplanation.Text = ""
             SetDashboardPagingControls()
             Exit Sub
         End If
@@ -65,9 +69,17 @@ Partial Class MixDashboard
         If dashboardPageNumber > dashboardPageCount Then dashboardPageNumber = dashboardPageCount
         If dashboardPageNumber < 1 Then dashboardPageNumber = 1
 
+        LiteralDashboardExplanation.Text = BuildDashboardExplanationHtml(dv.Table)
         LiteralTiles.Text = BuildTilesHtml(dv.Table)
         SetDashboardPagingControls()
     End Sub
+
+    Private Function DashboardHeaderText() As String
+        Dim reportId As String = currentReportId.Trim()
+        If reportId = "" AndAlso Session("REPORTID") IsNot Nothing Then reportId = Session("REPORTID").ToString().Trim()
+        If reportId = "" Then Return "Dashboard across all reports - " & dashboardName
+        Return "Dashboard for report " & DashboardReportTitleText(reportId) & " - " & dashboardName
+    End Function
 
     Private Function RequestedDashboardName() As String
         If Request("dashboard") Is Nothing Then Return String.Empty
@@ -110,6 +122,51 @@ Partial Class MixDashboard
             End If
         Next
 
+        Return sb.ToString()
+    End Function
+
+    Private Function BuildDashboardExplanationHtml(table As DataTable) As String
+        If table Is Nothing OrElse table.Rows.Count = 0 Then Return String.Empty
+
+        Dim sb As New StringBuilder()
+        sb.Append("<div style=""font-family:Arial;font-size:12px;font-weight:bold;color:#333333;margin-bottom:4px;"">Dashboard rows: ")
+        sb.Append(table.Rows.Count.ToString())
+        sb.Append("</div>")
+        sb.Append("<table class=""suitabilityTable""><tr><th>Dashboard Item</th><th>Report</th><th>Type</th><th>What Opens</th></tr>")
+        For Each row As DataRow In table.Rows
+            Dim isAnalytics As Boolean = IsAnalyticsRow(row)
+            Dim rawUrl As String = DecodeArr(FieldText(row("ARR")))
+            Dim reportId As String = TileReportId(row, rawUrl)
+            If isAnalytics Then rawUrl = EnsureReportParameter(rawUrl, reportId)
+            Dim title As String = FieldText(row("GraphTitle")).Trim()
+            Dim itemType As String = FieldText(row("ChartType")).Trim()
+            Dim summary As String = String.Empty
+
+            If isAnalytics Then
+                If IsGenericTileTitle(title) Then title = ActionTitleFromUrl(rawUrl)
+                If title = "" Then title = PageTitleFromUrl(rawUrl)
+                itemType = "Analytics"
+                summary = SettingSummary(rawUrl)
+                If summary.Trim() = "" Then summary = "Saved analytics tile opened with the fields and options stored in this dashboard row."
+            Else
+                Dim chartInfo As ChartTileInfo = BuildChartTileInfo(row)
+                title = chartInfo.Title
+                itemType = If(chartInfo.ChartType.Trim() = "", "Chart", chartInfo.ChartType & " chart")
+                summary = "Chart dashboard item using " & If(chartInfo.X1.Trim() = "", "saved categories", chartInfo.X1) & " and " & If(chartInfo.Y1.Trim() = "", "saved values", chartInfo.Y1) & "."
+            End If
+
+            Dim reportTitle As String = DashboardReportTitleText(reportId)
+            sb.Append("<tr><td>")
+            sb.Append(Server.HtmlEncode(title))
+            sb.Append("</td><td>")
+            sb.Append(Server.HtmlEncode(If(reportTitle.Trim() = "", If(reportId.Trim() = "", "All reports", reportId), reportTitle)))
+            sb.Append("</td><td>")
+            sb.Append(Server.HtmlEncode(itemType))
+            sb.Append("</td><td>")
+            sb.Append(Server.HtmlEncode(summary))
+            sb.Append("</td></tr>")
+        Next
+        sb.Append("</table>")
         Return sb.ToString()
     End Function
 

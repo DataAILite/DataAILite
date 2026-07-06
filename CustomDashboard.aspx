@@ -43,6 +43,9 @@
             font-family: Arial;
             margin: 0;
             width: 100%;
+            height: 100%;
+            min-height: 760px;
+            background-color: #fbfdfb;
             text-align: left;
         }
         .dashboardHeader {
@@ -185,9 +188,35 @@
             font-family: Arial;
             font-size: small;
             width: 100%;
-            max-width: 980px;
             margin: 0 auto 10px auto;
             text-align: left;
+        }
+        .suitabilityBox {
+            margin: 8px 0 12px 0;
+            width: 100%;
+            overflow: auto;
+        }
+        .suitabilityTable {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial;
+            font-size: 11px;
+            background-color: #f3fff3;
+        }
+        .suitabilityTable th {
+            background-color: #663300;
+            color: white;
+            border: 1px solid white;
+            padding: 4px;
+            text-align: left;
+            white-space: nowrap;
+        }
+        .suitabilityTable td {
+            border: 1px solid #d0d0d0;
+            color: #222222;
+            padding: 4px;
+            vertical-align: top;
+            background-color: #f3fff3;
         }
         .ticketbutton {
             width: 180px;
@@ -482,17 +511,19 @@
                                     </div>
                                     <table class="exportPanel" cellpadding="4" cellspacing="0">
                                         <tr>
-                                            <td style="font-weight:bold;">Export notes:<br />
+                                            <td style="font-weight:bold; width:75%; vertical-align:top;">Export notes:<br />
                                                 <asp:TextBox ID="TextBoxExportNotes" runat="server" TextMode="MultiLine" Rows="4" Width="96%"></asp:TextBox>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
+                                            <td style="width:25%; vertical-align:middle; text-align:center;">
                                                 <asp:Button ID="ButtonExportZip" runat="server" CssClass="ticketbutton" Text="Export as zipped folder" ToolTip="Export dashboard notes, file manifest, and report-view PDF files into one ZIP file." OnClientClick="return prepareDashboardReportViewsAndSubmit(this);" />
+                                                <br />
                                                 <asp:Button ID="ButtonExportPdf" runat="server" CssClass="ticketbutton" Text="Export as PDF document(s)" Width="190px" ToolTip="Export dashboard notes, manifest, and available report-view PDF files as PDF document package." OnClientClick="return prepareDashboardReportViewsAndSubmit(this);" />
                                             </td>
                                         </tr>
                                     </table>
+                                    <div class="suitabilityBox">
+                                        <asp:Literal ID="LiteralDashboardExplanation" runat="server"></asp:Literal>
+                                    </div>
                                     <div class="dashboardPager">
                                         <asp:LinkButton ID="LinkButtonPrevious" runat="server" Font-Size="Small">Previous</asp:LinkButton>
                                         &nbsp;&nbsp;

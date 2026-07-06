@@ -32,11 +32,13 @@ Partial Class CustomDashboard
         If dashboardName = "" Then
             LabelMessage.Text = "No custom dashboard was selected."
             LiteralTiles.Text = ""
+            LiteralDashboardExplanation.Text = ""
             SetDashboardPagingControls()
             Exit Sub
         End If
 
-        lblHeader.Text = dashboardName
+        lblHeader.Text = DashboardHeaderText()
+        Page.Title = lblHeader.Text
         HandleDashboardTileActions()
         HyperLinkListOfDashboards.NavigateUrl = DashboardListUrl()
 
@@ -46,6 +48,7 @@ Partial Class CustomDashboard
         If ret.Trim() <> "" Then
             LabelMessage.Text = ret
             LiteralTiles.Text = ""
+            LiteralDashboardExplanation.Text = ""
             SetDashboardPagingControls()
             Exit Sub
         End If
@@ -53,6 +56,7 @@ Partial Class CustomDashboard
         If dv Is Nothing OrElse dv.Table Is Nothing OrElse dv.Table.Rows.Count = 0 Then
             LabelMessage.Text = "This custom analytics dashboard does not have saved tiles."
             LiteralTiles.Text = ""
+            LiteralDashboardExplanation.Text = ""
             SetDashboardPagingControls()
             Exit Sub
         End If
@@ -65,9 +69,17 @@ Partial Class CustomDashboard
         If dashboardPageNumber > dashboardPageCount Then dashboardPageNumber = dashboardPageCount
         If dashboardPageNumber < 1 Then dashboardPageNumber = 1
 
+        LiteralDashboardExplanation.Text = BuildDashboardExplanationHtml(dv.Table)
         LiteralTiles.Text = BuildTilesHtml(dv.Table)
         SetDashboardPagingControls()
     End Sub
+
+    Private Function DashboardHeaderText() As String
+        Dim reportId As String = currentReportId.Trim()
+        If reportId = "" AndAlso Session("REPORTID") IsNot Nothing Then reportId = Session("REPORTID").ToString().Trim()
+        If reportId = "" Then Return "Dashboard across all reports - " & dashboardName
+        Return "Dashboard for report " & DashboardReportTitleText(reportId) & " - " & dashboardName
+    End Function
 
     Private Function RequestedDashboardName() As String
         If Request("dashboard") Is Nothing Then Return String.Empty
@@ -145,6 +157,40 @@ Partial Class CustomDashboard
             sb.Append(""" title=""Delete this tile from the dashboard"" onclick=""return confirm('Delete this tile from the dashboard?');"">delete from dashboard</a></span></div>")
         Next
 
+        Return sb.ToString()
+    End Function
+
+    Private Function BuildDashboardExplanationHtml(table As DataTable) As String
+        If table Is Nothing OrElse table.Rows.Count = 0 Then Return String.Empty
+
+        Dim sb As New StringBuilder()
+        sb.Append("<div style=""font-family:Arial;font-size:12px;font-weight:bold;color:#333333;margin-bottom:4px;"">Dashboard rows: ")
+        sb.Append(table.Rows.Count.ToString())
+        sb.Append("</div>")
+        sb.Append("<table class=""suitabilityTable""><tr><th>Dashboard Item</th><th>Report</th><th>Saved Page</th><th>What Opens</th></tr>")
+        For Each row As DataRow In table.Rows
+            Dim rawUrl As String = DecodeArr(FieldText(row("ARR")))
+            Dim reportId As String = TileReportId(row, rawUrl)
+            rawUrl = EnsureReportParameter(rawUrl, reportId)
+            Dim title As String = FieldText(row("GraphTitle")).Trim()
+            If IsGenericTileTitle(title) Then title = ActionTitleFromUrl(rawUrl)
+            If title = "" Then title = PageTitleFromUrl(rawUrl)
+            Dim reportTitle As String = DashboardReportTitleText(reportId)
+            Dim pageName As String = PageTitleFromUrl(rawUrl)
+            Dim summary As String = SettingSummary(rawUrl)
+            If summary.Trim() = "" Then summary = "Saved analytics tile opened with the fields and options stored in this dashboard row."
+
+            sb.Append("<tr><td>")
+            sb.Append(Server.HtmlEncode(title))
+            sb.Append("</td><td>")
+            sb.Append(Server.HtmlEncode(If(reportTitle.Trim() = "", If(reportId.Trim() = "", "All reports", reportId), reportTitle)))
+            sb.Append("</td><td>")
+            sb.Append(Server.HtmlEncode(pageName))
+            sb.Append("</td><td>")
+            sb.Append(Server.HtmlEncode(summary))
+            sb.Append("</td></tr>")
+        Next
+        sb.Append("</table>")
         Return sb.ToString()
     End Function
 
