@@ -1472,7 +1472,9 @@ Partial Class ChartGoogleOne
         If dri Is Nothing OrElse dri.Rows.Count = 0 Then
             Exit Sub
         End If
+        Session("ChartGoogleOneStandardReport") = ""
         If dri.Rows(0)("Param7type").ToString.Trim = "standard" Then
+            Session("ChartGoogleOneStandardReport") = "yes"
             lnkbtnAddToDashboard.Enabled = False
             lnkbtnAddToDashboard.Visible = False
             lnkDownloadARR.Enabled = False
@@ -1918,9 +1920,35 @@ Partial Class ChartGoogleOne
         Catch ex As Exception
             ret = ex.Message
         Finally
+            UpdateChartActionLinksVisibility()
             UpdateOpenTrendsVisibility()
             RegisterChartGoogleOneDataSnapshot()
         End Try
+    End Sub
+
+    Private Sub UpdateChartActionLinksVisibility()
+        If Session Is Nothing Then Exit Sub
+
+        Dim canUseChartActions As Boolean =
+            Session("admin") IsNot Nothing AndAlso
+            (Session("admin").ToString() = "admin" OrElse Session("admin").ToString() = "super") AndAlso
+            Session("arr") IsNot Nothing AndAlso
+            Session("arr").ToString().Trim() <> ""
+
+        If Session("ChartGoogleOneStandardReport") IsNot Nothing AndAlso
+            Session("ChartGoogleOneStandardReport").ToString().Trim().ToLower() = "yes" Then
+            canUseChartActions = False
+        End If
+
+        If (Request("MatrixChart") IsNot Nothing AndAlso Request("MatrixChart").ToString() = "yes") OrElse
+            (Session("MatrixChart") IsNot Nothing AndAlso Session("MatrixChart").ToString() = "MatrixChart") Then
+            canUseChartActions = False
+        End If
+
+        lnkbtnAddToDashboard.Enabled = canUseChartActions
+        lnkbtnAddToDashboard.Visible = canUseChartActions
+        lnkDownloadARR.Enabled = canUseChartActions
+        lnkDownloadARR.Visible = canUseChartActions
     End Sub
 
     Private Sub RegisterChartGoogleOneDataSnapshot()
