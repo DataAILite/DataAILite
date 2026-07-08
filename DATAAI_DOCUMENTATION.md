@@ -12,8 +12,12 @@ Typical workflow:
 2. Create or select a report.
 3. Run the report in Data Explorer.
 4. Apply filters or parameters.
-5. Open analytics such as Analytics Dashboard, Analytics, See Data Overall Statistics, Export Overall Statistics to Excel, See Groups Statistics, See Fields Correlation, Correlation, Correlation Threshold, Pivot, Variance, Comparison Reports, Profiling, Data Quality, Ranking, Regression, Trends, Time-Based Summaries, Time Series, Outlier Flagging, Chart Recommendation Helpers, Map Readiness, Advanced Analytics, or Matrix Balancing.
-6. Export results when the selected page supports Excel, PDF, Word, CSV, charts, report definitions, or package output.
+5. Open Data Readiness Scanner to see which analytics, market models, charts, maps, and data-quality checks fit the selected data.
+6. Open dashboards such as Analytics Dashboard, Data Quality Dashboard, Market Dashboard, Chart Dashboards, Custom Analytics Dashboards, or mixed dashboards.
+7. Open analytics such as Detail Analytics, Overall Statistics, Groups Statistics, Fields Correlation, Correlation Threshold, Pivot, Variance, Comparison Reports, Profiling, Data Quality, Ranking, Regression, Trends, Time-Based Summaries, Time Series, Data Drift, Anomaly Scoring, Outlier Flagging, Rule-Based Alerts, Chart Recommendation Helpers, Map Readiness, Advanced Analytics, or Matrix Balancing.
+8. Export results when the selected page supports Excel, PDF, Word, CSV, charts, report definitions, dashboard output, AI output, or package output.
+
+Recent development added stronger workflow support around data readiness, data quality, dashboards, and export packages. Chart pages now keep chart actions visible when chart-ready data exists. Custom and mixed dashboards can combine analytical tiles and chart tiles. Export-package workflows can package notes, chart pictures, report PDFs, analytical outputs, and AI output for review.
 
 ## Getting Started Pages
 
@@ -361,6 +365,14 @@ Sample:
 - Open a chart link from Chart Recommendation Helpers.
 - Review the chart for selected X and Y fields.
 - Change chart options and click Show if needed.
+- Use add to dashboard when chart-ready data exists and the user has the required rights.
+- Download chart data or save chart output for export-package workflows where supported.
+
+Notes:
+
+- Chart parameters can come from Report Views, Chart Recommendation Helpers, dashboard tiles, or direct chart links.
+- The page preserves report context, chart type, X fields, Y fields, and aggregation so reopened charts match the selected analysis.
+- Chart action links remain hidden for standard-report restrictions or chart branches where dashboard/data download actions are not valid.
 
 ### ChartGoogleOne.js.aspx
 
@@ -380,6 +392,27 @@ Sample:
 - Open a dashboard.
 - Review key charts, tables, and metrics.
 - Navigate to detailed reports.
+- Use Export controls to package dashboard notes and available dashboard output.
+
+### CustomDashboard.aspx
+
+Displays saved analytical/report-view dashboard tiles.
+
+Sample:
+
+- Open a user dashboard or a report-specific dashboard.
+- Review analytical tiles that reopen the saved page and parameters.
+- Export dashboard notes and available tile output.
+
+### MixDashboard.aspx
+
+Displays dashboards that combine chart tiles and analytical tiles.
+
+Sample:
+
+- Open a dashboard that contains both chart charts and analytical page tiles.
+- Review chart previews, analytical previews, and open links.
+- Export available dashboard output with notes.
 
 ### ListOfDashboards.aspx
 
@@ -402,6 +435,26 @@ Sample:
 - Open Data Admin.
 - Review tiles for Analytics, Overall Statistics, Groups Statistics, Correlation, DataAI, Pivot, Variance, Comparison Reports, Profiling, Data Quality, Ranking, Regression, Time Based Summaries, Time Series, Outlier Flagging, and Matrix Balancing.
 - Click Open to go to the selected analytics page.
+
+### DataCheck.aspx
+
+Data Quality Dashboard page for trust, completeness, and readiness checks.
+
+Sample:
+
+- Open Data Quality Dashboard.
+- Review tiles for Data Quality, Data Profiling, Data Dictionary, Data Drift, Anomaly Scoring, Outlier Flagging, Rule-Based Alerts, and Map Readiness.
+- Use the top explanation grid to decide which quality/readiness page should be opened first.
+
+### DataReadinessScanner.aspx
+
+Scans the current report and recommends suitable analytics, market models, charts, map checks, and data-quality workflows.
+
+Sample:
+
+- Open Data Readiness Scanner from the report menu.
+- Review readiness score, why useful, suggested fields, what next links, and suggested workflow.
+- Open the recommended analysis page with the best fields for the current report.
 
 ### Analytics.aspx
 
@@ -639,18 +692,17 @@ Notes:
 
 ### ExportPackages.aspx
 
-Creates export packages that can include Report PDF, CSV or Excel data, report definitions, RDL, charts, AI analysis, and notes.
+Creates export packages from checked package rows. Packages can include notes, report PDF output, report definitions, CSV or Excel data, generated analytical exports, chart PNGs, dashboard references, AI analysis output, and related PDF files where available.
 
 Sample:
 
 - Select a report.
-- Choose Report, Report Definition, Charts, AI analysis, and Notes as needed.
-- Choose Data in format: CSV or Excel.
-- Enter Notes if needed.
-- Click Export.
-- The page builds a temporary package folder, writes the selected files, zips the folder, downloads the zip, and then removes the temporary files.
+- Review the export grid and check the rows that should be included.
+- Enter or edit Notes if needed.
+- Click Export as zipped folder to download checked files as a ZIP.
+- Click Export as PDF document(s) to create a main PDF; if separate PDF files are involved, the page downloads a ZIP containing the main PDF plus the referenced PDFs.
 
-The report definition section includes `ReportDefinitions.txt` from the report definition textboxes and an RDL file when an RDL definition is available. The Charts section creates chart-ready CSV files, visible SVG charts, and an HTML summary when suitable category, numeric, or date fields exist. The AI analysis section stores the generated AI output text, not the raw report data sent to AI.
+The report definition section includes `ReportDefinitions.txt` from the report definition textboxes and an RDL file when an RDL definition is available. Chart and dashboard exports can add chart pictures and dashboard item references. The AI analysis section stores generated AI output text, not the raw report data sent to AI.
 
 ### Correlation.aspx
 
@@ -963,9 +1015,12 @@ Sample:
 | Page | Purpose | Sample use |
 | --- | --- | --- |
 | AboutUs.aspx | Application or organization information. | Review product information. |
+| ABCPareto.aspx | ABC Pareto analysis. | Identify the categories or items that explain the largest share of value. |
 | AddParameters.aspx | Add report parameters. | Add Region as a report parameter. |
 | AdvancedAnalytics.aspx | Entry point for advanced analytics. | Open advanced analysis tools for a dataset. |
 | Analytics.aspx | General report analytics. | Summarize values by category/group fields. |
+| AnomalyScoring.aspx | Anomaly scoring. | Score unusual combinations, values, period movement, and suspicious patterns. |
+| AutomatedAnalysisNarratives.aspx | Automated analysis narratives. | Create narrative summaries from selected analytical results. |
 | ChartGoogle.aspx | Build Google-style charts. | Create a bar chart from Category and SalesAmount. |
 | ChartGoogleOne.aspx | Display one selected chart. | Open a recommended chart from analytics. |
 | ChartGoogleOne.js.aspx | Chart JavaScript support. | Render the selected chart. |
@@ -977,18 +1032,26 @@ Sample:
 | ContactUs.aspx | Contact page. | Review support contact details. |
 | Correlation.aspx | Field correlation analysis. | Find numeric fields related to Profit. |
 | CorrelationThreshold.aspx | Filter correlations by threshold. | Show correlations above 0.75. |
+| Cohort.aspx | Cohort analysis. | Compare groups that start in the same period or share the same starting event. |
+| CrossReportComparison.aspx | Cross-report comparison. | Compare selected values between two reports. |
+| CustomDashboard.aspx | Custom analytics dashboard. | Review saved analytical/report-view tiles. |
 | Dashboard.aspx | Dashboard display. | Review charts and summary metrics. |
 | DataAdmin.aspx | Analytics Dashboard. | Open tiles for Analytics, Pivot, Regression, Time Series, Outlier Flagging, and more. |
 | DataAI.aspx | AI-assisted analysis. | Ask AI to summarize data quality findings. |
 | DataAIaddons.aspx | AI add-ons. | Review additional AI helper tools. |
 | DataAIHelp.aspx | DataAI help. | Learn how to ask analysis questions. |
 | DataAIsqlite.aspx | SQLite/lightweight data source support. | Create reports from a SQLite source. |
+| DataCheck.aspx | Data Quality Dashboard. | Open trust/readiness tiles for quality, profiling, drift, alerts, and map readiness. |
+| DataDictionary.aspx | Data dictionary. | Review field names, detected roles, types, examples, and suggested usage. |
+| DataDrift.aspx | Data drift analysis. | Compare how field distributions change between periods or groups. |
 | DataImport.aspx | Import data files. | Import a spreadsheet or delimited file for reporting. |
 | DataQuality.aspx | Data quality checks. | Find missing values, duplicates, and invalid dates. |
+| DataReadinessScanner.aspx | Data readiness scanner. | See which analytics and market models fit the selected report. |
 | Default.aspx | Application start or sign in. | Sign in to DataAI. |
 | Delete.aspx | Delete handler. | Confirm deletion of a selected item. |
 | ExportPackages.aspx | Export packages. | Package report PDF, CSV or Excel data, definitions, RDL, charts, AI analysis, and notes. |
 | FriendlyNames.aspx | User-friendly field names. | Rename technical fields for display. |
+| Funnel.aspx | Funnel analysis. | Measure step-by-step conversion or drop-off across selected stages. |
 | GoogleMap.aspx | Google map output. | Display report rows as map points. |
 | HelpDesk.aspx | Support/help desk. | Review support instructions. |
 | index.aspx | Entry or information page. | Navigate to the application. |
@@ -1001,9 +1064,22 @@ Sample:
 | ListOfJoins.aspx | Table joins. | Join Orders to Customers. |
 | ListOfReports.aspx | Report catalog. | Open Sales by Department. |
 | ListOfTables.aspx | Database table list. | Select tables for a new report. |
+| KPIBuilder.aspx | KPI builder. | Build KPI-style measures from selected numerator, denominator, group, and target fields. |
 | MapGoogle.aspx | Google map rendering. | Show selected coordinates on a map. |
 | MapReadines.aspx | Map readiness checks. | Validate latitude and longitude quality. |
 | MapReport.aspx | Map report setup. | Build a location report. |
+| MarketAdmin.aspx | Market Dashboard. | Open tiles for demand, pricing, elasticity, basket, segments, churn, risk, inventory, profit, and scenario. |
+| MarketBasket.aspx | Market-basket analysis. | Find items that occur together in transactions. |
+| MarketChurn.aspx | Churn and retention scoring. | Review recency and retention risk by customer or segment. |
+| MarketDemand.aspx | Demand model. | Summarize demand and projected demand by selected market dimensions. |
+| MarketElasticity.aspx | Price elasticity model. | Estimate quantity and revenue impact from price changes. |
+| MarketInventory.aspx | Inventory movement and reorder analysis. | Review movement, velocity, supply periods, and reorder need. |
+| MarketPricing.aspx | Pricing sensitivity model. | Compare quantity and revenue behavior by price band. |
+| MarketProfit.aspx | Profitability driver model. | Review revenue, cost, estimated profit, margin, and contribution. |
+| MarketRisk.aspx | Market risk scoring. | Score grouped exposure and risk level. |
+| MarketScenario.aspx | Market scenario model. | Compare downside, base, and upside values from assumption changes. |
+| MarketSegments.aspx | Market segmentation. | Compare grouped segment value, average value, and segment notes. |
+| MixDashboard.aspx | Mixed chart and analytics dashboard. | Review dashboards containing both chart tiles and analytical tiles. |
 | MultidimensionalBalancing.aspx | Matrix or multidimensional balancing. | Select Scenario and review balancing results. |
 | OutlierFlagging.aspx | Outlier detection. | Flag order amounts above standard deviation threshold. |
 | Parameters.aspx | Report parameters. | Define Start Date and End Date. |
@@ -1014,6 +1090,7 @@ Sample:
 | RDLformat.aspx | RDL-style report format. | Edit report layout options. |
 | Registration.aspx | User registration. | Register a new user. |
 | Regression.aspx | Regression and prediction. | Predict SalesAmount when AdvertisingSpend is 25000. |
+| RuleBasedAlerts.aspx | Rule-based alerts. | Find missing-value, variance, correlation, outlier, map, or churn alerts. |
 | ReportCopy.aspx | Copy reports. | Copy Sales by Month for a new region. |
 | ReportDesigner.aspx | Design reports. | Select fields and save report design. |
 | ReportEdit.aspx | Edit reports. | Change fields, filters, or labels. |

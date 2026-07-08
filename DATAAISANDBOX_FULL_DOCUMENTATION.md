@@ -26,6 +26,10 @@ DataAISandbox is the development and demonstration workspace for DataAI. It brin
 
 - Adds AI-assisted interpretation for selected reports, grids, charts, and analytical outputs.
 
+- Adds readiness-first guidance so users can see which analytics, market models, chart pages, map checks, or data-quality pages fit the current report before choosing a workflow.
+
+- Supports chart dashboards, custom analytics dashboards, and mixed dashboards that can combine chart tiles with analytical/report-view tiles.
+
 
 
 ## Main Workflow Examples
@@ -48,13 +52,15 @@ DataAISandbox is the development and demonstration workspace for DataAI. It brin
 
 ### Analyze a Report
 
-1. Open DataAdmin.aspx to see the Analytics Dashboard preview.
+1. Open DataReadinessScanner.aspx to review recommended analytics and suggested fields for the current report.
 
-2. Open Analytics.aspx for grouped detail analytics.
+2. Open DataAdmin.aspx to see the Analytics Dashboard preview or DataCheck.aspx to focus on data trust/readiness checks.
 
-3. Use Pivot.aspx, Variance.aspx, DataQuality.aspx, Profiling.aspx, Regression.aspx, and related pages for targeted analysis.
+3. Open Analytics.aspx for grouped detail analytics.
 
-4. Export to Excel/CSV/PDF/Word where available or send the visible grid to DataAI.aspx for AI interpretation.
+4. Use Pivot.aspx, Variance.aspx, DataQuality.aspx, Profiling.aspx, Regression.aspx, DataDrift.aspx, AnomalyScoring.aspx, RuleBasedAlerts.aspx, and related pages for targeted analysis.
+
+5. Export to Excel/CSV/PDF/Word where available or send the visible grid to DataAI.aspx for AI interpretation.
 
 
 
@@ -67,6 +73,20 @@ DataAISandbox is the development and demonstration workspace for DataAI. It brin
 3. Select eligible charts with Add to Dashboard and click Create Dashboard.
 
 4. Open Dashboard.aspx to browse dashboard pages with Previous/Page/Next navigation.
+
+5. Use ChartGoogleOne.aspx to open individual charts, add them to dashboards, or download chart data when chart-ready data exists.
+
+
+
+### Create Custom or Mixed Dashboards
+
+1. Use Add to Dashboard from report, chart, analytics, or market pages.
+
+2. Save the current URL and report context into a user dashboard.
+
+3. Open CustomDashboard.aspx for analytical/report-view tiles, Dashboard.aspx for chart-only dashboards, or MixDashboard.aspx when a dashboard contains both chart and analytical tiles.
+
+4. Use dashboard export controls to package dashboard notes and available chart/report/analytical outputs.
 
 
 
@@ -248,6 +268,10 @@ DataAISandbox is the development and demonstration workspace for DataAI. It brin
 
 | `DataAdmin.aspx` | Analytics Dashboard. | Tile previews for Analytics, Overall Statistics, Group Statistics, Correlation, DataAI, Pivot, Variance, Comparison, Profiling, Data Quality, Ranking, Regression, Time Summaries, Time Series, Outliers, and Matrix Balancing. |
 
+| `DataCheck.aspx` | Data Quality Dashboard. | Groups data trust/readiness pages such as profiling, quality, dictionary, drift, anomaly scoring, outliers, alerts, and map readiness. |
+
+| `DataReadinessScanner.aspx` | Data readiness scanner. | Scores which analytics, market models, charts, map checks, and quality pages fit the selected report. |
+
 | `Analytics.aspx` | Detail Analytics. | Grouped analytics from category/group fields and value fields, including count, sum, min, max, average, standard deviation, distinct counts, charts, and AI interpretation. |
 
 | `AdvancedAnalytics.aspx` | Advanced analytics and matrix balancing entry. | Supports advanced matrix balancing and related analytical workflows. |
@@ -276,6 +300,26 @@ DataAISandbox is the development and demonstration workspace for DataAI. It brin
 
 | `OutlierFlagging.aspx` | Outlier flagging. | Flags records based on standard deviation, percentage difference, or business-rule thresholds. |
 
+| `AnomalyScoring.aspx` | Anomaly scoring. | Scores unusual combinations, unusual values inside groups, unusual period movement, and suspicious category/value patterns. |
+
+| `DataDrift.aspx` | Data drift analysis. | Compares distributions between groups or periods to identify shifting data behavior. |
+
+| `RuleBasedAlerts.aspx` | Rule-based alerts. | Shows alerts for missing-value rates, variance, correlation, outlier, map-readiness, and churn-style thresholds. |
+
+| `ABCPareto.aspx` | ABC Pareto analysis. | Finds the smaller set of categories/items that account for the largest value share. |
+
+| `Cohort.aspx` | Cohort analysis. | Compares groups with the same start period or starting event. |
+
+| `Funnel.aspx` | Funnel analysis. | Measures conversion/drop-off across selected stages. |
+
+| `KPIBuilder.aspx` | KPI builder. | Builds KPI-style metrics from selected fields, groups, targets, and thresholds. |
+
+| `DataDictionary.aspx` | Data dictionary. | Documents field names, types, examples, detected roles, and suggested usage. |
+
+| `AutomatedAnalysisNarratives.aspx` | Automated analysis narratives. | Creates narrative summaries from selected analytical outputs. |
+
+| `CrossReportComparison.aspx` | Cross-report comparison. | Compares selected values between the current report and another saved report. |
+
 | `Correlation.aspx` | Field correlation analysis. | Calculates correlations between numeric fields and links to threshold/specialized views. |
 
 | `CorrelationThreshold.aspx` | Correlation threshold view. | Filters correlation results by selected thresholds and prepares correlation output for export/AI review. |
@@ -301,6 +345,10 @@ DataAISandbox is the development and demonstration workspace for DataAI. It brin
 | `ChartRecommendationHelpers.aspx` | Chart recommendation engine. | Builds recommended charts from category/date/value fields, supports paging, validation, dashboard selection, and Create Dashboard. |
 
 | `Dashboard.aspx` | Saved chart dashboard viewer. | Shows saved chart dashboards with navigation controls, chart tiles, and page selection. |
+
+| `CustomDashboard.aspx` | Custom analytics dashboard viewer. | Shows saved analytical/report-view dashboard tiles with preview grids and open/delete links. |
+
+| `MixDashboard.aspx` | Mixed dashboard viewer. | Shows dashboards that contain both chart tiles and analytical tiles. |
 
 
 
@@ -438,13 +486,13 @@ MarketAdmin.aspx is the equivalent command center for business model pages. It s
 
 ### Chart Dashboards
 
-ChartRecommendationHelpers.aspx and Dashboard.aspx work together. The recommendation page reviews available category, date, and numeric fields and proposes charts. Users can select recommended rows and create a dashboard. Dashboard.aspx then displays chart tiles with paging so dashboards can contain more charts than fit on one screen.
+ChartRecommendationHelpers.aspx, ChartGoogleOne.aspx, Dashboard.aspx, CustomDashboard.aspx, and MixDashboard.aspx work together. The recommendation page reviews available category, date, and numeric fields and proposes charts. Users can select recommended rows and create a dashboard. Dashboard.aspx displays chart-only dashboards, CustomDashboard.aspx displays analytical/report-view tiles, and MixDashboard.aspx displays dashboards that combine chart and analytical tiles. ChartGoogleOne.aspx keeps add-to-dashboard and download actions visible when chart-ready data exists and the user has the required rights.
 
 
 
 ### Export Packages
 
-ExportPackages.aspx can combine selected report output, report definitions, data formats, chart references, AI analysis, and user notes into a package. It is useful when a report needs to travel with enough context for review or audit.
+ExportPackages.aspx can combine selected report output, report definitions, data formats, chart references, AI analysis, user notes, dashboard chart PNGs, generated report PDFs, and dashboard item references into a package. It is useful when a report or dashboard needs to travel with enough context for review or audit. When Export as PDF document(s) is used, the main PDF is downloaded alone if no separate PDFs are involved; otherwise the main PDF and referenced PDF files are returned in a ZIP.
 
 
 

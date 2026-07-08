@@ -444,6 +444,13 @@ Output: The grid shows analysis type, selected fields, filters, thresholds, aggr
 - Report and Charts fallback link for returning to report/chart output when the selected fields are better reviewed as report data.
 - CSV and Excel export.
 
+Chart workflow support has also been improved in **`ChartGoogleOne.aspx`** and dashboard pages:
+
+- Chart action links such as **add to dashboard** and **download chart data** are shown only after chart-ready data exists for the requested chart.
+- Charts opened from Report Views, Chart Recommendations, or dashboard tiles preserve the selected chart type, X fields, Y fields, aggregation, and report context.
+- Chart and dashboard exports can save chart data snapshots and PNG chart pictures into the temporary export-package workflow where chart images are available.
+- Dashboard chart exports keep dashboard chart output grouped by dashboard run and ordered by common summary series such as Count, Distinct Count, Avg, Sum, Max, Min, StDev, and Value.
+
 **`ExportPackages.aspx`** provides export package support with:
 
 - Checkboxes for Report, Report Definition, Charts, AI analysis, and Notes.
@@ -455,6 +462,9 @@ Output: The grid shows analysis type, selected fields, filters, thresholds, aggr
 - CSV or Excel data export for the current report data.
 - Chart package output with chart-ready CSV files, visible SVG charts, and an HTML chart summary for bar, pie, and time-based chart data when suitable fields exist.
 - AI analysis output saved as real generated AI text when OpenAI settings are configured, without including the raw data sent to AI in the final AI analysis file.
+- Export as zipped folder downloads checked temporary files in a package.
+- Export as PDF document(s) creates a main PDF and, when separate report PDFs or chart-data PDFs are involved, downloads a ZIP containing the main PDF plus the referenced PDF files.
+- Dashboard export workflows add notes and dashboard item references so dashboard packages explain which chart, report, or analytical tile produced each exported file.
 
 **`CorrelationThreshold.aspx`** provides correlation threshold filters and specialized correlation views with:
 
@@ -497,6 +507,16 @@ Output: The green readiness panel explains whether the dataset appears map-ready
 - Pivot and Matrix preview grids shaped as compact cross-tab summaries.
 - Data Quality, Profiling, Ranking, Regression, Time Based Summaries, Time Series, Outlier Flagging, Correlation, and Groups preview grids shaped to match the purpose of their corresponding analysis pages.
 - Open links from each tile to the full analysis page.
+
+**`DataCheck.aspx`** provides a Data Quality Dashboard focused on whether the current data can be trusted before deeper analysis. It groups trust/readiness tools such as Data Quality, Data Profiling, Data Dictionary, Data Drift, Anomaly Scoring, Outlier Flagging, Rule-Based Alerts, and Map Readiness. Its top explanation grid describes why each page is useful, suggested fields, and the link to open the page.
+
+Custom and mixed dashboard development adds:
+
+- **`ListOfDashboards.aspx`** for user dashboard lists across all reports or for the selected report.
+- **`CustomDashboard.aspx`** for saved analytical/report-view tiles.
+- **`MixDashboard.aspx`** for dashboards that combine chart tiles and analytical tiles.
+- Add-to-dashboard links from report, chart, analytics, and market pages that save the page URL and report context so the dashboard tile can reopen the same analytical view.
+- Dashboard export controls that package dashboard notes, chart PNGs, generated report PDFs where available, and dashboard references for review.
 
 ### Market and Business Model Pages
 
@@ -593,21 +613,20 @@ Other existing pages also cover major capabilities:
 
 ## ASP.NET Analysis Features That Can Still Be Programmed
 
-The current ASP.NET project can still be extended with additional analysis screens, report actions, and reusable VB.NET helper functions. Many earlier ideas have now been implemented as ASP.NET pages and are no longer pending items, including pivot/cross-tab reports, variance analysis, comparison reports, profiling, data quality checks, ranking, regression, trends and predictions, time-based summaries, time-series rolling calculations, outlier flagging, chart recommendation helpers, export packages, correlation threshold views, map readiness checks, audit summaries, analytics dashboard tiles, dashboard navigation, and Market/business model pages.
+The current ASP.NET project can still be extended with additional analysis screens, report actions, and reusable VB.NET helper functions. Many earlier ideas have now been implemented as ASP.NET pages and are no longer pending items, including pivot/cross-tab reports, variance analysis, comparison reports, profiling, data quality checks, ranking, regression, trends and predictions, time-based summaries, time-series rolling calculations, outlier flagging, anomaly scoring, data drift, ABC Pareto, cohort, funnel, KPI builder, data dictionary, rule-based alerts, automated analysis narratives, cross-report comparison, chart recommendation helpers, export packages, correlation threshold views, map readiness checks, audit summaries, analytics dashboard tiles, data quality dashboard tiles, custom/mixed dashboards, dashboard navigation, and Market/business model pages.
 
 Practical remaining extensions include:
 
-- Reusable analysis templates so common field selections, thresholds, grouping choices, chart choices, and export options can be saved and reused per report or per user.
 - Configurable default dashboard layouts for **`DataAdmin.aspx`**, including user-selected tile order, visible tiles, preferred preview style, and saved dashboard presets.
-- Cross-report analysis packages that compare selected metrics across several saved reports, departments, locations, or periods.
 - Shared Word and PDF export options for analysis pages that currently export only CSV or Excel.
-- More complete analysis notes and report narratives that combine selected charts, data-quality warnings, regression/trend output, and AI interpretation into one review package.
-- Rule-based alerting for analytical thresholds, such as outliers above a selected limit, missing-value rates, strong correlations, large variances, or map-readiness failures.
+- More complete scheduled or reusable narrative packages that combine selected charts, data-quality warnings, regression/trend output, market outputs, and AI interpretation into one review package.
 - More advanced what-if extensions beyond **`MarketScenario.aspx`**, such as saved multi-assumption sets, comparison of several named scenarios side by side, and scenario export packages that include inputs, calculations, charts, and notes.
-- Optional machine-learning style extensions where they fit the project, such as classification for yes/no outcomes, clustering for similar records or customers, anomaly scoring, simple recommendation scoring, and train/test evaluation summaries. These should be implemented as transparent ASP.NET workflows with visible fields, filters, model settings, and exportable results.
+- Optional machine-learning style extensions where they fit the project, such as classification for yes/no outcomes, clustering for similar records or customers, simple recommendation scoring, train/test evaluation summaries, feature-importance review, and transparent model comparison. These should be implemented as visible ASP.NET workflows with selected fields, filters, model settings, exportable results, and audit notes.
 - Forecasting extensions for business time series, such as trend projection, seasonality summaries, moving-average forecasts, confidence bands, and forecast-versus-actual review.
 - Additional future Market model refinements where the available data supports them, such as seasonal elasticity, vendor lead-time based reorder points, richer profit allocation rules, and saved multi-assumption scenario sets.
 - Model governance and audit views for any future machine-learning or advanced market-model pages, showing selected fields, filters, training period, validation period, assumptions, coefficients or feature importance where available, result counts, and exportable model notes.
+
+Documentation has also been expanded. **`DataAITraining.pdf`** includes Analytics and Market tables with an Education column, and its content links are intended to open the proper documentation sections directly.
 
 ## Best Fit
 
