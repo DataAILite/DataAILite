@@ -236,7 +236,7 @@ Partial Class Analytics
                 Session("AxisY") = DropDownList3.SelectedValue
             End If
             DropDownList5.Items.Clear()
-            DropDownList5.Items.Add(" ")
+            'DropDownList5.Items.Add(" ")
             If Not IsPostBack Then
                 DropDownList5.SelectedValue = " "
             End If

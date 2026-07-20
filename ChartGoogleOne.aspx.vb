@@ -1205,9 +1205,9 @@ Partial Class ChartGoogleOne
                 DropDownListM.Items.Add(" ")
                 DropDownListM.Text = " "
                 DropDownColumnsX.Items.Clear()
-                DropDownColumnsX.Items.Add(" ")
+                'DropDownColumnsX.Items.Add(" ")
                 DropDownColumnsY.Items.Clear()
-                DropDownColumnsY.Items.Add(" ")
+                'DropDownColumnsY.Items.Add(" ")
                 For i = 0 To ddt.Columns.Count - 1
                     fldname = ""
                     frdname = ""
@@ -1419,9 +1419,9 @@ Partial Class ChartGoogleOne
                 Dim fldname, frdname, fldtype As String
 
                 DropDownColumnsX.Items.Clear()
-                DropDownColumnsX.Items.Add(" ")
+                'DropDownColumnsX.Items.Add(" ")
                 DropDownColumnsY.Items.Clear()
-                DropDownColumnsY.Items.Add(" ")
+                'DropDownColumnsY.Items.Add(" ")
                 For i = 0 To ddt.Columns.Count - 1
                     fldname = ""
                     frdname = ""
@@ -2273,9 +2273,9 @@ Partial Class ChartGoogleOne
             DropDownListM.Items.Clear()
             DropDownListM.Items.Add(" ")
             DropDownColumnsX.Items.Clear()
-            DropDownColumnsX.Items.Add(" ")
+            'DropDownColumnsX.Items.Add(" ")
             DropDownColumnsY.Items.Clear()
-            DropDownColumnsY.Items.Add(" ")
+            'DropDownColumnsY.Items.Add(" ")
             For i = 0 To ddt.Columns.Count - 1
                 fldname = ""
                 frdname = ""
@@ -2420,9 +2420,9 @@ Partial Class ChartGoogleOne
 
 
             DropDownColumnsX.Items.Clear()
-            DropDownColumnsX.Items.Add(" ")
+            'DropDownColumnsX.Items.Add(" ")
             DropDownColumnsY.Items.Clear()
-            DropDownColumnsY.Items.Add(" ")
+            'DropDownColumnsY.Items.Add(" ")
             For i = 0 To ddt.Columns.Count - 1
                 fldname = ""
                 frdname = ""

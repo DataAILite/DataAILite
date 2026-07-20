@@ -276,7 +276,7 @@ Partial Class MultidimensionalBalancing
                 Dim frdname As String = String.Empty
                 Dim fldtype As String = String.Empty
                 DropDownList1.Items.Clear()
-                DropDownList1.Items.Add(" ")
+                'DropDownList1.Items.Add(" ")
                 For i = 0 To dt.Columns.Count - 1
                     fldname = ""
                     frdname = ""
@@ -293,7 +293,7 @@ Partial Class MultidimensionalBalancing
                     'DropDownList1_SelectedIndexChanged(sender, e)
                 End If
                 DropDownList2.Items.Clear()
-                DropDownList2.Items.Add(" ")
+                'DropDownList2.Items.Add(" ")
                 For i = 0 To dt.Columns.Count - 1
                     fldname = ""
                     frdname = ""
@@ -310,7 +310,7 @@ Partial Class MultidimensionalBalancing
                     'DropDownList2_SelectedIndexChanged(sender, e)
                 End If
                 DropDownList3.Items.Clear()
-                DropDownList3.Items.Add(" ")
+                'DropDownList3.Items.Add(" ")
                 For i = 0 To dt.Columns.Count - 1
                     fldname = ""
                     frdname = ""
@@ -329,7 +329,7 @@ Partial Class MultidimensionalBalancing
                 DropDownList6.Items.Clear()
                 DropDownList7.Items.Clear()
                 DropDownList5.Items.Clear()
-                DropDownList5.Items.Add(" ")
+                'DropDownList5.Items.Add(" ")
 
                 For i = 0 To dt.Columns.Count - 1
                     fldname = ""

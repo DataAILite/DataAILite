@@ -898,9 +898,9 @@ Partial Class ReportViews
                 DropDownList1.Items.Clear()
                 DropDownList2.Items.Clear()
                 DropDownList3.Items.Clear()
-                DropDownList1.Items.Add(" ")
-                DropDownList2.Items.Add(" ")
-                DropDownList3.Items.Add(" ")
+                'DropDownList1.Items.Add(" ")
+                'DropDownList2.Items.Add(" ")
+                'DropDownList3.Items.Add(" ")
 
                 If Session("Aggregate") Is Nothing OrElse Session("Aggregate").ToString.Trim = "" Then
                     DropDownList4.Items.Clear()
