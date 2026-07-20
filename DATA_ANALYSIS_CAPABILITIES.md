@@ -628,6 +628,32 @@ Practical remaining extensions include:
 
 Documentation has also been expanded. **`DataAITraining.pdf`** includes Analytics and Market tables with an Education column, and its content links are intended to open the proper documentation sections directly.
 
+## Data Security and Governance Compared With Commercial Platforms
+
+DataAI is best understood as a transparent, self-hosted analytical workbench rather than a full enterprise governance platform like Microsoft Fabric/Power BI, Tableau, Qlik, Snowflake, Databricks, or SAS.
+
+Its main governance strength is that the organization can keep the application, code, reports, and data flow under its own control:
+
+- Data can stay in the user's own database, imported-file workflow, or in-memory session workflow.
+- Analytics are produced from selected report data, visible grids, and user-selected fields.
+- Report definitions, analytical outputs, dashboards, export packages, and AI questions can be traced back to the page, report, and field selections that produced them.
+- User/report permissions, report sharing, administrator roles, and menu visibility can be controlled inside the application.
+- Sensitive deployment settings such as connection strings, file paths, payment settings, support email, and OpenAI credentials belong in configuration, not in public source-controlled documentation.
+- DataAILite and in-memory workflows are designed so analytical data is not stored after log off or session close unless the user explicitly exports results.
+
+Compared with large commercial platforms, DataAI is more lightweight, open, inspectable, and practical for private deployments, smaller teams, prototypes, departmental analytics, and organizations that want to own the code path. However, it does not automatically replace enterprise governance layers such as:
+
+- Enterprise SSO, MFA, conditional access, and centralized identity policy.
+- Centralized data catalog and lineage across many systems.
+- Automated PII discovery, classification, masking, DLP, and retention/legal-hold policy.
+- Enterprise semantic models, certified datasets, and tenant-wide row-level security.
+- Tenant-wide audit, compliance dashboards, role provisioning, and governance automation.
+
+Therefore, the right positioning is:
+
+- Use DataAI when the goal is controlled, explainable, self-hosted data analysis with visible report definitions, selected fields, drill-back records, exportable outputs, dashboards, and AI-assisted interpretation.
+- Use or integrate with larger governance platforms when the organization requires enterprise-wide compliance automation, centralized cataloging, identity governance, data-loss prevention, and multi-system lineage.
+
 ## Best Fit
 
 The best fit for this ASP.NET project is practical business data analysis: descriptive statistics, report exploration, dashboards, correlation, data quality checks, geographic analysis, matrix/cross-tab analysis, matrix balancing, scheduled reporting, and AI-assisted explanation.

@@ -199,7 +199,7 @@
         <a class="nav-btn" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=7">&#127968; Landing Page</a>
         <%--<a class="nav-btn" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=7">&#128274; Sign In</a>--%>
         <a class="nav-btn" href="https://oureports.net/OUReports/AdvancedReportDesigner.pdf#page=4">&#128295; Advanced Report Designer</a>
-        <a class="nav-btn" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=68">&#128202; Analytics</a>
+        <a class="nav-btn" href="https://oureports.net/OUReports/DetailAnalytics.pdf">&#128202; Analytics</a>
         <a class="nav-btn" href="https://oureports.net/oureports/AnalyticsNew.pdf">&#128202; More Analytics</a>
         <a class="nav-btn" href="https://oureports.net/oureports/Market.pdf">&#128200; Market Models</a>
         <a class="nav-btn" href="https://oureports.net/oureports/GoogleChartsAndDashboards.pdf">&#128200; Google Charts &amp; Dashboards</a>
@@ -227,7 +227,7 @@
                 <div class="toc-cell" data-topic>
                     <div class="cell-title"><span class="dot" style="background:var(--accent)"></span> Analytics</div>
                     <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=2">Analytics Dashboard</a>
-                    <a class="toc-link feat" href="https://oureports.net/oureports/OnlineUserReporting.pdf#page=68">Detail Analytics</a>
+                    <a class="toc-link feat" href="https://oureports.net/OUReports/DetailAnalytics.pdf">Detail Analytics</a>
                     <a class="toc-link feat" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=25">Data Readiness</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=3">Pivot / Cross Tab</a>
                     <a class="toc-link" href="https://oureports.net/oureports/AnalyticsNew.pdf#page=4">Variance Analysis</a>

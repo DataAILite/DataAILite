@@ -352,7 +352,7 @@
                                                    <td class="auto-style1" style="font-weight:bold"> </td>
                                                    <td class="auto-style1" style="font-weight:bold"> </td>
                                                    <td class="auto-style1" style="font-weight:bold"> </td>--%>
-                                                    <td width="250px" style="font-weight:bold; white-space:nowrap;"><span class="analyticsRecommendedCaption">Highly recommended according your selections:</span></td>
+                                                    <td width="250px" style="font-weight:bold; white-space:nowrap;"><span class="analyticsRecommendedCaption">Highly recommended according to your selections:</span></td>
                                                     <td width="90px" style="font-weight:bold"> </td>
                                                     <td width="80px" style="font-weight:bold"> </td>
                                                     <td width="85px" style="font-weight:bold"> </td>
