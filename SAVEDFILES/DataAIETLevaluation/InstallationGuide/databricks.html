@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataAI ETL Databricks - Customer-Ready Evaluation Installation Guide</title>
+    <style>
+        :root { color-scheme: light; font-family: "Segoe UI", Arial, sans-serif; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f4f7fb; color: #172033; line-height: 1.6; }
+        main { max-width: 1040px; margin: 32px auto; padding: 0 20px 48px; }
+        .card { background: #fff; border: 1px solid #d9e1ec; border-radius: 10px; box-shadow: 0 4px 18px rgba(23,32,51,.08); padding: 30px; }
+        .meta { margin: 18px 0 26px; padding: 14px 16px; background: #eef4ff; border-left: 4px solid #2a64c5; }
+        .meta p { margin: 4px 0; }
+        .notice { padding: 12px 16px; background: #fff8e6; border-left: 4px solid #b7791f; }
+        h1, h2, h3 { line-height: 1.25; scroll-margin-top: 18px; }
+        h1 { margin-top: 0; font-size: 1.8rem; }
+        h2 { margin-top: 2rem; padding-bottom: .3rem; border-bottom: 1px solid #d9e1ec; }
+        a { color: #174ea6; }
+        pre { overflow-x: auto; padding: 16px; background: #111827; color: #e5edf9; border-radius: 7px; }
+        code { font-family: Consolas, "Courier New", monospace; }
+        :not(pre) > code { padding: 2px 5px; background: #eef1f5; border-radius: 4px; }
+        .top-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+<main>
+    <p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; Back to DataAI ETL markets</a><a href="index.html">All installation guides</a></p>
+    <article class="card">
+        <h1>DataAI ETL Databricks - Customer-Ready Evaluation</h1>
+        <div class="meta">
+            <p><strong>Product:</strong> Databricks</p>
+            <p><strong>Distribution:</strong> Customer-ready evaluation</p>
+            <p><strong>Source:</strong> <code>DataAI_ETL_Databricks_Evaluation/docs/INSTALLATION_AND_USAGE.md</code> inside <code>DataAI_ETL_Databricks_Evaluation.zip</code></p>
+            <p><strong>Package SHA-256:</strong> <code>17dd034ab90b066ecccd8926f5cc66e410a77ec78e56e953782b5bad24c7df9e</code></p>
+            <p><a href="../../../DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Databricks_Evaluation.zip">Download customer-ready package</a> | <a href="../../../DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Databricks_Evaluation.zip.sha256">Download checksum</a> | <a href="../licenses/databricks.html">Read the evaluation license</a></p>
+        </div>
+        <p class="notice"><strong>Start here:</strong> Download one customer-ready ZIP. It already contains the DataAI libraries, product assets, documentation, samples, licenses, internal checksums, and local verification files for this integration. Spark, Hadoop, vendor products, and proprietary drivers remain customer-provided.</p>
+        <h2>Databricks: Customer Evaluation Installation and Usage</h2>
+<p>This is the customer-ready DataAI ETL evaluation package from Yanbor LLC, provider of the DataAI product. DataAI runs inside the customer&#x27;s pipeline; it is not a hosted service and makes no required DataAI network call.</p>
+<h3>Prerequisites</h3>
+<ul><li>Databricks workspace with customer-controlled compute</li><li>Java 17 / Spark 3.5 / Scala 2.12-compatible target runtime</li><li>Unity Catalog permissions for evaluation files and tables</li></ul>
+<h3>Installation and first verification</h3>
+<ol><li>Review LICENSE.md and run smoke-test\run-smoke-test.ps1 on a compatible Spark machine when available.</li><li>Upload the DataAI JARs and platform notebooks to a customer-controlled workspace or Unity Catalog volume.</li><li>Attach the JARs to isolated evaluation compute and run 00_INSTALL_AND_VERIFY.py first.</li><li>Run the quality, analytics, matrix, and BI notebooks using only fictional or approved non-production data.</li><li>Verify output ownership, cluster policy, access controls, and runtime compatibility before broader use.</li></ol>
+<h3>Evaluation boundary</h3>
+<ul><li>Use only fictional or approved non-production data.</li><li>Review <code>LICENSE.md</code>; the standard evaluation is less than 32 consecutive calendar days.</li><li>DataAI software is provided AS IS, with no obligations except those expressly accepted in a signed commercial agreement or order form.</li><li>Spark, Hadoop, cloud platforms, BI tools, orchestration products, and vendor drivers remain customer-provided and governed by their respective terms.</li><li>A successful local smoke test validates the delivered DataAI artifacts. It does not claim certification on the customer&#x27;s external platform.</li></ul>
+<h3>Package layout</h3>
+<ul><li><code>install/</code>: platform-specific installer or packages, when applicable.</li><li><code>lib/</code>: DataAI JARs required by Spark-based integrations.</li><li><code>smoke-test/</code> or <code>nuget-smoke-test/</code>: executable local verification.</li><li><code>docs/</code>: complete function catalog and product-specific guidance.</li><li><code>samples/</code>: fictional evaluation inputs.</li><li><code>platform/</code>: platform-specific examples, notebooks, configuration, POMs, or container-review assets.</li><li><code>PACKAGE_CONTENTS.sha256</code>: SHA-256 for every other file in this ZIP.</li></ul>
+        <section><h2>Local DataAI Library Smoke Test</h2>
+<p>This test uses only fictional in-memory rows. It starts local Spark, executes normalization, profiling, required and numeric quality rules, clean/rejected routing, the complete function-catalog check, and iterative matrix balancing. The Tableau package additionally verifies its dashboard and matrix adapters.</p>
+<h3>Requirements</h3>
+<ul><li>Java 17.</li><li>Apache Spark 3.5.0 with Scala 2.12.</li><li><code>spark-submit</code> available on <code>PATH</code>, or supplied with <code>-SparkSubmit</code>.</li></ul>
+<p>Spark and Hadoop are customer-provided runtimes and are intentionally not bundled in the DataAI evaluation ZIP.</p>
+<h3>Run</h3>
+<p>From the extracted package root:</p>
+<pre><code class="language-powershell">.\smoke-test\run-smoke-test.ps1</code></pre>
+<p>If the customer&#x27;s Windows policy blocks direct script invocation and the customer&#x27;s security policy permits a process-only override, run:</p>
+<pre><code class="language-powershell">powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
+  .\smoke-test\run-smoke-test.ps1</code></pre>
+<p>This option applies only to that PowerShell process; it does not change the computer&#x27;s execution policy.</p>
+<p>For an explicit executable path:</p>
+<pre><code class="language-powershell">.\smoke-test\run-smoke-test.ps1 `
+  -SparkSubmit &#x27;C:\spark\bin\spark-submit.cmd&#x27;</code></pre>
+<p>Success requires exit code <code>0</code> and a <code>DATAAI_*_SMOKE_TEST_PASS</code> marker. This local check validates the delivered DataAI libraries. It does not replace the documented validation on Databricks, AWS, Azure, Oracle, Google Cloud, Tableau, Alteryx, or another customer-selected external platform.</p></section>
+        <h2>Verify the downloaded ZIP</h2>
+        <pre><code class="language-powershell">$expected = (Get-Content .\DataAI_ETL_Databricks_Evaluation.zip.sha256).Split()[0]
+$actual = (Get-FileHash .\DataAI_ETL_Databricks_Evaluation.zip -Algorithm SHA256).Hash.ToLowerInvariant()
+if ($actual -ne $expected) { throw 'DataAI ETL package checksum mismatch.' }</code></pre>
+    </article>
+</main>
+</body>
+</html>
