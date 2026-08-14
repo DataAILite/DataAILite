@@ -25,6 +25,7 @@
         table.dtable th { background-color: #663300; color: white; border: 1px solid white; padding: 5px 10px; white-space: nowrap; text-align: left; }
         table.dtable td { border: 1px solid #d0d0d0; padding: 5px 10px; vertical-align: top; white-space: nowrap; }
         table.dtable td.inst { white-space: normal; max-width: 560px; }
+        table.dtable td.inst br:last-of-type { display: none; }
         table.dtable tr:nth-child(even) td { background-color: #f9f6f3; }
 
         .footer { text-align: center; padding: 8px; color: #777; font-size: 11px; border-top: 1px solid #ccc; background-color: #e5e5e5; margin-top: 12px; }
@@ -33,12 +34,12 @@
 <body>
 
 <div class="page-header">DataAI ETL Markets</div>
-<div class="page-sub">Evaluation packages are limited to non-production use under the applicable evaluation terms. Production downloads require commercial authorization from Yanbor LLC. See implementation, documentation, source, and samples at <a href="https://DataAI.link">DataAI.link</a></div>
+<div class="page-sub"><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/FUNCTION_CATALOG.html"><strong>See DataAI ETL functions catalog.</strong></a> Evaluation packages are limited to non-production use under the applicable evaluation terms. Production downloads require commercial authorization from Yanbor LLC. See implementation, documentation, source, and samples at <a href="https://DataAI.link">DataAI.link</a></div>
 
 <div class="content">
 
     <div class="notice-row">
-        <div class="install-notice runtime"><strong>Runtime baseline:</strong> Java 17, Apache Spark 3.5.0, and Scala binary version 2.12. Customers supply the applicable Spark/platform runtime, approved drivers, credentials, accounts, security configuration, and destination systems. See the product installation guide before downloading. <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/FUNCTION_CATALOG.html">See DataAI ETL functions catalog.</a></div>
+        <div class="install-notice runtime"><strong>Runtime baseline:</strong> Java 17, Apache Spark 3.5.0, and Scala binary version 2.12. Customers supply the applicable Spark/platform runtime, approved drivers, credentials, accounts, security configuration, and destination systems.<br /><a href="https://oureports.net/OUReports/DataAIETLPrerequisites.html">Install the Windows prerequisites.</a><br />See the product installation guide before downloading and usage guide after installation.</div>
         <div class="install-notice"><strong>Production and marketplace status:</strong> the production files are locally built and validated production candidates, not marketplace-certified offers. Marketplace publication is not authorized, <code>submissionReady</code> remains <code>false</code>, and external-platform validation is incomplete. Production use requires a written Yanbor LLC commercial agreement, order form, or license certificate. <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/ReleaseInformation/status.html">Read production status and fulfillment steps</a> or <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/CommercialLicense/index.html">the non-binding sample commercial agreement</a>.</div>
     </div>
 
@@ -51,6 +52,7 @@
             <th>Download Evaluation</th>
             <th>Instructions to Production</th>
             <th>Download Production</th>
+            <th>Usage guide</th>
         </tr>
         <tr>
             <td>.NET pipelines</td>
@@ -60,6 +62,7 @@
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_DotNet_Evaluation.zip">Customer-ready .NET evaluation ZIP</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_DotNet_Evaluation.zip.sha256">SHA-256 checksum</a></td>
             <td class="inst">Add the Yanbor-authorized private feed to the project's NuGet sources, then run <code>dotnet add package Yanbor.DataAI.Etl.Spark --version 1.0.0 --source &lt;feed-name-or-url&gt;</code>. The runtime package is installed transitively and copies the licensed DataAI JARs into the application output. Keep feed credentials in the customer's approved credential store. <br /><strong>License:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/licenses/dotnet.html">Production license — .NET pipelines</a>. <br /><strong>Installation guide:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/InstallationGuide/dotnet.html">See more...</a></td>
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=Yanbor.DataAI.Etl.Spark.1.0.0.nupkg">Integration package 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=Yanbor.DataAI.Etl.Spark.Runtime.1.0.0.nupkg">Runtime package 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></td>
+            <td><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/UsageGuide/dotnet.html">Use DataAI ETL from .NET</a></td>
         </tr>
         <tr>
             <td>SSIS</td>
@@ -69,6 +72,7 @@
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_SSIS_Evaluation.zip">Customer-ready SSIS evaluation ZIP</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_SSIS_Evaluation.zip.sha256">SHA-256 checksum</a></td>
             <td class="inst">No native SSIS component, MSI, or GAC-installed DataAI assembly is included. Run the licensed DataAI ETL Spark job in the customer's Spark environment and orchestrate it from SSIS with an Execute Process Task or the customer's approved Spark job interface; then consume the resulting governed tables with the existing SSIS database connector. <br /><strong>License:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/licenses/ssis.html">Production license — SSIS</a>. <br /><strong>Installation guide:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/InstallationGuide/ssis.html">See more...</a></td>
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Spark-1.0.0.zip">DataAI ETL Spark 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></td>
+            <td><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/UsageGuide/ssis.html">Use DataAI ETL from SSIS</a></td>
         </tr>
         <tr>
             <td>InterSystems IRIS</td>
@@ -78,6 +82,7 @@
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_IRIS_Evaluation.zip">Customer-ready IRIS evaluation ZIP</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_IRIS_Evaluation.zip.sha256">SHA-256 checksum</a></td>
             <td class="inst">Obtain the authorized production package, verify its SHA-256 checksum, and publish the DataAI Spark modules plus <code>dataai-spark-iris-1.0.0.jar</code> to the customer's private Maven repository or Spark library location. Supply a customer-approved InterSystems JDBC driver separately and configure the IRIS JDBC URL, namespace, credentials, and output tables in the Spark application. The optional IPM bootstrap can be loaded with ZPM from its extracted <code>ipm</code> folder; it does not install the commercial Spark JARs. <br /><strong>License:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/licenses/intersystems-iris.html">Production license — InterSystems IRIS</a>. <br /><strong>Installation guide:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/InstallationGuide/intersystems-iris.html">See more...</a></td>
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-IRIS-1.0.0.zip">IRIS adapter 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Spark-1.0.0.zip">Spark libraries 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></td>
+            <td><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/UsageGuide/intersystems-iris.html">Use DataAI ETL with IRIS</a></td>
         </tr>
         <tr>
             <td>Oracle AIDP Spark</td>
@@ -87,6 +92,7 @@
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Oracle_AIDP_Evaluation.zip">Customer-ready Oracle AIDP evaluation ZIP</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Oracle_AIDP_Evaluation.zip.sha256">SHA-256 checksum</a></td>
             <td class="inst">Install the immutable <code>1.0.0</code> DataAI modules from the authorized private Maven repository, or upload the required API, quality, core, functions, and optional CLI JARs to customer-controlled storage. Add the Maven coordinates through the platform's Spark package configuration or pass comma-separated JAR locations with <code>spark-submit --jars</code>. Keep Spark and Hadoop supplied by Oracle AIDP and store repository credentials in the approved secret facility. <br /><strong>License:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/licenses/oracle-aidp-spark.html">Production license — Oracle AIDP Spark</a>. <br /><strong>Installation guide:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/InstallationGuide/oracle-aidp-spark.html">See more...</a></td>
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Oracle-1.0.0.zip">Oracle package 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></td>
+            <td><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/UsageGuide/oracle-aidp-spark.html">Use DataAI ETL with Oracle</a></td>
         </tr>
         <tr>
             <td>Talend / MuleSoft</td>
@@ -96,6 +102,7 @@
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Talend_MuleSoft_Evaluation.zip">Customer-ready Talend / MuleSoft evaluation ZIP</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Talend_MuleSoft_Evaluation.zip.sha256">SHA-256 checksum</a></td>
             <td class="inst">No dedicated Talend component or MuleSoft connector is included. For a Talend Spark job, add the licensed DataAI <code>1.0.0</code> Maven dependencies through Talend's approved artifact repository/module management and use the Java API in the Spark job. For MuleSoft, orchestrate a customer-run Spark job or consume its governed output tables through an existing database connector; do not copy DataAI Spark JARs directly into a non-Spark Mule runtime. <br /><strong>License:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/licenses/talend-mulesoft.html">Production license — Talend / MuleSoft</a>. <br /><strong>Installation guide:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/InstallationGuide/talend-mulesoft.html">See more...</a></td>
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Maven-1.0.0.zip">Maven package 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></td>
+            <td><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/UsageGuide/talend-mulesoft.html">Use with Talend / MuleSoft</a></td>
         </tr>
         <tr>
             <td>Alteryx</td>
@@ -105,6 +112,7 @@
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Alteryx_Evaluation.zip">Customer-ready Alteryx evaluation ZIP</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Alteryx_Evaluation.zip.sha256">SHA-256 checksum</a></td>
             <td class="inst">Download the direct <code>DataAI_ETL_Alteryx_2026_1_Production_1.0.0.yxi</code>, or extract it from the complete Alteryx production package, and verify it with the production checksum manifest. Double-click the YXI, install it for the current user or all users according to company policy, enable AMP in Alteryx Designer 2026.1, and configure the customer <code>spark-submit</code> executable, tables, rules, and commercial-rights confirmation. <br /><strong>License:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/licenses/alteryx.html">Production license — Alteryx</a>. <br /><strong>Installation guide:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/InstallationGuide/alteryx.html">See more...</a></td>
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAI_ETL_Alteryx_2026_1_Production_1.0.0.yxi">Alteryx YXI 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Alteryx-1.0.0.zip">Complete Alteryx package</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></td>
+            <td><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/UsageGuide/alteryx.html">Use DataAI ETL from Alteryx</a></td>
         </tr>
         <tr>
             <td>Power BI</td>
@@ -114,6 +122,7 @@
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_PowerBI_Evaluation.zip">Customer-ready Power BI evaluation ZIP</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_PowerBI_Evaluation.zip.sha256">SHA-256 checksum</a></td>
             <td class="inst">No DataAI <code>.mez</code> connector is included. Install DataAI ETL in the customer's Spark or Databricks pipeline, publish the approved DataAI output tables, and connect Power BI with its native Databricks, Spark, or database connector. Configure credentials, gateway, refresh, row-level security, and privacy settings in the customer's Power BI environment. <br /><strong>License:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/licenses/power-bi.html">Production license — Power BI</a>. <br /><strong>Installation guide:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/InstallationGuide/power-bi.html">See more...</a></td>
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Microsoft-1.0.0.zip">Microsoft package 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Spark-1.0.0.zip">Spark libraries 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></td>
+            <td><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/UsageGuide/power-bi.html">Use DataAI ETL with Power BI</a></td>
         </tr>
         <tr>
             <td>Tableau</td>
@@ -123,6 +132,7 @@
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Tableau_Evaluation.zip">Customer-ready Tableau evaluation ZIP</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Tableau_Evaluation.zip.sha256">SHA-256 checksum</a></td>
             <td class="inst">No DataAI <code>.taco</code> connector is required. Extract the authorized Tableau package and open <code>accelerator/DataAI_ETL_Accelerator.twbx</code> in Tableau Desktop. Install the optional <code>dataai-spark-tableau-1.0.0.jar</code> with the licensed DataAI modules in the customer's Spark application, publish the documented output tables, and replace the workbook's fictional source with the customer's native Spark SQL or Databricks connection. <br /><strong>License:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/licenses/tableau.html">Production license — Tableau</a>. <br /><strong>Installation guide:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/InstallationGuide/tableau.html">See more...</a></td>
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Tableau-1.0.0.zip">Tableau package 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Spark-1.0.0.zip">Spark libraries 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></td>
+            <td><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/UsageGuide/tableau.html">Use DataAI ETL with Tableau</a></td>
         </tr>
         <tr>
             <td>AWS (Glue / EMR)</td>
@@ -132,6 +142,7 @@
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_AWS_Evaluation.zip">Customer-ready AWS evaluation ZIP</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_AWS_Evaluation.zip.sha256">SHA-256 checksum</a></td>
             <td class="inst">No Lambda layer or Python wheel is included, and Lambda is not a supported Spark runtime for this package. For AWS Glue Spark or Amazon EMR, place the licensed DataAI <code>1.0.0</code> JARs in a private S3 location or approved Maven repository and attach them to the Spark job with the platform's dependent-JAR setting or <code>--extra-jars</code>/<code>--jars</code>. Configure IAM access, networking, connectors, and output locations in the customer account. <br /><strong>License:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/licenses/aws-glue-emr.html">Production license — AWS (Glue / EMR)</a>. <br /><strong>Installation guide:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/InstallationGuide/aws-glue-emr.html">See more...</a></td>
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-AWS-1.0.0.zip">AWS package 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></td>
+            <td><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/UsageGuide/aws-glue-emr.html">Use DataAI ETL with AWS</a></td>
         </tr>
         <tr>
             <td>Databricks</td>
@@ -141,6 +152,7 @@
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Databricks_Evaluation.zip">Customer-ready Databricks evaluation ZIP</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Databricks_Evaluation.zip.sha256">SHA-256 checksum</a></td>
             <td class="inst">Extract the authorized production package and upload the immutable DataAI <code>1.0.0</code> JARs to an approved Unity Catalog volume, or use Yanbor's authenticated Maven repository. Add the JARs as compute or Databricks Job libraries, configure a standard-access-mode allowlist when required, import the supplied notebooks, and run <code>00_INSTALL_AND_VERIFY.py</code> before the production workflow. No DataAI Python wheel is required. <br /><strong>License:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/licenses/databricks.html">Production license — Databricks</a>. <br /><strong>Installation guide:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/InstallationGuide/databricks.html">See more...</a></td>
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Databricks-1.0.0.zip">Databricks package 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></td>
+            <td><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/UsageGuide/databricks.html">Use DataAI ETL with Databricks</a></td>
         </tr>
         <tr>
             <td>Google Cloud (Dataproc)</td>
@@ -150,6 +162,7 @@
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Google_Cloud_Evaluation.zip">Customer-ready Google Cloud evaluation ZIP</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=evaluation-customer-ready&amp;file=DataAI_ETL_Google_Cloud_Evaluation.zip.sha256">SHA-256 checksum</a></td>
             <td class="inst">The production package targets Google Cloud Dataproc/Spark and includes no Python wheel. Upload the licensed DataAI <code>1.0.0</code> JARs to a private GCS location or approved Maven repository, then attach them to the Dataproc Spark job with <code>--jars</code> or the cluster's Spark dependency configuration. Configure service-account access, networking, connectors, and output locations in the customer project. <br /><strong>License:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/licenses/google-cloud-dataproc.html">Production license — Google Cloud (Dataproc)</a>. <br /><strong>Installation guide:</strong> <a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLproduction/InstallationGuide/google-cloud-dataproc.html">See more...</a></td>
             <td><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Google-1.0.0.zip">Google package 1.0.0</a><br /><a href="https://oureports.net/OUReports/DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></td>
+            <td><a href="https://oureports.net/OUReports/SAVEDFILES/DataAIETLfunctions/UsageGuide/google-cloud-dataproc.html">Use DataAI ETL with Google Cloud</a></td>
         </tr>
     </table>
 

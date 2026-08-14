@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL from Alteryx</title><link rel="stylesheet" href="usage.css" /></head>
+<body><main>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a></p>
+<article class="card">
+<h1>Use DataAI ETL from Alteryx Designer</h1>
+<div class="meta"><strong>Execution model:</strong> the DataAI ETL Quality tool launches the installed DataAI Spark quality CLI. It operates on a Spark catalog table, not on an in-memory Alteryx record stream. Its optional Alteryx output contains bounded status information.</div>
+<h2>1. Prepare the workflow</h2>
+<ol><li>Enable the AMP Engine.</li><li>Load approved sample/customer data into a Spark catalog table reachable from the Designer execution identity.</li><li>Grant read access to the source and create/overwrite access only to dedicated output tables.</li><li>Add <strong>DataAI ETL Quality</strong> to a new workflow.</li><li>Attach a Browse tool to the optional <strong>Status</strong> output.</li></ol>
+<h2>2. Configure the DataAI tool</h2>
+<table><tr><th>Field</th><th>How to use it</th></tr>
+<tr><td>Spark Submit</td><td>Enter <code>spark-submit</code> or the full approved executable path.</td></tr>
+<tr><td>Master / deploy mode</td><td>Select the customer's validated Spark execution mode.</td></tr>
+<tr><td>Source table</td><td>Enter an existing Spark catalog table.</td></tr>
+<tr><td>Output tables</td><td>Enter any approved clean, rejected, profile, and findings tables. Blank disables that write.</td></tr>
+<tr><td>Normalize / record keys</td><td>Enable normalization as needed and enter deterministic key columns.</td></tr>
+<tr><td>Rules</td><td>Paste a JSON rule array using supported rule types.</td></tr>
+<tr><td>Minimum score</td><td>Optionally set a quality gate from 0 through 100.</td></tr>
+<tr><td>Extra arguments</td><td>Use a JSON string array such as <code>["--conf","spark.sql.session.timeZone=UTC"]</code>, never a shell command.</td></tr>
+<tr><td>Timeout / entitlement</td><td>Set an approved timeout and confirm the applicable license rights.</td></tr></table>
+<p class="warning">The quality CLI overwrites every nonblank output table. Use dedicated staging names and verify permissions before running. Do not enter passwords, access tokens, or keys in tool fields.</p>
+<h2>3. Run and inspect</h2>
+<ol><li>Run the AMP workflow.</li><li>Require status <code>Succeeded</code> and exit code <code>0</code>.</li><li>Inspect customer-controlled Spark logs.</li><li>Query each selected table and reconcile counts.</li><li>Test one failing rule and the minimum-score gate.</li><li>Confirm no table outside the selected schema changed.</li></ol>
+<h2>4. Use advanced DataAI functions</h2>
+<p>The first Alteryx tool exposes the quality CLI. Matrix balancing and other advanced functions are in the bundled Java libraries but are not separate Alteryx buttons. Build a customer Java/Spark wrapper for the selected function, then invoke it from Alteryx or the customer's scheduler and consume the governed result table.</p>
+<h2>5. Move to Alteryx Server</h2>
+<p>An administrator must install the same approved YXI on every execution worker and make Java, Spark, catalogs, and connector libraries available to the service account. Validate Server execution, credentials, timeouts, worker concurrency, and log handling separately.</p>
+<p class="success"><strong>Usage is successful when:</strong> the AMP workflow reports success, Spark outputs reconcile, failing gates stop the workflow as designed, and the status output reveals no customer rows or raw logs.</p>
+</article><footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main></body></html>

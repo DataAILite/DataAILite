@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataAI ETL Windows Prerequisites Check and Installation</title>
+    <style type="text/css">
+        :root { color-scheme: light; font-family: "Segoe UI", Arial, sans-serif; color: #172033; background: #f4f7fb; }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { margin: 0; background: #f4f7fb; color: #172033; line-height: 1.6; }
+        a { color: #174ea6; }
+        a:hover { color: #0b3478; }
+        main { max-width: 1080px; margin: 30px auto; padding: 0 20px 48px; }
+        .top-links { display: flex; gap: 18px; flex-wrap: wrap; margin: 0 0 16px; }
+        .card { background: #fff; border: 1px solid #d9e1ec; border-radius: 10px; box-shadow: 0 4px 18px rgba(23, 32, 51, .08); padding: 30px; }
+        .subtitle { margin-top: -.5rem; color: #526174; }
+        .summary { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .summary th { background: #663300; color: #fff; text-align: left; }
+        .summary th, .summary td { border: 1px solid #d9e1ec; padding: 9px 11px; vertical-align: top; }
+        .summary tr:nth-child(even) td { background: #faf7f4; }
+        .toc { padding: 16px 20px; background: #eef4ff; border-left: 4px solid #2a64c5; }
+        .toc ol { margin: 6px 0 0; }
+        .notice { padding: 13px 16px; background: #fff8e6; border-left: 4px solid #b7791f; }
+        .info { padding: 13px 16px; background: #eef4ff; border-left: 4px solid #2a64c5; }
+        .success { padding: 13px 16px; background: #edf9f0; border-left: 4px solid #25813f; }
+        .step { margin: 20px 0; padding: 18px 20px; border: 1px solid #d9e1ec; border-radius: 8px; background: #fbfcfe; }
+        .step h3 { margin-top: 0; }
+        h1, h2, h3 { line-height: 1.25; scroll-margin-top: 16px; }
+        h1 { margin-top: 0; font-size: 1.9rem; }
+        h2 { margin-top: 2.2rem; padding-bottom: .35rem; border-bottom: 1px solid #d9e1ec; }
+        h3 { margin-top: 1.5rem; }
+        pre { overflow-x: auto; padding: 15px 17px; background: #111827; color: #e5edf9; border-radius: 7px; }
+        code { font-family: Consolas, "Courier New", monospace; }
+        :not(pre) > code { padding: 2px 5px; background: #eef1f5; border-radius: 4px; }
+        .checklist { list-style: none; padding-left: 0; }
+        .checklist li { margin: 7px 0; }
+        .checklist li::before { content: "\2610"; margin-right: 9px; color: #2a64c5; font-size: 1.1rem; }
+        .small { color: #526174; font-size: .92rem; }
+        footer { text-align: center; color: #69778a; margin-top: 18px; font-size: .9rem; }
+        @media (max-width: 680px) {
+            main { margin-top: 15px; padding: 0 10px 30px; }
+            .card { padding: 20px 16px; }
+            .summary { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+<main>
+    <p class="top-links">
+        <a href="DataAIETLmarkets.html">&larr; Back to DataAI ETL markets</a>
+        <a href="https://DataAI.link">DataAI.link</a>
+    </p>
+
+    <article class="card">
+        <h1>Check and Install DataAI ETL Prerequisites on Windows</h1>
+        <p class="subtitle">Customer-computer instructions for .NET 8 SDK, a Java 17 JDK, and Apache Spark 3.5.0 with Scala 2.12.</p>
+        <p class="notice"><strong>Check before downloading:</strong> do not assume that a missing command means the software is absent, and do not assume that an existing folder contains the required version. Run the checks below first. Download or configure only a prerequisite whose result is not <code>READY</code>.</p>
+
+        <table class="summary">
+            <thead><tr><th>Prerequisite</th><th>Ready when</th><th>Typical installation folder</th></tr></thead>
+            <tbody>
+                <tr><td>.NET 8 SDK</td><td><code>dotnet --list-sdks</code> contains <code>8.0.x</code></td><td><code>C:\Program Files\dotnet</code>, created by the Microsoft installer</td></tr>
+                <tr><td>Java 17 JDK</td><td><code>java -version</code> reports <code>17.0.x</code> and <code>JAVA_HOME\bin\java.exe</code> exists</td><td>Usually <code>C:\Program Files\Eclipse Adoptium\jdk-17...</code>, created by the Java installer</td></tr>
+                <tr><td>Spark 3.5.0 / Scala 2.12</td><td><code>spark-submit --version</code> reports Spark <code>3.5.0</code> and Scala <code>2.12.x</code></td><td><code>C:\Tools\Spark\spark-3.5.0-bin-hadoop3</code>, created by extracting the Apache archive</td></tr>
+            </tbody>
+        </table>
+
+        <nav class="toc" aria-label="Installation contents">
+            <strong>Use this order</strong>
+            <ol>
+                <li><a href="#precheck">Check existing software, versions, commands, and folders</a></li>
+                <li><a href="#folders">Check and prepare download and installation folders</a></li>
+                <li><a href="#dotnet">Download .NET 8 SDK only if missing</a></li>
+                <li><a href="#java">Download or configure Java 17 only if needed</a></li>
+                <li><a href="#spark">Download or configure Spark only if needed</a></li>
+                <li><a href="#terminal-refresh">Close and reopen PowerShell when required</a></li>
+                <li><a href="#verify">Perform the final verification</a></li>
+                <li><a href="#troubleshooting">Troubleshoot common problems</a></li>
+            </ol>
+        </nav>
+
+        <h2 id="precheck">1. Check Existing Prerequisites First</h2>
+        <div class="step">
+            <h3>Step 1.1 &mdash; Open PowerShell</h3>
+            <ol><li>Open the Windows <strong>Start</strong> menu.</li><li>Type <strong>PowerShell</strong>.</li><li>Open PowerShell directly from Start.</li><li>Copy and run the complete check below. The Spark check may take several seconds.</li></ol>
+        </div>
+        <div class="step">
+            <h3>Step 1.2 &mdash; Run the prerequisite and folder inventory</h3>
+            <pre><code>$dotnetCommand = Get-Command dotnet -ErrorAction SilentlyContinue
+$dotnetFolder = if ($dotnetCommand) { Split-Path -Parent $dotnetCommand.Source } else { $null }
+$dotnet8 = $false
+if ($dotnetCommand) {
+    $dotnet8 = [bool](dotnet --list-sdks 2&gt;$null | Where-Object { $_ -match '^8\.' })
+}
+
+$javaHome = $env:JAVA_HOME
+if ([string]::IsNullOrWhiteSpace($javaHome)) {
+    $javaHome = [Environment]::GetEnvironmentVariable("JAVA_HOME", "User")
+}
+$javaCommand = Get-Command java -ErrorAction SilentlyContinue
+$javaExe = if ($javaCommand) {
+    $javaCommand.Source
+} elseif ($javaHome) {
+    Join-Path $javaHome "bin\java.exe"
+} else {
+    $null
+}
+$javaFolderExists = [bool]($javaHome -and (Test-Path -LiteralPath (Join-Path $javaHome "bin\java.exe")))
+$java17 = $false
+if ($javaExe -and (Test-Path -LiteralPath $javaExe)) {
+    $javaVersionText = (&amp; $javaExe -version 2&gt;&amp;1 | Out-String)
+    $java17 = $javaVersionText -match 'version "17\.'
+}
+
+$sparkHome = $env:SPARK_HOME
+if ([string]::IsNullOrWhiteSpace($sparkHome)) {
+    $sparkHome = [Environment]::GetEnvironmentVariable("SPARK_HOME", "User")
+}
+$sparkCommand = Get-Command spark-submit.cmd -ErrorAction SilentlyContinue
+if (-not $sparkCommand) { $sparkCommand = Get-Command spark-submit -ErrorAction SilentlyContinue }
+$sparkExe = if ($sparkCommand) {
+    $sparkCommand.Source
+} elseif ($sparkHome) {
+    Join-Path $sparkHome "bin\spark-submit.cmd"
+} else {
+    $null
+}
+$sparkFolderExists = [bool]($sparkHome -and (Test-Path -LiteralPath (Join-Path $sparkHome "bin\spark-submit.cmd")))
+$spark350 = $false
+$scala212 = $false
+$processJavaHomeBeforeCheck = $env:JAVA_HOME
+$processSparkHomeBeforeCheck = $env:SPARK_HOME
+if ([string]::IsNullOrWhiteSpace($env:JAVA_HOME) -and $javaHome) { $env:JAVA_HOME = $javaHome }
+if ([string]::IsNullOrWhiteSpace($env:SPARK_HOME) -and $sparkHome) { $env:SPARK_HOME = $sparkHome }
+if ($sparkExe -and (Test-Path -LiteralPath $sparkExe)) {
+    $sparkVersionText = (&amp; $sparkExe --version 2&gt;&amp;1 | Out-String)
+    $spark350 = $sparkVersionText -match 'version 3\.5\.0'
+    $scala212 = $sparkVersionText -match 'Scala version 2\.12\.'
+}
+if ($null -eq $processJavaHomeBeforeCheck) { Remove-Item Env:JAVA_HOME -ErrorAction SilentlyContinue } else { $env:JAVA_HOME = $processJavaHomeBeforeCheck }
+if ($null -eq $processSparkHomeBeforeCheck) { Remove-Item Env:SPARK_HOME -ErrorAction SilentlyContinue } else { $env:SPARK_HOME = $processSparkHomeBeforeCheck }
+
+$dotnetStatus = if ($dotnet8) { "READY" } else { "DOWNLOAD / INSTALL" }
+$javaStatus = if ($java17 -and $javaFolderExists -and $javaCommand) {
+    "READY"
+} elseif ($java17 -and $javaFolderExists) {
+    "CONFIGURE JAVA_HOME / PATH"
+} else {
+    "DOWNLOAD / INSTALL"
+}
+$sparkStatus = if ($spark350 -and $scala212 -and $sparkFolderExists -and $sparkCommand) {
+    "READY"
+} elseif ($spark350 -and $scala212 -and $sparkFolderExists) {
+    "CONFIGURE SPARK_HOME / PATH"
+} else {
+    "DOWNLOAD / INSTALL"
+}
+
+@(
+    [pscustomobject]@{
+        Prerequisite = ".NET 8 SDK"; Status = $dotnetStatus
+        Folder = if ($dotnetFolder) { $dotnetFolder } else { "&lt;not found&gt;" }
+        FolderExists = [bool]($dotnetFolder -and (Test-Path -LiteralPath $dotnetFolder))
+    }
+    [pscustomobject]@{
+        Prerequisite = "Java 17 JDK"; Status = $javaStatus
+        Folder = if ($javaHome) { $javaHome } else { "&lt;JAVA_HOME not set&gt;" }
+        FolderExists = $javaFolderExists
+    }
+    [pscustomobject]@{
+        Prerequisite = "Spark 3.5.0 / Scala 2.12"; Status = $sparkStatus
+        Folder = if ($sparkHome) { $sparkHome } else { "&lt;SPARK_HOME not set&gt;" }
+        FolderExists = $sparkFolderExists
+    }
+) | Format-Table -AutoSize</code></pre>
+        </div>
+        <div class="step">
+            <h3>Step 1.3 &mdash; Decide what to do</h3>
+            <ul>
+                <li><strong>READY:</strong> do not download or reinstall this prerequisite.</li>
+                <li><strong>CONFIGURE:</strong> the correct software folder exists, but the environment variables or <code>Path</code> need configuration.</li>
+                <li><strong>DOWNLOAD / INSTALL:</strong> the required version or installation folder was not found. Follow that product's download section.</li>
+            </ul>
+            <p class="info"><strong>Version matters:</strong> Java 8, 11, 21, or 25 does not satisfy this exact Java 17 prerequisite. Spark 4 or Spark built with Scala 2.13 does not satisfy the Spark 3.5.0/Scala 2.12 prerequisite. A .NET 8 runtime without an 8.0 SDK does not satisfy the SDK prerequisite.</p>
+        </div>
+
+        <h2 id="folders">2. Check and Prepare the Required Folders</h2>
+        <div class="step">
+            <h3>Step 2.1 &mdash; Check the folders</h3>
+            <pre><code>$downloadFolder = Join-Path $env:USERPROFILE "Downloads"
+$sparkRoot = "C:\Tools\Spark"
+$sparkVersionFolder = Join-Path $sparkRoot "spark-3.5.0-bin-hadoop3"
+
+@(
+    [pscustomobject]@{ Purpose = "Downloads"; Folder = $downloadFolder; Exists = Test-Path -LiteralPath $downloadFolder }
+    [pscustomobject]@{ Purpose = "Spark installation root"; Folder = $sparkRoot; Exists = Test-Path -LiteralPath $sparkRoot }
+    [pscustomobject]@{ Purpose = "Extracted Spark 3.5.0"; Folder = $sparkVersionFolder; Exists = Test-Path -LiteralPath $sparkVersionFolder }
+) | Format-Table -AutoSize</code></pre>
+        </div>
+        <div class="step">
+            <h3>Step 2.2 &mdash; Create only missing working folders</h3>
+            <p>The Microsoft .NET and Temurin Java installers create their own folders under <code>C:\Program Files</code>. Do not create those product folders manually. If the Downloads or Spark root folder is missing, open PowerShell as Administrator and run:</p>
+            <pre><code>$downloadFolder = Join-Path $env:USERPROFILE "Downloads"
+New-Item -ItemType Directory -Force -Path $downloadFolder
+New-Item -ItemType Directory -Force -Path "C:\Tools\Spark"</code></pre>
+            <p>The folder <code>spark-3.5.0-bin-hadoop3</code> will be created when the Spark archive is extracted.</p>
+        </div>
+
+        <h2 id="dotnet">3. Install the .NET 8 SDK Only If Missing</h2>
+        <p>If the pre-check reported <code>READY</code> for .NET 8 SDK, skip this section.</p>
+        <div class="step">
+            <h3>Step 3.1 &mdash; Download or install</h3>
+            <p>Open PowerShell as Administrator and run:</p>
+            <pre><code>winget install --id Microsoft.DotNet.SDK.8 --source winget</code></pre>
+            <p>If WinGet is unavailable, use the <a href="https://dotnet.microsoft.com/en-us/download/dotnet/8.0">official Microsoft .NET 8 download page</a>. Under <strong>Build apps - SDK</strong>, download the Windows installer matching the customer's architecture. Do not select a runtime-only download.</p>
+        </div>
+        <div class="step">
+            <h3>Step 3.2 &mdash; Close, reopen, and verify</h3>
+            <ol><li>Wait for the installer to finish.</li><li>Close the elevated PowerShell window.</li><li>Exit the entire terminal-hosting application.</li><li>Open PowerShell directly from Start.</li><li>Run:</li></ol>
+            <pre><code>dotnet --list-sdks
+Test-Path -LiteralPath "$env:ProgramFiles\dotnet\dotnet.exe"
+Get-ChildItem -LiteralPath "$env:ProgramFiles\dotnet\sdk" -Directory -Filter "8.0.*"</code></pre>
+            <p>At least one <code>8.0.x</code> SDK directory must be listed. <code>dotnet --version</code> may show a newer SDK.</p>
+        </div>
+
+        <h2 id="java">4. Install or Configure Java 17 Only If Needed</h2>
+        <p>If the pre-check reported <code>READY</code> for Java 17, skip this section.</p>
+        <div class="step">
+            <h3>Step 4.1 &mdash; If Java 17 exists but needs configuration</h3>
+            <p>If the result was <code>CONFIGURE JAVA_HOME / PATH</code>, locate the JDK directory containing <code>bin\java.exe</code>. <code>JAVA_HOME</code> points to the JDK directory, not its <code>bin</code> folder.</p>
+            <ol><li>Press <strong>Windows key + R</strong> and enter <code>sysdm.cpl</code>.</li><li>Select <strong>Advanced</strong> and <strong>Environment Variables</strong>.</li><li>Create or edit the user variable <code>JAVA_HOME</code> with the full JDK folder.</li><li>Edit the user <code>Path</code> and add <code>%JAVA_HOME%\bin</code>.</li><li>Click <strong>OK</strong> in every window.</li><li>Exit every terminal host and reopen PowerShell from Start.</li></ol>
+        </div>
+        <div class="step">
+            <h3>Step 4.2 &mdash; If Java 17 is missing, download the JDK</h3>
+            <ol>
+                <li>Open the <a href="https://adoptium.net/temurin/releases/">official Eclipse Temurin download page</a>.</li>
+                <li>Select <strong>JDK 17 - LTS</strong>.</li>
+                <li>Select <strong>Windows</strong> and the customer's architecture, normally <strong>x64</strong>.</li>
+                <li>Select <strong>JDK</strong>, not a JRE-only package.</li>
+                <li>Download and run the Windows <strong>MSI</strong> installer.</li>
+                <li>In <strong>Custom Setup</strong>, enable both <strong>Add to PATH</strong> and <strong>Set or update JAVA_HOME</strong>.</li>
+                <li>Complete the installer. It creates its directory, normally under <code>C:\Program Files\Eclipse Adoptium</code>.</li>
+            </ol>
+            <p>See the <a href="https://adoptium.net/installation/windows/">official Temurin Windows MSI instructions</a> for details.</p>
+        </div>
+        <div class="step">
+            <h3>Step 4.3 &mdash; Close, reopen, and verify</h3>
+            <ol><li>Close all terminals.</li><li>Exit Windows Terminal, Visual Studio, VS Code, or another terminal host completely.</li><li>Open PowerShell from Start.</li><li>Run:</li></ol>
+            <pre><code>$env:JAVA_HOME
+where.exe java
+Test-Path -LiteralPath (Join-Path $env:JAVA_HOME "bin\java.exe")
+java -version</code></pre>
+            <p>The folder test must return <code>True</code>, and Java must report <code>17.0.x</code>.</p>
+        </div>
+
+        <h2 id="spark">5. Install or Configure Spark 3.5.0 Only If Needed</h2>
+        <p>If the pre-check reported <code>READY</code> for Spark 3.5.0/Scala 2.12, skip this section. Scala is already inside the selected Spark package.</p>
+        <div class="step">
+            <h3>Step 5.1 &mdash; If Spark exists but needs configuration</h3>
+            <p>If the result was <code>CONFIGURE SPARK_HOME / PATH</code>, confirm that the existing Spark folder contains <code>bin\spark-submit.cmd</code>. Open Environment Variables, set <code>SPARK_HOME</code> to that folder, and add <code>%SPARK_HOME%\bin</code> to the user <code>Path</code>. Save all windows, exit the terminal host, and reopen PowerShell from Start.</p>
+        </div>
+        <div class="step">
+            <h3>Step 5.2 &mdash; If Spark is missing, download the correct files</h3>
+            <ul>
+                <li><a href="https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3.tgz">spark-3.5.0-bin-hadoop3.tgz</a></li>
+                <li><a href="https://archive.apache.org/dist/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3.tgz.sha512">spark-3.5.0-bin-hadoop3.tgz.sha512</a></li>
+            </ul>
+            <p>Save both files in Downloads. Do not download the file ending in <code>scala2.13.tgz</code>. The archive without a Scala suffix is the required Scala 2.12 build.</p>
+            <p class="notice"><strong>Archived release:</strong> Spark 3.5.0 is historical. Use this exact version for DataAI ETL compatibility evaluation and apply the customer's security policies before production use.</p>
+        </div>
+        <div class="step">
+            <h3>Step 5.3 &mdash; Verify the SHA-512 checksum</h3>
+            <pre><code>$download = Join-Path $env:USERPROFILE "Downloads"
+$archive = Join-Path $download "spark-3.5.0-bin-hadoop3.tgz"
+$checksumFile = "$archive.sha512"
+
+if (-not (Test-Path -LiteralPath $archive)) { throw "Spark archive was not found in Downloads." }
+if (-not (Test-Path -LiteralPath $checksumFile)) { throw "Spark checksum file was not found in Downloads." }
+
+$expected = ((Get-Content -LiteralPath $checksumFile -Raw) -split '\s+')[0].ToLowerInvariant()
+$actual = (Get-FileHash -LiteralPath $archive -Algorithm SHA512).Hash.ToLowerInvariant()
+if ($actual -ne $expected) { throw "Spark checksum mismatch. Download the archive again from Apache." }
+Write-Host "Spark download checksum verified." -ForegroundColor Green</code></pre>
+        </div>
+        <div class="step">
+            <h3>Step 5.4 &mdash; Create the folder and extract Spark</h3>
+            <p>Open PowerShell as Administrator and run:</p>
+            <pre><code>New-Item -ItemType Directory -Force -Path "C:\Tools\Spark"
+tar -xzf "$env:USERPROFILE\Downloads\spark-3.5.0-bin-hadoop3.tgz" -C "C:\Tools\Spark"
+Test-Path -LiteralPath "C:\Tools\Spark\spark-3.5.0-bin-hadoop3\bin\spark-submit.cmd"</code></pre>
+            <p>The final command must return <code>True</code>.</p>
+        </div>
+        <div class="step">
+            <h3>Step 5.5 &mdash; Configure Spark and verify</h3>
+            <ol><li>Open Environment Variables with <code>sysdm.cpl</code>.</li><li>Create the user variable <code>SPARK_HOME</code> with value <code>C:\Tools\Spark\spark-3.5.0-bin-hadoop3</code>.</li><li>Add <code>%SPARK_HOME%\bin</code> to the user <code>Path</code>.</li><li>Click <strong>OK</strong> in every window.</li><li>Exit every terminal host and reopen PowerShell from Start.</li><li>Run:</li></ol>
+            <pre><code>$env:SPARK_HOME
+where.exe spark-submit
+Test-Path -LiteralPath (Join-Path $env:SPARK_HOME "bin\spark-submit.cmd")
+spark-submit --version</code></pre>
+            <p>The folder test must return <code>True</code>. Spark must report <code>3.5.0</code>, Scala <code>2.12.x</code>, and Java <code>17.0.x</code>.</p>
+        </div>
+
+        <h2 id="terminal-refresh">6. When PowerShell Must Be Closed and Reopened</h2>
+        <p>Each terminal receives a copy of the environment when its hosting process starts. An already-open terminal does not automatically receive a newly installed SDK or new environment variables.</p>
+        <ol><li>Finish the installer or environment change.</li><li>Click <strong>OK</strong> until all environment windows close.</li><li>Close every PowerShell and Command Prompt window.</li><li>Exit the entire Windows Terminal, Visual Studio, VS Code, or other terminal host. A new tab inside an old host may still have the old environment.</li><li>Open PowerShell directly from Start.</li><li>Run the verification commands again.</li></ol>
+
+        <h2 id="verify">7. Final Customer-Computer Verification</h2>
+        <pre><code>Write-Host ".NET 8 SDK" -ForegroundColor Cyan
+dotnet --list-sdks
+Test-Path -LiteralPath "$env:ProgramFiles\dotnet\dotnet.exe"
+
+Write-Host "Java 17 JDK" -ForegroundColor Cyan
+$env:JAVA_HOME
+Test-Path -LiteralPath (Join-Path $env:JAVA_HOME "bin\java.exe")
+java -version
+
+Write-Host "Spark 3.5.0 and Scala 2.12" -ForegroundColor Cyan
+$env:SPARK_HOME
+Test-Path -LiteralPath (Join-Path $env:SPARK_HOME "bin\spark-submit.cmd")
+spark-submit --version</code></pre>
+        <p class="success"><strong>Ready for DataAI ETL:</strong> the .NET list contains an <code>8.0.x</code> SDK; both executable-folder tests return <code>True</code>; Java reports <code>17.0.x</code>; and Spark reports <code>3.5.0</code> with Scala <code>2.12.x</code>.</p>
+        <ul class="checklist"><li>.NET 8 SDK is present, not only the runtime.</li><li><code>JAVA_HOME\bin\java.exe</code> exists.</li><li>Java reports version 17.</li><li><code>SPARK_HOME\bin\spark-submit.cmd</code> exists.</li><li>Spark reports 3.5.0 and Scala 2.12.</li></ul>
+
+        <h2 id="troubleshooting">8. Troubleshooting</h2>
+        <h3>Persistent settings exist, but current variables are blank</h3>
+        <pre><code>Write-Host "Persistent user settings" -ForegroundColor Cyan
+[Environment]::GetEnvironmentVariable("JAVA_HOME", "User")
+[Environment]::GetEnvironmentVariable("SPARK_HOME", "User")
+
+Write-Host "Current PowerShell settings" -ForegroundColor Cyan
+$env:JAVA_HOME
+$env:SPARK_HOME</code></pre>
+        <p>If persistent values are correct but current values are blank, exit the entire terminal-hosting application and reopen PowerShell from Start.</p>
+        <h3>Load saved variables into the current PowerShell temporarily</h3>
+        <pre><code>$env:JAVA_HOME = [Environment]::GetEnvironmentVariable("JAVA_HOME", "User")
+$env:SPARK_HOME = [Environment]::GetEnvironmentVariable("SPARK_HOME", "User")
+$env:Path = "$env:JAVA_HOME\bin;$env:SPARK_HOME\bin;$env:Path"
+java -version
+spark-submit --version</code></pre>
+        <p class="small">These temporary values disappear when that PowerShell window closes.</p>
+        <h3><code>spark-submit</code> is still not recognized</h3>
+        <pre><code>&amp; "C:\Tools\Spark\spark-3.5.0-bin-hadoop3\bin\spark-submit.cmd" --version</code></pre>
+        <p>If the direct command works, Spark is installed and the remaining problem is <code>SPARK_HOME</code>, <code>Path</code>, or a stale terminal. If the file does not exist, return to the folder and extraction checks.</p>
+        <h3>The customer uses a different approved folder</h3>
+        <p>Set <code>JAVA_HOME</code> and <code>SPARK_HOME</code> to the actual customer folders. Verify that each folder contains its required executable before adding its <code>bin</code> directory to <code>Path</code>.</p>
+
+        <h2>Official Download Sources</h2>
+        <ul><li><a href="https://dotnet.microsoft.com/en-us/download/dotnet/8.0">Microsoft .NET 8 downloads</a></li><li><a href="https://adoptium.net/temurin/releases/">Eclipse Temurin JDK downloads</a></li><li><a href="https://adoptium.net/installation/windows/">Temurin Windows MSI instructions</a></li><li><a href="https://archive.apache.org/dist/spark/spark-3.5.0/">Apache Spark 3.5.0 archive</a></li></ul>
+    </article>
+    <footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main>
+</body>
+</html>

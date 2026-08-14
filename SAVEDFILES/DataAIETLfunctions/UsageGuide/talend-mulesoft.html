@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL with Talend or MuleSoft</title><link rel="stylesheet" href="usage.css" /></head>
+<body><main>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a></p>
+<article class="card">
+<h1>Use DataAI ETL with Talend or MuleSoft</h1>
+<div class="meta"><strong>Two integration patterns:</strong> a Talend Spark job may call the installed DataAI Java APIs directly. MuleSoft should orchestrate a customer-run Spark job or consume its governed outputs through an existing connector; it should not load DataAI Spark JARs into a non-Spark Mule runtime.</div>
+<h2>1. Talend Spark job usage</h2>
+<ol><li>Configure Talend's approved Maven/module repository with the exact installed DataAI version.</li><li>Keep <code>spark-sql_2.12</code> supplied by the target Spark runtime; do not package a conflicting Spark copy.</li><li>Read the customer source into a Spark <code>Dataset&lt;Row&gt;</code>.</li><li>Call the DataAI pipeline or a selected function from a customer Java routine/job.</li><li>Explicitly write only approved outputs with the customer's Talend/Spark connectors and save-mode policy.</li></ol>
+<pre><code>DataAiResult result = DataAiPipeline.fromDataset(input)
+    .normalize()
+    .recordKey("business_key")
+    .profile()
+    .validate(RuleSpec.required("required-id", "customer_id"))
+    .execute();
+
+Dataset&lt;Row&gt; clean = result.cleanRows();
+Dataset&lt;Row&gt; rejected = result.rejectedRows();
+Dataset&lt;Row&gt; findings = result.findings();</code></pre>
+<p>Connect these DataFrames to approved Talend output components, or persist them in customer code. Reconcile row counts before continuing the Talend job.</p>
+<h2>2. Talend orchestration alternative</h2>
+<p>For the packaged quality CLI, use a Talend command/job component to invoke <code>spark-submit</code> with main class <code>com.dataai.etl.spark.cli.DataAiJob</code> and <code>--config &lt;customer-json&gt;</code>. Require exit code <code>0</code> before starting downstream Talend work.</p>
+<h2>3. MuleSoft usage</h2>
+<ol><li>Choose a customer-approved Spark job interface: scheduler API, message queue, workflow endpoint, or another existing integration.</li><li>Have MuleSoft send only a job identifier and approved parameters—not raw credentials in payloads.</li><li>Poll or receive completion status and require successful Spark termination.</li><li>Use an existing database, Databricks, or other approved connector to read DataAI output tables.</li><li>Return bounded summaries or identifiers through Mule APIs; do not unintentionally expose rejected rows or sensitive findings.</li></ol>
+<h2>4. Advanced functions and validation</h2>
+<p>Analytics, time series, business, market, map-readiness, insight, and matrix-balancing functions run in the Talend/customer Spark job. MuleSoft can trigger the wrapper job and consume its outputs but does not execute those Spark algorithms itself.</p>
+<ul><li>Pin one DataAI version in the dependency tree.</li><li>Test quality failures, Spark failures, orchestration timeouts, retries, and idempotency.</li><li>Verify only selected tables and APIs expose outputs.</li><li>Keep repository and platform credentials in approved secret stores.</li></ul>
+<p class="success"><strong>Usage is successful when:</strong> Talend or the customer Spark job produces governed outputs, MuleSoft orchestrates without embedding Spark libraries, and retries cannot duplicate or publish unauthorized data.</p>
+</article><footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main></body></html>

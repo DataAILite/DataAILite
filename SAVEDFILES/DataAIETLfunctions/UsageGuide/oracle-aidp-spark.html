@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL with Oracle AIDP Spark</title><link rel="stylesheet" href="usage.css" /></head>
+<body><main>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a></p>
+<article class="card">
+<h1>Use DataAI ETL with Oracle AIDP Spark</h1>
+<div class="meta"><strong>Execution model:</strong> DataAI runs inside the customer's Oracle Spark application or configuration-driven Spark job. Oracle supplies compute, Spark/Hadoop, identity, networking, Object Storage, catalogs, logs, and scheduling.</div>
+<h2>1. Prepare the Oracle job</h2>
+<ol><li>Use the exact DataAI JAR version installed in the approved Oracle artifact location.</li><li>Create separate Object Storage locations for licensed DataAI artifacts, the customer application/configuration, and customer data.</li><li>Grant the Oracle job identity read access to the artifact objects and minimum approved input/output permissions.</li><li>Create isolated source and output schemas and verify the Oracle runtime uses Java 17, Spark 3.5-compatible APIs, and Scala 2.12.</li></ol>
+<h2>2. Choose an execution method</h2>
+<h3>Configuration-driven quality job</h3>
+<ol><li>Create a JSON configuration selecting the source table, optional output tables, normalization, record keys, rules, and minimum quality score.</li><li>Set main class <code>com.dataai.etl.spark.cli.DataAiJob</code>.</li><li>Distribute/localize the JSON file to the driver.</li><li>Pass <code>--config &lt;localized-file&gt;</code> as application arguments.</li></ol>
+<h3>Embedded Java/Spark application</h3>
+<pre><code>DataAiResult result = DataAiPipeline
+    .fromTable(spark, "staging.customer_orders")
+    .normalize()
+    .recordKey("order_id")
+    .profile()
+    .validate(RuleSpec.required("customer-required", "customer_id"))
+    .execute();
+
+result.requireMinimumQualityScore(90.0);</code></pre>
+<p>Customer code explicitly writes selected DataFrames using Oracle-supported formats, catalogs, schemas, and save modes.</p>
+<h2>3. Use DataAI functions</h2>
+<p>Call quality, analytics, time-series, business, market, map-readiness, matrix-balancing, and insight functions from the installed Java libraries. Keep correlation lists bounded and define matrix iteration/tolerance controls. DataAI returns DataFrames and metadata; it does not automatically persist them.</p>
+<h2>4. Operate and validate</h2>
+<ol><li>Run first with fictional or approved non-production data.</li><li>Inspect Oracle job logs and capture the application/run identifier.</li><li>Query every selected output and reconcile source, clean, rejected, and finding counts.</li><li>Verify matrix convergence metadata when balancing is used.</li><li>Test insufficient permissions, invalid rules, failed quality gates, retry behavior, and duplicate-write protection.</li><li>Schedule only after the exact Oracle runtime image and dependencies pass validation.</li></ol>
+<p class="warning">Do not mix JARs from different DataAI releases. The quality CLI overwrites named output tables; use dedicated staging tables. Embedded applications control their own save mode.</p>
+<p class="success"><strong>Usage is successful when:</strong> the Oracle job loads one DataAI version, executes under least privilege, returns expected results, writes only selected outputs, and exposes complete customer-controlled logs.</p>
+</article><footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main></body></html>

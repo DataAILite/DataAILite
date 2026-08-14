@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL from .NET</title><link rel="stylesheet" href="usage.css" /></head>
+<body><main>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a></p>
+<article class="card">
+<h1>Use DataAI ETL from a .NET Pipeline</h1>
+<div class="meta"><strong>Start here after installation:</strong> the .NET package is an orchestration library. It prepares a DataAI quality configuration and a process-safe <code>spark-submit</code> command. Spark and the packaged Java libraries perform the DataFrame processing.</div>
+<h2>1. Verify the installed runtime layout</h2>
+<ol><li>Confirm the application restores <code>Yanbor.DataAI.Etl.Spark</code> and its runtime package at one approved version.</li><li>Confirm the application output contains the DataAI library JARs under <code>dataai/jars</code> and the shaded quality CLI under <code>dataai/cli</code>.</li><li>Run <code>spark-submit --version</code> under the same identity that will run the .NET application.</li><li>Confirm that the Spark identity can read the source table and write only the approved output tables.</li></ol>
+<h2>2. Build a quality job configuration</h2>
+<pre><code>using Yanbor.DataAI.Etl.Spark;
+
+var configuration = new DataAiQualityJobConfiguration
+{
+    SourceTable = "staging.customer_orders",
+    CleanTable = "dataai.customer_orders_clean",
+    RejectedTable = "dataai.customer_orders_rejected",
+    ProfileTable = "dataai.customer_orders_profiles",
+    FindingsTable = "dataai.customer_orders_findings",
+    Normalize = true,
+    RecordKeyColumns = ["order_id"],
+    Rules =
+    [
+        DataAiRuleSpec.Required("customer-required", "customer_id"),
+        DataAiRuleSpec.Between("amount-range", "amount", 0, 100000)
+    ],
+    MinimumQualityScore = 90
+};
+
+configuration.WriteJson("dataai-job.json");</code></pre>
+<p>Leave an optional output table blank only when that output must not be written. Do not put passwords or tokens in this JSON.</p>
+<h2>3. Build and launch the Spark command</h2>
+<pre><code>var command = DataAiSparkSubmitBuilder.BuildQualityJob(
+    "dataai-job.json",
+    options: new DataAiSparkSubmitOptions
+    {
+        SparkSubmitExecutable = "spark-submit",
+        Master = "local[*]",
+        SparkArguments = ["--conf", "spark.sql.session.timeZone=UTC"]
+    });
+
+var start = new System.Diagnostics.ProcessStartInfo(command.FileName)
+{
+    UseShellExecute = false
+};
+foreach (string argument in command.Arguments)
+    start.ArgumentList.Add(argument);
+
+using var process = System.Diagnostics.Process.Start(start)
+    ?? throw new InvalidOperationException("Spark could not be started.");
+process.WaitForExit();
+if (process.ExitCode != 0)
+    throw new InvalidOperationException($"DataAI Spark job failed: {process.ExitCode}");</code></pre>
+<p class="warning">The command builder does not start a process, transmit data, or choose credentials. Customer code starts the process under an approved identity. The quality CLI overwrites each named output table, so use dedicated staging tables.</p>
+<h2>4. Validate and continue the pipeline</h2>
+<ol><li>Require process exit code <code>0</code>.</li><li>Query clean, rejected, findings, and profile tables.</li><li>Reconcile clean plus rejected counts with source counts and inspect <code>_dataai_record_key</code>.</li><li>Use a success precedence path to publish clean rows or trigger the next orchestrator step.</li><li>Send a failure to the customer's logging and incident system without copying sensitive rows into application logs.</li></ol>
+<h2>5. Use advanced DataAI functions</h2>
+<p>The .NET helper exposes the function catalog but does not implement Spark DataFrame extensions. For analytics, market models, map readiness, insights, or matrix balancing, package a customer Java/Spark application that calls the DataAI Java API and use <code>DataAiSparkSubmitBuilder.BuildLibraryApplication(...)</code> to submit that application with the installed DataAI JARs.</p>
+<p class="success"><strong>Usage is successful when:</strong> the command exits successfully, only selected tables change, quality counts reconcile, the minimum-score gate behaves as designed, and retries do not create unintended output.</p>
+</article><footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main></body></html>

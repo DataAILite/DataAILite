@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL with Databricks</title><link rel="stylesheet" href="usage.css" /></head>
+<body><main>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a></p>
+<article class="card">
+<h1>Use DataAI ETL with Databricks</h1>
+<div class="meta"><strong>Execution model:</strong> DataAI runs in customer Databricks compute with JARs installed from an approved Unity Catalog volume or private repository. The supplied notebooks demonstrate quality, analytics/market functions, matrix balancing, and governed BI outputs.</div>
+<h2>1. Prepare a governed workspace</h2>
+<ol><li>Use a customer-controlled Unity Catalog catalog, schema, volume, and workspace folder.</li><li>Attach the same-version DataAI API, quality, core, and functions JARs to approved compute or a Databricks Job.</li><li>Add the volume path to the standard-access-mode allowlist when required.</li><li>Restart compute after library installation.</li><li>Grant the job identity <code>USE CATALOG</code>, <code>USE SCHEMA</code>, <code>READ VOLUME</code>, source reads, and only approved output privileges.</li></ol>
+<h2>2. Run the notebooks in order</h2>
+<ol><li><code>00_INSTALL_AND_VERIFY.py</code> &mdash; verify runtime versions, paths, and DataAI class loading.</li><li><code>01_QUALITY_PIPELINE.py</code> &mdash; run normalization, profiling, rules, clean/rejected routing, and quality gates.</li><li><code>02_ANALYTICS_AND_MARKET.py</code> &mdash; run selected analytics and market examples.</li><li><code>03_MATRIX_BALANCING.py</code> &mdash; balance matrix cells against row/column controls and inspect convergence.</li><li><code>04_PUBLISH_FOR_BI.py</code> &mdash; prepare optional governed BI views/tables.</li></ol>
+<p>Set <code>dataai_base_path</code> to the customer volume. Replace sample catalog/schema values with isolated customer-approved locations.</p>
+<h2>3. Control persistence</h2>
+<ol><li>Leave <code>persist_results</code> and <code>publish_views</code> false during the first computational validation.</li><li>Review output catalog, schema, table names, retention, ownership, and grants.</li><li>Enable persistence only after approval.</li><li>Record <code>run_id</code>, library version, completion time, source version, and job run identifier with published outputs.</li></ol>
+<h2>4. Create an operational Job</h2>
+<ol><li>Create a Databricks Workflow/Job under a least-privilege service principal.</li><li>Pin the exact DataAI libraries and approved compute policy.</li><li>Sequence source preparation, DataAI processing, output validation, and BI refresh tasks.</li><li>Configure retries only after write behavior is idempotent or protected by run-specific tables/merge logic.</li><li>Send failures to customer monitoring without copying sensitive rows into notifications.</li></ol>
+<h2>5. Validate</h2>
+<ul><li>Verify class loading on driver and executors.</li><li>Reconcile source, clean, rejected, finding, and profile counts.</li><li>Test the minimum-quality gate and one intentionally failing rule.</li><li>Confirm matrix balancing reports convergence, iterations, and maximum error.</li><li>Validate Unity Catalog lineage, grants, row/column controls, and BI views.</li><li>Test a fresh compute restart so the result does not depend on notebook state.</li></ul>
+<p class="warning">A notebook result displayed successfully does not authorize publication. Customer code/settings choose every persisted table or view. Do not mix different DataAI JAR versions on the same compute.</p>
+<p class="success"><strong>Usage is successful when:</strong> notebook 00 verifies installation, all selected functions return expected results, optional persistence reaches only approved Unity Catalog objects, and a clean Databricks Job rerun is repeatable.</p>
+</article><footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main></body></html>

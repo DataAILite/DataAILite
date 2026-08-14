@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL with AWS Glue or EMR</title><link rel="stylesheet" href="usage.css" /></head>
+<body><main>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a></p>
+<article class="card">
+<h1>Use DataAI ETL with AWS Glue or Amazon EMR</h1>
+<div class="meta"><strong>Execution model:</strong> DataAI runs in customer-managed Spark compute on AWS Glue Spark, Amazon EMR, or EMR Serverless. AWS supplies identity, networking, S3, Glue Data Catalog, logs, runtime, and scheduling. AWS Lambda is not the Spark runtime for this package.</div>
+<h2>1. Prepare the job</h2>
+<ol><li>Place one exact DataAI release in a private S3 artifact prefix or use the approved Marketplace fulfillment.</li><li>Attach the API, quality, core, and functions JARs with the platform's supported dependent-JAR mechanism. Attach the shaded CLI only for a JSON-driven quality job.</li><li>Grant the job role read access to DataAI artifacts and minimum approved access to input/output locations.</li><li>Use isolated Glue databases, S3 prefixes, or Delta/Iceberg/Hive tables for initial outputs.</li><li>Confirm the chosen AWS Spark runtime is compatible with Java 17 APIs and Scala 2.12 artifacts.</li></ol>
+<h2>2. Choose an execution path</h2>
+<h3>Embedded Spark application</h3>
+<p>Read the customer input as a Spark DataFrame, call <code>DataAiPipeline</code> or functions from <code>com.dataai.etl.spark.functions</code>, and explicitly write selected result DataFrames using the customer's approved AWS format and catalog.</p>
+<h3>Configuration-driven quality job</h3>
+<ol><li>Store the JSON configuration in a customer S3 location accessible to the driver.</li><li>Use main class <code>com.dataai.etl.spark.cli.DataAiJob</code>.</li><li>Localize/pass the configuration as <code>--config &lt;file&gt;</code>.</li><li>Use dedicated output tables because the quality CLI overwrites named outputs.</li></ol>
+<h2>3. Run from the selected AWS product</h2>
+<table><tr><th>Runtime</th><th>Usage</th></tr>
+<tr><td>AWS Glue Spark</td><td>Add DataAI JAR S3 URIs through the job's dependent-JAR configuration; keep connectors and secrets in Glue/customer facilities.</td></tr>
+<tr><td>Amazon EMR</td><td>Attach the JARs through the approved bootstrap, step, or <code>--jars</code> mechanism and submit the customer application.</td></tr>
+<tr><td>EMR Serverless</td><td>Use the approved application image/dependencies, job role, entry point, and S3 configuration under the documented fulfillment model.</td></tr></table>
+<h2>4. Observe and validate</h2>
+<ol><li>Inspect CloudWatch and EMR/Glue job logs and retain the job/run identifier.</li><li>Reconcile source, clean, rejected, finding, and profile counts.</li><li>Verify analytical outputs and matrix convergence when used.</li><li>Test one invalid rule, insufficient access, job timeout, retry, and partial-write scenario.</li><li>Confirm no unselected S3 prefix, table, or catalog object changed.</li><li>Pin the exact JAR version in the scheduled job.</li></ol>
+<p class="warning">Do not combine a Marketplace image's DataAI libraries with a different release ZIP. DataAI performs no automatic persistence in the embedded API; customer code chooses writes. The quality CLI overwrites configured tables.</p>
+<p class="success"><strong>Usage is successful when:</strong> one DataAI version loads on driver and executors, IAM remains least-privilege, CloudWatch captures the run, outputs reconcile, and retries are safe.</p>
+</article><footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main></body></html>

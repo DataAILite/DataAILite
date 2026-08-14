@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL from SSIS</title><link rel="stylesheet" href="usage.css" /></head>
+<body><main>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a></p>
+<article class="card">
+<h1>Use DataAI ETL from SSIS</h1>
+<div class="meta"><strong>Execution model:</strong> SSIS orchestrates a DataAI Spark job. DataAI is not an SSIS Data Flow component, MSI, or GAC assembly. The DataAI job reads and writes customer Spark/catalog tables, and later SSIS tasks consume the approved results.</div>
+<h2>1. Prepare the package variables</h2>
+<table><tr><th>SSIS variable</th><th>Example purpose</th></tr><tr><td><code>User::SparkSubmit</code></td><td>Full path to <code>spark-submit.cmd</code> or an approved command</td></tr><tr><td><code>User::DataAiCliJar</code></td><td>Installed shaded <code>dataai-spark-cli-&lt;version&gt;.jar</code></td></tr><tr><td><code>User::DataAiConfig</code></td><td>Customer-owned JSON configuration path</td></tr><tr><td><code>User::WorkingDirectory</code></td><td>Restricted working directory visible to the execution identity</td></tr></table>
+<p>The JSON selects the source table, optional output tables, normalization, record keys, rules, and optional minimum quality score. Keep credentials in SSIS, Spark, or the customer's secret facility—not in the JSON.</p>
+<h2>2. Configure an Execute Process Task</h2>
+<ol><li>Add an <strong>Execute Process Task</strong> to the Control Flow.</li><li>Set <strong>Executable</strong> to <code>User::SparkSubmit</code>.</li><li>Build the argument string from controlled variables:</li></ol>
+<pre><code>--class com.dataai.etl.spark.cli.DataAiJob
+"C:\approved\dataai\dataai-spark-cli-1.0.0.jar"
+--config "C:\approved\dataai\customer-orders.json"</code></pre>
+<ol start="4"><li>Set the working directory to the approved package/configuration directory.</li><li>Require return code <code>0</code>; configure the task to fail on any other return code.</li><li>Use a timeout appropriate for the Spark job and configure SSIS cancellation according to customer policy.</li></ol>
+<h2>3. Connect downstream SSIS work</h2>
+<ol><li>Add a success precedence constraint from the Execute Process Task.</li><li>On success, use the customer's existing database/Spark connector to read clean rows, findings, profiles, or run outputs.</li><li>Do not assume that an output table exists when its name was blank in the DataAI configuration.</li><li>On failure, route to the customer's logging/notification task and retain the Spark application identifier.</li><li>Do not register the DataAI JARs in the GAC.</li></ol>
+<h2>4. Validate the first run</h2>
+<ul><li>Use an isolated source and dedicated output schema.</li><li>Require clean rows plus rejected rows to reconcile with source rows.</li><li>Inspect at least one intentionally failing rule.</li><li>Confirm every configured output table is overwritten only as intended by the quality CLI.</li><li>Test restart, retry, agent/service-account permissions, and SQL Agent scheduling separately.</li></ul>
+<h2>5. Use advanced functions</h2>
+<p>The included Java libraries also provide analytics, time series, business and market functions, map readiness, insights, and matrix balancing. Those functions require a customer Java/Spark wrapper job. Invoke that wrapper from another Execute Process Task or the customer's Spark scheduler; they are not native SSIS transformations.</p>
+<p class="success"><strong>Usage is successful when:</strong> SSIS receives exit code <code>0</code>, downstream tasks start only after Spark success, expected output tables reconcile, and failures follow the package's error path.</p>
+</article><footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main></body></html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL with Google Cloud Dataproc</title><link rel="stylesheet" href="usage.css" /></head>
+<body><main>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a></p>
+<article class="card">
+<h1>Use DataAI ETL with Google Cloud Dataproc</h1>
+<div class="meta"><strong>Execution model:</strong> DataAI runs in a customer Dataproc cluster or Serverless batch. Google Cloud supplies the Spark runtime, service account, VPC, Cloud Storage, catalogs, BigQuery/connectors, Cloud Logging, and scheduling.</div>
+<h2>1. Prepare customer-controlled resources</h2>
+<ol><li>Create a private Cloud Storage prefix for one immutable DataAI release.</li><li>Upload matching API, quality, core, and functions JARs. Upload the shaded CLI only for JSON-driven quality processing.</li><li>Grant the Dataproc service account read access to the artifact prefix and minimum approved input/output access.</li><li>Create isolated source and output datasets, tables, or storage prefixes.</li><li>Use a Dataproc cluster or Serverless batch compatible with Java 17 APIs and Scala 2.12 artifacts.</li></ol>
+<h2>2. Submit the job</h2>
+<h3>Embedded application</h3>
+<p>Provide all DataAI JAR URIs through Dataproc's supported <code>--jars</code> or dependency configuration. Submit the customer application JAR that reads a DataFrame, calls <code>DataAiPipeline</code> or a function family, and explicitly writes approved outputs.</p>
+<h3>Configuration-driven quality job</h3>
+<ol><li>Store a customer JSON configuration in Cloud Storage and localize it for the driver.</li><li>Use main class <code>com.dataai.etl.spark.cli.DataAiJob</code>.</li><li>Pass <code>--config &lt;localized-file&gt;</code>.</li><li>Use dedicated staging tables because named CLI outputs are overwritten.</li></ol>
+<h2>3. Choose outputs</h2>
+<p>Customer code may persist clean/rejected rows, findings, profiles, analytics, time series, business/market outputs, map readiness, insight outputs, or matrix results to approved BigQuery, catalog, or Cloud Storage destinations. The embedded API performs no automatic write.</p>
+<h2>4. Schedule and observe</h2>
+<ol><li>Run first with approved non-production data.</li><li>Inspect Cloud Logging and retain the Dataproc batch/job identifier.</li><li>Reconcile input and output row counts and validate quality gates.</li><li>Check matrix convergence metadata when balancing is selected.</li><li>Test service-account denial, invalid configuration, timeout, retry, and partial-write behavior.</li><li>Create the production workflow only after a clean rerun on the exact runtime image.</li></ol>
+<p class="warning">If a Marketplace image acts as the licensed artifact carrier, follow its documented extraction/copy process and do not add JARs from another release ZIP. Connectors, BigQuery writes, formats, and save modes remain customer-controlled.</p>
+<p class="success"><strong>Usage is successful when:</strong> one DataAI version loads, the service account remains least-privilege, Cloud Logging records the run, selected outputs reconcile, and retries do not duplicate or overwrite unintended data.</p>
+</article><footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main></body></html>

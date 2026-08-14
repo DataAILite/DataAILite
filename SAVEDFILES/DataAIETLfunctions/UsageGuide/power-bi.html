@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL with Power BI</title><link rel="stylesheet" href="usage.css" /></head>
+<body><main>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a></p>
+<article class="card">
+<h1>Use DataAI ETL with Power BI</h1>
+<div class="meta"><strong>Execution model:</strong> DataAI runs before Power BI in customer Spark/Databricks compute and publishes governed tables or views. Power BI visualizes those outputs through a native customer connector. No DataAI <code>.mez</code> connector is included or required.</div>
+<h2>1. Produce BI-ready DataAI outputs</h2>
+<ol><li>Run the installed DataAI quality pipeline or Java/Spark functions.</li><li>Persist only approved outputs in a SQL-accessible catalog: run summaries, findings, field profiles, clean/rejected summaries, analytical results, and matrix outputs.</li><li>Add <code>run_id</code> and completion time to multi-run result tables.</li><li>Expose governed views that omit sensitive source values unless record-level BI access is authorized.</li><li>Grant the Power BI identity read-only access to those views.</li></ol>
+<h2>2. Connect Power BI</h2>
+<ol><li>In Power BI Desktop, select <strong>Get data</strong>.</li><li>Choose the customer's supported Databricks, Spark, Fabric, SQL, or database connector.</li><li>Enter the customer-managed server/warehouse details and approved authentication method.</li><li>Select Import or DirectQuery according to the customer's scale, latency, and security requirements.</li><li>Load the approved DataAI tables/views.</li></ol>
+<h2>3. Build the model</h2>
+<table><tr><th>Output</th><th>Recommended Power BI use</th></tr>
+<tr><td>Pipeline runs / dashboard metrics</td><td>Quality score, read/accepted/rejected counts, duration, and trend cards</td></tr>
+<tr><td>Quality findings</td><td>Severity, rule, field, finding-code, and remediation analysis</td></tr>
+<tr><td>Field profiles</td><td>Completeness, distinct counts, ranges, and null trends</td></tr>
+<tr><td>Analytical function results</td><td>Ranking, variance, correlations, market, time-series, map, alerts, and narratives</td></tr>
+<tr><td>Matrix balance outputs</td><td>Original versus balanced values, error, iteration, and convergence visuals</td></tr></table>
+<p>Relate run-level tables to findings and profiles by <code>run_id</code>. Relate findings to source-level rows by record key only when explicitly authorized.</p>
+<h2>4. Refresh and secure</h2>
+<ol><li>Publish to an approved Power BI workspace.</li><li>Configure the gateway only when the connector and network path require one.</li><li>Store credentials in Power BI's credential facility.</li><li>Configure refresh after the DataAI Spark job completes.</li><li>Apply row-level security, privacy levels, sensitivity labels, and workspace permissions.</li><li>Test schema changes, empty runs, failed DataAI jobs, late outputs, and query performance.</li></ol>
+<p class="warning">Power BI does not execute DataAI functions. Refreshing the semantic model does not rerun Spark unless the customer explicitly orchestrates both activities.</p>
+<p class="success"><strong>Usage is successful when:</strong> Power BI reads only governed outputs, refresh follows a completed DataAI run, relationships and measures reconcile, and security prevents unauthorized record-level access.</p>
+</article><footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main></body></html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL with InterSystems IRIS</title><link rel="stylesheet" href="usage.css" /></head>
+<body><main>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a><a href="../FUNCTION_OUTPUTS_FOR_IRIS.html">IRIS outputs</a></p>
+<article class="card">
+<h1>Use DataAI ETL with InterSystems IRIS</h1>
+<div class="meta"><strong>Execution model:</strong> DataAI runs in customer Spark compute and reads or writes IRIS SQL tables through a customer-supplied InterSystems JDBC driver. The optional IPM package does not execute or download the licensed Spark libraries.</div>
+<h2>1. Prepare the IRIS connection</h2>
+<ol><li>Use an isolated namespace and least-privilege identity.</li><li>Install an InterSystems JDBC driver approved for the IRIS server and Java 17.</li><li>Keep the driver and DataAI adapter JAR on both Spark driver and executor classpaths.</li><li>Load the IRIS user and password from the customer's secret manager.</li><li>Approve source tables, output tables, fetch size, batch size, and maximum concurrent JDBC connections.</li></ol>
+<h2>2. Read, process, and explicitly write</h2>
+<pre><code>IrisJdbcOptions iris = IrisJdbcOptions
+    .forServer("iris.internal", 1972, "DATAAI")
+    .credentials(System.getenv("IRIS_USER"), System.getenv("IRIS_PASSWORD"))
+    .fetchSize(5000)
+    .batchSize(1000)
+    .build();
+
+Dataset&lt;Row&gt; input = IrisDataFrames.readTable(
+    spark, iris, "Source.CustomerOrders");
+
+DataAiResult result = DataAiPipeline.fromDataset(input)
+    .normalize()
+    .recordKey("order_id")
+    .profile()
+    .validate(RuleSpec.required("customer-required", "customer_id"))
+    .execute();
+
+IrisPipelineOutputBundle outputs = IrisPipelineOutputs.from(result);
+IrisDataFrames.writer(outputs.qualityFindings(), iris)
+    .option("dbtable", IrisOutputNames.QUALITY_FINDINGS)
+    .mode(SaveMode.Append)
+    .save();</code></pre>
+<p class="warning">The adapter never chooses an IRIS target table or save mode and never calls <code>save()</code> automatically. Customer code authorizes every write.</p>
+<h2>3. Use large IRIS tables carefully</h2>
+<ol><li>Start with <code>readTable(...)</code> on a bounded validation table.</li><li>Use <code>readTablePartitioned(...)</code> only after an IRIS administrator approves a numeric partition field, lower/upper bounds, partition count, and JDBC concurrency.</li><li>Prefer staging tables and an IRIS-controlled merge procedure for production.</li><li>Validate partial failures and retries before scheduling.</li></ol>
+<h2>4. Publish advanced-function outputs</h2>
+<p>Run any function from <code>dataai-spark-functions</code>. Add run metadata with <code>IrisFunctionOutputs.withRunMetadata(...)</code>. For matrix balancing, use <code>IrisFunctionOutputs.matrixBalance(...)</code> so convergence, iteration count, and maximum error are retained before the customer-selected JDBC write.</p>
+<h2>5. Validate in IRIS</h2>
+<ul><li>Query source and output counts in the same namespace.</li><li>Verify clean, rejected, finding, profile, run, analytical, and matrix tables selected by the application.</li><li>Check SQL privileges, indexes, batch behavior, retries, connection limits, and rollback/merge handling.</li><li>Confirm that no unselected table changed.</li></ul>
+<p class="success"><strong>Usage is successful when:</strong> approved IRIS rows are read, DataAI results reconcile, explicit writes reach only approved staging tables, and retries do not duplicate or lose output.</p>
+</article><footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main></body></html>

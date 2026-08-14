@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL with Tableau</title><link rel="stylesheet" href="usage.css" /></head>
+<body><main>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a><a href="../TABLEAU_OUTPUT_SCHEMA.html">Tableau output schema</a></p>
+<article class="card">
+<h1>Use DataAI ETL with Tableau</h1>
+<div class="meta"><strong>Execution model:</strong> the Accelerator visualizes DataAI results; Tableau does not execute Spark transformations. DataAI runs in customer Spark compute, and Tableau connects to customer-persisted outputs through Spark SQL or Databricks. No DataAI <code>.taco</code> connector is required.</div>
+<h2>1. Review the Accelerator</h2>
+<ol><li>Open <code>DataAI_ETL_Accelerator.twbx</code> in Tableau Desktop.</li><li>Review the fictional embedded data without entering customer credentials.</li><li>Inspect run trends, accepted/rejected totals, quality score, findings, field profiles, and analytical views.</li><li>Do not publish the fictional workbook as a customer production dashboard.</li></ol>
+<h2>2. Produce standardized outputs</h2>
+<pre><code>TableauOutputBundle tableau = TableauOutputs.from(result);
+
+tableau.dashboardMetrics().write()
+    .format("delta")
+    .mode(SaveMode.Append)
+    .saveAsTable("analytics.dataai_dashboard_metrics");</code></pre>
+<p>Persist only the returned DataFrames the customer approves. For any analytical result use <code>TableauFunctionOutputs.withRunMetadata(...)</code>. For matrix balancing use <code>TableauFunctionOutputs.matrixBalance(...)</code> to retain convergence, iteration count, and maximum error.</p>
+<h2>3. Connect and replace sample data</h2>
+<ol><li>Expose the governed tables through Spark Thrift Server or a Databricks SQL warehouse.</li><li>In Tableau Desktop, connect with <strong>Spark SQL</strong> or <strong>Databricks</strong> using customer-approved authentication.</li><li>Use <strong>Data &gt; Replace Data Source</strong> to replace the sample <code>dataai_dashboard_metrics</code> source.</li><li>Add <code>dataai_pipeline_runs</code>, <code>dataai_quality_findings</code>, and <code>dataai_field_profiles</code> as needed.</li><li>Relate run tables to findings and profiles by <code>run_id</code>.</li><li>Relate findings to source rows by record key only when record-level access is authorized.</li></ol>
+<h2>4. Validate and publish</h2>
+<ul><li>Validate field mappings, number/date types, relationships, filters, null behavior, and row counts.</li><li>Test extracts or live connections, refreshes, permissions, row-level security, and performance.</li><li>Confirm matrix heat maps show both balancing values and convergence metadata.</li><li>Publish to Tableau Cloud/Server only after the administrator approves credentials and schedules.</li><li>Schedule Tableau refresh after a successful DataAI run; Tableau refresh alone does not rerun DataAI.</li></ul>
+<p class="warning">The Tableau adapter performs no automatic persistence, cache, collect, network connection, or Tableau publishing. Customer code chooses every output and write.</p>
+<p class="success"><strong>Usage is successful when:</strong> the sample source is fully replaced, output schemas match the contract, Tableau counts reconcile with Spark, and governed permissions apply at both the data and workbook layers.</p>
+</article><footer>DataAI ETL &mdash; Yanbor LLC, provider of the DataAI product</footer>
+</main></body></html>
