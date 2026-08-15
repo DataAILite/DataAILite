@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataAI ETL Tableau — Production Installation Guide</title>
+    <style>
+        :root { color-scheme: light; font-family: "Segoe UI", Arial, sans-serif; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f4f7fb; color: #172033; line-height: 1.6; }
+        main { max-width: 1040px; margin: 32px auto; padding: 0 20px 48px; }
+        .card { background: #fff; border: 1px solid #d9e1ec; border-radius: 10px; box-shadow: 0 4px 18px rgba(23,32,51,.08); padding: 30px; }
+        .meta { margin: 18px 0 26px; padding: 14px 16px; background: #eef4ff; border-left: 4px solid #2a64c5; }
+        .meta p { margin: 4px 0; }
+        h1, h2, h3 { line-height: 1.25; scroll-margin-top: 18px; }
+        h1 { margin-top: 0; font-size: 1.8rem; }
+        h2 { margin-top: 2rem; padding-bottom: .3rem; border-bottom: 1px solid #d9e1ec; }
+        a { color: #174ea6; }
+        pre { overflow-x: auto; padding: 16px; background: #111827; color: #e5edf9; border-radius: 7px; }
+        code { font-family: Consolas, "Courier New", monospace; }
+        :not(pre) > code { padding: 2px 5px; background: #eef1f5; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { border: 1px solid #cfd8e6; padding: 8px 10px; text-align: left; vertical-align: top; }
+        th { background: #eef4ff; }
+        blockquote { margin-left: 0; padding-left: 16px; border-left: 4px solid #a9b9d0; color: #44536a; }
+        .top-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+<main>
+    <p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; Back to DataAI ETL markets</a><a href="index.html">All installation guides</a></p>
+    <article class="card">
+        <h1>DataAI ETL Tableau — Production Installation Guide</h1>
+        <div class="meta">
+            <p><strong>Product:</strong> Tableau</p>
+            <p><strong>Distribution:</strong> Production</p>
+            <p><strong>Source document:</strong> <code>DataAIETLTableau/README.md (installation and usage)</code></p>
+            <p><strong>Source SHA-256:</strong> <code>6ebe18d471f915873e9f6ef402d1a3f08936cd22f55a86b5f08681fb866c9d97</code></p>
+            <p><a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Tableau-1.0.0.zip">Download the applicable package</a> | <a href="../licenses/tableau.html">Read the applicable license</a></p>
+
+            <p class="download-verification"><strong>Downloads and verification:</strong> <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Tableau-1.0.0.zip">Tableau package 1.0.0</a> | <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Spark-1.0.0.zip">Spark libraries 1.0.0</a> | <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></p>
+        </div>
+        <h1 id="dataai-etl-for-tableau">DataAI ETL for Tableau</h1>
+<p>DataAI ETL is proprietary, source-available commercial software from Yanbor LLC, built with open-source technologies including Apache Spark.</p>
+<p>This folder is the complete customer-side Tableau integration for DataAI ETL.
+It is not a hosted service and it does not install a server, send telemetry, or
+transmit customer data. The Java adapter converts <code>DataAiResult</code> into stable
+Spark DataFrames; the customer chooses where and how to persist them. Tableau
+then connects with its native Spark SQL or Databricks connector.</p>
+<p>The included Accelerator (<code>accelerator/DataAI_ETL_Accelerator.twbx</code>) opens with
+fictional embedded data for a fast, no-credential product overview. It can then be
+repointed to the customer&#39;s DataAI output tables.</p>
+<h2 id="contents">Contents</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>src/</code></td>
+<td>Optional <code>com.dataai:dataai-spark-tableau</code> Java adapter and tests</td>
+</tr>
+<tr>
+<td><code>accelerator/</code></td>
+<td>Tableau workbook source and packaged Accelerator</td>
+</tr>
+<tr>
+<td><code>sample-data/</code></td>
+<td>Fictional CSV data and a generated Tableau Hyper extract</td>
+</tr>
+<tr>
+<td><code>mapping/</code></td>
+<td>Stable output schemas, relationships, and complete function coverage</td>
+</tr>
+<tr>
+<td><code>examples/</code></td>
+<td>Java persistence, Spark SQL, and Databricks connection examples</td>
+</tr>
+<tr>
+<td><code>listing/</code></td>
+<td>Tableau Exchange listing copy and submission checklist</td>
+</tr>
+<tr>
+<td><code>assets/</code>, <code>screenshots/</code></td>
+<td>Listing icon and fictional-data design previews</td>
+</tr>
+<tr>
+<td><code>scripts/</code></td>
+<td>Deterministic asset generator and offline package validator</td>
+</tr>
+<tr>
+<td><code>manifest.json</code></td>
+<td>Package identity, compatibility, and artifact inventory</td>
+</tr>
+<tr>
+<td><code>LICENSE.md</code>, <code>COMMERCIAL_LICENSE_TEMPLATE.md</code></td>
+<td>Production distribution notice and non-binding commercial sample copied from the repository root</td>
+</tr>
+</tbody></table>
+<h2 id="1-prerequisites">1. Prerequisites</h2>
+<ul>
+<li>DataAI ETL Spark <code>1.0.0</code> production-candidate build</li>
+<li>Java 17</li>
+<li>Apache Spark 3.5.0 with Scala 2.12</li>
+<li>Tableau Desktop or Tableau Cloud/Server for workbook use</li>
+<li>One of:<ul>
+<li>Spark Thrift Server reachable through Tableau&#39;s Spark SQL connector; or</li>
+<li>a Databricks SQL warehouse reachable through Tableau&#39;s Databricks
+connector</li>
+</ul>
+</li>
+</ul>
+<p><code>1.0.0</code> is an immutable production candidate. Commercial deployment requires
+Yanbor release authorization and the customer&#39;s applicable entitlement.</p>
+<h2 id="2-extract-and-verify-the-package">2. Extract and verify the package</h2>
+<p>Extract <code>DataAIETL-Tableau-1.0.0.zip</code> to a customer-controlled directory. Verify the adapter JAR checksum against <code>CHECKSUMS.sha256</code> included in the package:</p>
+<pre><code class="language-powershell">Get-FileHash &lt;extract-root&gt;\lib\dataai-spark-tableau-1.0.0.jar -Algorithm SHA256
+</code></pre>
+<p>Spark and Hadoop are provided by the customer runtime and are not bundled in
+the adapter JAR.</p>
+<h2 id="3-add-the-adapter-to-a-customer-spark-application">3. Add the adapter to a customer Spark application</h2>
+<p>Publish the licensed version to the customer&#39;s private Maven repository, then
+add:</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;com.dataai&lt;/groupId&gt;
+  &lt;artifactId&gt;dataai-spark-tableau&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>The Tableau artifact brings <code>dataai-spark-functions</code> transitively, including
+all ETL, quality, analytics, time, business, market, map, matrix, and insight
+APIs. Spark remains a <code>provided</code> dependency.</p>
+<h2 id="4-create-and-persist-tableau-outputs">4. Create and persist Tableau outputs</h2>
+<pre><code class="language-java">DataAiResult result = DataAiPipeline.fromDataset(input)
+        .normalize()
+        .recordKey(&quot;order_id&quot;)
+        .profile()
+        .validate(RuleSpec.required(&quot;customer-required&quot;, &quot;customer_id&quot;))
+        .execute();
+
+TableauOutputBundle tableau = TableauOutputs.from(result);
+
+tableau.dashboardMetrics().write()
+        .format(&quot;delta&quot;)
+        .mode(SaveMode.Append)
+        .saveAsTable(&quot;analytics.dataai_dashboard_metrics&quot;);
+
+tableau.qualityFindings().write()
+        .format(&quot;delta&quot;)
+        .mode(SaveMode.Append)
+        .saveAsTable(&quot;analytics.dataai_quality_findings&quot;);
+
+tableau.fieldProfiles().write()
+        .format(&quot;delta&quot;)
+        .mode(SaveMode.Append)
+        .saveAsTable(&quot;analytics.dataai_field_profiles&quot;);
+</code></pre>
+<p>The adapter itself performs no writes. The complete example is
+<code>examples/java/TableauSparkExample.java</code>; exact schemas are in
+<code>mapping/TABLEAU_OUTPUT_SCHEMA.md</code>.</p>
+<h2 id="5-use-all-dataai-functions-including-matrix-balancing">5. Use all DataAI functions, including matrix balancing</h2>
+<p>All function results can be prepared for Tableau with the universal adapter:</p>
+<pre><code class="language-java">Dataset&lt;Row&gt; tableauResult = TableauFunctionOutputs.withRunMetadata(
+        dataAiFunctionResult,
+        &quot;market_demand&quot;,
+        runId,
+        completedAt,
+        libraryVersion);
+</code></pre>
+<p>Matrix balancing has a dedicated helper that carries convergence information
+into the Tableau table:</p>
+<pre><code class="language-java">MatrixBalanceResult balance = MatrixFunctions.balance(
+        cells, &quot;region&quot;, &quot;category&quot;, &quot;value&quot;,
+        rowTargets, columnTargets, &quot;target_total&quot;, 50, 0.001);
+
+Dataset&lt;Row&gt; tableauMatrix = TableauFunctionOutputs.matrixBalance(
+        balance, runId, Instant.now(), libraryVersion);
+</code></pre>
+<p>See <code>mapping/FUNCTION_OUTPUTS_FOR_TABLEAU.md</code> for the complete family mapping
+and <code>examples/java/TableauMatrixBalancingExample.java</code> for persistence.</p>
+<h2 id="6-validate-the-tableau-experience">6. Validate the Tableau experience</h2>
+<ol>
+<li>Copy <code>accelerator/DataAI_ETL_Accelerator.twbx</code> to a computer with Tableau
+Desktop.</li>
+<li>Open it. The workbook uses fictional weekly DataAI run metrics included in
+the package, so no database credentials are required.</li>
+<li>Review the run trend, acceptance/rejection totals, quality score, and
+finding-severity views.</li>
+<li>When ready, replace the sample data source with the customer&#39;s
+<code>dataai_dashboard_metrics</code> table using Tableau&#39;s <strong>Replace Data Source</strong>
+command.</li>
+<li>Add <code>dataai_quality_findings</code> and <code>dataai_field_profiles</code> for drill-down
+dashboards, relating them by <code>run_id</code>.</li>
+<li>Validate field mappings, refresh behavior, row-level security, and workbook
+permissions in a non-production Tableau project.</li>
+</ol>
+<p>The packaged workbook was generated and structurally validated without
+Tableau Desktop. Before commercial publication, open it in the supported
+Tableau Desktop versions, repair any version-specific metadata, refresh the
+extract, and complete visual/accessibility QA.</p>
+<h2 id="7-connect-tableau-to-production-outputs">7. Connect Tableau to production outputs</h2>
+<h3 id="spark-sql">Spark SQL</h3>
+<ol>
+<li>Persist the DataAI outputs as Spark catalog tables.</li>
+<li>Make them visible to a Spark Thrift Server session.</li>
+<li>In Tableau, select <strong>Spark SQL</strong> and enter the server, port, authentication,
+and transport settings supplied by the customer platform team.</li>
+<li>Select the catalog/schema and the <code>dataai_*</code> tables.</li>
+<li>Relate the run, findings, and profiles tables on <code>run_id</code>.</li>
+</ol>
+<p>See <code>examples/spark-sql/README.md</code> and the official Tableau Spark SQL connector
+documentation: <a href="https://help.tableau.com/current/pro/desktop/en-us/examples_sparksql.htm">https://help.tableau.com/current/pro/desktop/en-us/examples_sparksql.htm</a></p>
+<h3 id="databricks">Databricks</h3>
+<ol>
+<li>Persist the outputs as governed Unity Catalog tables or views.</li>
+<li>In Tableau, select <strong>Databricks</strong> and supply the server hostname and HTTP
+path for a SQL warehouse.</li>
+<li>Use the customer&#39;s approved OAuth, personal access token, or service
+principal policy.</li>
+<li>Select the output views and replace the Accelerator&#39;s sample source.</li>
+</ol>
+<p>See <code>examples/databricks/README.md</code> and the official connector documentation:
+<a href="https://help.tableau.com/current/pro/desktop/en-us/examples_databricks.htm">https://help.tableau.com/current/pro/desktop/en-us/examples_databricks.htm</a></p>
+<h2 id="8-licensing-and-support-boundary">8. Licensing and support boundary</h2>
+<p><code>LICENSE.md</code> is the production distribution notice. Commercial use is governed
+by an executed agreement, order form, or license certificate from Yanbor LLC.
+The generator copies the canonical notice and commercial template from the
+repository root so the Tableau folder is self-contained for production
+packaging. DataAI software is provided <strong>AS IS</strong>, with no obligations except
+those expressly accepted in a signed commercial agreement.</p>
+<p>Customers remain responsible for deployment, adapter, connector, performance,
+security, and suitability testing in their target environment.</p>
+
+    </article>
+</main>
+</body>
+</html>

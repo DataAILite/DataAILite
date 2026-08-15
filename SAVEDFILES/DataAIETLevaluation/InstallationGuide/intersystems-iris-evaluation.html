@@ -47,7 +47,7 @@
 <h3>Package layout</h3>
 <ul><li><code>install/</code>: platform-specific installer or packages, when applicable.</li><li><code>lib/</code>: DataAI JARs required by Spark-based integrations.</li><li><code>smoke-test/</code> or <code>nuget-smoke-test/</code>: executable local verification.</li><li><code>docs/</code>: complete function catalog and product-specific guidance.</li><li><code>samples/</code>: fictional evaluation inputs.</li><li><code>platform/</code>: platform-specific examples, notebooks, configuration, POMs, or container-review assets.</li><li><code>PACKAGE_CONTENTS.sha256</code>: SHA-256 for every other file in this ZIP.</li></ul>
         <section><h2>Local DataAI Library Smoke Test</h2>
-<p>This test uses only fictional in-memory rows. It starts local Spark, executes normalization, profiling, required and numeric quality rules, clean/rejected routing, the complete function-catalog check, and iterative matrix balancing. The Tableau package additionally verifies its dashboard and matrix adapters.</p>
+<p>This test uses only fictional in-memory rows. It starts local Spark, executes normalization, profiling, required and numeric quality rules, clean/rejected routing, the complete function-catalog check, and iterative matrix balancing.</p>
 <h3>Requirements</h3>
 <ul><li>Java 17.</li><li>Apache Spark 3.5.0 with Scala 2.12.</li><li><code>spark-submit</code> available on <code>PATH</code>, or supplied with <code>-SparkSubmit</code>.</li></ul>
 <p>Spark and Hadoop are customer-provided runtimes and are intentionally not bundled in the DataAI evaluation ZIP.</p>

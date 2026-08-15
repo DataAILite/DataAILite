@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataAI ETL SSIS — Production Installation Guide</title>
+    <style>
+        :root { color-scheme: light; font-family: "Segoe UI", Arial, sans-serif; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f4f7fb; color: #172033; line-height: 1.6; }
+        main { max-width: 1040px; margin: 32px auto; padding: 0 20px 48px; }
+        .card { background: #fff; border: 1px solid #d9e1ec; border-radius: 10px; box-shadow: 0 4px 18px rgba(23,32,51,.08); padding: 30px; }
+        .meta { margin: 18px 0 26px; padding: 14px 16px; background: #eef4ff; border-left: 4px solid #2a64c5; }
+        .meta p { margin: 4px 0; }
+        h1, h2, h3 { line-height: 1.25; scroll-margin-top: 18px; }
+        h1 { margin-top: 0; font-size: 1.8rem; }
+        h2 { margin-top: 2rem; padding-bottom: .3rem; border-bottom: 1px solid #d9e1ec; }
+        a { color: #174ea6; }
+        pre { overflow-x: auto; padding: 16px; background: #111827; color: #e5edf9; border-radius: 7px; }
+        code { font-family: Consolas, "Courier New", monospace; }
+        :not(pre) > code { padding: 2px 5px; background: #eef1f5; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { border: 1px solid #cfd8e6; padding: 8px 10px; text-align: left; vertical-align: top; }
+        th { background: #eef4ff; }
+        blockquote { margin-left: 0; padding-left: 16px; border-left: 4px solid #a9b9d0; color: #44536a; }
+        .top-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+<main>
+    <p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; Back to DataAI ETL markets</a><a href="index.html">All installation guides</a></p>
+    <article class="card">
+        <h1>DataAI ETL SSIS — Production Installation Guide</h1>
+        <div class="meta">
+            <p><strong>Product:</strong> SSIS</p>
+            <p><strong>Distribution:</strong> Production</p>
+            <p><strong>Source document:</strong> <code>SparkETL/docs/INSTALLATION_AND_USAGE.md</code></p>
+            <p><strong>Source SHA-256:</strong> <code>fb2a75eda63323451d21910503dd0a1f738fdc23acac76aaf01398f2786bb7be</code></p>
+            <p><a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Spark-1.0.0.zip">Download the applicable package</a> | <a href="../licenses/ssis.html">Read the applicable license</a></p>
+
+            <p class="download-verification"><strong>Downloads and verification:</strong> <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Spark-1.0.0.zip">DataAI ETL Spark 1.0.0</a> | <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></p>
+        </div>
+        <h1 id="dataai-etl-ssis-spark-integration">DataAI ETL SSIS — Spark Integration</h1>
+<p>This guide installs and runs <code>DataAI.Etl.Spark</code> version
+<code>1.0.0</code>. DataAI runs inside the customer&#39;s Spark job and does not
+require a separate DataAI service.</p>
+<p>DataAI ETL is proprietary commercial software. Production, redistribution,
+OEM, managed-service, and source-use rights require an executed agreement,
+order form, or license certificate from Yanbor LLC. Review
+<a href="../licenses/ssis.html"><code>LICENSE.md</code></a> before distributing or installing the package.
+A non-binding commercial agreement starting template is available in
+<a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Spark-1.0.0.zip" title="This referenced file is included in the downloadable package"><code>COMMERCIAL_LICENSE_TEMPLATE.md</code></a>.</p>
+<h2 id="1-choose-an-integration-mode">1. Choose an integration mode</h2>
+<p>Use one of these modes:</p>
+<ol>
+<li><strong>Configuration-driven job</strong> — upload one shaded JAR and one JSON file,
+then run them with <code>spark-submit</code>. This is the fastest validation path.</li>
+<li><strong>Embedded Java API</strong> — add the DataAI Maven modules to an existing Spark
+application and call <code>DataAiPipeline</code> from application code.</li>
+</ol>
+<p>Both modes use the same normalization, profiling, and quality engine. The
+embedded API also exposes the full analytical function catalog documented in
+<a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Spark-1.0.0.zip" title="This referenced file is included in the downloadable package">FUNCTION_CATALOG.md</a>.</p>
+<h2 id="2-check-the-runtime-prerequisites">2. Check the runtime prerequisites</h2>
+<p>The initial release is built and tested with:</p>
+<ul>
+<li>Java 17</li>
+<li>Apache Spark 3.5.0</li>
+<li>Scala binary version 2.12</li>
+<li>Maven 3.9 or later for building from source</li>
+<li>A Spark catalog with Delta Lake support when using the supplied CLI</li>
+</ul>
+<p>Spark and Hadoop are <code>provided</code> dependencies. They are supplied by the
+customer&#39;s Spark cluster and are not bundled in the DataAI JAR.</p>
+<p>Run these checks on a build machine:</p>
+<pre><code class="language-powershell">java -version
+mvn -version
+spark-submit --version
+</code></pre>
+<p>Confirm that Java reports version 17 and Spark reports the 3.5/Scala 2.12
+runtime line. The project was verified with Maven 3.9.9.</p>
+<h2 id="3-extract-and-verify-the-package">3. Extract and verify the package</h2>
+<p>Extract <code>DataAIETL-Spark-1.0.0.zip</code> to a customer-controlled directory. The deployable CLI artifact is:</p>
+<pre><code class="language-text">&lt;extract-root&gt;\lib\dataai-spark-cli-1.0.0.jar
+</code></pre>
+<p>Verify the checksum against <code>CHECKSUMS.sha256</code> included in the package:</p>
+<pre><code class="language-powershell">Get-FileHash &lt;extract-root&gt;\lib\dataai-spark-cli-1.0.0.jar -Algorithm SHA256
+</code></pre>
+<h2 id="4-fast-validation-with-the-configuration-driven-job">4. Fast validation with the configuration-driven job</h2>
+<h3 id="step-4-1-prepare-a-source-table">Step 4.1: Prepare a source table</h3>
+<p>The CLI reads a catalog table through <code>spark.table(...)</code>. Create or identify a
+source table, for example:</p>
+<pre><code class="language-sql">CREATE SCHEMA IF NOT EXISTS bronze;
+CREATE SCHEMA IF NOT EXISTS silver;
+CREATE SCHEMA IF NOT EXISTS quarantine;
+CREATE SCHEMA IF NOT EXISTS dataai;
+
+CREATE TABLE IF NOT EXISTS bronze.customer_orders (
+    order_id STRING,
+    customer_id STRING,
+    amount DOUBLE,
+    email STRING
+) USING DELTA;
+</code></pre>
+<p>Insert a small test data set:</p>
+<pre><code class="language-sql">INSERT INTO bronze.customer_orders VALUES
+    (&#39;1001&#39;, &#39;C-100&#39;, 125.50, &#39;buyer@example.com&#39;),
+    (&#39;1002&#39;, NULL, 50.00, &#39;missing-customer@example.com&#39;),
+    (&#39;1003&#39;, &#39;C-300&#39;, -10.00, &#39;not-an-email&#39;),
+    (&#39;1003&#39;, &#39;C-301&#39;, 75.00, &#39;duplicate@example.com&#39;);
+</code></pre>
+<p>Use dedicated output tables during initial validation. The current CLI writes target
+tables in <code>Overwrite</code> mode.</p>
+<h3 id="step-4-2-copy-and-edit-the-json-configuration">Step 4.2: Copy and edit the JSON configuration</h3>
+<p>Start with:</p>
+<pre><code class="language-text">&lt;extract-root&gt;\examples\customer-orders.json
+</code></pre>
+<p>The supplied file contains:</p>
+<pre><code class="language-json">{
+  &quot;sourceTable&quot;: &quot;bronze.customer_orders&quot;,
+  &quot;cleanTable&quot;: &quot;silver.customer_orders&quot;,
+  &quot;rejectedTable&quot;: &quot;quarantine.customer_orders&quot;,
+  &quot;profileTable&quot;: &quot;dataai.customer_orders_field_profile&quot;,
+  &quot;findingsTable&quot;: &quot;dataai.customer_orders_quality_finding&quot;,
+  &quot;normalize&quot;: true,
+  &quot;recordKeyColumns&quot;: [&quot;order_id&quot;],
+  &quot;minimumQualityScore&quot;: 90.0,
+  &quot;rules&quot;: [
+    {
+      &quot;id&quot;: &quot;customer-required&quot;,
+      &quot;type&quot;: &quot;REQUIRED&quot;,
+      &quot;field&quot;: &quot;customer_id&quot;,
+      &quot;severity&quot;: &quot;ERROR&quot;
+    },
+    {
+      &quot;id&quot;: &quot;order-unique&quot;,
+      &quot;type&quot;: &quot;UNIQUE&quot;,
+      &quot;field&quot;: &quot;order_id&quot;,
+      &quot;severity&quot;: &quot;CRITICAL&quot;
+    },
+    {
+      &quot;id&quot;: &quot;amount-nonnegative&quot;,
+      &quot;type&quot;: &quot;MINIMUM&quot;,
+      &quot;field&quot;: &quot;amount&quot;,
+      &quot;parameter&quot;: &quot;0&quot;,
+      &quot;severity&quot;: &quot;ERROR&quot;
+    },
+    {
+      &quot;id&quot;: &quot;email-format&quot;,
+      &quot;type&quot;: &quot;REGEX&quot;,
+      &quot;field&quot;: &quot;email&quot;,
+      &quot;parameter&quot;: &quot;^[^@]+@[^@]+\\.[^@]+$&quot;,
+      &quot;severity&quot;: &quot;WARNING&quot;
+    }
+  ]
+}
+</code></pre>
+<p>Configuration properties:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Required</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>sourceTable</code></td>
+<td>Yes</td>
+<td>Existing Spark catalog table to read.</td>
+</tr>
+<tr>
+<td><code>cleanTable</code></td>
+<td>No</td>
+<td>Target for records with no findings.</td>
+</tr>
+<tr>
+<td><code>rejectedTable</code></td>
+<td>No</td>
+<td>Target for records with one or more findings.</td>
+</tr>
+<tr>
+<td><code>profileTable</code></td>
+<td>No</td>
+<td>Target for field-level profile metrics.</td>
+</tr>
+<tr>
+<td><code>findingsTable</code></td>
+<td>No</td>
+<td>Target for rule violations.</td>
+</tr>
+<tr>
+<td><code>normalize</code></td>
+<td>No</td>
+<td>Normalizes names and string values when <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>recordKeyColumns</code></td>
+<td>No</td>
+<td>Fields used to create the deterministic record key.</td>
+</tr>
+<tr>
+<td><code>minimumQualityScore</code></td>
+<td>No</td>
+<td>Fails the job when the score is below this value.</td>
+</tr>
+<tr>
+<td><code>rules</code></td>
+<td>No</td>
+<td>Quality rules evaluated against every record.</td>
+</tr>
+</tbody></table>
+<p>If <code>recordKeyColumns</code> is empty, DataAI hashes the complete normalized record.
+If <code>normalize</code> is <code>true</code>, rule fields and record-key fields must use the
+normalized names. For example, <code>Customer ID</code> becomes <code>customer_id</code>.</p>
+<h3 id="step-4-3-run-locally-or-from-an-edge-node">Step 4.3: Run locally or from an edge node</h3>
+<p>On Windows PowerShell:</p>
+<pre><code class="language-powershell">spark-submit `
+  --class com.dataai.etl.spark.cli.DataAiJob `
+  &lt;extract-root&gt;\lib\dataai-spark-cli-1.0.0.jar `
+  --config customer-orders.json
+</code></pre>
+<p>On Linux or macOS:</p>
+<pre><code class="language-shell">spark-submit \
+  --class com.dataai.etl.spark.cli.DataAiJob \
+  dataai-spark-cli-1.0.0.jar \
+  --config customer-orders.json
+</code></pre>
+<p>The configuration path is opened by the Spark driver as a local file. In
+cluster deploy mode, distribute it with Spark and pass its localized name:</p>
+<pre><code class="language-shell">spark-submit \
+  --class com.dataai.etl.spark.cli.DataAiJob \
+  --files customer-orders.json \
+  dataai-spark-cli-1.0.0.jar \
+  --config customer-orders.json
+</code></pre>
+<h3 id="step-4-4-verify-the-results">Step 4.4: Verify the results</h3>
+<p>Inspect the output tables:</p>
+<pre><code class="language-sql">SELECT * FROM silver.customer_orders;
+SELECT * FROM quarantine.customer_orders;
+SELECT * FROM dataai.customer_orders_quality_finding;
+SELECT * FROM dataai.customer_orders_field_profile;
+</code></pre>
+<p>The clean and rejected records include <code>_dataai_record_key</code>, a SHA-256 key used
+to relate records to findings.</p>
+<p>The current quality score is:</p>
+<pre><code class="language-text">accepted records / records read * 100
+</code></pre>
+<p>An empty source receives a score of <code>100.0</code>. The score is rounded to two
+decimal places.</p>
+<p>When <code>minimumQualityScore</code> is configured, the CLI writes the rejected,
+findings, and profile tables first. It writes the clean table only if the
+quality gate passes. A failed gate exits the job with an error.</p>
+<h2 id="5-embed-dataai-in-an-existing-java-spark-pipeline">5. Embed DataAI in an existing Java Spark pipeline</h2>
+<h3 id="step-5-1-install-the-modules-in-a-maven-repository">Step 5.1: Install the modules in a Maven repository</h3>
+<p>Publish the versioned modules from the downloaded package to a private Maven
+repository and give the customer read-only repository credentials. The four
+unshaded library JARs are in <code>&lt;extract-root&gt;\lib</code>.</p>
+<h3 id="step-5-2-add-the-functions-dependency">Step 5.2: Add the functions dependency</h3>
+<p>Add this dependency to the customer&#39;s Spark application&#39;s <code>pom.xml</code>. It brings
+in the core, quality, and public API modules transitively:</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;com.dataai&lt;/groupId&gt;
+  &lt;artifactId&gt;dataai-spark-functions&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>The customer&#39;s project must also compile against its own Spark 3.5/Scala 2.12
+runtime. Spark should remain a <code>provided</code> dependency:</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.spark&lt;/groupId&gt;
+  &lt;artifactId&gt;spark-sql_2.12&lt;/artifactId&gt;
+  &lt;version&gt;3.5.0&lt;/version&gt;
+  &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h3 id="step-5-3-call-the-pipeline-api">Step 5.3: Call the pipeline API</h3>
+<pre><code class="language-java">import com.dataai.etl.spark.api.DataAiResult;
+import com.dataai.etl.spark.api.RuleSpec;
+import com.dataai.etl.spark.core.DataAiPipeline;
+import org.apache.spark.sql.SaveMode;
+import org.apache.spark.sql.SparkSession;
+
+SparkSession spark = SparkSession.builder()
+        .appName(&quot;Customer orders with DataAI&quot;)
+        .getOrCreate();
+
+DataAiResult result = DataAiPipeline
+        .fromTable(spark, &quot;bronze.customer_orders&quot;)
+        .normalize()
+        .recordKey(&quot;order_id&quot;)
+        .profile()
+        .validate(
+                RuleSpec.required(&quot;customer-required&quot;, &quot;customer_id&quot;),
+                RuleSpec.unique(&quot;order-unique&quot;, &quot;order_id&quot;),
+                RuleSpec.minimum(&quot;amount-nonnegative&quot;, &quot;amount&quot;, 0),
+                RuleSpec.regex(
+                        &quot;email-format&quot;,
+                        &quot;email&quot;,
+                        &quot;^[^@]+@[^@]+\\.[^@]+$&quot;))
+        .execute();
+
+result.rejectedRows().write()
+        .format(&quot;delta&quot;)
+        .mode(SaveMode.Overwrite)
+        .saveAsTable(&quot;quarantine.customer_orders&quot;);
+
+result.findings().write()
+        .format(&quot;delta&quot;)
+        .mode(SaveMode.Overwrite)
+        .saveAsTable(&quot;dataai.customer_orders_quality_finding&quot;);
+
+result.fieldProfiles().write()
+        .format(&quot;delta&quot;)
+        .mode(SaveMode.Overwrite)
+        .saveAsTable(&quot;dataai.customer_orders_field_profile&quot;);
+
+result.requireMinimumQualityScore(90.0);
+
+result.cleanRows().write()
+        .format(&quot;delta&quot;)
+        .mode(SaveMode.Overwrite)
+        .saveAsTable(&quot;silver.customer_orders&quot;);
+</code></pre>
+<p>To start from an existing DataFrame instead of a catalog table, use:</p>
+<pre><code class="language-java">DataAiResult result = DataAiPipeline
+        .fromDataset(inputDataFrame)
+        .normalize()
+        .profile()
+        .execute();
+</code></pre>
+<p>The API returns Spark DataFrames and does not write them automatically. The
+customer controls storage format, save mode, partitioning, catalog, and table
+names.</p>
+<h2 id="6-supported-normalization-and-quality-rules">6. Supported normalization and quality rules</h2>
+<p>When normalization is enabled, DataAI:</p>
+<ul>
+<li>converts column names to lower snake case;</li>
+<li>trims leading and trailing whitespace from string values;</li>
+<li>converts empty or whitespace-only strings to <code>null</code>;</li>
+<li>stops with an error if two source columns normalize to the same name.</li>
+</ul>
+<p>Supported rule types:</p>
+<table>
+<thead>
+<tr>
+<th>Rule type</th>
+<th><code>parameter</code></th>
+<th>Violation condition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>REQUIRED</code></td>
+<td>Not used</td>
+<td>Value is <code>null</code>, empty, or whitespace-only.</td>
+</tr>
+<tr>
+<td><code>UNIQUE</code></td>
+<td>Not used</td>
+<td>A non-null value occurs more than once.</td>
+</tr>
+<tr>
+<td><code>MINIMUM</code></td>
+<td>Numeric value</td>
+<td>Non-null numeric value is below the minimum.</td>
+</tr>
+<tr>
+<td><code>REGEX</code></td>
+<td>Regular expression</td>
+<td>Non-null string does not match the expression.</td>
+</tr>
+</tbody></table>
+<p>Supported severities are <code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>, and <code>CRITICAL</code>. In version
+<code>1.0.0</code>, severity is descriptive metadata: a finding at any severity
+routes the associated record to the rejected result.</p>
+<h2 id="7-understand-the-returned-data">7. Understand the returned data</h2>
+<p><code>DataAiResult</code> provides:</p>
+<ul>
+<li><code>cleanRows()</code> — source records without findings;</li>
+<li><code>rejectedRows()</code> — source records associated with at least one finding;</li>
+<li><code>findings()</code> — record key, rule, field, severity, code, message, and values;</li>
+<li><code>fieldProfiles()</code> — data type, counts, min/max, mean, and standard deviation;</li>
+<li><code>summary()</code> — run ID, timestamps, status, row counts, score, and library
+version.</li>
+</ul>
+<p>The run summary is currently returned to Java callers and printed by the CLI;
+it is not yet written to a catalog table.</p>
+<h2 id="8-add-tableau-dashboards">8. Add Tableau dashboards</h2>
+<p>The optional Tableau module turns <code>DataAiResult</code> into stable, Tableau-friendly
+Spark DataFrames without adding a service or making automatic writes.
+It depends transitively on <code>dataai-spark-functions</code>, so all DataAI computation
+families—including matrix cross-tabs and iterative matrix balancing—are
+available from the same customer dependency.</p>
+<p>Build it with the complete reactor, then add this dependency to the customer&#39;s
+Spark application:</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;com.dataai&lt;/groupId&gt;
+  &lt;artifactId&gt;dataai-spark-tableau&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>Create the output bundle and explicitly persist the desired results:</p>
+<pre><code class="language-java">TableauOutputBundle tableau = TableauOutputs.from(result);
+
+tableau.dashboardMetrics().write()
+        .format(&quot;delta&quot;)
+        .mode(SaveMode.Append)
+        .saveAsTable(&quot;analytics.dataai_dashboard_metrics&quot;);
+</code></pre>
+<p>For a credential-free product overview, open
+<code>Tableau/accelerator/DataAI_ETL_Accelerator.twbx</code> in Tableau Desktop. It
+contains fictional data. For production, replace its sample data source with
+the customer table/view using Tableau&#39;s native Spark SQL or Databricks
+connector. Full instructions, schemas, examples, Hyper data, validation, and
+Tableau Exchange preparation files are in <code>Tableau/README.md</code>.</p>
+<p>For any analytical result DataFrame, use
+<code>TableauFunctionOutputs.withRunMetadata(...)</code>. For matrix balancing, use
+<code>TableauFunctionOutputs.matrixBalance(...)</code> to retain convergence, iteration,
+and maximum-error metadata before persisting the balanced cells. See
+<code>Tableau/mapping/FUNCTION_OUTPUTS_FOR_TABLEAU.md</code>.</p>
+<p>The generated TWBX is structurally validated but must be opened, rendered,
+and interaction-tested in supported Tableau Desktop versions before customer
+or marketplace publication.</p>
+<h2 id="9-add-intersystems-iris">9. Add InterSystems IRIS</h2>
+<p>The optional IRIS module embeds the complete DataAI Spark function library and
+connects to customer-controlled IRIS SQL tables through Spark JDBC. Build the
+full reactor, then add this dependency to the customer&#39;s Spark application:</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;com.dataai&lt;/groupId&gt;
+  &lt;artifactId&gt;dataai-spark-iris&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>Add a customer-approved InterSystems JDBC driver separately. The DataAI JAR
+does not bundle or pin that driver. Configure IRIS from a secret manager, read
+the source, run DataAI, then explicitly write only approved outputs:</p>
+<pre><code class="language-java">IrisJdbcOptions iris = IrisJdbcOptions
+        .forServer(&quot;iris.internal&quot;, 1972, &quot;DATAAI&quot;)
+        .credentials(System.getenv(&quot;IRIS_USER&quot;), System.getenv(&quot;IRIS_PASSWORD&quot;))
+        .fetchSize(5000)
+        .batchSize(1000)
+        .build();
+
+Dataset&lt;Row&gt; input = IrisDataFrames.readTable(
+        spark, iris, &quot;Source.CustomerOrders&quot;);
+
+DataAiResult result = DataAiPipeline.fromDataset(input)
+        .normalize()
+        .recordKey(&quot;order_id&quot;)
+        .profile()
+        .validate(RuleSpec.required(&quot;customer-required&quot;, &quot;customer_id&quot;))
+        .execute();
+
+IrisPipelineOutputBundle outputs = IrisPipelineOutputs.from(result);
+IrisDataFrames.writer(outputs.qualityFindings(), iris)
+        .option(&quot;dbtable&quot;, IrisOutputNames.QUALITY_FINDINGS)
+        .mode(SaveMode.Append)
+        .save();
+</code></pre>
+<p>All analytical results can be prepared with
+<code>IrisFunctionOutputs.withRunMetadata(...)</code>. Matrix balancing uses
+<code>IrisFunctionOutputs.matrixBalance(...)</code>, which retains iteration,
+maximum-error, and convergence metadata. Complete setup, SQL, validation,
+Open Exchange/IPM, licensing, and production-gate instructions are in
+<code>IRIS/README.md</code>.</p>
+<h2 id="10-troubleshooting">10. Troubleshooting</h2>
+<h3 id="classnotfoundexception-for-a-spark-class"><code>ClassNotFoundException</code> for a Spark class</h3>
+<p>Run the JAR with <code>spark-submit</code>, not plain <code>java -jar</code>. Confirm the cluster
+supplies Spark 3.5 and Scala 2.12.</p>
+<h3 id="data-source-not-found-delta"><code>DATA_SOURCE_NOT_FOUND: delta</code></h3>
+<p>The CLI writes Delta tables. Enable a compatible Delta Lake runtime on the
+cluster, or use the embedded Java API and select a supported output format.</p>
+<h3 id="configuration-file-is-not-found-in-cluster-mode">Configuration file is not found in cluster mode</h3>
+<p>The driver must see the JSON as a local file. Use <code>--files</code> and pass the
+localized filename to <code>--config</code>.</p>
+<h3 id="source-or-target-schema-is-not-found">Source or target schema is not found</h3>
+<p>Create the catalog schemas first and grant the Spark job identity permission
+to read the source and replace the target tables.</p>
+<h3 id="a-rule-reports-a-missing-field">A rule reports a missing field</h3>
+<p>Check spelling and case. When normalization is enabled, configure the
+normalized field name, such as <code>customer_id</code>, not <code>Customer ID</code>.</p>
+<h3 id="column-normalization-creates-a-duplicate-name">Column normalization creates a duplicate name</h3>
+<p>Rename one of the source columns. For example, <code>Customer-ID</code> and <code>Customer ID</code>
+both normalize to <code>customer_id</code>.</p>
+<h3 id="the-job-fails-after-writing-diagnostic-tables">The job fails after writing diagnostic tables</h3>
+<p>This is expected when <code>minimumQualityScore</code> is not met. Review the findings and
+rejected tables, correct the source data or rule configuration, and rerun.</p>
+<h3 id="jackson-scala-module-compatibility-error">Jackson/Scala module compatibility error</h3>
+<p>Use the provided shaded CLI JAR without replacing its Jackson libraries. The
+project intentionally uses Jackson 2.15.3 for Spark 3.5 compatibility.</p>
+<h3 id="windows-reports-that-winutils-exe-is-missing-during-tests">Windows reports that <code>winutils.exe</code> is missing during tests</h3>
+<p>Local Spark may emit this warning on Windows. It is non-fatal when the Maven
+tests finish with <code>BUILD SUCCESS</code>; production clusters should use their normal
+Hadoop runtime configuration.</p>
+<h2 id="11-production-readiness-checklist">11. Production-readiness checklist</h2>
+<p>Before production use:</p>
+<ol>
+<li>Confirm every component uses the authorized immutable <code>1.0.0</code> version.</li>
+<li>Publish the JARs to an authenticated artifact repository.</li>
+<li>Record and verify SHA-256 checksums.</li>
+<li>Include <code>LICENSE.md</code> and verify that production users have a written DataAI
+commercial agreement, order form, or license certificate.</li>
+<li>Test against the customer&#39;s exact Spark, Delta, and catalog runtime.</li>
+<li>Replace validation output names with governed production schemas.</li>
+<li>Decide whether outputs should overwrite, append, or merge by run.</li>
+<li>Add monitoring around job failure and the minimum quality score.</li>
+<li>Retain findings and profile tables according to customer policy.</li>
+<li>Validate performance and partitioning with production-scale data.</li>
+<li>For Tableau distribution, open/resave the Accelerator in a supported
+Tableau Desktop version, validate native connector replacement, and use an
+authorized immutable <code>1.0.0</code> adapter version.</li>
+<li>For IRIS distribution, test the exact IRIS server, namespace, JDBC driver,
+Java, Spark, authentication, SQL types, read partitioning, write strategy,
+retry behavior, and least-privilege identity before release.</li>
+</ol>
+
+    </article>
+</main>
+</body>
+</html>

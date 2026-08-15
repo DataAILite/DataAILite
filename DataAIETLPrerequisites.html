@@ -328,13 +328,17 @@ spark-submit --version</code></pre>
 [Environment]::GetEnvironmentVariable("JAVA_HOME", "User")
 [Environment]::GetEnvironmentVariable("SPARK_HOME", "User")
 
+Write-Host "Persistent machine settings" -ForegroundColor Cyan
+[Environment]::GetEnvironmentVariable("JAVA_HOME", "Machine")
+[Environment]::GetEnvironmentVariable("SPARK_HOME", "Machine")
+
 Write-Host "Current PowerShell settings" -ForegroundColor Cyan
 $env:JAVA_HOME
 $env:SPARK_HOME</code></pre>
-        <p>If persistent values are correct but current values are blank, exit the entire terminal-hosting application and reopen PowerShell from Start.</p>
+        <p>If persistent values are correct but current values are blank, exit the entire terminal-hosting application and reopen PowerShell from Start. A Temurin MSI installed as administrator sets <code>JAVA_HOME</code> at machine level; check that row if the user-level row is blank.</p>
         <h3>Load saved variables into the current PowerShell temporarily</h3>
-        <pre><code>$env:JAVA_HOME = [Environment]::GetEnvironmentVariable("JAVA_HOME", "User")
-$env:SPARK_HOME = [Environment]::GetEnvironmentVariable("SPARK_HOME", "User")
+        <pre><code>$env:JAVA_HOME = if ([Environment]::GetEnvironmentVariable("JAVA_HOME", "User")) { [Environment]::GetEnvironmentVariable("JAVA_HOME", "User") } else { [Environment]::GetEnvironmentVariable("JAVA_HOME", "Machine") }
+$env:SPARK_HOME = if ([Environment]::GetEnvironmentVariable("SPARK_HOME", "User")) { [Environment]::GetEnvironmentVariable("SPARK_HOME", "User") } else { [Environment]::GetEnvironmentVariable("SPARK_HOME", "Machine") }
 $env:Path = "$env:JAVA_HOME\bin;$env:SPARK_HOME\bin;$env:Path"
 java -version
 spark-submit --version</code></pre>

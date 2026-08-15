@@ -2,7 +2,7 @@
 <html lang="en">
 <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Use DataAI ETL from SSIS</title><link rel="stylesheet" href="usage.css" /></head>
 <body><main>
-<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="../FUNCTION_CATALOG.html">Function catalog</a></p>
+<p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; DataAI ETL markets</a><a href="index.html">All usage guides</a><a href="../FUNCTION_CATALOG.html">Function catalog</a></p>
 <article class="card">
 <h1>Use DataAI ETL from SSIS</h1>
 <div class="meta"><strong>Execution model:</strong> SSIS orchestrates a DataAI Spark job. DataAI is not an SSIS Data Flow component, MSI, or GAC assembly. The DataAI job reads and writes customer Spark/catalog tables, and later SSIS tasks consume the approved results.</div>
@@ -12,7 +12,7 @@
 <h2>2. Configure an Execute Process Task</h2>
 <ol><li>Add an <strong>Execute Process Task</strong> to the Control Flow.</li><li>Set <strong>Executable</strong> to <code>User::SparkSubmit</code>.</li><li>Build the argument string from controlled variables:</li></ol>
 <pre><code>--class com.dataai.etl.spark.cli.DataAiJob
-"C:\approved\dataai\dataai-spark-cli-1.0.0.jar"
+"C:\approved\dataai\dataai-spark-cli-<version>.jar"
 --config "C:\approved\dataai\customer-orders.json"</code></pre>
 <ol start="4"><li>Set the working directory to the approved package/configuration directory.</li><li>Require return code <code>0</code>; configure the task to fail on any other return code.</li><li>Use a timeout appropriate for the Spark job and configure SSIS cancellation according to customer policy.</li></ol>
 <h2>3. Connect downstream SSIS work</h2>
