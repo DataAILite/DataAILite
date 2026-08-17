@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Distribute DataAI ETL for Oracle AIDP Spark</title>
+    <link rel="stylesheet" href="distribution.css" />
+</head>
+<body>
+<div class="page-header">DataAI ETL Distribution Guide</div>
+<main class="content">
+    <h1>Oracle AIDP Spark &mdash; private Maven repository or signed download</h1>
+    <div class="meta"><strong>Route A:</strong> publish immutable DataAI Maven artifacts to an authenticated Nexus, Artifactory, or other Maven-compatible repository.<br /><strong>Route B:</strong> upload the signed/hashed production ZIP to private OCI storage and issue restricted, time-bounded access.</div>
+    <div class="notice">OCI Artifact Registry is a generic artifact service, not a Maven-coordinate repository. Use a Maven-compatible repository when the customer must resolve normal Maven coordinates; use OCI generic artifacts or Object Storage for controlled file delivery.</div>
+
+    <h2>1. Release approval and validation</h2>
+    <ol class="steps">
+        <li>Verify written authorization for the customer, DataAI version, Oracle Spark environments, term, users/workloads, and commercial rights.</li>
+        <li>Confirm the target Spark/Scala/Java baseline and decide whether the customer will resolve Maven coordinates or receive a ZIP/JAR bundle.</li>
+        <li>Obtain the authorized production package and compare every distributed file with <code>ARTIFACTS.sha256</code>.</li>
+        <li>Record artifact coordinates or storage paths, SHA-256 values, customer, approver, license/order reference, publication date, and expiration/renewal date.</li>
+    </ol>
+
+    <h2>2A. Publish to a private Maven repository</h2>
+    <ol class="steps">
+        <li>Create or select a production release repository that requires authentication and does not permit anonymous download.</li>
+        <li>Create a publisher identity with deploy rights and customer/runtime groups with read-only rights. Store credentials in approved secret managers.</li>
+        <li>Publish the required DataAI modules under the approved group IDs, artifact IDs, and immutable <code>1.0.0</code> version. Publish dependency metadata/POMs together with JARs.</li>
+        <li>Confirm the repository is configured against redeploying a released version. Never upload different bytes under an existing version.</li>
+        <li>Use a clean Maven cache and a read-only customer test identity to resolve all approved coordinates. Compare downloaded hashes and run the DataAI smoke test.</li>
+        <li>Provide the customer only the repository URL, approved coordinates/version, secure credential-enrollment method, checksum record, production guides, and entitlement reference.</li>
+    </ol>
+
+    <h2>2B. Fulfill by private OCI artifact or signed download</h2>
+    <ol class="steps">
+        <li>Create a private OCI Artifact Registry generic repository or private Object Storage bucket in the approved compartment and region.</li>
+        <li>Apply least-privilege IAM policies to the Yanbor publisher and authorized customer/download identities. Keep public access disabled.</li>
+        <li>For Artifact Registry, upload the immutable ZIP or JAR using a meaningful artifact path and version. The OCI CLI supports <code>oci artifacts generic artifact upload-by-path --repository-id &lt;repo-ocid&gt; --artifact-path &lt;path&gt; --artifact-version 1.0.0 --content-body &lt;file&gt;</code>.</li>
+        <li>For Object Storage, upload the ZIP and checksum as separate objects, keep the bucket private, and create a customer-specific pre-authenticated request only when allowed by Yanbor and customer policy.</li>
+        <li>Set the narrowest usable scope and expiration. A pre-authenticated request acts like a bearer URL, so transmit it only through the authorized customer channel and revoke it after fulfillment or at expiration.</li>
+        <li>Test the exact customer path from a clean session, download both files, recompute SHA-256, and confirm the archive extracts without error.</li>
+    </ol>
+
+    <h2>3. Customer handoff and acceptance</h2>
+    <ol class="steps">
+        <li>Give the customer the correct Oracle production installation guide, usage guide, supported runtime baseline, list of required/optional modules, license certificate/order reference, and support contact.</li>
+        <li>Require the customer to store artifacts in its approved private location, keep Oracle/Spark platform libraries provided by the platform, and inject repository/storage credentials from its secret facility.</li>
+        <li>Have the customer attach the JARs through the Oracle Spark platform's supported library mechanism or <code>spark-submit --jars</code>, then run a fictional/synthetic-data acceptance job.</li>
+        <li>Record the clean retrieval, hash match, smoke-test result, runtime version, output location, and customer acceptance contact.</li>
+    </ol>
+
+    <h2>4. Renewal and updates</h2>
+    <ul>
+        <li>Issue a new semantic version for changes; do not replace an immutable release.</li>
+        <li>Revoke repository permission and pre-authenticated requests when authorization expires.</li>
+        <li>Repeat compatibility and acceptance tests after Oracle platform runtime changes.</li>
+    </ul>
+
+    <h2>Official references</h2>
+    <ul>
+        <li><a href="https://docs.oracle.com/en-us/iaas/Content/artifacts/overview.htm" target="_blank" rel="noopener noreferrer">Oracle: Artifact Registry overview</a></li>
+        <li><a href="https://docs.oracle.com/en-us/iaas/Content/artifacts/create-repo.htm" target="_blank" rel="noopener noreferrer">Oracle: create an artifact repository</a></li>
+        <li><a href="https://docs.oracle.com/en-us/iaas/Content/artifacts/upload-artifact.htm" target="_blank" rel="noopener noreferrer">Oracle: upload a generic artifact</a></li>
+        <li><a href="https://docs.oracle.com/en-us/iaas/Content/Object/Tasks/usingpreauthenticatedrequests.htm" target="_blank" rel="noopener noreferrer">Oracle: Object Storage pre-authenticated requests</a></li>
+    </ul>
+    <p><a href="../../DataAIETLmarkets.html">Back to DataAI ETL Markets</a></p>
+    <div class="footer">Procedure reviewed August 17, 2026. Use the customer's current OCI tenancy policy and Oracle platform documentation.</div>
+</main>
+</body>
+</html>

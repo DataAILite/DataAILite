@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Distribute DataAI ETL through InterSystems Open Exchange</title>
+    <link rel="stylesheet" href="distribution.css" />
+</head>
+<body>
+<div class="page-header">DataAI ETL Distribution Guide</div>
+<main class="content">
+    <h1>InterSystems IRIS &mdash; Open Exchange</h1>
+    <div class="meta"><strong>Listing package:</strong> public listing metadata, documentation, optional public IPM bootstrap, and approved source repository.<br /><strong>Commercial payload:</strong> licensed DataAI Spark/IRIS JARs fulfilled separately through an authenticated customer channel.</div>
+    <div class="notice">Open Exchange publication does not by itself grant a production DataAI license. Do not place proprietary commercial JARs, customer credentials, or licensed-only source in a public Git repository or the public IPM registry.</div>
+
+    <h2>1. Decide what is public and what is licensed</h2>
+    <ol class="steps">
+        <li>Choose whether the Open Exchange entry is documentation-only, points to an approved public bootstrap repository, or also offers an optional IPM module.</li>
+        <li>Keep the optional IPM bootstrap limited to IRIS-side setup and metadata. State clearly that it does not install the commercial Spark JARs.</li>
+        <li>Prepare the authenticated Yanbor fulfillment link used after commercial authorization. The customer must receive the adapter and Spark JARs from that controlled channel.</li>
+        <li>Obtain legal approval for the listing title, descriptions, logo, screenshots, public repository contents, license URL, privacy/support URLs, and any claims about supported IRIS versions.</li>
+    </ol>
+
+    <h2>2. Prepare and validate the listing assets</h2>
+    <ol class="steps">
+        <li>Use a public GitHub or GitLab repository only if every committed file is approved for public release. Add a concise README, installation boundary, IRIS requirements, fictional sample, support link, public-license file for the bootstrap, and link to commercial fulfillment.</li>
+        <li>If publishing an IPM module, validate <code>module.xml</code>, use a semantic version, and confirm all referenced files are public. Do not declare proprietary JARs as public module files.</li>
+        <li>Load the module in an isolated IRIS namespace with <code>zpm "load /path/to/module"</code>. Test a clean uninstall/reinstall and confirm that no customer configuration or credentials are embedded.</li>
+        <li>Where authorized, test publication in the IPM test registry using the current InterSystems procedure before requesting production registry publication.</li>
+        <li>Validate the separately fulfilled commercial bundle: compare SHA-256, run the Spark smoke test, run the isolated IRIS SQL setup, and require the documented live IRIS success marker using a customer-supplied compatible JDBC driver.</li>
+    </ol>
+
+    <h2>3. Create the Open Exchange application</h2>
+    <ol class="steps">
+        <li>Sign in to InterSystems Open Exchange with the Yanbor publishing identity.</li>
+        <li>Open <strong>Developer portal</strong>, select <strong>All applications</strong>, and choose <strong>New Application</strong>.</li>
+        <li>Enter the approved public GitHub/GitLab URL if one is used, then verify every field populated from the repository.</li>
+        <li>Complete the application name, logo, categories, InterSystems technologies, industries, call to action, About URL, public license URL, short description, full description, documentation, support, and demonstration fields.</li>
+        <li>State the integration accurately: DataAI runs in Spark, connects to IRIS through the adapter/JDBC path, and writes governed results; the public bootstrap is optional and does not contain the commercial libraries.</li>
+        <li>If the approved IPM module is eligible, select the current option to publish it through Package Manager and provide the exact module/repository details requested by Open Exchange.</li>
+        <li>Save the draft, preview it, check every public link from a signed-out browser, and verify that no production download bypasses commercial authorization.</li>
+        <li>Select <strong>Send for approval</strong>. Record the submission date, listing owner, repository commit, asset hashes, and reviewer communications.</li>
+    </ol>
+
+    <h2>4. Fulfill an approved customer</h2>
+    <ol class="steps">
+        <li>Complete the written Yanbor commercial agreement/order and verify the authorized customer identity and environments.</li>
+        <li>Grant time-bounded access to the licensed IRIS production ZIP and checksum manifest through the authenticated portal or private artifact repository.</li>
+        <li>Give the customer the production installation and usage guides, supported versions, JDBC-driver responsibility, license certificate/order reference, and support contact.</li>
+        <li>Confirm a clean customer download, matching checksum, private artifact installation, IRIS connection test, and successful governed output before closing fulfillment.</li>
+    </ol>
+
+    <h2>5. Maintain the listing</h2>
+    <ul>
+        <li>Use a new semantic version and a new release record for changed public or commercial bytes.</li>
+        <li>Update the listing when IRIS compatibility, URLs, screenshots, licensing, support, or package boundaries change.</li>
+        <li>Do not call the package Open Exchange approved or IPM published until InterSystems actually approves it.</li>
+    </ul>
+
+    <h2>Official references</h2>
+    <ul>
+        <li><a href="https://docs.openexchange.intersystems.com/apps/submit/" target="_blank" rel="noopener noreferrer">InterSystems: submit an application to Open Exchange</a></li>
+        <li><a href="https://docs.openexchange.intersystems.com/apps/ipm/" target="_blank" rel="noopener noreferrer">InterSystems: publish with IPM</a></li>
+    </ul>
+    <p><a href="../../DataAIETLmarkets.html">Back to DataAI ETL Markets</a></p>
+    <div class="footer">Procedure reviewed August 17, 2026. InterSystems approval and the current portal requirements govern publication.</div>
+</main>
+</body>
+</html>

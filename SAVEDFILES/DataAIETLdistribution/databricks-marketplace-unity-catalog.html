@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Distribute DataAI ETL for Databricks</title>
+    <link rel="stylesheet" href="distribution.css" />
+</head>
+<body>
+<div class="page-header">DataAI ETL Distribution Guide</div>
+<main class="content">
+    <h1>Databricks &mdash; Databricks Marketplace or Unity Catalog volume</h1>
+    <div class="meta"><strong>Direct customer route:</strong> governed JARs and notebooks in a customer-controlled Unity Catalog volume.<br /><strong>Marketplace route:</strong> a provider listing that shares eligible files/volumes and notebooks under Databricks' current provider policies.</div>
+    <div class="notice">The local production bundle is not a published Databricks Marketplace listing. Unity Catalog must be enabled for volume/file and notebook Marketplace assets. Confirm that Databricks accepts the exact commercial file-sharing design before public submission.</div>
+
+    <h2>1. Prepare the immutable Databricks release</h2>
+    <ol class="steps">
+        <li>Verify customer/listing authorization, license/order, cloud and Region, workspace, Unity Catalog metastore, compute access mode, Spark/Scala/Java runtime, users, and support owner.</li>
+        <li>Obtain <code>DataAIETL-Databricks-1.0.0.zip</code> and <code>ARTIFACTS.sha256</code>. Recompute hashes and inspect JARs, notebooks, configuration examples, documentation, license references, and sample data.</li>
+        <li>Run the packaged local smoke test when compatible, then test on the claimed Databricks Runtime with an isolated catalog/schema and fictional data.</li>
+        <li>Run <code>00_INSTALL_AND_VERIFY.py</code> before quality, analytics, matrix, and BI examples. Record output, runtime, access mode, hashes, and approver.</li>
+    </ol>
+
+    <h2>2A. Fulfill through a customer Unity Catalog volume</h2>
+    <ol class="steps">
+        <li>Have the customer create or select a governed catalog, schema, and volume for licensed DataAI artifacts. Use managed storage or an approved external location according to customer policy.</li>
+        <li>Grant the uploader only the required catalog/schema/volume permissions. Grant production job principals <code>READ VOLUME</code> and avoid broad workspace-user access.</li>
+        <li>Upload the immutable <code>1.0.0</code> JARs, notebooks/configs where appropriate, checksum manifest, and license certificate reference. Use a versioned directory and do not overwrite it.</li>
+        <li>Compare hashes after upload/download. Add the approved volume JARs as Databricks Job or compute libraries using the current supported UI/API.</li>
+        <li>For standard access mode, configure any required library allowlist and confirm permissions with the actual job service principal.</li>
+        <li>Import or reference the notebooks, replace sample locations with governed customer locations, keep secrets in Databricks secret management, and run the complete acceptance sequence.</li>
+        <li>Record volume path, object hashes, grants, job/compute ID, runtime, customer acceptance, license/order reference, and removal date.</li>
+    </ol>
+
+    <h2>2B. Publish through Databricks Marketplace</h2>
+    <ol class="steps">
+        <li>Apply to become a Databricks Marketplace provider and complete the business/provider profile, public organization name, support contacts, legal terms, privacy information, and Databricks account/workspace prerequisites.</li>
+        <li>Have an account/workspace administrator grant the required Marketplace provider and data-sharing privileges to the publishing identity.</li>
+        <li>Choose <strong>Free and instantly available</strong> only if the listing can be delivered through a compliant share without a separate agreement. Otherwise choose <strong>Requires approval</strong> so Yanbor can validate the customer and complete commercial terms before access.</li>
+        <li>Create the governed provider-side share and add only eligible reviewed assets. For this package, use the current Files/Volumes and notebook capabilities only if enabled and accepted in the provider workspace.</li>
+        <li>Do not include credentials, customer data, unrestricted proprietary source, or unapproved dependencies. Use a versioned artifact directory and a fictional sample/verification notebook.</li>
+        <li>Create the listing and complete name, summary, detailed description, categories, industries, provider contact, support/documentation links, terms, privacy, sample notebooks, regions, and access model.</li>
+        <li>Explain precisely how the recipient obtains access, attaches the JARs to a job/compute resource, runs verification, confirms commercial rights, and requests support. State all runtime and Unity Catalog prerequisites.</li>
+        <li>Preview and test as a recipient in a separate clean workspace/account where possible. Validate request approval, share access, file/notebook visibility, hash verification, library attachment, and revocation.</li>
+        <li>Submit for Databricks review and resolve all findings. Publish only after Databricks and Yanbor approvals, then verify the live listing and consumer acquisition path.</li>
+    </ol>
+
+    <h2>3. Approve request-access customers</h2>
+    <ol class="steps">
+        <li>Verify the requester's organization and intended environments, complete the commercial agreement/order, and approve only the entitled recipient identifier.</li>
+        <li>Grant access to the correct share/assets and send the version, hashes, license certificate/order reference, installation and usage guides, and support path.</li>
+        <li>Record activation and acceptance. Revoke the recipient/share permission when the term ends or access is withdrawn.</li>
+    </ol>
+
+    <h2>4. Release lifecycle</h2>
+    <ul>
+        <li>Publish changed bytes under a new versioned path and update the listing/release notes through Databricks review where required.</li>
+        <li>Retest all claimed Databricks Runtime and compute access modes.</li>
+        <li>Never imply Databricks endorsement beyond the actual status of the exact live listing.</li>
+    </ul>
+
+    <h2>Official references</h2>
+    <ul>
+        <li><a href="https://docs.databricks.com/aws/en/marketplace/get-started-provider" target="_blank" rel="noopener noreferrer">Databricks: get started as a Marketplace provider</a></li>
+        <li><a href="https://docs.databricks.com/aws/en/marketplace/create-listing" target="_blank" rel="noopener noreferrer">Databricks: create and manage a listing</a></li>
+        <li><a href="https://docs.databricks.com/aws/en/volumes/volume-files" target="_blank" rel="noopener noreferrer">Databricks: work with files in Unity Catalog volumes</a></li>
+    </ul>
+    <p><a href="../../DataAIETLmarkets.html">Back to DataAI ETL Markets</a></p>
+    <div class="footer">Procedure reviewed August 17, 2026. Databricks account, cloud, Region, and Marketplace policies determine the exact workflow.</div>
+</main>
+</body>
+</html>

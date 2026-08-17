@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Distribute DataAI ETL for Alteryx</title>
+    <link rel="stylesheet" href="distribution.css" />
+</head>
+<body>
+<div class="page-header">DataAI ETL Distribution Guide</div>
+<main class="content">
+    <h1>Alteryx &mdash; customer portal or Alteryx Marketplace</h1>
+    <div class="meta"><strong>Direct package:</strong> <code>DataAI_ETL_Alteryx_2026_1_Production_1.0.0.yxi</code> plus the complete production ZIP and checksum manifest.<br /><strong>Marketplace route:</strong> conditional on Alteryx partner/Marketplace intake and review.</div>
+    <div class="notice">The production candidate is not Alteryx Marketplace certified. Alteryx does not document a universal public self-service submission workflow for this package. Do not invent a submission status or publish until an authorized Alteryx representative provides and accepts the current intake process.</div>
+
+    <h2>1. Prepare one approved release</h2>
+    <ol class="steps">
+        <li>Verify written Yanbor LLC authorization for the customer or marketplace channel, DataAI version, Alteryx Designer release, AMP engine, environments, users, and commercial rights.</li>
+        <li>Obtain the direct YXI, complete Alteryx production ZIP, and <code>ARTIFACTS.sha256</code> from the controlled production release.</li>
+        <li>Recompute SHA-256 for every file and compare it with the manifest. Stop the release for any mismatch.</li>
+        <li>Install the YXI in a clean Alteryx Designer 2026.1 test profile. Confirm tool name, icon, category, configuration fields, AMP behavior, help links, license notice, and removal/reinstall behavior.</li>
+        <li>Run the separate DataAI Spark smoke test, then run the fictional Alteryx sample through an approved <code>spark-submit</code> runtime. Verify success, validation failure, Spark failure, timeout, output schema, and log redaction.</li>
+        <li>Prepare approved listing assets: product name, short/long descriptions, logo/icon, screenshots with fictional data, supported Designer/AMP versions, package version, vendor/support/privacy/license URLs, documentation, release notes, and known limitations.</li>
+    </ol>
+
+    <h2>2A. Fulfill through the Yanbor customer portal</h2>
+    <ol class="steps">
+        <li>Create an authenticated, customer-specific entitlement after the commercial agreement/order is complete.</li>
+        <li>Upload the immutable YXI, complete ZIP, and checksum manifest to the production-only download area. Keep evaluation files separate.</li>
+        <li>Set the entitlement's customer, version, allowed users or organization, start/end dates, authorized environments, and support contact.</li>
+        <li>Test with a new customer-equivalent account: sign in, download all authorized files, verify hashes, install the YXI, and open the linked installation and usage guides.</li>
+        <li>Send the portal link, exact filenames, hashes, order/license reference, supported environment, installation/usage guides, and support path to the approved customer contact.</li>
+        <li>Record customer acceptance and revoke portal access when authorization ends.</li>
+    </ol>
+
+    <h2>2B. Request Alteryx Marketplace publication</h2>
+    <ol class="steps">
+        <li>Use Yanbor's Alteryx partner contact or Marketplace contact to request the current custom-tool/YXI publisher onboarding and submission requirements.</li>
+        <li>Provide the requested legal company profile, product owner, support process, privacy/license terms, security response contact, tax/payment information if applicable, and proof of rights to the listing assets.</li>
+        <li>Confirm whether the Marketplace accepts the exact YXI/tool architecture and whether its policies allow commercial entitlement to be completed outside Marketplace. Follow Alteryx's answer; do not assume.</li>
+        <li>Create the Marketplace draft with the approved metadata and compatibility claims. Upload only the specific reviewed YXI/build and any assets requested by the current intake.</li>
+        <li>Explain that the Alteryx tool invokes a customer-selected Spark runtime and that the commercial DataAI libraries remain subject to Yanbor authorization. Identify all external prerequisites before download.</li>
+        <li>Submit for technical, content, security, and commercial review using the partner workflow supplied by Alteryx. Track every requested change by build/version.</li>
+        <li>When Alteryx provides a preview or restricted listing, install from that listing into a clean supported Designer environment and repeat the complete functional test.</li>
+        <li>Publish only after written Alteryx acceptance and Yanbor release approval. Replace “candidate” status only when the live listing is verified.</li>
+    </ol>
+
+    <h2>3. Update and withdrawal procedure</h2>
+    <ul>
+        <li>Use a new semantic version and new hashes for every changed YXI or ZIP.</li>
+        <li>Retest against each claimed Designer/AMP version and submit Marketplace updates through the same review channel.</li>
+        <li>Keep the previous authorized version available for the agreed rollback window, then retire access according to policy.</li>
+        <li>For a critical issue, suspend direct fulfillment, notify authorized customers, and ask Alteryx to unlist or replace the affected Marketplace version.</li>
+    </ul>
+
+    <h2>Official references</h2>
+    <ul>
+        <li><a href="https://help.alteryx.com/current/en/developer-help/platform-sdk/legacy-sdks/package-a-tool.html" target="_blank" rel="noopener noreferrer">Alteryx: package a custom tool as YXI</a></li>
+        <li><a href="https://help.alteryx.com/current/en/designer/tools/connectors.html" target="_blank" rel="noopener noreferrer">Alteryx: install YXI tools obtained from Marketplace</a></li>
+    </ul>
+    <p><a href="../../DataAIETLmarkets.html">Back to DataAI ETL Markets</a></p>
+    <div class="footer">Procedure reviewed August 17, 2026. The current Alteryx partner intake controls Marketplace submission.</div>
+</main>
+</body>
+</html>

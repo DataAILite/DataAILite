@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataAI ETL .NET pipelines — Production Installation Guide</title>
+    <style>
+        :root { color-scheme: light; font-family: "Segoe UI", Arial, sans-serif; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f4f7fb; color: #172033; line-height: 1.6; }
+        main { max-width: 1040px; margin: 32px auto; padding: 0 20px 48px; }
+        .card { background: #fff; border: 1px solid #d9e1ec; border-radius: 10px; box-shadow: 0 4px 18px rgba(23,32,51,.08); padding: 30px; }
+        .meta { margin: 18px 0 26px; padding: 14px 16px; background: #eef4ff; border-left: 4px solid #2a64c5; }
+        .meta p { margin: 4px 0; }
+        h1, h2, h3 { line-height: 1.25; scroll-margin-top: 18px; }
+        h1 { margin-top: 0; font-size: 1.8rem; }
+        h2 { margin-top: 2rem; padding-bottom: .3rem; border-bottom: 1px solid #d9e1ec; }
+        a { color: #174ea6; }
+        pre { overflow-x: auto; padding: 16px; background: #111827; color: #e5edf9; border-radius: 7px; }
+        code { font-family: Consolas, "Courier New", monospace; }
+        :not(pre) > code { padding: 2px 5px; background: #eef1f5; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { border: 1px solid #cfd8e6; padding: 8px 10px; text-align: left; vertical-align: top; }
+        th { background: #eef4ff; }
+        blockquote { margin-left: 0; padding-left: 16px; border-left: 4px solid #a9b9d0; color: #44536a; }
+        .top-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+<main>
+    <p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; Back to DataAI ETL markets</a><a href="index.html">All installation guides</a></p>
+    <article class="card">
+        <h1>DataAI ETL .NET pipelines — Production Installation Guide</h1>
+        <div class="meta">
+            <p><strong>Product:</strong> .NET pipelines</p>
+            <p><strong>Distribution:</strong> Production</p>
+            <p><strong>Source document:</strong> <code>NuGet/docs/INSTALLATION_AND_USAGE.md</code></p>
+            <p><strong>Source SHA-256:</strong> <code>c9acdb5e3dde6eee24c317b0107e9b75f969d86d142753e752daa727d56f0e9a</code></p>
+            <p><a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=Yanbor.DataAI.Etl.Spark.1.0.0.nupkg">Download the applicable package</a> | <a href="../licenses/dotnet.html">Read the applicable license</a></p>
+
+            <p class="download-verification"><strong>Downloads and verification:</strong> <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=Yanbor.DataAI.Etl.Spark.1.0.0.nupkg">Integration package 1.0.0</a> | <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=Yanbor.DataAI.Etl.Spark.Runtime.1.0.0.nupkg">Runtime package 1.0.0</a> | <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></p>
+        </div>
+        <h1 id="dataai-etl-nuget-installation-and-usage">DataAI ETL NuGet Installation and Usage</h1>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>.NET 8 SDK or runtime for the consuming application</li>
+<li>Java 17</li>
+<li>Apache Spark 3.5-compatible runtime</li>
+<li>Scala binary version 2.12</li>
+<li>Customer-controlled Spark catalog, storage, identity, and compute</li>
+</ul>
+<h2 id="install-from-a-private-feed">Install from a private feed</h2>
+<pre><code class="language-powershell">dotnet nuget add source &quot;&lt;PRIVATE-FEED-URL&gt;&quot; --name DataAI
+dotnet add package Yanbor.DataAI.Etl.Spark `
+  --version 1.0.0 `
+  --source DataAI
+</code></pre>
+<p><code>Yanbor.DataAI.Etl.Spark</code> depends on
+<code>Yanbor.DataAI.Etl.Spark.Runtime</code>, so one command installs both packages. At
+build and publish time, the runtime package copies four unshaded library JARs
+to <code>dataai/jars</code> and the shaded CLI JAR to <code>dataai/cli</code>.</p>
+<h2 id="jar-installation-boundary">JAR installation boundary</h2>
+<p>This NuGet installation does install commercial DataAI Spark JARs into the application output. It does not install Spark, Hadoop, Java, or customer platform drivers. Restore and use these commercial JARs only under the customer&#39;s applicable Yanbor LLC authorization. Third-party platforms, runtimes, and drivers remain customer-provided and subject to their respective vendor license terms.</p>
+<h2 id="create-a-quality-job">Create a quality job</h2>
+<pre><code class="language-csharp">using Yanbor.DataAI.Etl.Spark;
+
+var configuration = new DataAiQualityJobConfiguration
+{
+    SourceTable = &quot;dataai_sample.orders&quot;,
+    CleanTable = &quot;dataai_sample.orders_clean&quot;,
+    RejectedTable = &quot;dataai_sample.orders_rejected&quot;,
+    ProfileTable = &quot;dataai_sample.orders_profiles&quot;,
+    FindingsTable = &quot;dataai_sample.orders_findings&quot;,
+    Normalize = true,
+    RecordKeyColumns = [&quot;order_id&quot;],
+    Rules =
+    [
+        DataAiRuleSpec.Required(&quot;customer-required&quot;, &quot;customer_id&quot;),
+        DataAiRuleSpec.Between(&quot;amount-range&quot;, &quot;amount&quot;, 0, 100000)
+    ],
+    MinimumQualityScore = 95
+};
+
+configuration.WriteJson(&quot;dataai-job.json&quot;);
+var runtime = DataAiSparkRuntimeLayout.Discover();
+var command = DataAiSparkSubmitBuilder.BuildQualityJob(
+    &quot;dataai-job.json&quot;,
+    runtime,
+    new DataAiSparkSubmitOptions { Master = &quot;local[2]&quot; });
+
+Console.WriteLine(command.ToDisplayString());
+</code></pre>
+<p>The builder returns an executable name and argument list. The consuming
+application decides whether, where, and under which identity to launch it.</p>
+<h2 id="use-the-libraries-with-another-spark-application">Use the libraries with another Spark application</h2>
+<pre><code class="language-csharp">var command = DataAiSparkSubmitBuilder.BuildLibraryApplication(
+    &quot;customer-pipeline.jar&quot;,
+    options: new DataAiSparkSubmitOptions
+    {
+        Master = &quot;yarn&quot;,
+        DeployMode = &quot;cluster&quot;,
+        ApplicationArguments = [&quot;--input&quot;, &quot;customer.orders&quot;]
+    });
+</code></pre>
+<p>This adds the four unshaded DataAI library JARs through <code>--jars</code>; it does not
+bundle Spark or Hadoop classes.</p>
+<h2 id="function-coverage">Function coverage</h2>
+<p><code>DataAiFunctionCatalog.All</code> lists the DataAI ETL, quality, analytics,
+time-series, business, market, geographic, insight, and matrix-balancing APIs
+included in the runtime. The quality CLI is directly configurable from the
+.NET helper. Other functions are invoked through the packaged Java APIs.</p>
+<p>Direct Microsoft.Spark <code>DataFrame</code> extension methods are not claimed in this
+<code>1.0.0</code> package. They require a separately implemented and externally
+validated JVM bridge. No external DataAI service is required.</p>
+<h2 id="customer-control-and-writes">Customer control and writes</h2>
+<p>The package performs no installation-time or build-time network calls beyond
+the customer&#39;s configured NuGet restore. The .NET helper does not launch Spark,
+send telemetry, or write data. The shaded quality CLI writes only table names
+explicitly supplied in the job configuration; blank output names disable the
+corresponding write.</p>
+
+    </article>
+</main>
+</body>
+</html>

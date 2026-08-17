@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Distribute DataAI ETL for Power BI</title>
+    <link rel="stylesheet" href="distribution.css" />
+</head>
+<body>
+<div class="page-header">DataAI ETL Distribution Guide</div>
+<main class="content">
+    <h1>Power BI &mdash; customer portal or Microsoft-certified distribution</h1>
+    <div class="meta"><strong>Current package:</strong> DataAI Spark JARs and Microsoft deployment documentation in a ZIP.<br /><strong>Boundary:</strong> no DataAI <code>.mez</code> connector, custom visual, or installable Power BI app is included.</div>
+    <div class="notice">The current ZIP is not directly eligible as a Power BI app offer. The customer-portal route is ready for controlled JAR fulfillment. A Microsoft Marketplace/AppSource route first requires a real supported Microsoft offer artifact, appropriate installation URL, Partner Center onboarding, and certification.</div>
+
+    <h2>1. Approve the Power BI architecture</h2>
+    <ol class="steps">
+        <li>Document the Spark or Databricks environment where DataAI runs, the governed output tables it publishes, and the native Power BI connection used to read those outputs.</li>
+        <li>Confirm Power BI tenant, capacity, gateway/network path, data-source credentials, refresh ownership, row-level security, privacy levels, and production support responsibilities.</li>
+        <li>Verify the Yanbor commercial agreement/order covers the customer, DataAI version, Spark environments, and Power BI consumption.</li>
+        <li>Do not describe the current package as a Power BI connector, visual, template app, transactable Microsoft offer, or Microsoft-certified product.</li>
+    </ol>
+
+    <h2>2A. Fulfill the DataAI libraries through the customer portal</h2>
+    <ol class="steps">
+        <li>Obtain <code>DataAIETL-Microsoft-1.0.0.zip</code>, the Spark production package when required, and <code>ARTIFACTS.sha256</code>.</li>
+        <li>Recompute SHA-256 values and validate the packages on a clean compatible Spark runtime.</li>
+        <li>Create an authenticated customer entitlement and upload only the approved immutable files to its production download area.</li>
+        <li>Set customer, version, environments, authorized contacts, entitlement dates, commercial reference, and support owner. Do not expose a public static download.</li>
+        <li>Test the exact customer download path, checksum verification, Spark installation, DataAI output generation, and Power BI native connection to the approved output.</li>
+        <li>Give the customer the portal link, filenames/hashes, entitlement reference, Spark and Power BI installation/usage guides, supported runtime baseline, output contract, and support path.</li>
+        <li>Record acceptance and revoke access when commercial authorization ends.</li>
+    </ol>
+
+    <h2>2B. Create a Microsoft-certified distribution path</h2>
+    <ol class="steps">
+        <li>Choose the Microsoft offer type that matches an artifact DataAI actually supplies. For a Power BI app offer, build and validate a real installable Power BI app and obtain its Power BI app installation URL. Do not use the Spark ZIP as the app package.</li>
+        <li>Complete Microsoft AI Cloud Partner Program and Partner Center marketplace enrollment for Yanbor LLC, including publisher profile, agreements, tax/payout data where required, support contact, and company verification.</li>
+        <li>Prepare the offer's legal terms, privacy policy, support URL, documentation, logos, screenshots, categories, industries, search terms, descriptions, availability, lead destination, and Power BI installation URL.</li>
+        <li>Keep the promise precise: the Power BI artifact visualizes governed outputs produced by separately installed DataAI ETL Spark libraries. List Java, Spark, platform, gateway, and commercial-license prerequisites prominently.</li>
+        <li>In Partner Center, create a new commercial marketplace offer of the approved type and complete <strong>Offer setup</strong>, <strong>Properties</strong>, <strong>Availability</strong>, <strong>Technical configuration</strong>, and <strong>Marketplace listing</strong>.</li>
+        <li>For a Power BI app offer, use the valid app installation link supplied by Power BI. Follow Microsoft's current pricing/fulfillment rules; Power BI app offers may use publisher-managed licensing rather than direct Marketplace software fulfillment.</li>
+        <li>Preview the offer and test all links and install steps with a clean authorized tenant. Ensure the listing never exposes proprietary JARs without Yanbor authorization.</li>
+        <li>Select <strong>Review and publish</strong>, fix validation or certification issues, and submit. Keep the listing non-public until both Microsoft certification and Yanbor release approval are complete.</li>
+        <li>After Microsoft publishes it, verify the live page, acquisition/install flow, documentation, customer-entitlement handoff, and support path. Only then label that exact offer Microsoft-certified.</li>
+    </ol>
+
+    <h2>3. Release and support controls</h2>
+    <ul>
+        <li>Use a new version and hashes for changed DataAI bytes; update both the customer portal and certified artifact only through their controlled release processes.</li>
+        <li>Retest Power BI refresh, gateway, schema changes, row-level security, and customer entitlement after every material update.</li>
+        <li>Do not imply that Microsoft certification covers the separately fulfilled proprietary Spark libraries beyond the scope Microsoft actually reviewed.</li>
+    </ul>
+
+    <h2>Official references</h2>
+    <ul>
+        <li><a href="https://learn.microsoft.com/en-us/partner-center/marketplace-offers/marketplace-power-bi" target="_blank" rel="noopener noreferrer">Microsoft: plan a Power BI app offer</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/partner-center/marketplace/power-bi-app-offer-setup" target="_blank" rel="noopener noreferrer">Microsoft: create a Power BI app offer</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/partner-center/marketplace-offers/review-publish-offer" target="_blank" rel="noopener noreferrer">Microsoft: review and publish an offer</a></li>
+    </ul>
+    <p><a href="../../DataAIETLmarkets.html">Back to DataAI ETL Markets</a></p>
+    <div class="footer">Procedure reviewed August 17, 2026. Partner Center validation and certification determine the final fields and approval.</div>
+</main>
+</body>
+</html>

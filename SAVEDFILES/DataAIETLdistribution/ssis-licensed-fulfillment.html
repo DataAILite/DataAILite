@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Distribute DataAI ETL for SSIS</title>
+    <link rel="stylesheet" href="distribution.css" />
+</head>
+<body>
+<div class="page-header">DataAI ETL Distribution Guide</div>
+<main class="content">
+    <h1>SSIS &mdash; licensed download portal / private NuGet feed</h1>
+    <div class="meta"><strong>Package:</strong> authorized DataAI Spark JAR bundle; optional .NET orchestration packages where the customer's architecture uses them.<br /><strong>Important:</strong> the current deliverable is not an SSIS MSI, native SSIS data-flow component, or GAC-installed assembly.</div>
+    <div class="notice">Use the licensed portal for the Spark ZIP. Use the private NuGet route only for approved .NET orchestration packages. SSIS invokes the DataAI Spark job with an Execute Process Task or the customer's approved Spark job interface.</div>
+
+    <h2>1. Approve the fulfillment design</h2>
+    <ol class="steps">
+        <li>Document where SSIS runs, where Spark runs, how SSIS reaches that Spark environment, and which governed output tables SSIS will consume.</li>
+        <li>Confirm the customer's SSIS/SQL Server version, service account, network path, Java/Spark runtime, execution policy, output database connector, and noninteractive credential method.</li>
+        <li>Confirm in writing that the customer understands there is no DataAI SSIS MSI or native Data Flow Toolbox component in this release.</li>
+        <li>Approve the customer, production environments, package version, permitted users, commercial license/order, and support contact.</li>
+    </ol>
+
+    <h2>2. Fulfill the Spark ZIP through the licensed portal</h2>
+    <ol class="steps">
+        <li>Create an access-controlled customer account or customer-specific download area. Require TLS and authentication; do not expose the production ZIP through a public static URL.</li>
+        <li>Upload the immutable Spark production ZIP and its checksum manifest. Keep evaluation and production files clearly separated.</li>
+        <li>Record the uploaded filename, size, SHA-256, customer entitlement, expiration/renewal date, approver, and upload date.</li>
+        <li>Test with a fresh authorized account: authenticate, download, calculate SHA-256, extract, read the production license and installation guide, and run the smoke test on a compatible Spark host.</li>
+        <li>Send the customer a portal link, not the binary itself, together with the exact filename, checksum, version, order/license reference, installation guide, usage guide, and support path.</li>
+        <li>Require the customer to store the JARs in its approved private artifact location and limit read access to the SSIS/Spark runtime identities that need them.</li>
+    </ol>
+
+    <h2>3. Configure the SSIS handoff</h2>
+    <ol class="steps">
+        <li>Provide a customer-reviewed wrapper command or job-submission command that returns exit code <code>0</code> only after the DataAI Spark job completes successfully.</li>
+        <li>In SSIS Designer, add an Execute Process Task to the Control Flow. Set <strong>Executable</strong> to the approved wrapper or job client and <strong>WorkingDirectory</strong> to its controlled directory.</li>
+        <li>Pass non-secret parameters through SSIS variables and expressions. Resolve passwords, tokens, and keys at runtime from the customer's approved secret facility.</li>
+        <li>Set a finite timeout, keep <strong>FailTaskIfReturnCodeIsNotSuccessValue</strong> enabled, and set the success value to <code>0</code>.</li>
+        <li>Capture standard output and standard error in SSIS variables/logging, while ensuring neither stream exposes credentials or protected input data.</li>
+        <li>Add precedence constraints so downstream SSIS tasks run only after successful Spark completion. Consume only the committed governed output table or file, never a partially written staging output.</li>
+        <li>Deploy the SSIS project to the customer's catalog and test under the actual SQL Agent/SSIS service identity, not only the developer's interactive account.</li>
+    </ol>
+
+    <h2>4. Optional private NuGet fulfillment</h2>
+    <ol class="steps">
+        <li>If the approved wrapper is built with the DataAI .NET packages, publish both packages to the authorized private feed using the separate .NET distribution procedure.</li>
+        <li>Grant restore permission to the build identity; the SSIS runtime does not need feed access if the wrapper deployment already contains all authorized runtime assets.</li>
+        <li>Do not install NuGet packages into the GAC and do not represent them as an SSIS component.</li>
+    </ol>
+
+    <h2>5. Release acceptance</h2>
+    <ul>
+        <li>Prove success, expected failure propagation, timeout behavior, retry/idempotency, log redaction, and output completeness.</li>
+        <li>Store the SSIS package version, DataAI version, Spark job version, hashes, and entitlement reference in the release record.</li>
+        <li>Revoke portal/feed access when authorization ends and rotate any fulfillment credentials that may have been exposed.</li>
+    </ul>
+
+    <h2>Official reference</h2>
+    <p><a href="https://learn.microsoft.com/en-us/sql/integration-services/control-flow/execute-process-task" target="_blank" rel="noopener noreferrer">Microsoft: SSIS Execute Process Task</a></p>
+    <p><a href="../../DataAIETLmarkets.html">Back to DataAI ETL Markets</a></p>
+    <div class="footer">Procedure reviewed August 17, 2026. Customer security and SSIS deployment policy control the final configuration.</div>
+</main>
+</body>
+</html>

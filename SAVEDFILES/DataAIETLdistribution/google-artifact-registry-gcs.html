@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Distribute DataAI ETL for Google Cloud Dataproc</title>
+    <link rel="stylesheet" href="distribution.css" />
+</head>
+<body>
+<div class="page-header">DataAI ETL Distribution Guide</div>
+<main class="content">
+    <h1>Google Cloud (Dataproc) &mdash; Artifact Registry or GCS bucket</h1>
+    <div class="meta"><strong>Route A:</strong> private Artifact Registry Maven repository for normal Maven-coordinate resolution.<br /><strong>Route B:</strong> private Cloud Storage bucket for the ZIP/JAR bundle, using customer IAM or a short-lived signed URL.</div>
+    <div class="notice">The package targets Dataproc/Spark and includes no Python wheel. Keep both routes private and use the customer's approved service accounts, IAM, encryption, Region, and networking policy.</div>
+
+    <h2>1. Validate and authorize the release</h2>
+    <ol class="steps">
+        <li>Verify the customer, commercial agreement/order, DataAI version, Google Cloud project, Region, Dataproc runtime, Java/Scala/Spark baseline, environments, service accounts, and support owner.</li>
+        <li>Obtain <code>DataAIETL-Google-1.0.0.zip</code> and <code>ARTIFACTS.sha256</code>. Recompute hashes and run the smoke test against the claimed runtime.</li>
+        <li>Choose Artifact Registry when builds/jobs must resolve Maven coordinates. Choose Cloud Storage when the customer attaches explicit JAR URIs or downloads the full authorized bundle.</li>
+        <li>Record artifact coordinates or object paths, version, hashes, project/Region, approver, agreement/order reference, and entitlement dates.</li>
+    </ol>
+
+    <h2>2A. Publish to Artifact Registry Maven</h2>
+    <ol class="steps">
+        <li>Enable Artifact Registry in the approved project and create a private <strong>Maven</strong> repository in the required Region. Use a production release repository distinct from evaluation/snapshots.</li>
+        <li>Grant the publisher only Artifact Registry write permission needed for release. Grant customer build/job identities read-only permission on the repository.</li>
+        <li>Install/configure the Google Cloud CLI and Artifact Registry Maven credential helper using Google's current authentication guidance. Prefer workload identity or short-lived credentials over service-account keys.</li>
+        <li>Add the repository URL/ID to the release Maven configuration without committing access tokens or private keys.</li>
+        <li>Deploy the approved POMs and JARs with their immutable <code>1.0.0</code> coordinates. Do not overwrite or reuse a published version for different bytes.</li>
+        <li>List the repository packages/versions and confirm all expected modules are present and anonymous/public access is absent.</li>
+        <li>With a clean Maven cache and a read-only test service account, resolve the top-level dependency, compare downloaded hashes, and run the DataAI Spark smoke test.</li>
+        <li>Give the customer the repository location, exact coordinates/version, IAM/credential-helper setup, checksums, production guides, entitlement reference, and support path.</li>
+    </ol>
+
+    <h2>2B. Fulfill through a private Cloud Storage bucket</h2>
+    <ol class="steps">
+        <li>Create or select a private bucket and versioned customer prefix in the approved project, Region, storage class, and encryption configuration. Enforce public-access prevention.</li>
+        <li>Upload the immutable production ZIP and checksum manifest. Use object versioning/retention according to release policy.</li>
+        <li>For ongoing use, grant the authorized customer or Dataproc service account read permission only on the needed objects/prefix.</li>
+        <li>For one-time delivery, create a V4 signed URL with the shortest practical expiration. A signed URL is a bearer credential; send it only through the approved channel and avoid putting it in logs or tickets.</li>
+        <li>Test as the customer identity or from a clean session: download the package/checksum, recompute SHA-256, extract, and attach the JARs to an isolated Dataproc batch or cluster job.</li>
+        <li>Give the customer exact <code>gs://</code> URIs or signed links, object generations where used, hashes, supported runtime, IAM requirements, guides, entitlement reference, and support path.</li>
+        <li>Remove the IAM grant or allow/revoke signed access when authorization ends.</li>
+    </ol>
+
+    <h2>3. Customer acceptance on Dataproc</h2>
+    <ol class="steps">
+        <li>Attach the exact versioned JARs through the Dataproc job's supported <code>--jars</code> or dependency configuration.</li>
+        <li>Use a restricted runtime service account, private networking as required, customer-approved connectors, secret management, and non-production acceptance outputs.</li>
+        <li>Run fictional data through the packaged verification flow and record runtime version, job ID, artifact versions/hashes, output location, and acceptance contact.</li>
+        <li>Promote only the already verified immutable artifacts to production configuration.</li>
+    </ol>
+
+    <h2>4. Updates and revocation</h2>
+    <ul>
+        <li>Publish changed bytes under a new semantic Maven version or new versioned GCS object path/generation.</li>
+        <li>Repeat clean resolution/download, hash, Dataproc compatibility, IAM, logging, and output tests.</li>
+        <li>Revoke reader roles and signed access when commercial rights expire.</li>
+    </ul>
+
+    <h2>Official references</h2>
+    <ul>
+        <li><a href="https://cloud.google.com/artifact-registry/docs/java/store-java" target="_blank" rel="noopener noreferrer">Google Cloud: store Java packages in Artifact Registry</a></li>
+        <li><a href="https://cloud.google.com/artifact-registry/docs/java/authentication" target="_blank" rel="noopener noreferrer">Google Cloud: authenticate to Maven repositories</a></li>
+        <li><a href="https://cloud.google.com/storage/docs/access-control/signed-urls" target="_blank" rel="noopener noreferrer">Google Cloud: Cloud Storage signed URLs</a></li>
+    </ul>
+    <p><a href="../../DataAIETLmarkets.html">Back to DataAI ETL Markets</a></p>
+    <div class="footer">Procedure reviewed August 17, 2026. Apply the customer's current Google Cloud IAM and Dataproc policies.</div>
+</main>
+</body>
+</html>

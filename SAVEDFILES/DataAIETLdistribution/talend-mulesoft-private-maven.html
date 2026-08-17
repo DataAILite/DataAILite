@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Distribute DataAI ETL for Talend and MuleSoft</title>
+    <link rel="stylesheet" href="distribution.css" />
+</head>
+<body>
+<div class="page-header">DataAI ETL Distribution Guide</div>
+<main class="content">
+    <h1>Talend / MuleSoft &mdash; private Maven repository</h1>
+    <div class="meta"><strong>Package:</strong> DataAI Maven/JAR modules for a Talend Spark job.<br /><strong>MuleSoft boundary:</strong> no dedicated MuleSoft connector is included; MuleSoft should orchestrate the Spark job or consume its governed outputs.</div>
+    <div class="notice">Do not copy Spark JARs into a non-Spark Mule runtime. Do not publish the proprietary DataAI libraries as public Exchange assets. A descriptive/private Exchange asset may document an integration only after Yanbor and customer review.</div>
+
+    <h2>1. Design the authorized distribution</h2>
+    <ol class="steps">
+        <li>Confirm the customer's Talend Studio/runtime release, Spark runtime, Java/Scala compatibility, approved Nexus or Artifactory service, and repository URLs.</li>
+        <li>For MuleSoft, document whether the Mule flow will submit/poll a Spark job or read the committed results through an existing database/API connector.</li>
+        <li>Approve the customer, version, repositories, users/workloads, environments, commercial agreement/order, and support contacts.</li>
+        <li>Separate evaluation, release, and snapshot repositories. Production DataAI version <code>1.0.0</code> belongs in a release repository, never a snapshot repository.</li>
+    </ol>
+
+    <h2>2. Publish the DataAI Maven modules</h2>
+    <ol class="steps">
+        <li>Obtain the authorized Maven production bundle and production checksum manifest.</li>
+        <li>Compare each JAR and POM hash with the approved manifest. Inspect group ID, artifact ID, version, dependency graph, license/documentation metadata, and included notices.</li>
+        <li>Create a publisher identity with deploy-only rights and customer/build identities with read-only rights. Keep credentials in approved secret stores.</li>
+        <li>Deploy POMs and JARs in dependency order using the repository's supported Maven deployment method. Do not deploy a different file under an existing release coordinate.</li>
+        <li>Open the repository UI and confirm that every required DataAI <code>1.0.0</code> coordinate is present and anonymous access is disabled.</li>
+        <li>From a clean Maven cache and a read-only test identity, resolve the documented top-level dependency and confirm all required DataAI modules download from the intended private source.</li>
+        <li>Run the packaged Spark smoke test with the resolved artifacts and record the runtime versions, hashes, test result, publisher, and date.</li>
+    </ol>
+
+    <h2>3. Configure Talend consumption</h2>
+    <ol class="steps">
+        <li>In Talend Studio, open the artifact repository configuration used by the customer's governed build process.</li>
+        <li>Select the supported Nexus 3, Nexus, or Artifactory repository type and enter the customer's repository/group URL exactly as supplied by its repository administrator.</li>
+        <li>Configure authentication through the customer-approved credential facility. Do not embed a password in a Job, exported archive, screenshot, README, or source repository.</li>
+        <li>Add the approved DataAI dependencies to the Talend Spark Job through the supported module/dependency management interface.</li>
+        <li>Build/export the Job and inspect its dependency output to confirm only the intended DataAI version is present and Spark/Hadoop platform libraries have not been duplicated incorrectly.</li>
+        <li>Run a clean isolated job with fictional data, validate the DataAI output contract, and then promote through the customer's normal Talend release gates.</li>
+    </ol>
+
+    <h2>4. Configure MuleSoft orchestration or output consumption</h2>
+    <ol class="steps">
+        <li>Keep the DataAI computation in the approved Spark/Talend job. Expose only the customer-approved job-control API, queue, scheduler, or governed output table.</li>
+        <li>Configure the Mule flow to submit work with a correlation ID, poll or receive completion status, enforce a timeout, and route non-success status to an error path.</li>
+        <li>Use an existing supported MuleSoft database/API connector to read committed results. Apply least-privilege credentials and the customer's retry/idempotency policy.</li>
+        <li>Test success, DataAI validation failure, Spark failure, timeout, duplicate request, and unavailable output. Confirm logs do not include credentials or protected source rows.</li>
+        <li>If publishing documentation or a custom asset to the customer's private Anypoint Exchange, use the current Exchange Maven publishing process and clearly state that the asset does not contain the proprietary DataAI Spark JARs.</li>
+    </ol>
+
+    <h2>5. Fulfillment and lifecycle controls</h2>
+    <ul>
+        <li>Provide repository URL, exact coordinates/version, checksum record, credential-enrollment instructions, production installation and usage guides, entitlement reference, and support path.</li>
+        <li>Issue a new version for changed bytes; retain or remove older versions according to the agreement and customer's rollback policy.</li>
+        <li>Revoke read access when authorization ends and retest after Talend, Mule, Spark, or Java upgrades.</li>
+    </ul>
+
+    <h2>Official references</h2>
+    <ul>
+        <li><a href="https://help.qlik.com/talend/en-US/studio-user-guide/8.0-R2025-06/configuring-repositories-for-publishing-artifacts" target="_blank" rel="noopener noreferrer">Qlik Talend: configure artifact repositories</a></li>
+        <li><a href="https://docs.mulesoft.com/exchange/to-publish-assets-maven" target="_blank" rel="noopener noreferrer">MuleSoft: publish Exchange assets with Maven</a></li>
+    </ul>
+    <p><a href="../../DataAIETLmarkets.html">Back to DataAI ETL Markets</a></p>
+    <div class="footer">Procedure reviewed August 17, 2026. Confirm supported repository and runtime versions in the customer's current Talend and MuleSoft documentation.</div>
+</main>
+</body>
+</html>

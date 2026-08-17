@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Distribute DataAI ETL for AWS</title>
+    <link rel="stylesheet" href="distribution.css" />
+</head>
+<body>
+<div class="page-header">DataAI ETL Distribution Guide</div>
+<main class="content">
+    <h1>AWS (Glue / EMR) &mdash; AWS Marketplace or private S3</h1>
+    <div class="meta"><strong>Immediate controlled route:</strong> private Amazon S3 objects with customer IAM access or time-limited presigned download.<br /><strong>Marketplace route:</strong> build a supported AWS Marketplace product, such as an approved container product; a raw Spark JAR ZIP is not by itself an AWS Marketplace product type.</div>
+    <div class="notice">The current production ZIP is a marketplace candidate, not a published or certified offer. Lambda is not a supported Spark runtime for this package.</div>
+
+    <h2>1. Prepare and approve the AWS release</h2>
+    <ol class="steps">
+        <li>Verify the customer or listing authorization, commercial agreement/order, version, AWS Regions, accounts, Glue/EMR runtime versions, Java/Scala/Spark compatibility, and support responsibilities.</li>
+        <li>Obtain <code>DataAIETL-AWS-1.0.0.zip</code> and <code>ARTIFACTS.sha256</code>. Recompute all hashes and validate the JARs on the claimed AWS Spark runtime.</li>
+        <li>Review the container assets separately if pursuing Marketplace. Build from pinned approved inputs, scan the image and dependencies, and ensure no credentials, customer data, development licenses, or unnecessary tools are included.</li>
+        <li>Create a release record with version, hashes/image digest, customer or offer ID, regions, approvers, agreement/order reference, test results, and rollback owner.</li>
+    </ol>
+
+    <h2>2A. Fulfill through private S3</h2>
+    <ol class="steps">
+        <li>Create or select a private S3 bucket and customer-specific prefix in the approved AWS account/Region. Keep S3 Block Public Access enabled and require encryption and TLS.</li>
+        <li>Upload the immutable production ZIP and checksum manifest. Enable versioning/object retention according to release policy.</li>
+        <li>Prefer cross-account IAM access for recurring licensed use: grant only the authorized customer role <code>s3:GetObject</code> on the exact versioned prefix and required KMS permissions.</li>
+        <li>For a one-time download, create a presigned URL with the shortest practical lifetime. Treat the URL as a bearer credential and send it only to the approved customer contact.</li>
+        <li>Test from a customer-equivalent role or clean session: download the ZIP and checksum, recompute SHA-256, extract, and attach the JARs to an isolated Glue/EMR job.</li>
+        <li>Give the customer exact S3 object/version or presigned link, filename/hash, supported runtimes, IAM/KMS requirements, production guides, license/order reference, and support path.</li>
+        <li>Remove the cross-account grant or allow the presigned URL to expire when entitlement ends; confirm there is no public ACL or bucket policy.</li>
+    </ol>
+
+    <h2>2B. Create an AWS Marketplace product</h2>
+    <ol class="steps">
+        <li>Register Yanbor LLC as an AWS Marketplace seller and complete business, tax, banking, seller-profile, agreement, and access requirements in the current AWS seller workflow.</li>
+        <li>Select a supported product type that matches the deliverable. For the supplied container assets, use a container product only after the container is actually runnable and validated for the documented customer workflow.</li>
+        <li>Create the product record and obtain its product ID/product code. Use the AWS-owned Marketplace ECR repository and upload only the reviewed image/digest as instructed by AWS.</li>
+        <li>Complete vulnerability scanning and remediate blocking findings. Validate startup, configuration, logging, least-privilege IAM, networking, license enforcement/entitlement, upgrade, and uninstall/termination behavior.</li>
+        <li>Prepare title, descriptions, categories, logo, architecture, deployment instructions, supported Regions/services, pricing model, refund policy, EULA, privacy policy, support/SLA, usage dimensions, and required customer permissions.</li>
+        <li>Configure Marketplace pricing and metering/contract integration appropriate to the product. Do not advertise external commercial fulfillment that conflicts with AWS Marketplace policy.</li>
+        <li>Add a product version and deployment option, then test it while the listing has limited visibility using authorized test accounts.</li>
+        <li>Submit the listing and required change requests for AWS review. Resolve technical, security, content, and policy findings; preserve the exact image digest reviewed.</li>
+        <li>After approval, request public visibility and verify subscription, entitlement, deployment, metering, documentation, and support. Do not call it available until the live flow succeeds.</li>
+        <li>Use AWS private offers only when the product type and seller/listing status meet AWS requirements. Define buyer account, pricing, duration, terms, expiration, and verify the generated offer URL before sending it.</li>
+    </ol>
+
+    <h2>3. Maintain and withdraw releases</h2>
+    <ul>
+        <li>Use a new immutable ZIP/version and container image digest for updates; never replace reviewed bytes.</li>
+        <li>Repeat Glue/EMR compatibility, security scan, clean deployment, entitlement, and output tests.</li>
+        <li>Follow AWS Marketplace change-request and customer-notification rules for new versions or restrictions.</li>
+    </ul>
+
+    <h2>Official references</h2>
+    <ul>
+        <li><a href="https://docs.aws.amazon.com/marketplace/latest/userguide/seller-account-registering.html" target="_blank" rel="noopener noreferrer">AWS: register as a Marketplace seller</a></li>
+        <li><a href="https://docs.aws.amazon.com/marketplace/latest/userguide/container-product-getting-started.html" target="_blank" rel="noopener noreferrer">AWS: container product lifecycle</a></li>
+        <li><a href="https://docs.aws.amazon.com/marketplace/latest/userguide/creating-private-offer.html" target="_blank" rel="noopener noreferrer">AWS: create a private offer</a></li>
+        <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/ShareObjectPreSignedURL.html" target="_blank" rel="noopener noreferrer">AWS: share a private S3 object with a presigned URL</a></li>
+    </ul>
+    <p><a href="../../DataAIETLmarkets.html">Back to DataAI ETL Markets</a></p>
+    <div class="footer">Procedure reviewed August 17, 2026. AWS Marketplace policies and the seller portal control the final submission.</div>
+</main>
+</body>
+</html>

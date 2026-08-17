@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Distribute DataAI ETL for Tableau</title>
+    <link rel="stylesheet" href="distribution.css" />
+</head>
+<body>
+<div class="page-header">DataAI ETL Distribution Guide</div>
+<main class="content">
+    <h1>Tableau &mdash; Tableau Exchange or customer portal</h1>
+    <div class="meta"><strong>Exchange candidate:</strong> <code>DataAI_ETL_Accelerator.twbx</code> with fictional sample data.<br /><strong>Commercial payload:</strong> adapter and licensed DataAI Spark JARs fulfilled separately through the customer portal/private repository.</div>
+    <div class="notice">Tableau's published process limits contributed Accelerators on Tableau Exchange to managed Salesforce partners working with a partner account manager. A TWBX cannot securely contain the proprietary JAR entitlement or customer credentials.</div>
+
+    <h2>1. Separate the two deliverables</h2>
+    <ol class="steps">
+        <li>Keep the Exchange workbook self-contained with fictional sample data, explanatory dashboards, supported connection instructions, and no customer data or credentials.</li>
+        <li>Keep <code>dataai-spark-tableau-1.0.0.jar</code> and the core DataAI modules in the authenticated customer fulfillment channel.</li>
+        <li>State that no DataAI <code>.taco</code> connector is required: Tableau connects through its supported native Spark SQL, Databricks, or database connection to the output tables.</li>
+        <li>Obtain Yanbor legal, product, security, and branding approval for the public workbook, listing text, screenshots, license link, privacy/support URLs, and claims.</li>
+    </ol>
+
+    <h2>2A. Fulfill through the customer portal</h2>
+    <ol class="steps">
+        <li>Obtain <code>DataAIETL-Tableau-1.0.0.zip</code>, the Spark production ZIP when needed, and the production checksum manifest.</li>
+        <li>Compare hashes, extract to a clean validation environment, open the TWBX in a supported Tableau Desktop version, and run the DataAI Spark/Tableau adapter smoke tests.</li>
+        <li>Create a customer-specific authenticated entitlement after the commercial agreement/order is complete.</li>
+        <li>Upload the immutable ZIP/checksum files and set customer, version, users, environments, entitlement dates, and support owner.</li>
+        <li>Test a clean customer download, hash match, Spark library installation, output generation, workbook opening, and replacement of the fictional data source with the governed customer source.</li>
+        <li>Send the portal link, filenames/hashes, order/license reference, installation/usage guides, supported versions, output contract, and support path.</li>
+    </ol>
+
+    <h2>2B. Submit the Accelerator to Tableau Exchange</h2>
+    <ol class="steps">
+        <li>Confirm that Yanbor LLC is a managed Salesforce partner eligible to contribute Tableau Accelerators. If it is not, contact Salesforce/Tableau partner channels; do not represent the workbook as Exchange-submittable until eligibility is confirmed.</li>
+        <li>Work with the assigned partner account manager to obtain the current Accelerator proposal, design, quality, localization, licensing, and submission requirements.</li>
+        <li>Validate the workbook against those requirements: clear business scenario, coherent dashboard flow, meaningful fictional data, editable connections, no secrets, no broken links, acceptable performance, accessible titles, and approved Yanbor branding.</li>
+        <li>Package the final reviewed workbook as TWBX. Reopen it on a clean machine and confirm that the embedded fictional data renders without access to Yanbor or customer infrastructure.</li>
+        <li>Prepare the listing name, short/long descriptions, use case, industries, required Tableau versions, screenshots, setup instructions, public legal/privacy/support URLs, and explicit prerequisites for separately licensed DataAI ETL.</li>
+        <li>Submit the proposal and build through the channel specified by the partner account manager. Track reviewer feedback by workbook version and preserve the exact submitted hash.</li>
+        <li>When a preview is available, acquire it using a clean Tableau identity and test the complete workbook flow plus the link to commercial fulfillment.</li>
+        <li>Publish only after Tableau/Salesforce approval and Yanbor release approval. Verify the live Exchange page and download before announcing availability.</li>
+    </ol>
+
+    <h2>3. If Exchange eligibility is unavailable</h2>
+    <ul>
+        <li>Continue controlled fulfillment through the customer portal.</li>
+        <li>Tableau Public may be used only for an approved public workbook with fictional data; it is not a channel for proprietary JARs or commercial entitlement.</li>
+        <li>Do not use “Tableau Exchange,” “Exchange approved,” or equivalent wording until the live listing exists.</li>
+    </ul>
+
+    <h2>4. Maintain releases</h2>
+    <ul>
+        <li>Use a new semantic version/hash for changed proprietary packages and a traceable workbook revision for every TWBX update.</li>
+        <li>Retest extracts, live connections, field mapping, refresh, dashboard filters, and supported Tableau versions.</li>
+        <li>Submit Exchange changes through the partner review path and revoke portal access when customer authorization ends.</li>
+    </ul>
+
+    <h2>Official references</h2>
+    <ul>
+        <li><a href="https://help.tableau.com/current/pro/desktop/en-us/accelerators_build.htm" target="_blank" rel="noopener noreferrer">Tableau: build and contribute an Accelerator</a></li>
+        <li><a href="https://help.tableau.com/current/online/en-gb/accelerators.htm" target="_blank" rel="noopener noreferrer">Tableau: use Accelerators from Tableau Exchange</a></li>
+    </ul>
+    <p><a href="../../DataAIETLmarkets.html">Back to DataAI ETL Markets</a></p>
+    <div class="footer">Procedure reviewed August 17, 2026. The Salesforce partner account manager supplies the authoritative submission workflow.</div>
+</main>
+</body>
+</html>

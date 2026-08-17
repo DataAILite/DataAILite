@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataAI ETL Databricks — Production Installation Guide</title>
+    <style>
+        :root { color-scheme: light; font-family: "Segoe UI", Arial, sans-serif; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f4f7fb; color: #172033; line-height: 1.6; }
+        main { max-width: 1040px; margin: 32px auto; padding: 0 20px 48px; }
+        .card { background: #fff; border: 1px solid #d9e1ec; border-radius: 10px; box-shadow: 0 4px 18px rgba(23,32,51,.08); padding: 30px; }
+        .meta { margin: 18px 0 26px; padding: 14px 16px; background: #eef4ff; border-left: 4px solid #2a64c5; }
+        .meta p { margin: 4px 0; }
+        h1, h2, h3 { line-height: 1.25; scroll-margin-top: 18px; }
+        h1 { margin-top: 0; font-size: 1.8rem; }
+        h2 { margin-top: 2rem; padding-bottom: .3rem; border-bottom: 1px solid #d9e1ec; }
+        a { color: #174ea6; }
+        pre { overflow-x: auto; padding: 16px; background: #111827; color: #e5edf9; border-radius: 7px; }
+        code { font-family: Consolas, "Courier New", monospace; }
+        :not(pre) > code { padding: 2px 5px; background: #eef1f5; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { border: 1px solid #cfd8e6; padding: 8px 10px; text-align: left; vertical-align: top; }
+        th { background: #eef4ff; }
+        blockquote { margin-left: 0; padding-left: 16px; border-left: 4px solid #a9b9d0; color: #44536a; }
+        .top-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+<main>
+    <p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; Back to DataAI ETL markets</a><a href="index.html">All installation guides</a></p>
+    <article class="card">
+        <h1>DataAI ETL Databricks — Production Installation Guide</h1>
+        <div class="meta">
+            <p><strong>Product:</strong> Databricks</p>
+            <p><strong>Distribution:</strong> Production</p>
+            <p><strong>Source document:</strong> <code>Databricks/docs/INSTALLATION_AND_USAGE.md</code></p>
+            <p><strong>Source SHA-256:</strong> <code>4ee48bb920c4c7005f7f25ed9976c23901bc12447b0e7dc50a429a4193c849d8</code></p>
+            <p><a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Databricks-1.0.0.zip">Download the applicable package</a> | <a href="../licenses/databricks.html">Read the applicable license</a></p>
+
+            <p class="download-verification"><strong>Downloads and verification:</strong> <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Databricks-1.0.0.zip">Databricks package 1.0.0</a> | <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></p>
+        </div>
+        <h1 id="dataai-etl-databricks-installation-and-usage">DataAI ETL Databricks Installation and Usage</h1>
+<h2 id="1-confirm-prerequisites">1. Confirm prerequisites</h2>
+<p>Use a Unity Catalog-enabled workspace and compute compatible with Java 17,
+Spark 3.5.x, and Scala 2.12. Databricks Runtime 16.4 LTS with the Scala 2.12
+image is the initial validation target. Do not claim support until the selected
+runtime and access mode pass the provider checklist.</p>
+<p>This package contains immutable <code>1.0.0</code> production-candidate artifacts.
+Commercial deployment requires Yanbor release authorization, the customer&#39;s
+applicable entitlement, and completion of the documented Databricks runtime
+validation gates.</p>
+<h2 id="jar-installation-boundary">JAR installation boundary</h2>
+<p>The supplied Databricks notebooks do not include, download, or install commercial DataAI Spark JARs. The customer must explicitly upload the authorized production JARs to governed storage and install all required JARs as compute or Job libraries. Installing those libraries requires the customer&#39;s applicable Yanbor LLC authorization. Third-party platforms, runtimes, and drivers remain customer-provided and subject to their respective vendor license terms.</p>
+<h2 id="2-create-customer-controlled-storage">2. Create customer-controlled storage</h2>
+<p>Adapt <code>../sql/CREATE_CONSUMER_OUTPUTS.sql</code> and create a catalog, schema, and
+volume under the customer&#39;s governance. Example names are intentionally
+generic and may be replaced.</p>
+<p>The customer controls grants. The identity running the notebooks needs:</p>
+<ul>
+<li><code>USE CATALOG</code> on the selected catalog.</li>
+<li><code>USE SCHEMA</code> on the selected schema.</li>
+<li><code>READ VOLUME</code> for the delivered DataAI files.</li>
+<li><code>CREATE TABLE</code> only if optional output persistence is enabled.</li>
+</ul>
+<h2 id="3-upload-the-authorized-1-0-0-payload">3. Upload the authorized <code>1.0.0</code> payload</h2>
+<p>Upload the package contents to a Unity Catalog volume. With the Databricks CLI:</p>
+<pre><code class="language-powershell">databricks fs mkdir dbfs:/Volumes/&lt;catalog&gt;/&lt;schema&gt;/&lt;volume&gt;/dataai-etl
+databricks fs cp .\lib dbfs:/Volumes/&lt;catalog&gt;/&lt;schema&gt;/&lt;volume&gt;/dataai-etl/lib -r --overwrite
+databricks fs cp .\data dbfs:/Volumes/&lt;catalog&gt;/&lt;schema&gt;/&lt;volume&gt;/dataai-etl/data -r --overwrite
+databricks fs cp .\docs dbfs:/Volumes/&lt;catalog&gt;/&lt;schema&gt;/&lt;volume&gt;/dataai-etl/docs -r --overwrite
+</code></pre>
+<p>Do not upload Maven credentials, Databricks tokens, license certificates,
+customer agreements, or customer data with the delivered payload.</p>
+<h2 id="4-install-the-dataai-jars">4. Install the DataAI JARs</h2>
+<p>Install these four libraries on the cluster or Job compute:</p>
+<pre><code class="language-text">/Volumes/&lt;catalog&gt;/&lt;schema&gt;/&lt;volume&gt;/dataai-etl/lib/dataai-spark-api-1.0.0.jar
+/Volumes/&lt;catalog&gt;/&lt;schema&gt;/&lt;volume&gt;/dataai-etl/lib/dataai-spark-quality-1.0.0.jar
+/Volumes/&lt;catalog&gt;/&lt;schema&gt;/&lt;volume&gt;/dataai-etl/lib/dataai-spark-core-1.0.0.jar
+/Volumes/&lt;catalog&gt;/&lt;schema&gt;/&lt;volume&gt;/dataai-etl/lib/dataai-spark-functions-1.0.0.jar
+</code></pre>
+<p>In the Databricks UI, edit the compute resource, open <strong>Libraries</strong>, select
+<strong>Install new</strong>, choose the Unity Catalog volume source, and add each JAR.
+Restart compute after installation.</p>
+<p>For standard access mode, an administrator may need to add the volume path to
+the library allowlist. The DataAI classes use named Java packages.</p>
+<p>The CLI JAR is optional and is intended for configuration-driven Spark jobs,
+not for the notebook examples.</p>
+<h2 id="5-import-the-notebooks">5. Import the notebooks</h2>
+<p>Import the <code>notebooks/</code> directory into a customer-controlled workspace folder.
+Run them in this order:</p>
+<ol>
+<li><code>00_INSTALL_AND_VERIFY.py</code></li>
+<li><code>01_QUALITY_PIPELINE.py</code></li>
+<li><code>02_ANALYTICS_AND_MARKET.py</code></li>
+<li><code>03_MATRIX_BALANCING.py</code></li>
+<li><code>04_PUBLISH_FOR_BI.py</code></li>
+</ol>
+<p>Set the <code>dataai_base_path</code> widget to:</p>
+<pre><code class="language-text">/Volumes/&lt;catalog&gt;/&lt;schema&gt;/&lt;volume&gt;/dataai-etl
+</code></pre>
+<h2 id="6-verify-the-runtime">6. Verify the runtime</h2>
+<p>The first notebook checks that the four required DataAI classes are visible,
+prints the DataAI development version, and reports the Spark, Scala, and Java
+runtime versions. A missing class normally means the JAR was not installed on
+the attached compute or the compute was not restarted.</p>
+<h2 id="7-run-the-quality-example">7. Run the quality example</h2>
+<p>The quality notebook reads fictional orders, normalizes values, creates a
+record key, profiles fields, applies validation rules, and returns clean rows,
+rejected rows, findings, profiles, and a run summary.</p>
+<p>The notebook does not persist output by default. Set <code>persist_results</code> to
+<code>true</code> only after specifying a customer-controlled catalog and schema.</p>
+<h2 id="8-run-analytics-and-matrix-examples">8. Run analytics and matrix examples</h2>
+<p>The analytics notebook calls the same Java APIs available to Java/Scala Spark
+jobs and displays DataFrames through PySpark. It demonstrates grouped totals,
+market segments, scenarios, and automatic quality diagnostics.</p>
+<p>The matrix notebook balances fictional region/channel cells against row and
+column controls. It exposes iteration count, maximum error, convergence status,
+balanced values, coefficients, and differences.</p>
+<h2 id="9-publish-optional-governed-outputs">9. Publish optional governed outputs</h2>
+<p>The BI notebook creates views only when <code>publish_views</code> is explicitly set to
+<code>true</code>. It never chooses a catalog, schema, table name, or grant automatically.
+The resulting views can be queried from Databricks SQL or connected to Power BI
+and Tableau using their native Databricks connectors.</p>
+<h2 id="10-production-fulfillment">10. Production fulfillment</h2>
+<p>For licensed production use, obtain the authorized, signed <code>1.0.0</code> artifacts
+from Yanbor LLC&#39;s authenticated Maven repository or an approved customer
+artifact repository. Pin the exact version in Jobs and cluster policies. Do
+not overwrite an existing production version.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="javapackage-is-not-callable-or-class-is-missing"><code>JavaPackage</code> is not callable or class is missing</h3>
+<p>Install all four required JARs on the attached compute and restart it. Confirm
+the volume path and allowlist settings.</p>
+<h3 id="unsupportedclassversionerror"><code>UnsupportedClassVersionError</code></h3>
+<p>The compute JVM is older than Java 17. Select a Java 17-compatible runtime.</p>
+<h3 id="scala-linkage-errors">Scala linkage errors</h3>
+<p>Use the Scala 2.12 runtime image. Do not use a Scala 2.13-only or Spark 4-only
+runtime with the current artifacts.</p>
+<h3 id="writes-fail">Writes fail</h3>
+<p>Keep <code>persist_results=false</code>, or grant the notebook identity the customer-
+approved Unity Catalog privileges. DataAI does not bypass Unity Catalog.</p>
+<h3 id="matrix-does-not-converge">Matrix does not converge</h3>
+<p>Check that row and column targets have equal totals, controls cover the input
+keys, and the iteration and tolerance settings are suitable.</p>
+
+    </article>
+</main>
+</body>
+</html>

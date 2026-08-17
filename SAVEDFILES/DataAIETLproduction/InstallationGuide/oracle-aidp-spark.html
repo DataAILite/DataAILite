@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataAI ETL Oracle AIDP Spark — Production Installation Guide</title>
+    <style>
+        :root { color-scheme: light; font-family: "Segoe UI", Arial, sans-serif; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f4f7fb; color: #172033; line-height: 1.6; }
+        main { max-width: 1040px; margin: 32px auto; padding: 0 20px 48px; }
+        .card { background: #fff; border: 1px solid #d9e1ec; border-radius: 10px; box-shadow: 0 4px 18px rgba(23,32,51,.08); padding: 30px; }
+        .meta { margin: 18px 0 26px; padding: 14px 16px; background: #eef4ff; border-left: 4px solid #2a64c5; }
+        .meta p { margin: 4px 0; }
+        h1, h2, h3 { line-height: 1.25; scroll-margin-top: 18px; }
+        h1 { margin-top: 0; font-size: 1.8rem; }
+        h2 { margin-top: 2rem; padding-bottom: .3rem; border-bottom: 1px solid #d9e1ec; }
+        a { color: #174ea6; }
+        pre { overflow-x: auto; padding: 16px; background: #111827; color: #e5edf9; border-radius: 7px; }
+        code { font-family: Consolas, "Courier New", monospace; }
+        :not(pre) > code { padding: 2px 5px; background: #eef1f5; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { border: 1px solid #cfd8e6; padding: 8px 10px; text-align: left; vertical-align: top; }
+        th { background: #eef4ff; }
+        blockquote { margin-left: 0; padding-left: 16px; border-left: 4px solid #a9b9d0; color: #44536a; }
+        .top-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+<main>
+    <p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; Back to DataAI ETL markets</a><a href="index.html">All installation guides</a></p>
+    <article class="card">
+        <h1>DataAI ETL Oracle AIDP Spark — Production Installation Guide</h1>
+        <div class="meta">
+            <p><strong>Product:</strong> Oracle AIDP Spark</p>
+            <p><strong>Distribution:</strong> Production</p>
+            <p><strong>Source document:</strong> <code>Oracle/docs/INSTALLATION_AND_USAGE.md</code></p>
+            <p><strong>Source SHA-256:</strong> <code>3e7fd5f380ae3ca5eeb6568f9d131bb72c13cb6585b96da5401e00feee86a493</code></p>
+            <p><a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Oracle-1.0.0.zip">Download the applicable package</a> | <a href="../licenses/oracle-aidp-spark.html">Read the applicable license</a></p>
+
+            <p class="download-verification"><strong>Downloads and verification:</strong> <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Oracle-1.0.0.zip">Oracle package 1.0.0</a> | <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></p>
+        </div>
+        <h1 id="installation-and-usage-for-oracle-cloud-marketplace">Installation and Usage for Oracle Cloud Marketplace</h1>
+<h2 id="delivery-model">Delivery model</h2>
+<p>The container stores DataAI JARs in <code>/opt/dataai/lib</code>. For OCI Data Flow, the customer copies licensed artifacts to customer-controlled Object Storage and supplies their URIs as Spark job dependencies. No Yanbor-hosted runtime or customer-data transfer is required.</p>
+<h2 id="jar-installation-boundary">JAR installation boundary</h2>
+<p>The production container candidate embeds commercial DataAI Spark JARs. Uploading the separate artifacts to Object Storage does not install them by itself; supplying their URIs to OCI Data Flow explicitly installs them as dependencies for that Spark job. Both routes require the customer&#39;s applicable Yanbor LLC authorization. Third-party platforms, runtimes, and drivers remain customer-provided and subject to their respective vendor license terms.</p>
+<h2 id="production-candidate-artifacts">Production-candidate artifacts</h2>
+<p>Install these matching-version modules together:</p>
+<ul>
+<li><code>dataai-spark-api-1.0.0.jar</code></li>
+<li><code>dataai-spark-quality-1.0.0.jar</code></li>
+<li><code>dataai-spark-core-1.0.0.jar</code></li>
+<li><code>dataai-spark-functions-1.0.0.jar</code></li>
+</ul>
+<p>The CLI JAR is optional. Spark and Hadoop are provided by the customer runtime and are not bundled by DataAI.</p>
+<h2 id="generic-spark-usage">Generic Spark usage</h2>
+<p>Add all required JARs to the Spark driver and executor classpaths using the target platform&#39;s supported library or <code>--jars</code> mechanism. Then call <code>DataAiPipeline</code> and the functions in <code>com.dataai.etl.spark.functions</code>. The complete inventory is in <code>FUNCTION_CATALOG.md</code>.</p>
+<p>Customer code supplies <code>Dataset&lt;Row&gt;</code> inputs and decides whether returned DataFrames are written. DataAI performs no automatic persistence.</p>
+<h2 id="production">Production</h2>
+<p>Deploy immutable version <code>1.0.0</code> only after Yanbor release authorization, commercial entitlement, and target-platform validation. Obtain it from the approved marketplace artifact, authenticated Maven repository, or customer artifact repository. Verify checksums and pin the exact version.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><code>UnsupportedClassVersionError</code>: select a Java 17-compatible runtime.</li>
+<li>Class not found: install API, quality, core, and functions at the same version.</li>
+<li>Scala linkage error: use a runtime compatible with Scala 2.12.</li>
+<li>Spark linkage error: validate against the documented Spark 3.5.x baseline.</li>
+<li>Permission failure: use customer-approved identity and storage permissions; DataAI does not bypass platform controls.</li>
+</ul>
+
+    </article>
+</main>
+</body>
+</html>

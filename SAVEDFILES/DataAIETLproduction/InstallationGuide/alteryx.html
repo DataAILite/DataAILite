@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DataAI ETL Alteryx — Production Installation Guide</title>
+    <style>
+        :root { color-scheme: light; font-family: "Segoe UI", Arial, sans-serif; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f4f7fb; color: #172033; line-height: 1.6; }
+        main { max-width: 1040px; margin: 32px auto; padding: 0 20px 48px; }
+        .card { background: #fff; border: 1px solid #d9e1ec; border-radius: 10px; box-shadow: 0 4px 18px rgba(23,32,51,.08); padding: 30px; }
+        .meta { margin: 18px 0 26px; padding: 14px 16px; background: #eef4ff; border-left: 4px solid #2a64c5; }
+        .meta p { margin: 4px 0; }
+        h1, h2, h3 { line-height: 1.25; scroll-margin-top: 18px; }
+        h1 { margin-top: 0; font-size: 1.8rem; }
+        h2 { margin-top: 2rem; padding-bottom: .3rem; border-bottom: 1px solid #d9e1ec; }
+        a { color: #174ea6; }
+        pre { overflow-x: auto; padding: 16px; background: #111827; color: #e5edf9; border-radius: 7px; }
+        code { font-family: Consolas, "Courier New", monospace; }
+        :not(pre) > code { padding: 2px 5px; background: #eef1f5; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        th, td { border: 1px solid #cfd8e6; padding: 8px 10px; text-align: left; vertical-align: top; }
+        th { background: #eef4ff; }
+        blockquote { margin-left: 0; padding-left: 16px; border-left: 4px solid #a9b9d0; color: #44536a; }
+        .top-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+<main>
+    <p class="top-links"><a href="../../../DataAIETLmarkets.html">&larr; Back to DataAI ETL markets</a><a href="index.html">All installation guides</a></p>
+    <article class="card">
+        <h1>DataAI ETL Alteryx — Production Installation Guide</h1>
+        <div class="meta">
+            <p><strong>Product:</strong> Alteryx</p>
+            <p><strong>Distribution:</strong> Production</p>
+            <p><strong>Source document:</strong> <code>DataAIETLAlteryx/docs/INSTALLATION_AND_USAGE.md</code></p>
+            <p><strong>Source SHA-256:</strong> <code>e331e2614da91319aab4138c2fc5adff97871909c4396714c2e8e24e14e537f5</code></p>
+            <p><a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Alteryx-1.0.0.zip">Download the applicable package</a> | <a href="../licenses/alteryx.html">Read the applicable license</a></p>
+
+            <p class="download-verification"><strong>Downloads and verification:</strong> <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAI_ETL_Alteryx_2026_1_Production_1.0.0.yxi">Alteryx YXI 1.0.0</a> | <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=DataAIETL-Alteryx-1.0.0.zip">Complete Alteryx package</a> | <a href="../../../DownloadDataAIETL.aspx?channel=production&amp;file=ARTIFACTS.sha256">Production checksums</a></p>
+        </div>
+        <h1 id="installation-and-usage">Installation and Usage</h1>
+<h2 id="1-verify-prerequisites">1. Verify prerequisites</h2>
+<p>For this <code>1.0.0</code> production candidate, use:</p>
+<ul>
+<li>Windows 64-bit;</li>
+<li>Alteryx Designer 2026.1;</li>
+<li>AMP Engine enabled;</li>
+<li>Java 17;</li>
+<li>a customer-managed Spark 3.5 / Scala 2.12 runtime;</li>
+<li>a working <code>spark-submit</code> command on the Designer machine or an absolute path
+to <code>spark-submit.cmd</code>, <code>.bat</code>, or <code>.exe</code>;</li>
+<li>a Spark catalog reachable with the identity that runs Designer.</li>
+</ul>
+<p>Designer 2026.1 is the declared target because the YXI bundles Alteryx Python
+SDK 2.5.3 for embedded Python 3.13.11. A separately built and separately tested
+YXI is required for older Designer Python generations.</p>
+<h2 id="2-verify-the-download">2. Verify the download</h2>
+<p>From PowerShell in the extracted package directory:</p>
+<pre><code class="language-powershell">Get-FileHash .\install\DataAI_ETL_Alteryx_2026_1_Production_1.0.0.yxi -Algorithm SHA256
+</code></pre>
+<p>Compare the value with <code>CHECKSUMS.sha256</code> from the provider package.</p>
+<h2 id="3-confirm-commercial-entitlement">3. Confirm commercial entitlement</h2>
+<p>Read <code>LICENSE.md</code> and the executed Yanbor commercial agreement or order form.
+The tool requires the user to confirm that the organization has valid
+commercial rights before execution. The included commercial template is not an
+executed license.</p>
+<h2 id="4-install-the-yxi">4. Install the YXI</h2>
+<ol>
+<li>Close workflows that use older DataAI ETL tool versions.</li>
+<li>Double-click <code>DataAI_ETL_Alteryx_2026_1_Production_1.0.0.yxi</code>, or drag it into
+Alteryx Designer.</li>
+<li>Select user or administrator installation according to the customer&#39;s
+deployment policy.</li>
+<li>Restart Designer if the <strong>DataAI ETL</strong> tool category does not appear.</li>
+<li>Confirm <strong>DataAI ETL Quality</strong> appears in that category.</li>
+</ol>
+<p>For Alteryx Server, an administrator must install the same approved YXI on
+every execution worker and make Java, Spark, catalogs, and connector libraries
+available to the service account. Validate Server separately before use.</p>
+<h2 id="jar-installation-boundary">JAR installation boundary</h2>
+<p>The production YXI embeds the shaded commercial <code>dataai-spark-cli-1.0.0.jar</code>, and installing the YXI installs that JAR with the Alteryx tool runtime. The YXI does not automatically install the four unshaded DataAI library modules used by custom advanced-function Spark jobs; obtain and install those separately from the authorized production ZIP or private artifact repository. Every commercial JAR requires the customer&#39;s applicable Yanbor LLC authorization. Third-party platforms, runtimes, and drivers remain customer-provided and subject to their respective vendor license terms.</p>
+<h2 id="5-prepare-a-spark-source-table">5. Prepare a Spark source table</h2>
+<p>The tool operates on a Spark catalog table, not an in-memory Alteryx record
+stream. Load the sample CSV or an approved validation data set into a table,
+for example <code>dataai_sample.customer_orders</code>.</p>
+<p>Ensure the Spark identity can:</p>
+<ul>
+<li>read the source table;</li>
+<li>create or overwrite only the selected output tables;</li>
+<li>write Delta tables in the selected catalog and schema.</li>
+</ul>
+<h2 id="6-configure-the-tool">6. Configure the tool</h2>
+<p>Create a new workflow and drag <strong>DataAI ETL Quality</strong> onto the canvas.</p>
+<ol>
+<li><strong>Spark Submit</strong>: enter the command or full path.</li>
+<li><strong>Spark Master</strong>: enter <code>local[*]</code>, <code>yarn</code>, or the approved cluster URL.</li>
+<li><strong>Deploy Mode</strong>: select <code>client</code> or <code>cluster</code>.</li>
+<li><strong>Source Table</strong>: enter the existing Spark catalog table.</li>
+<li>Enter any desired <strong>Clean</strong>, <strong>Rejected</strong>, <strong>Profile</strong>, and <strong>Findings</strong>
+tables. Each specified table is overwritten by the DataAI CLI.</li>
+<li>Select normalization if desired.</li>
+<li>Enter comma-separated record keys.</li>
+<li>Paste a JSON array of rules, such as <code>samples/rules.json</code>.</li>
+<li>Optionally enter a minimum quality score from 0 through 100.</li>
+<li>Add extra Spark arguments as a JSON string array, never as one shell
+command. Example: <code>[&quot;--conf&quot;,&quot;spark.sql.session.timeZone=UTC&quot;]</code>.</li>
+<li>Set the timeout and confirm the organization&#39;s commercial entitlement.</li>
+</ol>
+<p>The adapter enforces the DataAI main class and does not invoke a command shell.
+Do not place passwords, access tokens, or private keys in the tool fields.
+Use the customer&#39;s Spark credential and secret-management mechanisms.</p>
+<h2 id="7-run-and-verify">7. Run and verify</h2>
+<ol>
+<li>Enable AMP for the workflow.</li>
+<li>Connect a Browse tool to the optional <strong>Status</strong> output.</li>
+<li>Run the workflow.</li>
+<li>Confirm the status row says <code>Succeeded</code> and exit code <code>0</code>.</li>
+<li>Inspect the customer-controlled Spark logs.</li>
+<li>Verify each configured output table and its row counts.</li>
+<li>Test at least one intentionally failing rule and minimum-score gate.</li>
+<li>Confirm no output table outside the selected schema changed.</li>
+</ol>
+<p>The status output never returns customer rows or raw Spark logs. On failure,
+use local Designer and Spark logs, because logs can contain environment-specific
+details and are intentionally not copied into the Alteryx output.</p>
+<h2 id="8-use-advanced-dataai-functions">8. Use advanced DataAI functions</h2>
+<p>The customer-delivery ZIP includes the API, quality, core, functions, and CLI JARs.
+Matrix balancing and the other advanced functions in
+<code>docs/FUNCTION_CATALOG.md</code> are called from a customer Java/Spark job. Add the
+four unshaded libraries to that job, create an approved wrapper for the desired
+function, and call that job from Alteryx or the customer&#39;s scheduler. They are
+not separate buttons in the first Alteryx tool version.</p>
+<h2 id="9-uninstall">9. Uninstall</h2>
+<p>Use the customer&#39;s Alteryx custom-tool administration process to remove the
+<code>DataAiEtlQuality_1_0</code> tool directory. Removing the tool does not delete Spark
+tables. Output tables must be retained or removed under the customer&#39;s data
+governance procedure.</p>
+
+    </article>
+</main>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Distribute DataAI ETL for .NET through a private NuGet feed</title>
+    <link rel="stylesheet" href="distribution.css" />
+</head>
+<body>
+<div class="page-header">DataAI ETL Distribution Guide</div>
+<main class="content">
+    <h1>.NET pipelines &mdash; private NuGet feed</h1>
+    <div class="meta"><strong>Package:</strong> <code>Yanbor.DataAI.Etl.Spark.1.0.0.nupkg</code> and <code>Yanbor.DataAI.Etl.Spark.Runtime.1.0.0.nupkg</code><br /><strong>Intended fulfillment:</strong> a Yanbor-controlled or customer-controlled authenticated NuGet feed.</div>
+    <div class="notice"><strong>Commercial status:</strong> publish production packages only after Yanbor LLC authorizes the customer, product version, users, environments, and commercial terms. Do not publish proprietary packages to nuget.org.</div>
+
+    <h2>1. Prepare the release</h2>
+    <ol class="steps">
+        <li>Choose an authenticated NuGet service approved by Yanbor LLC and the customer, such as Azure Artifacts, GitHub Packages, Artifactory, Nexus, or a secured file-share feed.</li>
+        <li>Create a production feed whose readers are limited to licensed customer identities. Keep evaluation and production packages in separate feeds or views.</li>
+        <li>Obtain the two authorized <code>1.0.0</code> packages and the production checksum manifest from the controlled release location.</li>
+        <li>Compare each package hash with <code>ARTIFACTS.sha256</code>. Stop if a file is missing, renamed unexpectedly, or has a different hash.</li>
+        <li>Inspect package metadata with the customer or an isolated validation project. Confirm the package ID, immutable version, Yanbor LLC ownership, dependencies, embedded JARs, license link, documentation link, and supported runtime baseline.</li>
+        <li>Create a release record containing customer, package IDs, versions, SHA-256 values, feed URL, approver, publication date, license/order reference, and rollback contact.</li>
+    </ol>
+
+    <h2>2. Publish both packages</h2>
+    <ol class="steps">
+        <li>Open the feed provider's <strong>Connect to feed</strong> page and use its current NuGet v3 source URL.</li>
+        <li>Create a short-lived publishing token or service identity with package-write permission only. Do not put the token in a script, repository, package, log, or customer document.</li>
+        <li>Publish the runtime package first because the integration package depends on it. With the provider-specific source and API key syntax, run <code>dotnet nuget push Yanbor.DataAI.Etl.Spark.Runtime.1.0.0.nupkg --source &lt;feed-url-or-name&gt; --api-key &lt;provider-required-value&gt;</code>.</li>
+        <li>Publish <code>Yanbor.DataAI.Etl.Spark.1.0.0.nupkg</code> using the same controlled source.</li>
+        <li>Open the feed UI and confirm that both exact IDs and version <code>1.0.0</code> are visible. Do not overwrite or reuse an already published version; issue a new version for changed bytes.</li>
+        <li>Remove or expire the publishing credential after release if it is not needed for automation.</li>
+    </ol>
+
+    <h2>3. Grant and test customer access</h2>
+    <ol class="steps">
+        <li>Grant the customer's approved group read/download permission. Avoid individual permanent tokens when group or workload identities are available.</li>
+        <li>Give the customer the feed URL, approved package/version, license certificate or order reference, checksum values, credential setup method, production installation guide, and support contact through an authorized channel.</li>
+        <li>In a clean test environment, add the feed with <code>dotnet nuget add source &lt;feed-url&gt; --name DataAI</code>. Supply credentials using the provider's credential manager or approved secret store; do not place a clear-text password in <code>NuGet.Config</code>.</li>
+        <li>Restore with <code>dotnet add package Yanbor.DataAI.Etl.Spark --version 1.0.0 --source DataAI</code>.</li>
+        <li>Verify that the runtime package is restored transitively, its DataAI JARs are copied as documented, and the clean project passes the packaged smoke test.</li>
+        <li>Remove the test identity and record the test result. Send access instructions only to the licensed customer contacts.</li>
+    </ol>
+
+    <h2>4. Operate future releases</h2>
+    <ul>
+        <li>Use a new semantic version for every changed package and keep previous authorized versions available during the agreed upgrade window.</li>
+        <li>Revoke customer access when the commercial authorization ends; retain audit records according to Yanbor policy.</li>
+        <li>Never use dependency-confusion-prone source ordering. Pin the DataAI source and package version in customer build policy.</li>
+        <li>Repeat hash, clean-restore, runtime, and license validation for every release.</li>
+    </ul>
+
+    <h2>Official references</h2>
+    <ul>
+        <li><a href="https://learn.microsoft.com/en-us/nuget/hosting-packages/overview" target="_blank" rel="noopener noreferrer">Microsoft: hosting private NuGet feeds</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-nuget-add-source" target="_blank" rel="noopener noreferrer">Microsoft: dotnet nuget add source</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/azure/devops/artifacts/nuget/dotnet-exe" target="_blank" rel="noopener noreferrer">Microsoft: publish NuGet packages to Azure Artifacts</a></li>
+    </ul>
+    <p><a href="../../DataAIETLmarkets.html">Back to DataAI ETL Markets</a></p>
+    <div class="footer">Procedure reviewed August 17, 2026. Confirm the provider's current portal fields before release.</div>
+</main>
+</body>
+</html>
